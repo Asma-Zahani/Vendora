@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { ChevronDown } from "lucide-react";
 
-const Dropdown = ({ isOpen, toggleOpen, categories, brands, colors , selectedCategories, toggleCategory, selectedBrands, toggleBrand , selectedColors, toggleColor , applyFilters , maxPrice, setMaxPrice}) => {
+const Dropdown = ({ isOpen, toggleOpen, categories, brands, colors , selectedCategories, toggleCategory, selectedBrands, toggleBrand , selectedColors, toggleColor , maxPrice, setMaxPrice}) => {
   
   return (
     <div className="relative">
@@ -71,20 +70,10 @@ const Dropdown = ({ isOpen, toggleOpen, categories, brands, colors , selectedCat
               min="0" 
               max="1000" 
               value={maxPrice} 
-              onChange={(e) => setMaxPrice(e.target.value)} 
+              onChange={(e) => setMaxPrice(parseFloat(e.target.value))} 
               className="w-full focus:ring-purpleLight"
             />
             <p className="text-sm text-gray-600">Prix maximum: {maxPrice}€</p>
-          </div>
-
-
-          <div className="mt-4">
-            <button
-              onClick={applyFilters} 
-              className="w-full px-4 py-2 bg-purpleLight text-white rounded-lg shadow hover:bg-purpleLight transition"
-            >
-              Appliquer
-            </button>
           </div>
         </div>
       )}

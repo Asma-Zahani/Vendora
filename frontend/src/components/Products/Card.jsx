@@ -1,24 +1,32 @@
 /* eslint-disable react/prop-types */
-import { StarIcon } from "lucide-react";
+import { Eye, ShoppingCart, StarIcon } from "lucide-react";
 import { useState } from "react";
+import defaultImg from "@/assets/default/image.png"; // Assurez-vous d'importer l'image par défaut
+
 const Card = ({ produit }) => {
   const [ratingHover, setRatingHover] = useState(0);
   const [selectedRating, setSelectedRating] = useState(produit.rating);
+  const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
+
+  // Fonction pour gérer l'erreur de chargement de l'image
+  const handleImageError = () => {
+    setImageSrc(defaultImg); // Utiliser l'image par défaut en cas d'erreur
+  };
 
   return (
     <div className=" bg-white dark:bg-gray-800 rounded-md shadow-md flex flex-col items-center">
-      <div className="relative w-full h-full">
-        <img src={`/produits/${produit.image}`} alt={produit.nom} className="w-full h-full object-cover rounded-t-xl"/>
-      </div>
-      {/*
-      <div className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden">
-        <img 
-          src={`/produits/${produit.image}`} 
-          alt={produit.nom} 
-          className="max-w-full max-h-full object-contain rounded-t-md border border-gray-300 dark:border-borderDark"
+      <div className="relative w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
+        <img
+          src={imageSrc}
+          alt={produit.nom}
+          onError={handleImageError} // Ajouter l'événement onError pour gérer les erreurs de chargement
+          className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110 rounded-t-xl"
         />
+        <div className="absolute top-0 left-0 right-0 bottom-0 bg-customDark/75 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <ShoppingCart className="text-white w-6 h-6 mx-2" />
+          <Eye className="text-white w-6 h-6 mx-2" />
+        </div>
       </div>
-      */}
       <div className="w-full p-4 text-center">
         <div
           className="flex justify-center mb-2"
@@ -38,10 +46,10 @@ const Card = ({ produit }) => {
             </span>
           ))}
         </div>
-        {console.log(produit)}
+        {/*console.log(produit)*/}
         <h2 className="text-lg font-semibold">{produit.nom}</h2>
-        <p className="text-gray-500 text-sm">{produit.description}</p>
-        <p className="text-gray-500 text-sm">{produit.sous_categorie}</p>
+        <p className="text-gray-500 text-sm">{produit.description.length > 40 ? produit.description.substring(0, 40) + '...' : produit.description}</p>
+        
         <div className="flex mt-2 gap-3">
           <span className="text-lg font-bold text-purpleLight">${produit.prix_apres_promo}</span>
           {produit.promotion_id ? 

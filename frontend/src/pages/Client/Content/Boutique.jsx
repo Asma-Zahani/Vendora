@@ -1,10 +1,7 @@
 import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
-import Card from "@/components/Products/Card";
-import List from "@/components/Products/List";
 import "aos/dist/aos.css";
-import Filtre from "@/components/Products/FiltreAsma";
 import FiltreHeader from "@/components/Products/FiltreHeader";
 import { getProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";
@@ -12,6 +9,7 @@ import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
+import FilteredProducts from '../../../components/Products/FilteredProducts';
 
 const Shop = () => {
   const [gridCols, setGridCols] = useState(3);
@@ -59,32 +57,33 @@ const Shop = () => {
     const sousCategorie = sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id);  
     const categorie = sousCategorie ? categories.find(c => c.categorie_id === sousCategorie.categorie_id) : null;
 
+    const couleursList = item.couleurs && Array.isArray(item.couleurs) 
+    ? item.couleurs.map(couleur => ({ 
+        nom: couleur.nom, 
+        couleur_id: couleur.couleur_id
+      }))
+    : [{ nom: "Aucune couleur", couleur_id: null }];
+
     return {
       ...item,
       categorie: categorie ? categorie.titre : "Non défini",
+      categorie_id: categorie ? categorie.categorie_id : null,
       sous_categorie: sousCategorie ? sousCategorie.titre : "Non défini",
       marque: marques.find(m => m.marque_id === item.marque_id)?.nom || "Non défini",
       promotion: promotion ? promotion.nom : "Non défini",
       prix_apres_promo: prixApresPromo,
       couleurs: item.couleurs && Array.isArray(item.couleurs) ? 
                 item.couleurs.map(couleur => couleur.nom).join(", ") : "Aucune couleur", 
+      couleurs_id: couleursList.map(c => c.couleur_id), 
     };
   });
-
+  
+  const filtres = {categories, marques, couleurs};
 
   return (
     <div className="px-8 dark:bg-customDark">
       <FiltreHeader onChange={setGridCols} onToggleView={setIsGrid} isGrid={isGrid} gridCols={gridCols} produits={produits} setProduits={setProduits} />
-      <Filtre categories={categories} marques={marques} couleurs={couleurs} /> {/* onApplyFilters={setFilters} */}
-      <div className={`mt-10 ${isGrid ? `grid grid-cols-${gridCols} gap-6` : "flex flex-col gap-4"}`}>
-        {formattedProduits.map((produit,index) => (
-          isGrid ? (
-            <Card key={index} produit={produit} />
-          ) : (
-            <List key={index} produit={produit} />
-          )
-        ))}
-      </div>
+      <FilteredProducts datas={formattedProduits} gridCols={gridCols} isGrid={isGrid} filtres={filtres} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">
