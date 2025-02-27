@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --breakpoint-w-990: 990px;
+
+    --color-contentLight: #f5f5f5;
+    --color-contentDark: #121313;
+    --color-customLight: #FFFFFF;
+    --color-customDark: #171818;
+    --color-bgLight: #E6E6FA;
+    --color-bgDark: #6652921a;
+    --color-borderDark: #21172a;
+    --color-purpleLight: #665292FF;
+    --color-purple: #693679;
+    --color-purpleDark: #72658F1A;
+    --color-grayDark: #898989;
+    --color-borderGrayDark: #26262e;
+    --color-borderGrayLight: #cbcbd3;
+}
+
+body {
+    font-family: "Nunito Sans", sans-serif;
+    background-color: #f5f5f5;
+}
+
+.dark body {
+    background-color: #121313;
+}
+  
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+}
+    
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+  
+.custom-border {
+    border-right: 0.5px;
+}
+  
+.scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #E6E6FA transparent;
+}
+  
+.scrollbar::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar {
+    width: 8px; 
+} 
+  
+.dark .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #6652921a transparent;
+}
+  
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #665292FF transparent;
+}
+
+.holiday {
+    background-color: #ffcccc !important;
+    color: red !important;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.sx-react-calendar-wrapper {
+    width: 1200px;
+    max-width: 100vw;
+    height: 800px;
+    max-height: 90vh;
+  }
