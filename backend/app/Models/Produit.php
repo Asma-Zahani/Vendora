@@ -54,7 +54,8 @@ class Produit extends Model
     }
 
     public function couleurs(){
-        return $this->belongsToMany(Couleur::class, 'produit_couleur', 'produit_id', 'couleur_id');
+        return $this->belongsToMany(Couleur::class, 'produit_couleur', 'produit_id', 'couleur_id')
+        ->withPivot('quantite');
     }
 
 }

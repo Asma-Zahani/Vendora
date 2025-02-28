@@ -99,10 +99,13 @@ class ProduitController extends Controller implements HasMiddleware
      * Display the specified resource.
      */
     public function show($id)
-    {
-        $produit = Produit::with('couleurs')->findOrFail($id); 
-        return response()->json($produit);
-    }
+{
+    $produit = Produit::with(['couleurs' => function ($query) {
+        $query->select('couleurs.*', 'produit_couleur.quantite');  // Assurez-vous d'inclure 'quantite'
+    }])->find($id);
+
+    return response()->json($produit);
+}
 
 
     /**
