@@ -2,7 +2,7 @@
 import { Eye, ShoppingCart, StarIcon } from "lucide-react";
 import { useState } from "react";
 import defaultImg from "@/assets/default/image.png"; // Assurez-vous d'importer l'image par défaut
-import ViewProduct from "@/components/Modals/ViewProduct";
+import ViewProduit from "@/components/Modals/ViewProduit";
 
 const Card = ({ produit }) => {
   const [ratingHover, setRatingHover] = useState(0);
@@ -64,7 +64,7 @@ const Card = ({ produit }) => {
         </div>
       </div>
     </div>
-    <ViewProduct produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 };
