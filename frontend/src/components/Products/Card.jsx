@@ -14,7 +14,7 @@ const Card = ({ produit }) => {
   };
 
   return (
-    <div className=" bg-white dark:bg-gray-800 rounded-md shadow-md flex flex-col items-center">
+    <div className=" bg-customLight dark:bg-customDark rounded-md shadow-md flex flex-col items-center">
       <div className="relative w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
         <img
           src={imageSrc}

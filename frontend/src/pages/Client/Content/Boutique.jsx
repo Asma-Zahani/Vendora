@@ -81,7 +81,7 @@ const Shop = () => {
   const filtres = {categories, marques, couleurs};
 
   return (
-    <div className="px-8 dark:bg-customDark">
+    <div className="px-8">
       <FiltreHeader onChange={setGridCols} onToggleView={setIsGrid} isGrid={isGrid} gridCols={gridCols} produits={produits} setProduits={setProduits} />
       <FilteredProducts datas={formattedProduits} gridCols={gridCols} isGrid={isGrid} filtres={filtres} />
 

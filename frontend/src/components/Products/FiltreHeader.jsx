@@ -36,11 +36,9 @@ const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols , produits, set
         { isGrid &&
           <div className="flex gap-2">
             {[2, 3, 4, 6].map((cols) => (
-              <div key={cols} className="flex gap-0.5">
+              <div key={cols} className="flex gap-0.5" onClick={() => onChange(cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
-                  <button key={index} className={`my-2 w-1 rounded-md ${gridCols === cols ? "bg-purpleLight" : "bg-black"}`}
-                    onClick={() => onChange(cols)}>
-                  </button>
+                  <button key={index} className={`my-2 w-1 rounded-md ${gridCols === cols ? "bg-purpleLight" : "bg-black"}`}></button>
                 ))}
               </div>
             ))}

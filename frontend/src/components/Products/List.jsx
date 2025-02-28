@@ -12,7 +12,7 @@ const List = ({ produit }) => {
   };
 
   return (
-    <div className="flex items-center gap-6 p-4 border-b bg-white dark:bg-gray-800">
+    <div className="flex items-center gap-6 p-4 border-b bg-customLight dark:bg-customDark">
       <div className="relative w-32 h-32 bg-gray-100 dark:bg-gray-700 flex items-center justify-center rounded-lg overflow-hidden group">
         <img
           src={imageSrc}
