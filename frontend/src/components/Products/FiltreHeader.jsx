@@ -1,55 +1,72 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Grid, List } from "lucide-react";
+import Dropdown from "@/components/ui/Dropdown";
 
-const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols , produits, setProduits}) => {
+const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols, onSortChange }) => {
+  const [selectedSort, setSelectedSort] = useState("default");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const [sortOrder, setSortOrder] = useState("");
+  // Options de tri
+  const sortOptions = [
+    { value: "default", label: "Trier par" },
+    { value: "lowToHigh", label: "Prix : du plus bas au plus élevé" },
+    { value: "highToLow", label: "Prix : du plus élevé au plus bas" },
+    { value: "alphaAsc", label: "Nom : A-Z" },
+    { value: "alphaDesc", label: "Nom : Z-A" },
+  ];
 
-  const handleSortChange = (event) => {
-    const selectedValue = event.target.value;
-    setSortOrder(selectedValue);
-    let sortedProducts = [...produits];
-    if (selectedValue === "opt2") {
-      sortedProducts.sort((a, b) => a.prix - b.prix);
-    } else if (selectedValue === "opt3") {
-      sortedProducts.sort((a, b) => b.prix - a.prix);
-    }
-    setProduits(sortedProducts);
+  const handleSortChange = (selected) => {
+    setSelectedSort(selected.value);
+    onSortChange(selected.value); // Envoie la valeur au parent
+    setIsDropdownOpen(false);
   };
 
   return (
     <div className="mt-4 flex items-center justify-between">
       <div className="flex gap-3">
-        <div onClick={() => onToggleView(true)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
+        <div
+          onClick={() => onToggleView(true)}
+          className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
+            isGrid ? "bg-bgLight dark:bg-bgDark" : ""
+          }`}
+        >
           <Grid size={17} />
         </div>
-        <div onClick={() => onToggleView(false)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
+        <div
+          onClick={() => onToggleView(false)}
+          className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
+            !isGrid ? "bg-bgLight dark:bg-bgDark" : ""
+          }`}
+        >
           <List size={17} />
         </div>
-        {isGrid &&
+        {isGrid && (
           <div className="flex gap-2">
             {[2, 3, 4, 6].map((cols) => (
               <div key={cols} className="flex gap-0.5" onClick={() => onChange(cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
-                  <button key={index} className={`my-2 w-1 rounded-md ${gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"}`}></button>
+                  <button
+                    key={index}
+                    className={`my-2 w-1 rounded-md ${
+                      gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"
+                    }`}
+                  ></button>
                 ))}
               </div>
             ))}
           </div>
-        }
+        )}
       </div>
-      <div className="flex items-center justify-center gap-3">
-          {/*<span className="text-gray-600 text-sm hidden md:block">
-          Showing Products 1 - 24 of 200
-          </span>*/}
-          <select className="border border-gray-300 rounded-md p-2 text-gray-600 focus:ring-primary focus:border-primary" 
-            value={sortOrder} onChange={handleSortChange}>
-          <option value="opt1">Featured</option>
-          <option value="opt2">Lowest Prices</option>
-          <option value="opt3">Highest Prices</option>
-          </select>
-      </div>
+
+      {/* Dropdown de tri */}
+      <Dropdown
+        options={sortOptions}
+        selectedValue={selectedSort}
+        onSelect={handleSortChange}
+        isOpen={isDropdownOpen}
+        toggleOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+      />
     </div>
   );
 };

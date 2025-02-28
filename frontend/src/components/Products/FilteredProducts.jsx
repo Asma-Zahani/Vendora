@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Card from "@/components/Products/Card";
 import List from "@/components/Products/List";
-import Filtre from "@/components/Products/FiltreAsma";
-import FiltreHeader from "@/components/Products/FiltreHeaderAsma";
+import Filtre from "@/components/Products/Filtre";
+import FiltreHeader from "@/components/Products/FiltreHeader";
 
 const FilteredProducts = ({ datas, gridInfo, filtres }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +22,7 @@ const FilteredProducts = ({ datas, gridInfo, filtres }) => {
 
         const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.categorie_id);
         const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(item.marque_id);
-        const matchesColor = selectedColors.length === 0 || item.couleurs_id.some(couleurId => selectedColors.includes(couleurId));
+        const matchesColor = selectedColors.length === 0 || item.couleurs.some(couleur => selectedColors.includes(couleur.couleur_id));
         const matchesPrice = parseFloat(item.prix_apres_promo) <= parseFloat(maxPrice);
 
         return matchesSearchTerm && matchesCategory && matchesBrand && matchesColor && matchesPrice;

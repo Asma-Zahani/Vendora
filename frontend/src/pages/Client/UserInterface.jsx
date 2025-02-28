@@ -6,7 +6,7 @@ const UserInterface = () => {
   const [isHeaderFixed, setIsHeaderFixed] = useState(false);
 
   const handleScroll = () => {
-    if (window.scrollY >= 0) {
+    if (window.scrollY > 50) {
       setIsHeaderFixed(true);
     } else {
       setIsHeaderFixed(false);

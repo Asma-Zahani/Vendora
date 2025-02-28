@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from "react"; 
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { CgClose } from "react-icons/cg";
 
-const ViewModal = ({ isOpen, onClose, label, viewData }) => {
-  if (!isOpen) return null;
+const ViewModal = ({ onClose, label, viewData }) => {
+  useEffect(() => {
+      AOS.init({ duration: 500, once: true });
+      AOS.refresh();
+    }, []);
 
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center bg-contentLight dark:bg-customDark bg-opacity-10 dark:bg-opacity-10">
-      <div className="relative p-4 w-full max-w-xl max-h-full">
+      <div className="relative p-4 w-full max-w-xl max-h-full" data-aos="fade-down" data-aos-duration="500">
         <div className="relative bg-customLight dark:bg-customDark rounded-md shadow-[0px_0px_6px_0px] shadow-gray-200 dark:shadow-borderGrayDark">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-borderDark border-contentLight">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">

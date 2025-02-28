@@ -52,17 +52,15 @@ const Shop = () => {
     const promotion = promotions.find(p => p.promotion_id === item.promotion_id);
     const remise = promotion ? promotion.reduction : 0;
     const prixApresPromo = remise ? (Number(item.prix) - (Number(item.prix) * remise / 100)).toFixed(2) : Number(item.prix).toFixed(2);
-    
+  
     const sousCategorie = sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id);  
     const categorie = sousCategorie ? categories.find(c => c.categorie_id === sousCategorie.categorie_id) : null;
-
-    const couleursList = item.couleurs && Array.isArray(item.couleurs) 
-    ? item.couleurs.map(couleur => ({ 
-        nom: couleur.nom, 
-        couleur_id: couleur.couleur_id
-      }))
-    : [{ nom: "Aucune couleur", couleur_id: null }];
-
+  
+    const couleursList = item.couleurs ? item.couleurs.map(couleur => ({
+      couleur_id: couleur.couleur_id,
+      code_hex: couleur.code_hex
+    })) : [{ couleur_id: null, code_hex: null }];
+  
     return {
       ...item,
       categorie: categorie ? categorie.titre : "Non défini",
@@ -71,11 +69,10 @@ const Shop = () => {
       marque: marques.find(m => m.marque_id === item.marque_id)?.nom || "Non défini",
       promotion: promotion ? promotion.nom : "Non défini",
       prix_apres_promo: prixApresPromo,
-      couleurs: item.couleurs && Array.isArray(item.couleurs) ? 
-                item.couleurs.map(couleur => couleur.nom).join(", ") : "Aucune couleur", 
-      couleurs_id: couleursList.map(c => c.couleur_id), 
+      couleurs: couleursList
     };
   });
+  
   
   const filtres = {categories, marques, couleurs};
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
