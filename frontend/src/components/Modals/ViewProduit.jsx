@@ -6,6 +6,7 @@ import defaultImg from "@/assets/default/image.png";
 const ViewProduct = ({ produit, isOpen, closeModal }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [couleurs, setCouleurs] = useState([]); // Stocke les couleurs disponibles
+  
 
   useEffect(() => {
     if (isOpen) {

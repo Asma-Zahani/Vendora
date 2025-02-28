@@ -2,18 +2,23 @@
 import { Eye, ShoppingCart, StarIcon } from "lucide-react";
 import { useState } from "react";
 import defaultImg from "@/assets/default/image.png"; // Assurez-vous d'importer l'image par défaut
+import ViewProduct from "@/components/Modals/ViewProduit";
 
 const Card = ({ produit }) => {
   const [ratingHover, setRatingHover] = useState(0);
   const [selectedRating, setSelectedRating] = useState(produit.rating);
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   // Fonction pour gérer l'erreur de chargement de l'image
   const handleImageError = () => {
     setImageSrc(defaultImg); // Utiliser l'image par défaut en cas d'erreur
   };
 
+  
+
   return (
+    <>
     <div className=" bg-customLight dark:bg-customDark rounded-md shadow-md flex flex-col items-center">
       <div className="relative w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
         <img
@@ -24,7 +29,7 @@ const Card = ({ produit }) => {
         />
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-customDark/75 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <ShoppingCart className="text-white w-6 h-6 mx-2" />
-          <Eye className="text-white w-6 h-6 mx-2" />
+          <Eye className="text-white w-6 h-6 mx-2" onClick={() => setIsModalOpen(true)} />
         </div>
       </div>
       <div className="w-full p-4 text-center">
@@ -59,6 +64,8 @@ const Card = ({ produit }) => {
         </div>
       </div>
     </div>
+    <ViewProduct produit={produit} isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+    </>
   );
 };
 
