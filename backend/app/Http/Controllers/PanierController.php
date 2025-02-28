@@ -23,7 +23,7 @@ class PanierController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Panier::all();
+        return Panier::with('produits')->get();
     }
 
     /**
@@ -61,9 +61,18 @@ class PanierController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $panier = Panier::findOrFail($id);
+        // Charger le panier avec les produits
+        $panier = Panier::with('produits')->findOrFail($id);
+    
+        $panier->produits = $panier->produits->map(function ($produit) {
+            $produit->quantite = $produit->pivot->quantite;
+            return $produit;
+        });
+    
         return response()->json($panier);
     }
+    
+
 
     /**
      * Update the specified resource in storage.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Panier;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,10 @@ class RegisterController extends Controller
 
         $user = User::create($validatedData);
         
+        $panier = Panier::create([
+            'client_id' => $user->id
+        ]);
+
         $token = $user->createToken($user->nom.' '.$user->prenom);
 
         return [

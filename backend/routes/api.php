@@ -20,11 +20,19 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
+use App\Models\Panier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
+})->middleware('auth:sanctum');
+
+Route::get('/user', function (Request $request) {
+    return response()->json([
+        'user' => $request->user(),
+        'panier' => Panier::where('client_id', $request->user()->id)->first()
+    ]);
 })->middleware('auth:sanctum');
 
 Route::apiResource('categories', CategorieController::class); //tester

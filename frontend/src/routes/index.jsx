@@ -24,6 +24,7 @@ import CodePromotions from "../pages/Admin/Content/Promotions et Offres/CodeProm
 import Promotions from "../pages/Admin/Content/Promotions et Offres/Promotions";
 import Horaires from "../pages/Admin/Content/Paramètres/Horaires";
 import JoursFeries from "../pages/Admin/Content/Paramètres/joursFeries";
+import Cart from "../pages/Client/Content/Cart/Cart";
 
 
 const routes = [
@@ -46,7 +47,7 @@ const routes = [
       { path: "shop", element: <Shop /> },
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
-          { path: "cart", element: <Home /> },
+          { path: "cart", element: <Cart /> },
         ] 
       }
     ]

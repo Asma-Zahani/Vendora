@@ -1,5 +1,5 @@
 import { FaArrowUp } from 'react-icons/fa';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import Footer from "../Footer/Footer";
 import "aos/dist/aos.css";
 import { getProduits } from "@/service/ProduitService";
@@ -9,8 +9,12 @@ import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
+import { getPanier, updatePanier } from "@/service/PanierService";
+import UserContext from '@/utils/UserContext';
 
 const Shop = () => {
+  const { user } = useContext(UserContext);
+
   const [gridCols, setGridCols] = useState(3);
   const [isGrid, setIsGrid] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -74,12 +78,86 @@ const Shop = () => {
     };
   });
   
-  
   const filtres = {categories, marques, couleurs};
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
+  
+  const [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    const fetchPanier = async () => {
+        if (user?.panier?.panier_id) {
+            try {
+                const panier = await getPanier(user.panier.panier_id);
+                setFormData(panier);
+            } catch (error) {
+                console.error("Erreur lors de la récupération du panier:", error);
+                alert('Une erreur est survenue lors de la récupération du panier');
+            }
+        }
+    };
+
+    fetchPanier();
+  }, [user]);
+
+  const ajouterAuPanier = (produit_id) => {
+    setFormData((prevFormData) => {
+      const produitExist = prevFormData.produits.some(
+        (item) => item.produit_id === produit_id
+      );
+  
+      console.log(produitExist);
+      
+      if (produitExist) {
+        return {
+          ...prevFormData,
+          produits: prevFormData.produits.map((item) =>
+            item.produit_id === produit_id
+              ? { ...item, quantite: item.quantite + 1 }
+              : item
+          ),
+        };
+      } else {
+        return {
+          ...prevFormData,
+          produits: [
+            ...prevFormData.produits,
+            { produit_id: produit_id, quantite: 1 },
+          ],
+        };
+      }
+    });
+  };
+  
+  const modifierPanier = useCallback(async () => {
+    try {
+      if (!formData) {
+        alert("Aucune donnée de panier à modifier");
+        return;
+      }
+      await updatePanier(formData.panier_id, formData);
+      alert("Panier modifié avec succès");
+    } catch (error) {
+      console.error("Erreur de modification:", error);
+      alert("Une erreur est survenue lors de la modification du panier");
+    }
+  }, [formData]); 
+
+  useEffect(() => {
+    // Si formData est disponible, exécute modifierPanier après un délai de 2 secondes
+    if (formData) {
+      const timeoutId = setTimeout(async () => {
+        await modifierPanier();
+      }, 2000);
+      
+      // Clean up timeout on component unmount or when formData changes
+      return () => clearTimeout(timeoutId);
+    }
+  }, [formData, modifierPanier]);
+  
+
   return (
     <div className="px-8">
-      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} />
+      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} modifierPanier={modifierPanier} setFormData={setFormData} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

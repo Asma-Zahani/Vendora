@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import defaultImg from "@/assets/default/image.png"; // Assurez-vous d'importer l'image par défaut
+import defaultImg from "@/assets/default/image.png";
+import ViewProduit from "@/components/Modals/ViewProduit";
 
-const List = ({ produit }) => {
+const List = ({ produit, modifierPanier, setFormData }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
-  // Fonction pour gérer l'erreur de chargement de l'image
   const handleImageError = () => {
-    setImageSrc(defaultImg); // Utiliser l'image par défaut en cas d'erreur
+    setImageSrc(defaultImg);
   };
 
   return (
@@ -17,12 +18,12 @@ const List = ({ produit }) => {
         <img
           src={imageSrc}
           alt={produit.nom}
-          onError={handleImageError} // Ajouter l'événement onError pour gérer les erreurs de chargement
+          onError={handleImageError}
           className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110"
         />
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-customDark/75 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <ShoppingCart className="text-white w-6 h-6 mx-2" />
-          <Eye className="text-white w-6 h-6 mx-2" />
+          <Eye className="text-white w-6 h-6 mx-2" onClick={() => setIsModalOpen(true)} />
         </div>
       </div>
       <div className="flex flex-col text-gray-800 dark:text-white">
@@ -30,6 +31,7 @@ const List = ({ produit }) => {
         <p className="text-sm text-gray-600 dark:text-gray-300">{produit.description}</p>
         <div className="mt-2 text-xl font-bold">${produit.prix}</div>
       </div>
+      <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} modifierPanier={modifierPanier} setFormData={setFormData} />
     </div>
   );
 };

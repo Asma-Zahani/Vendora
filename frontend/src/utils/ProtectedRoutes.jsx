@@ -20,7 +20,8 @@ export const ProtectedClientRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user.role === "client" ? <Outlet /> : <Navigate to="/login" />;
+    return user ? <Outlet /> : <Navigate to="/login" />;
+    //return user.role === "client" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedLivreurRoutes = () => {
