@@ -2,14 +2,13 @@ import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import "aos/dist/aos.css";
-import FiltreHeader from "@/components/Products/FiltreHeader";
 import { getProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";
 import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
-import FilteredProducts from '../../../components/Products/FilteredProducts';
+import FilteredProducts from '@/components/Products/FilteredProducts';
 
 const Shop = () => {
   const [gridCols, setGridCols] = useState(3);
@@ -79,11 +78,10 @@ const Shop = () => {
   });
   
   const filtres = {categories, marques, couleurs};
-
+  const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   return (
     <div className="px-8">
-      <FiltreHeader onChange={setGridCols} onToggleView={setIsGrid} isGrid={isGrid} gridCols={gridCols} produits={produits} setProduits={setProduits} />
-      <FilteredProducts datas={formattedProduits} gridCols={gridCols} isGrid={isGrid} filtres={filtres} />
+      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

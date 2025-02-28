@@ -32,15 +32,14 @@ const Filtre = ({ filtres, selectedFiltres, searchTerm, setSearchTerm, maxPrice,
           maxPrice={maxPrice}
           setMaxPrice={setMaxPrice}
         />
-        
       </div>
 
       <div className="relative flex items-center flex-1">
         <span className="absolute left-3">
-          <Search className="w-5 h-5 text-gray-400 dark:text-gray-600" />
+          <Search className="w-5 h-5 text-gray-400 dark:text-borderDark" />
         </span>
-        <input type="text" placeholder="Rechercher" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-          className="block w-full py-1.5 pr-5 pl-10 dark:bg-customDark text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg placeholder-gray-400/70 focus:border-purpleLight focus:ring-2 focus:ring-purpleLight focus-visible:outline-none shadow-sm"/>
+        <input type="text" placeholder="Rechercher" value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value);}} 
+          className="block w-full py-1.5 pr-5 pl-10 dark:bg-contentDark text-gray-700 dark:text-gray-300 border border-borderGrayLight dark:border-borderDark rounded-md placeholder-gray-400/70 focus:border-purpleLight focus:dark:border-borderDark focus:ring-2 focus:ring-bgLight focus:dark:ring-bgDark focus-visible:outline-none" />
       </div>
     </div>
   );

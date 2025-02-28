@@ -3,48 +3,85 @@ import { useState } from "react";
 import Card from "@/components/Products/Card";
 import List from "@/components/Products/List";
 import Filtre from "@/components/Products/FiltreAsma";
+import FiltreHeader from "@/components/Products/FiltreHeaderAsma";
 
-const FilteredProducts = ({ datas, gridCols, isGrid, filtres }) => {
+const FilteredProducts = ({ datas, gridInfo, filtres }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
     const [maxPrice, setMaxPrice] = useState(1000);
+    const [sortOption, setSortOption] = useState("default");
 
-    const currentItems = datas.filter(item => {
-        const matchesSearchTerm = searchTerm.length === 0 ||
+    // Filtrage des produits
+    let currentItems = datas.filter(item => {
+        const matchesSearchTerm =
+            searchTerm.length === 0 ||
             item.nom?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
             item.description?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-            
+
         const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.categorie_id);
         const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(item.marque_id);
         const matchesColor = selectedColors.length === 0 || item.couleurs_id.some(couleurId => selectedColors.includes(couleurId));
         const matchesPrice = parseFloat(item.prix_apres_promo) <= parseFloat(maxPrice);
-        
+
         return matchesSearchTerm && matchesCategory && matchesBrand && matchesColor && matchesPrice;
     });
-    
-    const selectedFiltres = {selectedCategories, setSelectedCategories, selectedBrands, setSelectedBrands, selectedColors, setSelectedColors};
-    
+
+    // Tri des produits en fonction de l'option sélectionnée
+    switch (sortOption) {
+        case "lowToHigh":
+            currentItems.sort((a, b) => parseFloat(a.prix_apres_promo) - parseFloat(b.prix_apres_promo));
+            break;
+        case "highToLow":
+            currentItems.sort((a, b) => parseFloat(b.prix_apres_promo) - parseFloat(a.prix_apres_promo));
+            break;
+        case "alphaAsc":
+            currentItems.sort((a, b) => a.nom.localeCompare(b.nom));
+            break;
+        case "alphaDesc":
+            currentItems.sort((a, b) => b.nom.localeCompare(a.nom));
+            break;
+        default:
+            break;
+    }
+
+    const selectedFiltres = {
+        selectedCategories, setSelectedCategories,
+        selectedBrands, setSelectedBrands,
+        selectedColors, setSelectedColors
+    };
+
     return (
         <div>
-            <Filtre filtres={filtres} selectedFiltres={selectedFiltres}
+            <FiltreHeader
+                onChange={gridInfo.setGridCols}
+                onToggleView={gridInfo.setIsGrid}
+                isGrid={gridInfo.isGrid}
+                gridCols={gridInfo.gridCols}
+                onSortChange={setSortOption}  // Ajout de la gestion du tri
+            />
+            <Filtre
+                filtres={filtres}
+                selectedFiltres={selectedFiltres}
                 searchTerm={searchTerm} setSearchTerm={setSearchTerm}
-                maxPrice={maxPrice} setMaxPrice={setMaxPrice} />
-            <div className={`mt-10 ${isGrid ? "grid gap-6" : "flex flex-col gap-4"}`}
-                style={isGrid ? { gridTemplateColumns: `repeat(${gridCols}, 1fr)` } : {}}>
-                {datas.length > 0 && 
-                    currentItems.length > 0 ? currentItems.map((produit,index) => (
-                        isGrid ? (
-                        <Card key={index} produit={produit} />
+                maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+            />
+            <div className={`mt-10 ${gridInfo.isGrid ? "grid gap-6" : "flex flex-col gap-4"}`}
+                style={gridInfo.isGrid ? { gridTemplateColumns: `repeat(${gridInfo.gridCols}, 1fr)` } : {}}>
+                {datas.length > 0 && currentItems.length > 0 ? (
+                    currentItems.map((produit, index) => (
+                        gridInfo.isGrid ? (
+                            <Card key={index} produit={produit} />
                         ) : (
-                        <List key={index} produit={produit} />
+                            <List key={index} produit={produit} />
                         )
-                    )) : (
-                        <div className="flex justify-center items-center w-full h-full">
-                            <p>Aucun produit pour le moment</p>
-                        </div>
-                    )}
+                    ))
+                ) : (
+                    <div className="flex justify-center items-center w-full h-full">
+                        <p>Aucun produit pour le moment</p>
+                    </div>
+                )}
             </div>
         </div>
     );

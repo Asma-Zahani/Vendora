@@ -73,34 +73,7 @@ const Header = () => {
               </div>
             )}
           </div>
-          {/* 
           
-          <div className="pr-2">
-            <button onClick={toggleDropdown} type="button" className="w-990:hidden inline-flex relative justify-center items-center p-0 transition-all h-[37.5px] duration-75 ease-linear rounded-md">
-              <Menu className="w-5 h-5"/>
-            </button>
-          </div>
-          <Link to="/" className="-mr-5 lg:mr-0">
-            <img src={logo} alt="Logo" className="h-8" />
-          </Link>
-          <div className="px-8">
-            <button onClick={toggleDropdown} type="button" className="w-990:inline-flex hidden relative justify-center items-center p-0 transition-all h-[37.5px] duration-75 ease-linear rounded-md">
-              <Menu className="w-5 h-5"/>
-            </button>
-          </div>
-
-          <div className={`absolute top-10 sm:top-15 left-1 sm:left-40 bg-contentLight dark:bg-contentDark shadow-md rounded w-48 mt-2 z-100 ${showDropdown ? "block" : "hidden"}`}>
-            <ul className="flex flex-col lg:flex">
-              <li>
-                <Link onClick={toggleDropdown} to="/shop" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Page Boutique</Link>
-              </li>
-              <li>
-                <Link onClick={toggleDropdown} to="/contact" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Contactez-nous</Link>
-              </li>
-            </ul>
-          </div>
-          */}
-
           <div className="relative w-990:inline-flex hidden">
             <input type="text" className="py-3 p-6 dark:bg-contentDark bg-contentLight placeholder:text-black text-sm dark:placeholder:text-white rounded focus-visible:outline-0 min-w-[400px]" 
               placeholder="Type to Search .." autoComplete="off" 
