@@ -24,7 +24,7 @@ class ProduitController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
 
-        $query = Produit::query();
+        /*$query = Produit::query();
 
         if ($request->has('categories')) { 
             $categories = explode(',', $request->categories);
@@ -58,7 +58,9 @@ class ProduitController extends Controller implements HasMiddleware
 
         $produits = $query->with('couleurs')->get();
 
-        return response()->json($produits);
+        return response()->json($produits);*/
+
+        return Produit::with('couleurs')->get();
     }
 
     /**

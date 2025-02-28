@@ -1,30 +1,44 @@
-/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { CgClose } from "react-icons/cg";
 import defaultImg from "@/assets/default/image.png";
+import axios from "axios";
 
 const ViewProduit = ({ produit, isOpen, onClose  }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
+  // Gestion des erreurs d'image
   const handleImageError = () => {
     setImageSrc(defaultImg);
   };
 
   const handleColorSelect = (color) => {
+    //console.log(color.pivot.quantite); // Vérifiez si vous obtenez bien la quantité dans `color.pivot.quantite`
     setSelectedColor(color);
     setQuantity(1);
-  };  
+  };
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/produits/' + produit.produit_id)
+      .then(response => {
+        const produit = response.data;
+        produit.couleurs.forEach(color => {
+          console.log("Quantité :", color.pivot.quantite); // Assurez-vous d'avoir accès à `pivot.quantite`
+        });
+      })
+      .catch(error => console.log("Error fetching produit:", error));
+  }, []);
+  
   
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    
+  
     if (!selectedColor) return; 
   
-    const quantityAvailable = selectedColor.quantite || 0;  // Accéder à `quantite` dans `pivot`
+    const quantityAvailable = selectedColor?.pivot?.quantite || 0;  // Accéder à `quantite` dans `pivot`
     if (value > quantityAvailable) {
       setQuantity(quantityAvailable);  // Limiter la quantité au stock disponible
     } else if (value < 1 || isNaN(value)) {
@@ -34,6 +48,8 @@ const ViewProduit = ({ produit, isOpen, onClose  }) => {
     }
   };
   
+  
+
   useEffect(() => {
     AOS.init({ duration: 500, once: true });
     AOS.refresh();
@@ -100,11 +116,17 @@ const ViewProduit = ({ produit, isOpen, onClose  }) => {
                 {/* Sélection de quantité */}
                 <div className="mt-4">
                   <h4 className="font-medium">Quantity:</h4>
-                  <input type="number" value={quantity} onChange={handleQuantityChange}
-                    min={1} max={selectedColor ? selectedColor.quantite : 1}  
-                    className="w-16 p-1 border rounded-md" disabled={!selectedColor} />
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    min={1}
+                    max={selectedColor ? selectedColor.pivot?.quantite : 1}  
+                    className="w-16 p-1 border rounded-md"
+                    disabled={!selectedColor}
+                  />
                   {selectedColor && (
-                    <p className="text-sm text-gray-500">Max: {selectedColor.quantite}</p> 
+                    <p className="text-sm text-gray-500">Max: {selectedColor.pivot?.quantite}</p> 
                   )}
                 </div>
 

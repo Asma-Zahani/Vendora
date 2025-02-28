@@ -58,8 +58,9 @@ const Shop = () => {
   
     const couleursList = item.couleurs ? item.couleurs.map(couleur => ({
       couleur_id: couleur.couleur_id,
-      code_hex: couleur.code_hex
-    })) : [{ couleur_id: null, code_hex: null }];
+      code_hex: couleur.code_hex,
+      quantite: couleur.pivot.quantite
+    })) : [{ couleur_id: null, code_hex: null, quantite: null }];
   
     return {
       ...item,
