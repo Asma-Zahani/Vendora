@@ -19,7 +19,7 @@ const Filtre = ({ filtres, selectedFiltres, searchTerm, setSearchTerm, maxPrice,
     };
   
   return (
-    <div className="mt-6 flex gap-6 relative z-50">
+    <div className="mt-6 relative z-50 sm:flex sm:items-center sm:space-x-3 sm:w-full">
       <div className="relative flex items-center">
         <Dropdown isOpen={isOpen} toggleOpen={() => setIsOpen(!isOpen)}
           categories={filtres.categories} brands={filtres.marques} colors={filtres.couleurs} 
@@ -32,9 +32,9 @@ const Filtre = ({ filtres, selectedFiltres, searchTerm, setSearchTerm, maxPrice,
           maxPrice={maxPrice}
           setMaxPrice={setMaxPrice}
         />
-      </div>
+      </div> 
 
-      <div className="relative flex items-center flex-1">
+      <div className="relative flex items-center flex-1 mt-4 sm:mt-0">
         <span className="absolute left-3">
           <Search className="w-5 h-5 text-gray-400 dark:text-borderDark" />
         </span>
