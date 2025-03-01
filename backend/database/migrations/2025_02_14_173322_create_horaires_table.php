@@ -4,6 +4,7 @@ use App\Enums\JourEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB; 
 
 return new class extends Migration
 {
@@ -17,6 +18,13 @@ return new class extends Migration
             $table->enum('jour', JourEnum::values())->unique();
             $table->boolean('ouvert');
         });
+
+        foreach (JourEnum::values() as $jour) {
+            DB::table('horaires')->insert([
+                'jour' => $jour,
+                'ouvert' => $jour !== 'Dimanche' ? true : false ,
+            ]);
+        }
     }
 
     /**

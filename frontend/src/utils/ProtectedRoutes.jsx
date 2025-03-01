@@ -10,7 +10,7 @@ export const ProtectedAdminRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user.role === "admin" ? <Outlet /> : <Navigate to="/login" />;
+    return user.user.role === "admin" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedClientRoutes = () => {
@@ -21,7 +21,7 @@ export const ProtectedClientRoutes = () => {
     }
 
     return user ? <Outlet /> : <Navigate to="/login" />;
-    //return user.role === "client" ? <Outlet /> : <Navigate to="/login" />;
+    //return user.user.role === "client" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedLivreurRoutes = () => {
@@ -31,7 +31,7 @@ export const ProtectedLivreurRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user.role === "livreur" ? <Outlet /> : <Navigate to="/login" />;
+    return user.user.role === "livreur" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedFournisseurRoutes = () => {
@@ -41,7 +41,7 @@ export const ProtectedFournisseurRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user.role === "fournisseur" ? <Outlet /> : <Navigate to="/login" />;
+    return user.user.role === "fournisseur" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedAuthRoutes = () => {

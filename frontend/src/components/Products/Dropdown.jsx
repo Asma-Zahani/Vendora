@@ -66,16 +66,8 @@ const Dropdown = ({ isOpen, toggleOpen, categories, brands, colors , selectedCat
           <div className="mb-4">
             <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Prix</h4>
             
-            {/* Barre de prix Max */}
-            <input 
-              type="range" 
-              min="0" 
-              max="1000" 
-              value={maxPrice} 
-              onChange={(e) => setMaxPrice(parseFloat(e.target.value))} 
-              className="w-full focus:ring-purpleLight"
-            />
-            <p className="text-sm text-gray-600">Prix maximum: {maxPrice}€</p>
+            <input id="minmax-range" type="range" min="0" max="1000" value={maxPrice} onChange={(e) => setMaxPrice(parseFloat(e.target.value))}  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 range-slider"></input>
+            <p className="mt-1 text-sm text-gray-600">Prix maximum: {maxPrice}€</p>
           </div>
         </div>
       )}

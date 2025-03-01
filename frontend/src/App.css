@@ -13,6 +13,7 @@
     --color-bgDark: #6652921a;
     --color-borderDark: #21172a;
     --color-purpleLight: #665292FF;
+    --color-purpleLightHover: #8a71b3;
     --color-purple: #693679;
     --color-purpleDark: #72658F1A;
     --color-grayDark: #898989;
@@ -73,3 +74,36 @@ html {
     height: 800px;
     max-height: 90vh;
   }
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background-color: #665292FF;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background-color: #8a71b3;
+}
+
+/* Style pour Firefox */
+.range-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: #665292FF;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.range-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  background-color: #9333ea;
+}

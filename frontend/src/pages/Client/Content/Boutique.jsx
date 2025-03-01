@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect, useCallback, useContext } from "react";
 import Footer from "../Footer/Footer";
@@ -82,7 +83,7 @@ const Shop = () => {
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   
   const [formData, setFormData] = useState(null);
-
+  
   useEffect(() => {
     const fetchPanier = async () => {
         if (user?.panier?.panier_id) {
@@ -95,7 +96,6 @@ const Shop = () => {
             }
         }
     };
-
     fetchPanier();
   }, [user]);
 
@@ -104,8 +104,6 @@ const Shop = () => {
       const produitExist = prevFormData.produits.some(
         (item) => item.produit_id === produit_id
       );
-  
-      console.log(produitExist);
       
       if (produitExist) {
         return {
@@ -152,7 +150,7 @@ const Shop = () => {
       // Clean up timeout on component unmount or when formData changes
       return () => clearTimeout(timeoutId);
     }
-  }, [formData, modifierPanier]);
+  }, [formData]);
   
 
   return (
