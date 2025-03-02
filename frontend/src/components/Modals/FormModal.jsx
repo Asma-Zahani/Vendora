@@ -48,7 +48,7 @@ const FormModal = ({ onClose, formLabel, header, action, formData, setFormData, 
             {fields.map(({ label, key, type, options, form, setForm, handleCreate }) => (
               <div key={key} className="mb-4 flex flex-col">
                 <Label label={label} />
-                {(type === "text" || type === "number" || type === "email" || type === "date") && 
+                {(type === "text" || type === "number" || type === "email" || type === "date" || type === "time") && 
                   <Input type={type} name={key} placeholder={`Enter ${label}`} value={formData[key] || ""} onChange={(e) => setFormData({ ...formData, [key]: e.target.value })} required />
                 }
                 {type === "genre" &&

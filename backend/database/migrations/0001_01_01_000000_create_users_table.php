@@ -4,6 +4,8 @@ use App\Enums\RoleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -47,6 +49,17 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        DB::table('users')->insert([
+            'nom' => "Doe",
+            'prenom' => "John",
+            'email' => "admin@gmail.com",
+            'telephone' => "12345678",
+            'genre' => 'male',
+            'date_naissance' => "2002-02-02",
+            'role' => 'admin',
+            'password' => Hash::make("admin")
+        ]);
     }
 
     /**

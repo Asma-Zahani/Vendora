@@ -21,6 +21,41 @@
     --color-borderGrayLight: #cbcbd3;
 }
 
+:root {
+    --fc-small-font-size: .85em;
+    --fc-neutral-bg-color: #E6E6FA;
+    --fc-button-bg-color: #665292FF;
+    --fc-button-border-color: #E6E6FA;
+    --fc-button-hover-bg-color: #665292FF;
+    --fc-button-active-bg-color: rgb(63, 50, 93);
+    --fc-button-active-border-color: #E6E6FA;
+    --fc-event-bg-color: #665292FF;
+    --fc-event-border-color: #665292FF;
+    --fc-event-selected-overlay-color: #665292FF;
+    --fc-non-business-color: #E6E6FA;
+    --fc-highlight-color: #E6E6FA;
+    --fc-today-bg-color: #E6E6FA;
+    --fc-event-text-color: #fff;
+    --fc-now-indicator-color: red;
+    --fc-bg-event-color: #8fdf82;
+    --fc-bg-event-opacity: 0.3;
+    --fc-more-link-bg-color: transparent;
+    --fc-more-link-text-color: none;
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 0px;
+}
+
+.dark:root {
+    --fc-neutral-bg-color: #6652921a;
+    --fc-border-color: #21172a;
+    --fc-button-border-color: #21172a;
+    --fc-button-active-border-color: #21172a;
+    --fc-non-business-color: #6652921a;
+    --fc-highlight-color: #6652921a;
+    --fc-today-bg-color: #6652921a;
+}
+
 body {
     font-family: "Nunito Sans", sans-serif;
     background-color: #f5f5f5;
@@ -106,4 +141,8 @@ html {
 .range-slider::-moz-range-thumb:hover {
   transform: scale(1.2);
   background-color: #9333ea;
+}
+
+.fc-prev-button .fc-button .fc-button-primary {
+    background-color: #121313;
 }

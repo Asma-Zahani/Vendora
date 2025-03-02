@@ -16,10 +16,11 @@ class PeriodeHoraire extends Model
     protected $fillable = [
         'heure_debut',
         'heure_fin',
+        'horaire_id'
     ];
     
-    public function horaires()
+    public function horaire()
     {
-        return $this->belongsToMany(Horaire::class, 'horaire_periode_horaire', 'periode_horaire_id', 'horaire_id');
+        return $this->belongsTo(Horaire::class, 'horaire_id', 'horaire_id');
     }
 }

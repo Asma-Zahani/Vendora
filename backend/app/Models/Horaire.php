@@ -30,6 +30,6 @@ class Horaire extends Model
 
     public function periodesHoraires()
     {
-        return $this->belongsToMany(PeriodeHoraire::class, 'horaire_periode_horaire', 'horaire_id', 'periode_horaire_id');
+        return $this->hasMany(PeriodeHoraire::class, 'horaire_id', 'horaire_id');
     }
 }

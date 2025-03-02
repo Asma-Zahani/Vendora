@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             DetailFactureSeeder::class,
             FactureCommandeSeeder::class,
             FactureFournisseurSeeder::class,
-            HoraireSeeder::class,
+            //HoraireSeeder::class,
             JourFerieSeeder::class,
             MarqueSeeder::class,
             PeriodeHoraireSeeder::class,
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             ClientSeeder::class,
             FournisseurSeeder::class,
             LivreurSeeder::class,
-            AdminSeeder::class
+            //AdminSeeder::class
         ]);
     }
 }

@@ -20,7 +20,7 @@ class HoraireController extends Controller implements HasMiddleware
 
     public function index()
     {
-        return Horaire::all();
+        return Horaire::with('periodesHoraires')->get();
     }
 
     public function store(Request $request)
@@ -54,8 +54,8 @@ class HoraireController extends Controller implements HasMiddleware
             'jour' => [
                 'required',
                 'string',
-                'unique:horaires,jour',
                 Rule::in(JourEnum::cases()),
+                Rule::unique('horaires')->ignore($id, 'horaire_id'),
             ],
             'ouvert' => 'required|boolean',
         ]);

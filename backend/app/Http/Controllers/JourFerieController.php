@@ -30,8 +30,9 @@ class JourFerieController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'date' => 'required|date',
+            'title' => 'required|string|max:255',
+            'start' => 'required|date',
+            'end' => 'required|date',
         ]);
         
         $jourFerie = JourFerie::create($validatedData);
@@ -56,8 +57,9 @@ class JourFerieController extends Controller implements HasMiddleware
         $jourFerie = JourFerie::findOrFail($id);
 
         $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'date' => 'required|date',
+            'title' => 'required|string|max:255',
+            'start' => 'required|date',
+            'end' => 'required|date',
         ]);
         
         $jourFerie->update($validatedData);
