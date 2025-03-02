@@ -30,7 +30,7 @@ class ClientFactory extends Factory
             'adresse' => $this->faker->address(),
             'region' => $this->faker->state(),
             'ville' => $this->faker->city(),
-            'compositionFoyer' => $this->faker->sentence(),
+            'emploi' => $this->faker->sentence(),
             'typeLogement' => $this->faker->word(),
             'statusLogement' => $this->faker->randomElement(['loué', 'propriétaire', 'colocation']),
         ];

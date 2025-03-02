@@ -51,6 +51,16 @@ class CodePromotionController extends Controller implements HasMiddleware
         return response()->json($codePromotion);
     }
 
+    public function getPromoByName($code)
+    {
+        $codePromotion = CodePromotion::where('code', $code)->first();
+
+        if (!$codePromotion) {
+            return response()->json(['message' => 'Code promotion non trouvé'], 404);
+        }
+
+        return response()->json($codePromotion);
+    }
     /**
      * Update the specified resource in storage.
      */

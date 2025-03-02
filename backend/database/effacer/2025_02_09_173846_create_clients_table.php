@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('adresse');
             $table->string('region');
             $table->string('ville');
-            $table->string('compositionFoyer');
+            $table->string('emploi');
             $table->string('typeLogement');
             $table->string('statusLogement');
             $table->timestamps();

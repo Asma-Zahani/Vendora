@@ -5,11 +5,14 @@ import "aos/dist/aos.css";
 import Footer from "../../Footer/Footer";
 import CartTable from "@/components/Tables/CartTable";
 import { getPanier, updatePanier } from "@/service/PanierService";
+import { getCodePromotionByCode } from "@/service/CodePromotionService";
 import UserContext from '@/utils/UserContext';
 
 const Cart = () => {
     const { user } = useContext(UserContext);
     const [formData, setFormData] = useState(null);
+    const [codePromotion, setCodePromotion] = useState(null);
+    const [codePromotionError, setCodePromotionError] = useState(null);
 
     useEffect(() => {
         AOS.init({ 
@@ -51,9 +54,22 @@ const Cart = () => {
         }
     };
     
+    const handleCodePromotion = async (code) => {
+        try {
+            const codePromotion = await getCodePromotionByCode(code);
+            setCodePromotion(codePromotion);
+            setCodePromotionError(null);
+        } catch (error) {
+            console.error("Erreur lors de la récupération du code promotion:", error);
+            setCodePromotionError(error.message);
+            setCodePromotion(null);
+        }
+    };
+     
+      
     return (
         <div className="bg-contentLight dark:bg-contentDark duration-200">
-            <CartTable formData={formData} setFormData={setFormData} />
+            <CartTable formData={formData} setFormData={setFormData} codePromotion={codePromotion} handleCodePromotion={handleCodePromotion} codePromotionError={codePromotionError} />
             <Footer />
         </div>
     );

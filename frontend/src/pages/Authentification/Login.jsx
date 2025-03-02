@@ -53,15 +53,15 @@ const Login = () => {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Sign in to account</h4>
-                <p className="text-sm text-gray-600 dark:text-grayDark mb-6">Enter your email & password to login</p>
+                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Connectez-vous à votre compte</h4>
+                <p className="text-sm text-gray-600 dark:text-grayDark mb-6">Entrez votre email et votre mot de passe pour vous connecter</p>
                 <div className="mb-4">
                     <Label label="Email Address"/>
                     <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
                     {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
                 <div className="mb-4">
-                    <Label label="Password"/>
+                    <Label label="Mot de passe"/>
                     <div className="relative">
                         <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
                         <ShowPassword onToggle={setInputType} />
@@ -74,14 +74,14 @@ const Login = () => {
                         <span className={`appearance-none w-4 h-4 mr-2 rounded-sm ${isChecked ? 'bg-purpleLight' : 'bg-contentLight dark:bg-contentDark'} flex items-center justify-center`}>
                             {isChecked && <span className="text-white text-sm">✔</span>}
                         </span>
-                        Remember password
+                        Se souvenir du mot de passe
                     </label>
-                    <Link className="text-sm text-purpleLight hover:underline" to="/forget-password" >Forgot password?</Link>
+                    <Link className="text-sm text-purpleLight hover:underline" to="/forget-password">Mot de passe oublié ?</Link>
                 </div>
-                <Button isValid={isValid} text="Sign in" />
+                <Button isValid={isValid} text="Se connecter" />
                 <div className="mt-6 text-center">
-                    <p className="text-sm text-gray-600 dark:text-grayDark">Don&apos;t have an account? {" "} 
-                        <Link className="text-purpleLight hover:underline" to="/register">Create Account</Link>
+                    <p className="text-sm text-gray-600 dark:text-grayDark">Vous n&apos;avez pas de compte ? {" "} 
+                        <Link className="text-purpleLight hover:underline" to="/register">Créer un compte</Link>
                     </p>
                 </div>
             </form>

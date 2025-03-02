@@ -110,7 +110,7 @@ const Header = () => {
                 <div className="lg:flex hidden flex-col items-start justify-center pl-2">
                   <span className="text-md">{user.user.prenom + ' ' + user.user.nom}</span>
                 </div>
-                <ul className="absolute hidden group-hover:flex flex-col bg-contentLight dark:bg-contentDark shadow-md p-2 rounded w-40 z-10 top-[60px] right-[-20px]">
+                <ul className="absolute hidden group-hover:flex flex-col bg-contentLight dark:bg-contentDark shadow-md p-2 rounded w-40 z-50 top-[60px] right-[-20px]">
                   <li className="flex items-center py-3 px-4 leading-4 hover:bg-gray-100 dark:hover:bg-[#3D3D3D] cursor-pointer border-b dark:border-[#3D3D3D]">
                     <User size={15} className="mr-2" /> Account
                   </li>

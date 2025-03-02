@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect, useCallback, useContext } from "react";
-import Footer from "../Footer/Footer";
+import Footer from "../../Footer/Footer";
 import "aos/dist/aos.css";
 import { getProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";

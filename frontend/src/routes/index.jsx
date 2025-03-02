@@ -5,8 +5,8 @@ import Login from "@/pages/Authentification/Login";
 import Register from "@/pages/Authentification/Register";
 import ForgetPassword from "@/pages/Authentification/ForgetPassword";
 import ResetPassword from "@/pages/Authentification/ResetPassword";
-import Home from "@/pages/Client/Content/Home";
-import Shop from "@/pages/Client/Content/Boutique";
+import Home from "@/pages/Client/Content/Home/Home";
+import Shop from "@/pages/Client/Content/Boutique/Boutique";
 import Dashboard from "@/pages/Admin/Content/Dashboard/Dashboard";
 import Produits from "@/pages/Admin/Content/Gestion des produits/Produits";
 import Categories from "@/pages/Admin/Content/Gestion des produits/Categories";
@@ -25,6 +25,7 @@ import Promotions from "../pages/Admin/Content/Promotions et Offres/Promotions";
 import Horaires from "../pages/Admin/Content/Paramètres/Horaires";
 import JoursFeries from "../pages/Admin/Content/Paramètres/joursFeries";
 import Cart from "../pages/Client/Content/Cart/Cart";
+import Checkout from "../pages/Client/Content/Checkout/Checkout";
 
 
 const routes = [
@@ -48,6 +49,7 @@ const routes = [
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
           { path: "cart", element: <Cart /> },
+          { path: "checkout", element: <Checkout /> },
         ] 
       }
     ]

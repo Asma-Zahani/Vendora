@@ -11,7 +11,8 @@ const ViewModal = ({ onClose, label, viewData }) => {
     }, []);
 
   return (
-    <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center bg-contentLight dark:bg-customDark bg-opacity-10 dark:bg-opacity-10">
+    <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
+      <div className={`fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity`} aria-hidden="true"></div>
       <div className="relative p-4 w-full max-w-xl max-h-full" data-aos="fade-down" data-aos-duration="500">
         <div className="relative bg-customLight dark:bg-customDark rounded-md shadow-[0px_0px_6px_0px] shadow-gray-200 dark:shadow-borderGrayDark">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-borderDark border-contentLight">

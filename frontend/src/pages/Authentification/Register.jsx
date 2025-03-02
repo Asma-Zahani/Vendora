@@ -12,21 +12,53 @@ const Register = () => {
   const [inputType, setInputType] = useState("password");
   const [inputType1, setInputType1] = useState("password");
   const [step, setStep] = useState(1);
-  const [text, setText] = useState("Next");
-  const [isJobOpen, setIsJobOpen] = useState(false);
+  const [text, setText] = useState("Suivant");
+  const [isEmploiOpen, setIsEmploiOpen] = useState(false);
   const [isHousingTypeOpen, setIsHousingTypeOpen] = useState(false);
   const [isOccupancyStatusOpen, setIsOccupancyStatusOpen] = useState(false);
-  const [isCountryOpen, setIsCountryOpen] = useState(false);
-  const [isCityOpen, setIsCityOpen] = useState(false);
-  const jobs = ["Employed", "Unemployed", "Retired", "Self-employed"];
-  const housingTypes = ["Apartment", "Single-family house", "Hosted"];
-  const occupancyStatuses = ["Owner", "Tenant", "Hosted free of charge"];
-  const countries = ["United States", "Canada", "France", "Germany", "Japan"];
-  const cities = ["New York", "Toronto", "Paris", "Berlin", "Tokyo"];
+  const [isRegionOpen, setIsRegionOpen] = useState(false);
+  const [isVilleOpen, setIsVilleOpen] = useState(false);
+  const [villesOptions, setVillesOptions] = useState([]);
+  const emplois = ["Employé", "Sans emploi", "Retraité", "Indépendant"];
+  const housingTypes = ["Appartement", "Maison individuelle", "Hébergement"];
+  const occupancyStatuses = ["Propriétaire", "Locataire", "Hébergé à titre gratuit"];
+  const regions = [
+    "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan", 
+    "Kasserine", "Kébili", "Le Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul", 
+    "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"
+  ];
+  
+  const villes = {
+    "Ariana": ["Ariana Ville", "Ettadhamen", "Kalâat el-Andalous", "La Soukra", "Mnihla", "Raoued", "Sidi Thabet"],
+    "Béja": ["Béja Ville", "Amdoun", "Goubellat", "Medjez el-Bab", "Nefza", "Téboursouk", "Testour"],
+    "Ben Arous": ["Ben Arous", "Bou Mhel el-Bassatine", "El Mourouj", "Ezzahra", "Fouchana", "Hammam Chott", "Hammam Lif", "Mohamedia", "Mornag", "Radès"],
+    "Bizerte": ["Bizerte", "Mateur", "Ras Jebel", "Menzel Bourguiba", "Ghar El Melh", "Joumine", "Sejnane"],
+    "Gabès": ["Gabès Ville", "Mareth", "Matmata", "Métouia", "El Hamma", "Ghannouch", "Nouvelle Matmata"],
+    "Gafsa": ["Gafsa Ville", "Métlaoui", "Mdhilla", "Redeyef", "El Guettar", "Sned"],
+    "Jendouba": ["Jendouba Ville", "Aïn Draham", "Bou Salem", "Fernana", "Tabarka"],
+    "Kairouan": ["Kairouan Ville", "Sbikha", "Haffouz", "Nasrallah", "Hajeb El Ayoun"],
+    "Kasserine": ["Kasserine Ville", "Fériana", "Thala", "Sbiba", "Sbeitla"],
+    "Kébili": ["Kébili Ville", "Douz", "Souk Lahad", "El Faouar"],
+    "Le Kef": ["Le Kef Ville", "Dahmani", "Jérissa", "Sakiet Sidi Youssef"],
+    "Mahdia": ["Mahdia Ville", "Chebba", "Rejiche", "Ksour Essef", "El Jem"],
+    "Manouba": ["Manouba", "Douar Hicher", "Oued Ellil", "Tebourba"],
+    "Médenine": ["Médenine Ville", "Zarzis", "Djerba Midoun", "Djerba Houmt Souk", "Ben Guerdane"],
+    "Monastir": ["Monastir Ville", "Jemmal", "Ksibet el-Médiouni", "Moknine", "Téboulba", "Sahline"],
+    "Nabeul": ["Nabeul Ville", "Hammamet", "Korba", "Kelibia", "Soliman", "Menzel Temime"],
+    "Sfax": ["Sfax Ville", "El Amra", "Agareb", "Bir Ali Ben Khalifa", "Mahrès", "Skhira"],
+    "Sidi Bouzid": ["Sidi Bouzid Ville", "Regueb", "Jilma", "Meknassy", "Mezzouna"],
+    "Siliana": ["Siliana Ville", "Bargou", "Gaâfour", "Makthar", "El Krib"],
+    "Sousse": ["Sousse Ville", "Msaken", "Akouda", "Hammam Sousse", "Kalaa Kebira", "Kalaa Sghira"],
+    "Tataouine": ["Tataouine Ville", "Bir Lahmar", "Ghomrassen", "Remada"],
+    "Tozeur": ["Tozeur Ville", "Degache", "Nefta", "Tamerza"],
+    "Tunis": ["Tunis Ville", "Le Bardo", "La Marsa", "Carthage", "El Menzah", "El Omrane", "Le Kram"],
+    "Zaghouan": ["Zaghouan Ville", "El Fahs", "Bir Mcherga", "Nadhour"]
+  };
+  
   const navigate = useNavigate();
   const [isValid, setIsValid] = useState(false);
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "",
-    password_confirmation: "", date_naissance: "", genre: "", job: "", housing_type: "", occupancy_status: "", country: "", city: "", postal_code: "" });
+    password_confirmation: "", date_naissance: "", genre: "", emploi: "", typeLogement: "", statusLogement: "", region: "", ville: "", adresse: "" });
   const [errors, setErrors] = useState({});
   const {setToken} = useContext(UserContext);
   const nextStep = () => { if (step < 4 && isValid) { setStep(step + 1); } };
@@ -35,28 +67,30 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    if (name === 'job') {
-      setIsJobOpen(false);
-    } else if (name === 'housing_type') {
+    if (name === 'emploi') {
+      setIsEmploiOpen(false);
+    } else if (name === 'typeLogement') {
       setIsHousingTypeOpen(false);
-    } else if (name === 'occupancy_status') {
+    } else if (name === 'statusLogement') {
       setIsOccupancyStatusOpen(false);
-    } else if (name === 'country') {
-      setIsCountryOpen(false);
-    } else if (name === 'city') {
-      setIsCityOpen(false);
+    } else if (name === 'region') {
+      setVillesOptions(villes[value] || []);
+      setFormData((prev) => ({ ...prev, ville: "" }));
+      setIsRegionOpen(false);
+    } else if (name === 'ville') {
+      setIsVilleOpen(false);
     }
   };
 
   useEffect(() => {
     let valid = false;
-    if (step === 4) { setText("Create Account"); } else { setText("Next"); }
+    if (step === 4) { setText("Créer un compte"); } else { setText("Suivant"); }
     switch (step) {
         case 1: valid = formData.nom.trim() !== "" && formData.prenom.trim() !== "" && formData.telephone.trim() !== ""; break;
         case 2: { const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           valid = emailRegex.test(formData.email.trim()) && formData.password.trim() !== "" && formData.password_confirmation.trim() !== "" && formData.password === formData.password_confirmation; break; }
-        case 3: valid = formData.date_naissance.trim() !== "" && formData.genre.trim() !== "" && formData.job.trim() !== "" && formData.housing_type.trim() !== "" && formData.occupancy_status.trim() !== ""; break;
-        case 4: valid = formData.country.trim() !== "" && formData.city.trim() !== "" && formData.postal_code.trim() !== ""; break;
+        case 3: valid = formData.date_naissance.trim() !== "" && formData.genre.trim() !== "" && formData.emploi.trim() !== "" && formData.typeLogement.trim() !== "" && formData.statusLogement.trim() !== ""; break;
+        case 4: valid = formData.region.trim() !== "" && formData.ville.trim() !== "" && formData.adresse.trim() !== ""; break;
         default: valid = false;
     }
     setIsValid(valid);
@@ -109,8 +143,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <h4 className="text-2xl font-semibold mb-2 dark:text-white">Create your account</h4>
-        <p className="text-sm text-gray-600 mb-6 dark:text-grayDark">Enter your personal details to create account</p>
+        <h4 className="text-2xl font-semibold mb-2 dark:text-white">Créez votre compte</h4>
+        <p className="text-sm text-gray-600 mb-6 dark:text-grayDark">Entrez vos informations personnelles pour créer un compte</p>
         {step === 1 && ( <>
           <div className="mb-4">
               <Label label="Nom"/>
@@ -125,19 +159,19 @@ const Register = () => {
           <div className="mb-4">
               <Label label="Telephone"/>
               <div className="flex gap-2">
-                <Input type="text" value="+59" required readOnly width="w-1/4"/>
-                <Input type="number"name="telephone" value={formData.telephone} onChange={handleChange} placeholder="000-000-0000" width="w-3/4"/>
+                <Input type="text" value="+216" required readOnly width="w-1/4"/>
+                <Input type="number"name="telephone" value={formData.telephone} onChange={handleChange} placeholder="12 345 678" width="w-3/4"/>
               </div>
           </div>
         </> )}
         {step === 2 && ( <>
           <div className="mb-4">
-            <Label label="Email Address"/>
+            <Label label="Adresse Email"/>
             <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
           <div className="mb-4">
-            <Label label="Password"/>
+            <Label label="Mot de passe"/>
             <div className="relative">
                 <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
                 <ShowPassword onToggle={setInputType} />
@@ -145,7 +179,7 @@ const Register = () => {
             {errors.password && <p className="error">{errors.password}</p>}
           </div>
           <div className="mb-4">
-              <Label label="Confirm Password"/>
+              <Label label="Confirmer le mot de passe"/>
               <div className="relative">
                   <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
                   <ShowPassword onToggle={setInputType1} />
@@ -154,7 +188,7 @@ const Register = () => {
         </> )}
         {step === 3 && ( <>
           <div className="mb-4">
-              <Label label="date_naissance"/>
+              <Label label="Date de naissance"/>
               <Input type="date" name="date_naissance" value={formData.date_naissance} onChange={handleChange} required />
           </div>
           <div className="mb-4">
@@ -168,58 +202,58 @@ const Register = () => {
                 <span className="ml-2 text-gray-700 dark:text-grayDark">Male</span>
               </label>
               <label className="flex items-center cursor-pointer">
-                <input type="radio" value="Female" checked={formData.genre === "Female"} onChange={handleChange} name="genre" className="hidden" />
+                <input type="radio" value="Femelle" checked={formData.genre === "Femelle"} onChange={handleChange} name="genre" className="hidden" />
                 <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                  {formData.genre === "Female" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
+                  {formData.genre === "Femelle" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
                 </div>
-                <span className="ml-2 text-gray-700 dark:text-grayDark">Female</span>
+                <span className="ml-2 text-gray-700 dark:text-grayDark">Femelle</span>
               </label>
             </div>
           </div>
-          <Dropdown label="Job" name="job" options={jobs} selectedValue={formData.job} onSelect={handleChange} isOpen={isJobOpen}
+          <Dropdown label="Emploi" name="emploi" options={emplois} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen}
             toggleOpen={() => {
-              setIsJobOpen(!isJobOpen);
+              setIsEmploiOpen(!isEmploiOpen);
               setIsHousingTypeOpen(false);
               setIsOccupancyStatusOpen(false);
             }} />
-          <Dropdown label="Housing Type" name="housing_type" options={housingTypes} selectedValue={formData.housing_type} onSelect={handleChange} isOpen={isHousingTypeOpen}
+          <Dropdown label="Type de logement" name="typeLogement" options={housingTypes} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen}
             toggleOpen={() => {
               setIsHousingTypeOpen(!isHousingTypeOpen);
-              setIsJobOpen(false);
+              setIsEmploiOpen(false);
               setIsOccupancyStatusOpen(false);
             }} />
-          <Dropdown label="Occupancy Status" name="occupancy_status" options={occupancyStatuses} selectedValue={formData.occupancy_status} onSelect={handleChange} isOpen={isOccupancyStatusOpen}
+          <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen}
             toggleOpen={() => {
               setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
-              setIsJobOpen(false);
+              setIsEmploiOpen(false);
               setIsHousingTypeOpen(false);
             }} />
         </> )}
         {step === 4 && ( <>
-          <Dropdown label="Country" name="country" options={countries} selectedValue={formData.country} onSelect={handleChange} isOpen={isCountryOpen}
+          <Dropdown label="Région" name="region" options={regions} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen}
             toggleOpen={() => {
-              setIsCountryOpen(!isCountryOpen);
-              setIsCityOpen(false);
+              setIsRegionOpen(!isRegionOpen);
+              setIsVilleOpen(false);
             }} />
-          <Dropdown label="City" name="city" options={cities} selectedValue={formData.city} onSelect={handleChange} isOpen={isCityOpen}
+          <Dropdown label="Ville" name="ville" options={villesOptions} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
             toggleOpen={() => {
-              setIsCityOpen(!isCityOpen);
-              setIsCountryOpen(false);
+              setIsVilleOpen(!isVilleOpen);
+              setIsRegionOpen(false);
             }} />
           <div className="mb-4">
-              <Label label="Postal Code"/>
-              <Input type="text" name="postal_code" value={formData.postal_code} onChange={handleChange} placeholder="5000" required />
+              <Label label="Adresse"/>
+              <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />            
           </div>
         </> )}
         <div className="flex justify-between">
           <button type="button" onClick={prevStep} disabled={step === 1} 
-            className={`bg-purpleLight text-white px-4 py-2 rounded ${step === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}> Previous </button>
+            className={`bg-purpleLight text-white px-4 py-2 rounded ${step === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}> Précédent </button>
           <button type={step === 4 ? "submit" : "button"} onClick={step === 4 ? handleSubmit : nextStep} disabled={!isValid}
             className={`bg-purpleLight text-white px-4 py-2 rounded ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}> {text} </button>
         </div>
         <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-grayDark">Already have an account?{" "}
-                <Link className="text-purpleLight hover:underline" to="/login">Sign in</Link>
+            <p className="text-sm text-gray-600 dark:text-grayDark">Vous avez déjà un compte ?{" "}
+                <Link className="text-purpleLight hover:underline" to="/login">Connectez-vous</Link>
             </p>
         </div>
       </form>

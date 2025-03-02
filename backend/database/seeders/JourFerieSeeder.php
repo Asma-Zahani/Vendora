@@ -13,6 +13,6 @@ class JourFerieSeeder extends Seeder
      */
     public function run(): void
     {
-        JourFerie::factory(20)->create();
+        JourFerie::factory(10)->create();
     }
 }

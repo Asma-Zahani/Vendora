@@ -11,7 +11,7 @@ const ShowPassword = ({ onToggle }) => {
 
   return (
     <div className="absolute top-1/4 right-4">
-      <span className="text-purpleLight cursor-pointer text-sm font-semibold" onClick={toggleShow}> {show ? "Hide" : "Show"}
+      <span className="text-purpleLight cursor-pointer text-sm font-semibold" onClick={toggleShow}> {show ? "Masquer" : "Afficher"}
       </span>
     </div>
   );

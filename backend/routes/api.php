@@ -35,8 +35,10 @@ Route::get('/user', function (Request $request) {
     ]);
 })->middleware('auth:sanctum');
 
-Route::apiResource('categories', CategorieController::class); //tester
 Route::apiResource('codePromotions', CodePromotionController::class); //tester
+Route::get('codePromotions/code/{code}', [CodePromotionController::class, 'getPromoByName']);
+
+Route::apiResource('categories', CategorieController::class); //tester
 Route::apiResource('PeriodesHoraires', PeriodeHoraireController::class); //tester
 Route::apiResource('joursFeries', JourFerieController::class); //tester
 Route::apiResource('marques', MarqueController::class); //tester

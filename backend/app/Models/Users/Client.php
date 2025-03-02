@@ -4,11 +4,13 @@ namespace App\Models\Users;
 
 use App\Models\Panier;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    use HasFactory;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasApiTokens, HasFactory;
 
     protected $table = 'users';
     protected $primaryKey = 'id';
@@ -25,7 +27,7 @@ class Client extends Model
         'adresse',
         'region',
         'ville',
-        'compositionFoyer',
+        'emploi',
         'typeLogement',
         'statusLogement'
     ];

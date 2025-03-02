@@ -1,6 +1,6 @@
 import Hero from "./Hero";
 import Features from "./Features";
-import Footer from "../Footer/Footer";
+import Footer from "../../Footer/Footer";
 import Products from "./Products";
 import TopProducts from "./TopProducts";
 import { useEffect } from "react";

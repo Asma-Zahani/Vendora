@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('adresse')->nullable();
             $table->string('region')->nullable();
             $table->string('ville')->nullable();
-            $table->string('compositionFoyer')->nullable();
+            $table->string('emploi')->nullable();
             $table->string('typeLogement')->nullable();
             $table->string('statusLogement')->nullable();
             $table->rememberToken();

@@ -27,21 +27,21 @@ const ForgetPassword = () => {
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <h4 className="text-2xl font-semibold mb-2 dark:text-white"> Forget Your Password? </h4>
-        <p className="text-sm text-gray-600 dark:text-grayDark mb-2"> Enter your email </p>
+        <h4 className="text-2xl font-semibold mb-2 dark:text-white">Vous avez oublié votre mot de passe ?</h4>
+        <p className="text-sm text-gray-600 dark:text-grayDark mb-2">Entrez votre email</p>
         <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
         <div className="flex justify-end">
-          <button className={`mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md
-            ${!isValid ? "opacity-50 cursor-not-allowed" : ""}`} type="submit" disabled={!isValid}>
-            Send
-          </button>
+            <button className={`mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md
+                ${!isValid ? "opacity-50 cursor-not-allowed" : ""}`} type="submit" disabled={!isValid}>
+                Envoyer
+            </button>
         </div>
         <div className="mt-4 text-[14px]">
-          <span className="dark:text-grayDark">
-            If don&apos;t receive E-mail?{" "}<a className="text-purpleLight hover:underline"> Resend </a>
-          </span>
+            <span className="dark:text-grayDark">
+                Vous n&apos;avez pas reçu l&apos;email ?{" "}<a className="text-purpleLight hover:underline cursor-pointer  ">Renvoyer</a>
+            </span>
         </div>
-      </form>
+    </form>
     </FormContainer>
   );
 };

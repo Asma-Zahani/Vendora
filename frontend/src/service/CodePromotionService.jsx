@@ -9,6 +9,18 @@ const getCodePromotions = async () => {
     });
     return res.ok ? res.json() : Promise.reject(res.json());
   };
+
+  const getCodePromotionByCode = async (code) => {
+    const res = await fetch(`/api/codePromotions/code/${code}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || "Erreur inconnue");
+    }
+    return data;
+  };
+
   
   const createCodePromotion = async (formData) => {
     const res = await fetch("/api/codePromotions", {
@@ -42,4 +54,4 @@ const getCodePromotions = async () => {
     return res.ok ? res.json() : Promise.reject(res.json());
   };
 
-  export { getCodePromotions, getCodePromotion, createCodePromotion, updateCodePromotion, deleteCodePromotion };
+  export { getCodePromotions, getCodePromotion, getCodePromotionByCode, createCodePromotion, updateCodePromotion, deleteCodePromotion };

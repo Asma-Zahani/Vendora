@@ -52,12 +52,10 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
     })
     .slice((currentPage * selectedItemPerPage) - selectedItemPerPage, currentPage * selectedItemPerPage);
 
-    const [isOpen, setIsOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
     const [selectedItems, setSelectedItems] = useState([]);
     const isAllSelected = selectedItems.length === currentItems.length && currentItems.length > 0;
@@ -83,24 +81,16 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                             </div>
                             <div className="flex items-center mt-4 gap-x-3 justify-end">
                                 {selectedItems.length > 0 && 
-                                    <>
-                                        <button onClick={() => {setIsOpen(true);}} className="flex items-center px-2 py-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight">
-                                            <Trash2Icon size={20} />
-                                        </button>
-                                        {isOpen && ( <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => {setIsOpen(false)}} header={true} message={`Êtes-vous sûr de vouloir supprimer tous ces ${label} ?`} />)}
-                                    </>
+                                    <button onClick={() => {setIsDeleteOpen(true);}} className="flex items-center px-2 py-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight">
+                                        <Trash2Icon size={20} />
+                                    </button>
                                 }
                                 <button className="flex items-center px-2 py-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight">
                                     <ArrowDownToLine size={20} />
                                 </button>
-                                <>
-                                    <button onClick={() => {setIsAddOpen(true); formActions.setFormData({})}} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
-                                        <Plus size={17}/><span>Ajouter {label.slice(0, -1)}</span>
-                                    </button>
-                                    {isAddOpen && (
-                                        <FormModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} formLabel={label} header={true} action="Ajouter" formData={formActions.formData} setFormData={formActions.setFormData} fields={formActions.fields} onSubmit={async () => { await formActions.handleCreate(); setIsAddOpen(false); }}  />
-                                    )}
-                                </>
+                                <button onClick={() => {setIsFormOpen(true); formActions.setFormData({})}} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                    <Plus size={17}/><span>Ajouter {label.slice(0, -1)}</span>
+                                </button>
                             </div>
                         </div>
 
@@ -207,37 +197,26 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                             {column.type === "actions" && (
                                                                 <div className="flex items-center gap-x-3">
                                                                     {item.actions.view && (
-                                                                        <>
-                                                                            <button onClick={() => {setIsViewOpen(true); item.actions.view(item[identifiant]);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-blue-500 dark:text-gray-300 hover:text-blue-500 focus:outline-none">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5c-4.688 0-8.625 3.135-10.5 7.5 1.875 4.365 5.813 7.5 10.5 7.5s8.625-3.135 10.5-7.5c-1.875-4.365-5.813-7.5-10.5-7.5z" />
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                                                                </svg>
-                                                                            </button>
-                                                                            {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={label} viewData={viewData}/> }
-                                                                        </>
+                                                                        <button onClick={() => {setIsViewOpen(true); item.actions.view(item[identifiant]);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-blue-500 dark:text-gray-300 hover:text-blue-500 focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5c-4.688 0-8.625 3.135-10.5 7.5 1.875 4.365 5.813 7.5 10.5 7.5s8.625-3.135 10.5-7.5c-1.875-4.365-5.813-7.5-10.5-7.5z" />
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                                            </svg>
+                                                                        </button>
                                                                     )}
                                                                     {item.actions.edit && (
-                                                                        <>
-                                                                            <button onClick={() => {setIsEditOpen(true); item.actions.edit(item[identifiant]);}} className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                                                                </svg>
-                                                                            </button>
-                                                                            {isEditOpen && (
-                                                                                <FormModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} formLabel={label} action="Modifier" formData={formActions.formData} setFormData={formActions.setFormData} fields={formActions.fields} onSubmit={async () => { await formActions.handleEdit(); setIsEditOpen(false); }} />
-                                                                            )}
-                                                                        </>
+                                                                        <button onClick={() => {setIsFormOpen(true); item.actions.edit(item[identifiant]);}} className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                                            </svg>
+                                                                        </button>
                                                                     )}
                                                                     {item.actions.delete && (
-                                                                        <>
-                                                                            <button onClick={() => {setIsDeleteOpen(true); setItemToDelete(item[identifiant])}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                                                </svg>
-                                                                            </button>
-                                                                            {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} onConfirm={() => {item.actions.delete(itemToDelete); setIsDeleteOpen(false)}} message={`Êtes-vous sûr de vouloir supprimer ce ${label} ?`}/> }
-                                                                        </>
+                                                                        <button onClick={() => {setIsDeleteOpen(true); setItemToDelete(item)}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                                            </svg>
+                                                                        </button>
                                                                     )}
                                                                 </div>
                                                             )}
@@ -256,6 +235,30 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                     </div>
                 </div>
             </div>
+            {isFormOpen && <FormModal isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} action={formActions.formData[identifiant] ? "Modifier" : "Ajouter"} 
+                formData={formActions.formData} setFormData={formActions.setFormData} fields={formActions.fields} formLabel={label}
+                onSubmit={async () => { 
+                    if (formActions.formData[identifiant]) {
+                        await formActions.handleEdit()
+                    } else {
+                        await formActions.handleCreate()
+                    }
+                    setIsFormOpen(false); 
+                }} 
+            />}
+            {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={label} viewData={viewData}/> }
+            {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
+                message={itemToDelete ? `Êtes-vous sûr de vouloir supprimer ce ${label} ?` : `Êtes-vous sûr de vouloir supprimer tous ces ${label} ?`}
+                onConfirm={() => { 
+                    if (itemToDelete) {
+                        itemToDelete.actions.delete(itemToDelete[identifiant]); 
+                        setItemToDelete(null);
+                    } else {
+                        console.log("hello")
+                    }
+                    setIsDeleteOpen(false);
+                }} 
+            /> }
         </section>
     );
 }
