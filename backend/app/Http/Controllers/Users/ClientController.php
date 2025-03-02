@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Users;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Panier;
 use App\Models\Users\Client;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class ClientController extends Controller implements HasMiddleware
 {
@@ -31,23 +33,32 @@ class ClientController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function register(Request $request){
+        
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
             'prenom' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'telephone' => 'string',
-            'genre' => 'string',
-            'date_naissance' => 'string'
+            'password' => 'required|confirmed',
+            'telephone' => 'required|string|max:20',
+            'genre' => 'required|string|max:20',
+            'date_naissance' => 'required|date',
+            'emploi' => 'required|string|max:500',
+            'typeLogement' => 'required|string|max:100',
+            'statusLogement' => 'required|string|max:50',
+            'region' => 'required|string|max:100',
+            'ville' => 'required|string|max:100',
+            'adresse' => 'required|string|max:255',
         ]);
 
-        $validatedData['role'] = RoleEnum::CLIENT->value;
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $validatedData['password'] = Hash::make($validatedData['nom'].$validatedData['prenom']);
-
-        $user = User::create($validatedData);
+        $user = Client::create($validatedData);
         
+        $panier = Panier::create([
+            'client_id' => $user->id
+        ]);
+
         $token = $user->createToken($user->nom.' '.$user->prenom);
 
         return [
@@ -70,7 +81,23 @@ class ClientController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $validatedData = $request->validate([
+            'nom' => 'required|max:255',
+            'prenom' => 'required|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($client->id),
+            ],
+            'telephone' => 'required|string|max:20',
+            'region' => 'required|string|max:100',
+            'ville' => 'required|string|max:100',
+            'adresse' => 'required|string|max:255',
+        ]);
+
+        $client->update($validatedData);
+        
+        return response()->json($client, 200);
     }
 
     /**

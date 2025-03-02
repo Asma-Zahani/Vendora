@@ -4,7 +4,7 @@ import { useState } from "react";
 import defaultImg from "@/assets/default/image.png";
 import ViewProduit from "@/components/Modals/ViewProduit";
 
-const Card = ({ produit, ajouterAuPanier, modifierPanier, setFormData }) => {
+const Card = ({ produit, ajouterAuPanier, setFormData }) => {
   const [ratingHover, setRatingHover] = useState(0);
   const [selectedRating, setSelectedRating] = useState(produit.rating);
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
@@ -83,7 +83,7 @@ const Card = ({ produit, ajouterAuPanier, modifierPanier, setFormData }) => {
         </div>
       </div>
     </div>
-    <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} modifierPanier={modifierPanier} setFormData={setFormData} />
+    <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} setFormData={setFormData} />
     </>
   );
 };

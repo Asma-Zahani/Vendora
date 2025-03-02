@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FaArrowUp } from 'react-icons/fa';
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Footer from "../../Footer/Footer";
 import "aos/dist/aos.css";
 import { getProduits } from "@/service/ProduitService";
@@ -126,36 +125,24 @@ const Shop = () => {
     });
   };
   
-  const modifierPanier = useCallback(async () => {
-    try {
-      if (!formData) {
-        alert("Aucune donnée de panier à modifier");
-        return;
-      }
-      await updatePanier(formData.panier_id, formData);
-      alert("Panier modifié avec succès");
-    } catch (error) {
-      console.error("Erreur de modification:", error);
-      alert("Une erreur est survenue lors de la modification du panier");
-    }
-  }, [formData]); 
-
   useEffect(() => {
-    // Si formData est disponible, exécute modifierPanier après un délai de 2 secondes
     if (formData) {
-      const timeoutId = setTimeout(async () => {
-        await modifierPanier();
-      }, 2000);
-      
-      // Clean up timeout on component unmount or when formData changes
-      return () => clearTimeout(timeoutId);
+        const timeout = setTimeout(async () => {
+            try {
+                await updatePanier(formData.panier_id, formData);
+                console.log("Panier mis à jour");
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour du panier:", error);
+            }
+        }, 1000);
+
+        return () => clearTimeout(timeout);
     }
-  }, [formData]);
-  
+  }, [formData]);  
 
   return (
     <div className="px-8">
-      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} modifierPanier={modifierPanier} setFormData={setFormData} />
+      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} setFormData={setFormData} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

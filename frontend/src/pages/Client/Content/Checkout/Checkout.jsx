@@ -1,27 +1,37 @@
 import { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Label from "@/components/Forms/Label";
-import UserContext from '@/utils/UserContext'; // Assure-toi d'importer le contexte de l'utilisateur
+import Input from "@/components/Forms/Input";
+import Dropdown from "@/components/Forms/Dropdown";
+import UserContext from '@/utils/UserContext';
+import { updateClient } from "@/service/ClientService";
 
 const Checkout = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const defaultUserInfo = user.user || {};
 
     const [paymentMethod, setPaymentMethod] = useState("carte");
     const [deliveryMethod, setDeliveryMethod] = useState("livraison");
 
-    const [selectedRegion, setSelectedRegion] = useState(defaultUserInfo.region);
-    const [selectedCity, setSelectedCity] = useState(defaultUserInfo.ville);
+    const [isRegionOpen, setIsRegionOpen] = useState(false);
+    const [isVilleOpen, setIsVilleOpen] = useState(false);
 
     const location = useLocation();
     const checkoutData = location.state;
 
-    if (!checkoutData) {
-        return <p className="text-center text-red-500">Aucune donnée de commande trouvée.</p>;
-    }
-
-    
+    const [formData, setFormData] = useState({ nom: defaultUserInfo.nom, prenom: defaultUserInfo.prenom, telephone: defaultUserInfo.telephone, email: defaultUserInfo.email, region: defaultUserInfo.region, ville: defaultUserInfo.ville, adresse: defaultUserInfo.adresse });
+      
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        if (name === 'region') {
+          setFormData((prev) => ({ ...prev, ville: "" }));
+          setIsRegionOpen(false);
+        } else if (name === 'ville') {
+          setIsVilleOpen(false);
+        }
+      };
 
     const regions = [
         "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan", 
@@ -56,10 +66,14 @@ const Checkout = () => {
         "Zaghouan": ["Zaghouan Ville", "El Fahs", "Bir Mcherga", "Nadhour"]
     };
 
-    const handleRegionChange = (e) => {
-        const selectedRegion = e.target.value;
-        setSelectedRegion(selectedRegion);
-        setSelectedCity("");
+    const handleEdit = async () => {
+        try {      
+            const updatedUser = await updateClient(defaultUserInfo.id, formData);
+            setUser((prevUser) => ({ ...prevUser, user: updatedUser }));
+        } catch (error) {
+          console.error("Erreur de modification:", error);
+          alert("Une erreur est survenue lors de la modification du client");
+        }
     };
 
     return (
@@ -69,118 +83,79 @@ const Checkout = () => {
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                         <div className="flex flex-col lg:flex-row gap-6">
                             {/* Formulaire de facturation */}
-                            <div className="flex-1">
-                                <h2 className="text-2xl font-bold mb-4">Détails de facturation</h2>
-                                <div className="mb-4">
-                                    <Label label="Méthode de réception" />
-                                    <div className="flex justify-center space-x-6">
+                            <div className="flex-1/5 py-4 px-2">
+                                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
+                                <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
+                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <Label label="Nom"/>
+                                        <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
+                                    </div>
+                                    <div>
+                                        <Label label="Prénom"/>
+                                        <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
+                                    </div>
+                                    <div>
+                                        <Label label="Téléphone"/>
+                                        <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" required />
+                                    </div>
+                                    <div>
+                                        <Label label="Email"/>
+                                        <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <Label label="Méthode de réception" />
+                                        <div className="flex justify-center space-x-6">
                                         <label className="flex items-center cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                value="livraison"
-                                                checked={deliveryMethod === "livraison"}
-                                                onChange={() => setDeliveryMethod("livraison")}
-                                                name="delivery"
-                                                className="hidden"
-                                            />
+                                            <input type="radio" value="livraison" checked={deliveryMethod === "livraison"} onChange={() => setDeliveryMethod("livraison")} name="delivery" className="hidden" />
                                             <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                {deliveryMethod === "livraison" && (
-                                                    <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
-                                                )}
+                                            {deliveryMethod === "livraison" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
                                             </div>
                                             <span className="ml-2 text-gray-700 dark:text-grayDark">Livraison</span>
                                         </label>
                                         <label className="flex items-center cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                value="drive"
-                                                checked={deliveryMethod === "drive"}
-                                                onChange={() => setDeliveryMethod("drive")}
-                                                name="delivery"
-                                                className="hidden"
-                                            />
+                                            <input type="radio" value="drive" checked={deliveryMethod === "drive"} onChange={() => setDeliveryMethod("drive")} name="delivery" className="hidden" />
                                             <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                {deliveryMethod === "drive" && (
-                                                    <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
-                                                )}
+                                            {deliveryMethod === "drive" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
                                             </div>
-                                            <span className="ml-2 text-gray-700 dark:text-grayDark">Retrait Drive</span>
+                                            <span className="ml-2 text-gray-700 dark:text-grayDark">Retrait drive</span>
                                         </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Prénom"
-                                        className="border p-2 rounded"
-                                        defaultValue={defaultUserInfo.prenom || ""}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Nom"
-                                        className="border p-2 rounded"
-                                        defaultValue={defaultUserInfo.nom || ""}
-                                    />
-                                    <input
-                                        type="tel"
-                                        placeholder="Téléphone"
-                                        className="border p-2 rounded"
-                                        defaultValue={defaultUserInfo.telephone || ""}
-                                    />
                                     {deliveryMethod === "livraison" && (
                                         <>
-                                            <input
-                                                type="email"
-                                                placeholder="Adresse Email"
-                                                className="border p-2 rounded"
-                                                defaultValue={defaultUserInfo.email || ""}
-                                            />
-                                            <input
-                                                type="text"
-                                                placeholder="Adresse"
-                                                className="border p-2 rounded col-span-2"
-                                                defaultValue={defaultUserInfo.adresse || ""}
-                                            />
-                                            
-                                            {/* Dropdown pour la région */}
-                                            <select
-                                                className="border p-2 rounded"
-                                                value={selectedRegion}
-                                                onChange={handleRegionChange}
-                                            >
-                                                <option value="">Choisir une région...</option>
-                                                {regions.map((region, index) => (
-                                                    <option key={index} value={region}>{region}</option>
-                                                ))}
-                                            </select>
-
-                                            {/* Dropdown pour la ville */}
-                                            {(
-                                                <select
-                                                    className="border p-2 rounded"
-                                                    value={selectedCity}
-                                                    onChange={(e) => setSelectedCity(e.target.value)}
-                                                >
-                                                    <option value="">Choisir une ville...</option>
-                                                    {villes[selectedRegion]?.map((city, index) => (
-                                                        <option key={index} value={city}>{city}</option>
-                                                    ))}
-                                                </select>
-                                            )}
+                                            <div className="col-span-2">
+                                                <Label label="Adresse"/>
+                                                <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />
+                                            </div>
+                                            <Dropdown label="Région" name="region" options={regions} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen}
+                                            toggleOpen={() => {
+                                                setIsRegionOpen(!isRegionOpen);
+                                                setIsVilleOpen(false);
+                                            }} />
+                                            <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
+                                            toggleOpen={() => {
+                                                setIsVilleOpen(!isVilleOpen);
+                                                setIsRegionOpen(false);
+                                            }} />
                                         </>
                                     )}
                                     {deliveryMethod === "drive" && (
-                                        <select className="border p-2 rounded">
-                                            <option>Choisissez un point de retrait...</option>
-                                        </select>
+                                        <div className="col-span-2">
+                                            <Dropdown label="Point de retrait" name="point de retrait"/>
+                                        </div>
                                     )}
                                 </div>
                             </div>
 
                             {/* Récapitulatif de commande */}
-                            <div className="flex-1 p-6 bg-contentLight dark:bg-contentDark border border-gray-300 dark:border-borderDark">
-                                <h2 className="text-2xl font-bold mb-4">Résumé de commande</h2>
-                                <div className="border-b pb-4 mb-4 space-y-2">
+                            <div className="flex-1 p-12 bg-contentLight dark:bg-contentDark border border-gray-300 dark:border-borderDark">
+                                <div className="border-b tracking-wide font-semibold text-xl dark:border-borderDark pb-4 mb-4 flex justify-between">
+                                    <p>Produits</p>
+                                    <p>totale</p>
+                                </div>
+                                <div className="border-b dark:border-borderDark pb-4 mb-4 space-y-2">
                                     {checkoutData.produits.map((produit, index) => {
                                         return (
                                             <div key={index} className="flex justify-between">
@@ -206,7 +181,7 @@ const Checkout = () => {
                                         <input type="radio" name="payment" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} /> Paiement par carte bancaire
                                     </label>
                                 </div>
-                                <button onClick={() => alert('Commande passée')} className="mt-6 bg-purpleLight text-white py-2 px-4 rounded">Passer la commande</button>
+                                <button onClick={() => {handleEdit()}} className="mt-6 bg-purpleLight text-white py-2 px-4 rounded">Passer la commande</button>
                             </div>
                         </div>
                     </div>

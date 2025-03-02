@@ -4,7 +4,7 @@ import { useState } from "react";
 import defaultImg from "@/assets/default/image.png";
 import ViewProduit from "@/components/Modals/ViewProduit";
 
-const List = ({ produit, modifierPanier, setFormData }) => {
+const List = ({ produit, setFormData }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [isModalOpen, setIsModalOpen] = useState(false); 
 
@@ -31,7 +31,7 @@ const List = ({ produit, modifierPanier, setFormData }) => {
         <p className="text-sm text-gray-600 dark:text-gray-300">{produit.description}</p>
         <div className="mt-2 text-xl font-bold">${produit.prix}</div>
       </div>
-      <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} modifierPanier={modifierPanier} setFormData={setFormData} />
+      <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} setFormData={setFormData} />
     </div>
   );
 };

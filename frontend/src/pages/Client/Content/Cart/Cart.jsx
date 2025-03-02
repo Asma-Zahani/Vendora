@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -39,20 +38,21 @@ const Cart = () => {
 
         fetchPanier();
     }, [user]);
+
+    useEffect(() => {
+        if (formData) {
+            const timeout = setTimeout(async () => {
+                try {
+                    await updatePanier(formData.panier_id, formData);
+                    console.log("Panier mis à jour");
+                } catch (error) {
+                    console.error("Erreur lors de la mise à jour du panier:", error);
+                }
+            }, 1000);
     
-    const modifierPanier = async () => {
-        try {      
-            if (!formData) {
-                alert("Aucune donnée de panier à modifier");
-                return;
-            }
-            await updatePanier(formData.panier_id, formData);
-            alert(`Panier modifié avec succès`);
-        } catch (error) {
-            console.error("Erreur de modification:", error);
-            alert("Une erreur est survenue lors de la modification du panier");
+            return () => clearTimeout(timeout);
         }
-    };
+    }, [formData]);    
     
     const handleCodePromotion = async (code) => {
         try {
