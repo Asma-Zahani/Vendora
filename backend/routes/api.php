@@ -20,21 +20,21 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
-use App\Models\Panier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Users\Client;
 
 Route::get('/user', function (Request $request) {
-    return $request->user();
+    $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
+    return $client ? $client->load('produits', 'wishlist') : $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/user', function (Request $request) {
-    $panier = Panier::where('client_id', $request->user()->id)->withCount('produits') ->first();
-    return response()->json([
-        'user' => $request->user(),
-        'panier' => $panier
-    ]);
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('panier', [ClientController::class, 'ajouterAuPanier']);
+    Route::post('souhait', [ClientController::class, 'ajouterAListeDeSouhait']);
+    Route::delete('panier', [ClientController::class, 'supprimerDuPanier']);
+    Route::delete('souhait', [ClientController::class, 'supprimerDeListeSouhaits']);
+});
 
 Route::apiResource('codePromotions', CodePromotionController::class); //tester
 Route::get('codePromotions/code/{code}', [CodePromotionController::class, 'getPromoByName']);

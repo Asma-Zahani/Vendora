@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paniers', function (Blueprint $table) {
-            $table->id('panier_id');
-            $table->foreignId('client_id')->constrained('users', 'id')->onDelete('cascade')->unique();
+            $table->foreignId('client_id')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
+            $table->integer('quantite')->default(1);
+            $table->primary(['client_id', 'produit_id']);
         });
     }
 

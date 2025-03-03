@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect, useContext } from "react";
 import Footer from "../../Footer/Footer";
@@ -8,8 +9,8 @@ import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
+import { addToPanier } from "@/service/ClientService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
-import { getPanier, updatePanier } from "@/service/PanierService";
 import UserContext from '@/utils/UserContext';
 
 const Shop = () => {
@@ -81,82 +82,81 @@ const Shop = () => {
   const filtres = {categories, marques, couleurs};
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   
-  const [formData, setFormData] = useState(null);
-  const [produitsCount, setProduitsCount] = useState(null); 
+  const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
 
-  useEffect(() => {
-    const fetchPanier = async () => {
-        if (user?.panier?.panier_id) {
-            try {
-                const panier = await getPanier(user.panier.panier_id);
-                setFormData(panier);
-            } catch (error) {
-                console.error("Erreur lors de la récupération du panier:", error);
-                alert('Une erreur est survenue lors de la récupération du panier');
-            }
-        }
-    };
-    fetchPanier();
-  }, [user]);
+  const [panierAjoute, setPanierAjoute] = useState(false);
 
   const ajouterAuPanier = (produit_id) => {
-    setFormData((prevFormData) => {
-      const produitExist = prevFormData.produits.some(
-        (item) => item.produit_id === produit_id
-      );
-      
-      if (produitExist) {
-        return {
-          ...prevFormData,
-          produits: prevFormData.produits.map((item) =>
-            item.produit_id === produit_id
-              ? { ...item, quantite: item.quantite + 1 }
-              : item
-          ),
-        };
-      } else {
-        return {
-          ...prevFormData,
-          produits: [
-            ...prevFormData.produits,
-            { produit_id: produit_id, quantite: 1 },
-          ],
-        };
-      }
-    });
+    const produitExistant = user?.produits?.find(item => item.produit_id === produit_id);
+  
+    if (produitExistant) {
+      setFormData((prevData) => ({
+        ...prevData,
+        client_id: user?.id,
+        produit_id: produit_id,
+        quantite: (produitExistant.pivot.quantite + 1),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        client_id: user?.id,
+        produit_id: produit_id,
+        quantite: '1',
+      }));
+    }
+  
+    // Une fois l'ajout effectué, on met à jour l'état pour indiquer qu'un produit a été ajouté
+    setPanierAjoute(true);
   };
   
   useEffect(() => {
-    if (formData) {
-        const timeout = setTimeout(async () => {
-            try {
-                await updatePanier(formData.panier_id, formData);
-                setProduitsCount(formData.produits.reduce((total) => total + 1, 0));
-                console.log("Panier mis à jour");
-            } catch (error) {
-                console.error("Erreur lors de la mise à jour du panier:", error);
+    if (panierAjoute && formData) {
+      const timeout = setTimeout(async () => {
+        try {
+          await addToPanier(formData);
+          setUser((prevUser) => {
+            const produitExistant = prevUser.produits.find(item => item.produit_id === formData.produit_id);            
+            if (produitExistant) {
+              return {
+                ...prevUser,
+                produits: prevUser.produits.map(item =>
+                  item.produit_id === formData.produit_id
+                      ? { 
+                          ...item, 
+                          pivot: { 
+                              ...item.pivot, 
+                              quantite: (Number(item.pivot.quantite) + 1) 
+                          } 
+                      }
+                      : item
+                ),
+              };
+            } else {
+              return {
+                ...prevUser,
+                produits: [
+                  ...prevUser.produits,
+                  { produit_id: formData.produit_id, quantite: '1' }
+                ],
+              };
             }
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-    }
-  }, [formData]);
+          });
   
-  useEffect(() => {
-    if (produitsCount) {
-      setUser((prevUser) => ({
-        ...prevUser,
-        panier: {
-            ...prevUser.panier,
-            produits_count: produitsCount,
+          console.log("Panier mis à jour");
+        } catch (error) {
+          console.error("Erreur lors de la mise à jour du panier:", error);
         }
-      }));
+        setPanierAjoute(false);
+      }, 1000);
+  
+      return () => clearTimeout(timeout);
     }
-  }, [produitsCount, setUser]);
-
+  }, [panierAjoute, formData]);
+  
+  
   return (
     <div className="px-8">
-      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} setFormData={setFormData} />
+      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

@@ -21,7 +21,6 @@ class ProduitFactory extends Factory
             'marque_id' => Marque::factory(),
             'sous_categorie_id' => SousCategorie::factory(),
             'promotion_id' => Promotion::factory(),
-            'fournisseur_id' => FournisseurFactory::new()->create()->id,
             'nom' => $this->faker->word(),
             'status' => $this->faker->randomElement(StatusProduitEnum::values()),
             'description' => $this->faker->sentence(),

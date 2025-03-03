@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id('commande_id'); 
-            $table->foreignId('panier_id')->constrained('Paniers', 'panier_id')->onDelete('cascade');
+            $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
             $table->foreignId('code_promotion_id')->nullable()->constrained('code_promotions', 'code_promotion_id')->onDelete('cascade');
             $table->decimal('total', 10, 2);
             $table->enum('etatCommande', EtatCommandeEnum::values())->default(EtatCommandeEnum::EnAttente->value);

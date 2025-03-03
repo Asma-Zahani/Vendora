@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Panier;
 use App\Models\Users\Client;
-use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Models\Produit;
+use App\Models\PanierProduit;
+use App\Models\ListeDeSouhait;
 
 class ClientController extends Controller implements HasMiddleware
 {
@@ -33,7 +34,7 @@ class ClientController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function register(Request $request){
+    public function store(Request $request){
         
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
@@ -108,5 +109,114 @@ class ClientController extends Controller implements HasMiddleware
         $client = Client::findOrFail($id);
         $client->delete();
         return response()->json(['message' => 'Client avec id ' . $client->id . ' effacer avec succés'], 200);
+    }
+
+    public function ajouterAuPanier(Request $request)
+    {
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'produit_id' => 'required|exists:produits,produit_id',
+            'quantite' => 'required|integer|min:1',
+        ]);
+
+        $client = Client::findOrFail($validatedData['client_id']);
+        $produit = Produit::findOrFail($validatedData['produit_id']);
+
+        $panierProduit = PanierProduit::where('client_id', $client->id)
+                                      ->where('produit_id', $produit->produit_id)
+                                      ->first();
+
+        if ($panierProduit) {
+            PanierProduit::where('client_id', $client->id)
+                        ->where('produit_id', $produit->produit_id)
+                        ->update(['quantite' => $validatedData['quantite']]);
+        } else {
+            PanierProduit::create([
+                'client_id' => $client->id,
+                'produit_id' => $produit->produit_id,
+                'quantite' => $validatedData['quantite'],
+            ]);
+        }        
+
+        return response()->json(['message' => 'Produit ajouté au panier avec succès'], 200);
+    }
+
+    public function ajouterAListeDeSouhaits(Request $request)
+    {
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'produit_id' => 'required|exists:produits,produit_id',
+        ]);
+
+        $client = Client::findOrFail($validatedData['client_id']);
+        $produit = Produit::findOrFail($validatedData['produit_id']);
+
+        $wishlistItem = ListeDeSouhait::where('client_id', $client->id)
+                                      ->where('produit_id', $produit->produit_id)
+                                      ->first();
+
+        if (!$wishlistItem) {
+            ListeDeSouhait::create([
+                'client_id' => $client->id,
+                'produit_id' => $produit->produit_id,
+            ]);
+        }
+
+        return response()->json(['message' => 'Produit ajouté à la liste de souhaits avec succès'], 200);
+    }
+
+    /**
+     * Supprime un produit du panier.
+     */
+    public function supprimerDuPanier(Request $request)
+    {
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'produit_id' => 'required|exists:produits,produit_id',
+        ]);
+
+        $client = Client::findOrFail($validatedData['client_id']);
+        $produit = Produit::findOrFail($validatedData['produit_id']);
+
+        $panierProduit = PanierProduit::where('client_id', $client->id)
+                                      ->where('produit_id', $produit->produit_id)
+                                      ->first();
+
+        if ($panierProduit) {
+            PanierProduit::where('client_id', $client->id)
+                 ->where('produit_id', $produit->produit_id)
+                 ->delete();
+            return response()->json(['message' => 'Produit supprimé du panier avec succès'], 200);
+        } else {
+            return response()->json(['message' => 'Produit non trouvé dans le panier'], 404);
+        }
+    }
+
+    /**
+     * Supprime un produit de la liste de souhaits.
+     */
+    public function supprimerDeListeSouhaits(Request $request)
+    {
+        // Validation des données
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'produit_id' => 'required|exists:produits,produit_id',
+        ]);
+
+        // Récupérer le client et le produit
+        $client = Client::findOrFail($validatedData['client_id']);
+        $produit = Produit::findOrFail($validatedData['produit_id']);
+
+        // Trouver et supprimer le produit de la liste de souhaits
+        $wishlistItem = ListeDeSouhait::where('client_id', $client->id)
+                                      ->where('produit_id', $produit->produit_id)
+                                      ->first();
+
+        if ($wishlistItem) {
+            $wishlistItem->delete();
+            return response()->json(['message' => 'Produit supprimé de la liste de souhaits avec succès'], 200);
+        } else {
+            return response()->json(['message' => 'Produit non trouvé dans la liste de souhaits'], 404);
+        }
     }
 }

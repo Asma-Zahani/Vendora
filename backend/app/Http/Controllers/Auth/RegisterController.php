@@ -32,10 +32,6 @@ class RegisterController extends Controller
 
         $user = Client::create($validatedData);
         
-        $panier = Panier::create([
-            'client_id' => $user->id
-        ]);
-
         $token = $user->createToken($user->nom.' '.$user->prenom);
 
         return [

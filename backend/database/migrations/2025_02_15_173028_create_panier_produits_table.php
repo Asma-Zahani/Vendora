@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('panier_produit', function (Blueprint $table) {
-            $table->foreignId('panier_id')->constrained('paniers', 'panier_id')->onDelete('cascade');
+        Schema::create('panier_produits', function (Blueprint $table) {
+            $table->foreignId('client_id')->constrained('users', 'id')->onDelete('cascade');
             $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
             $table->integer('quantite')->default(1);
-            $table->primary(['panier_id', 'produit_id']);
+            $table->primary(['client_id', 'produit_id']);
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('panier_produit');
+        Schema::dropIfExists('panier_produits');
     }
 };

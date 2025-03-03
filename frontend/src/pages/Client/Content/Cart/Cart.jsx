@@ -3,14 +3,14 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Footer from "../../Footer/Footer";
 import CartTable from "@/components/Tables/CartTable";
-import { getPanier, updatePanier } from "@/service/PanierService";
 import { getCodePromotionByCode } from "@/service/CodePromotionService";
+import { addToPanier, deleteFromPanier } from "@/service/ClientService";
 import UserContext from '@/utils/UserContext';
 
 const Cart = () => {
     const { user, setUser } = useContext(UserContext);
+    const [produits, setProduits] = useState(null);
     const [formData, setFormData] = useState(null);
-    const [produitsCount, setProduitsCount] = useState(null); 
     const [codePromotion, setCodePromotion] = useState(null);
     const [codePromotionError, setCodePromotionError] = useState(null);
 
@@ -25,36 +25,9 @@ const Cart = () => {
     }, []);
 
     useEffect(() => {
-        const fetchPanier = async () => {
-            if (user?.panier?.panier_id) {
-                try {
-                    const panier = await getPanier(user.panier.panier_id);
-                    setFormData(panier);
-                } catch (error) {
-                    console.error("Erreur lors de la récupération du panier:", error);
-                    alert('Une erreur est survenue lors de la récupération du panier');
-                }
-            }
-        };
-
-        fetchPanier();
+        setProduits(user.produits);
     }, [user]);
 
-    useEffect(() => {
-        if (formData) {
-            const timeout = setTimeout(async () => {
-                try {
-                    await updatePanier(formData.panier_id, formData);
-                    console.log("Panier mis à jour");
-                } catch (error) {
-                    console.error("Erreur lors de la mise à jour du panier:", error);
-                }
-            }, 1000);
-    
-            return () => clearTimeout(timeout);
-        }
-    }, [formData]);    
-    
     const handleCodePromotion = async (code) => {
         try {
             const codePromotion = await getCodePromotionByCode(code);
@@ -65,41 +38,86 @@ const Cart = () => {
             setCodePromotionError(error.message);
             setCodePromotion(null);
         }
+    };  
+
+    const [panierUpdate, setPanierUpdate] = useState(false);
+    const [panierDelete, setPanierDelete] = useState(false);
+
+    const modifierQuantitePanier = (produit_id, nouvelleQuantite) => {
+        const produitExistant = produits.find(item => item.produit_id === produit_id);
+    
+        if (produitExistant) {
+            setFormData({
+                client_id: user?.id,
+                produit_id: produit_id,
+                quantite: nouvelleQuantite,
+            });
+        }
+        setPanierUpdate(true);
+    };
+    
+    const supprimerProduit = (produit_id) => {
+        const produitExistant = produits.find(item => item.produit_id === produit_id);
+    
+        if (produitExistant) {
+            setFormData({
+                client_id: user?.id,
+                produit_id: produit_id
+            });
+        }
+        setPanierDelete(true);
     };
 
-    const supprimerProduit = async (produit_id) => {
-        try {
-            const newProduits = formData.produits.filter(produit => produit.produit_id !== produit_id);
-            
-            // Mise à jour du panier sans supprimer l'objet panier
-            const newFormData = { ...formData, produits: newProduits };
-            setFormData(newFormData);  
-    
-            // Mise à jour du panier dans la base de données
-            await updatePanier(newFormData.panier_id, newFormData);
-            setProduitsCount(newFormData.produits.reduce((total) => total + 1, 0));
-        } catch (error) {
-            console.error("Erreur lors de la suppression du produit:", error);
-            alert("Une erreur est survenue lors de la suppression du produit");
-        }
-    };
-     
     useEffect(() => {
-        if (produitsCount) {
-          setUser((prevUser) => ({
-            ...prevUser,
-            panier: {
-                ...prevUser.panier,
-                produits_count: produitsCount,
+        const handleDelete = async () => {
+            if (panierDelete && formData) {
+                try {
+                    await deleteFromPanier(formData);
+                    setUser((prevUser) => {
+                        const updatedProduits = prevUser.produits.filter(item => item.produit_id !== formData.produit_id);
+                        return {
+                            ...prevUser,
+                            produits: updatedProduits,
+                        };
+                    });
+                    console.log("Element effacé du panier");
+                } catch (error) {
+                    console.error("Erreur lors de la mise à jour du panier:", error);
+                }
+                setPanierDelete(false);
             }
-          }));
-        }
-    }, [produitsCount, setUser]);
+        };
     
+        handleDelete();
+    }, [panierDelete, formData, setUser]);
+    
+
+    useEffect(() => {
+        if (panierUpdate && formData) {
+            const timeout = setTimeout(async () => {
+                try {
+                    await addToPanier(formData);
+                    console.log("Panier mis à jour");
+                } catch (error) {
+                    console.error("Erreur lors de la mise à jour du panier:", error);
+                }
+                setPanierUpdate(false);
+            }, 1000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [panierUpdate, formData]);
 
     return (
-        <div className="bg-contentLight dark:bg-contentDark duration-200">
-            <CartTable formData={formData} setFormData={setFormData} codePromotion={codePromotion} handleCodePromotion={handleCodePromotion} codePromotionError={codePromotionError} supprimerProduit={supprimerProduit}/>
+        <div>
+            <CartTable 
+                produits={produits}
+                modifierQuantitePanier={modifierQuantitePanier}
+                codePromotion={codePromotion} 
+                handleCodePromotion={handleCodePromotion} 
+                codePromotionError={codePromotionError}
+                supprimerProduit={supprimerProduit}
+            />
             <Footer />
         </div>
     );

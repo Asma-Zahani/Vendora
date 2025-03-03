@@ -4,17 +4,16 @@ import { useState } from "react";
 import EmptyCardState from "./EmptyCardState";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
-import { Minus, Plus } from "lucide-react";
-import { TiDeleteOutline } from "react-icons/ti"; 
+import { CircleX, Minus, Plus } from "lucide-react";
 
-const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, codePromotionError , supprimerProduit}) => {
+const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit }) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
 
     const getTotalPrices = () => {
-        if (!formData?.produits) return { original: 0, discounted: 0 };
+        if (!produits) return { original: 0, discounted: 0 };
     
-        let originalTotal = formData.produits.reduce((sum, produit) => sum + produit.prix * produit.quantite, 0);
+        let originalTotal = produits.reduce((sum, produit) => sum + produit.prix * produit.pivot.quantite, 0);
         let discountedTotal = originalTotal;
     
         if (codePromotion) {
@@ -29,29 +28,26 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
     };
 
     const handleQuantityChange = (index, action) => {
-        const updatedProduits = [...formData.produits];
+        const updatedProduits = [...produits];
         const produit = updatedProduits[index];
         
         if (action === "increment") {
-            produit.quantite += 1;
-        } else if (action === "decrement" && produit.quantite > 1) {
-            produit.quantite -= 1;
+            produit.pivot.quantite += 1;
+        } else if (action === "decrement" && produit.pivot.quantite > 1) {
+            produit.pivot.quantite -= 1;
         }
-
-        setFormData({
-            ...formData,
-            produits: updatedProduits,
-        });
+        
+        modifierQuantitePanier(produit.produit_id, produit.pivot.quantite)
     };
 
     const handleCheckout = () => {
-        if (!formData?.produits || formData.produits.length === 0) {
+        if (!produits || produits.length === 0) {
             alert("Votre panier est vide !");
             return;
         }
     
         const checkoutData = {
-            produits: formData.produits,
+            produits: produits,
             total: getTotalPrices().discounted,
             codePromo: codePromotion ? codePromotion.code : null,
         };
@@ -65,7 +61,7 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                 <div className="inline-block min-w-full py-2 align-middle">
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                         <h1 className="text-2xl font-semibold mb-4">Panier</h1>
-                        {formData?.produits && formData.produits.length > 0 ? (
+                        {produits && produits.length > 0 ? (
                             <div className="space-y-10">
                                 <div className="overflow-x-auto scrollbar">
                                     <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
@@ -80,7 +76,7 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {formData.produits.map((produit, index) => (
+                                            {produits.map((produit, index) => (
                                                 <tr key={index} className="text-center">
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-16 h-16 object-cover mx-auto" />
@@ -89,20 +85,21 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${produit.prix}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <div className="flex justify-center items-center gap-3">
-                                                            <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark"><Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} /></div>
-                                                            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.quantite} readOnly />
-                                                            <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark"><Plus size={16} onClick={() => handleQuantityChange(index, "increment")} /></div>
+                                                            <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark">
+                                                                <Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} />
+                                                            </div>
+                                                            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.pivot.quantite} readOnly />
+                                                            <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark">
+                                                                <Plus size={16} onClick={() => handleQuantityChange(index, "increment")} />
+                                                            </div>
                                                         </div>
                                                     </td>
-                                                    <td className="border border-gray-300 px-4 py-2">
-                                                        <button 
-                                                            className="p-2 text-red-600 hover:bg-gray-200 rounded-full"
-                                                            onClick={() => supprimerProduit(produit.produit_id)}
-                                                        >
-                                                            <TiDeleteOutline size={24} />
+                                                    <td className="border border-gray-300 dark:border-borderDark  px-4 py-2">
+                                                        <button onClick={() => supprimerProduit(produit.produit_id)} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                            <CircleX size={20} />
                                                         </button>
                                                     </td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.quantite).toFixed(2)}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.pivot.quantite).toFixed(2)}</td>
                                                 </tr>
                                             ))}
                                             <tr className="text-center">
@@ -132,7 +129,6 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                                     )}
                                                 </td>
                                             </tr>
-                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -152,4 +148,3 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
 };
 
 export default CartTable;
-

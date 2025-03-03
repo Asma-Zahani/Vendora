@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('marque_id')->constrained('marques', 'marque_id')->onDelete('cascade');
             $table->foreignId('sous_categorie_id')->constrained('sous_categories', 'sous_categorie_id')->onDelete('cascade');
             $table->foreignId('promotion_id')->nullable()->constrained('promotions', 'promotion_id')->onDelete('cascade');
-            $table->foreignId('fournisseur_id')->constrained('users', 'id')->onDelete('cascade');
             $table->string('nom');
             $table->enum('status', StatusProduitEnum::values())->default(StatusProduitEnum::Disponible->value);
             $table->string('description');

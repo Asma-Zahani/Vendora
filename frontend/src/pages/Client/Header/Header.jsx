@@ -93,9 +93,9 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
               <Link to="/cart" type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-                {user && user.panier && user.panier &&
+                {user && user.produits &&
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {user.panier.produits_count}
+                    {user.produits.reduce((total) => total + 1, 0)} 
                   </span>
                 }
               </Link>
@@ -104,6 +104,11 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
               <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
+                {user && user.wishlist &&
+                  <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                    {user.wishlist.reduce((total) => total + 1, 0)} 
+                  </span>
+                }
               </button>
             </div>
 
@@ -119,7 +124,7 @@ const Header = () => {
                   </div>
                 </button>
                 <div className="lg:flex hidden flex-col items-start justify-center pl-2">
-                  <span className="text-md">{user.user.prenom + ' ' + user.user.nom}</span>
+                  <span className="text-md">{user.prenom + ' ' + user.nom}</span>
                 </div>
                 <ul className="absolute hidden group-hover:flex flex-col bg-contentLight dark:bg-contentDark shadow-md p-2 rounded w-40 z-50 top-[60px] right-[-20px]">
                   <li className="flex items-center py-3 px-4 leading-4 hover:bg-gray-100 dark:hover:bg-[#3D3D3D] cursor-pointer border-b dark:border-[#3D3D3D]">

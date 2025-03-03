@@ -38,16 +38,6 @@ class User extends Authenticatable
         'role' => RoleEnum::class,
     ];
 
-    public function client()
-    {
-        return $this->hasOne(Client::class);
-    }
-
-    public function factureFournisseurs()
-    {
-        return $this->hasMany(FactureFournisseur::class, 'id');
-    }
-
     public function livraisons()
     {
         return $this->hasMany(CommandeLivraison::class, 'id');
