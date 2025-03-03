@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router";
-import { useNavigate } from "react-router-dom";
 import Input from "@/components/Forms/Input";
 import ShowPassword from "@/components/Forms/ShowPassword";
 import FormContainer from "./Form";
@@ -16,7 +15,6 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const {setToken} = useContext(UserContext);
 
-    const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -36,12 +34,6 @@ const Login = () => {
         else {
             localStorage.setItem('token',data.token);
             setToken(data.token);
-            
-            if (data.user.role === "admin") {
-                navigate("/dashboard");
-            } else if (data.user.role === "client") {
-                navigate("/");
-            }
         }
     };
 

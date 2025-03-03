@@ -8,8 +8,9 @@ import { getCodePromotionByCode } from "@/service/CodePromotionService";
 import UserContext from '@/utils/UserContext';
 
 const Cart = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const [formData, setFormData] = useState(null);
+    const [produitsCount, setProduitsCount] = useState(null); 
     const [codePromotion, setCodePromotion] = useState(null);
     const [codePromotionError, setCodePromotionError] = useState(null);
 
@@ -76,13 +77,26 @@ const Cart = () => {
     
             // Mise à jour du panier dans la base de données
             await updatePanier(newFormData.panier_id, newFormData);
+            setProduitsCount(newFormData.produits.reduce((total) => total + 1, 0));
         } catch (error) {
             console.error("Erreur lors de la suppression du produit:", error);
             alert("Une erreur est survenue lors de la suppression du produit");
         }
     };
      
-      
+    useEffect(() => {
+        if (produitsCount) {
+          setUser((prevUser) => ({
+            ...prevUser,
+            panier: {
+                ...prevUser.panier,
+                produits_count: produitsCount,
+            }
+          }));
+        }
+    }, [produitsCount, setUser]);
+    
+
     return (
         <div className="bg-contentLight dark:bg-contentDark duration-200">
             <CartTable formData={formData} setFormData={setFormData} codePromotion={codePromotion} handleCodePromotion={handleCodePromotion} codePromotionError={codePromotionError} supprimerProduit={supprimerProduit}/>

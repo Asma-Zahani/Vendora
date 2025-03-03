@@ -29,9 +29,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/user', function (Request $request) {
+    $panier = Panier::where('client_id', $request->user()->id)->withCount('produits') ->first();
     return response()->json([
         'user' => $request->user(),
-        'panier' => Panier::where('client_id', $request->user()->id)->first()
+        'panier' => $panier
     ]);
 })->middleware('auth:sanctum');
 

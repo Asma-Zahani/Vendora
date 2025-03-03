@@ -1,5 +1,5 @@
 import { useContext , useState, useRef } from "react";
-import { Search, ShoppingCart, Settings, User, LogIn, User2, Menu } from 'lucide-react';
+import { Search, ShoppingCart, Settings, User, LogIn, User2, Menu, Heart } from 'lucide-react';
 import Profile from "@/assets/dashboard/profile.png";
 import logo from "@/assets/logo/logo.svg";
 import DarkMode from "@/utils/DarkMode";
@@ -90,10 +90,21 @@ const Header = () => {
               </button>
             </div>
 
-            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-1 w-990:border-none -mr-2">
+            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
               <Link to="/cart" type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
+                {user && user.panier && user.panier &&
+                  <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                    {user.panier.produits_count}
+                  </span>
+                }
               </Link>
+            </div>
+
+            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
+              <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
+                <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
+              </button>
             </div>
 
             <div className="relative flex items-center border-l-2 border-r-2 dark:border-borderDark pl-1 -mr-2">

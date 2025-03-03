@@ -13,7 +13,7 @@ import { getPanier, updatePanier } from "@/service/PanierService";
 import UserContext from '@/utils/UserContext';
 
 const Shop = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [gridCols, setGridCols] = useState(3);
   const [isGrid, setIsGrid] = useState(true);
@@ -82,7 +82,8 @@ const Shop = () => {
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   
   const [formData, setFormData] = useState(null);
-  
+  const [produitsCount, setProduitsCount] = useState(null); 
+
   useEffect(() => {
     const fetchPanier = async () => {
         if (user?.panier?.panier_id) {
@@ -130,6 +131,7 @@ const Shop = () => {
         const timeout = setTimeout(async () => {
             try {
                 await updatePanier(formData.panier_id, formData);
+                setProduitsCount(formData.produits.reduce((total) => total + 1, 0));
                 console.log("Panier mis à jour");
             } catch (error) {
                 console.error("Erreur lors de la mise à jour du panier:", error);
@@ -138,7 +140,19 @@ const Shop = () => {
 
         return () => clearTimeout(timeout);
     }
-  }, [formData]);  
+  }, [formData]);
+  
+  useEffect(() => {
+    if (produitsCount) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        panier: {
+            ...prevUser.panier,
+            produits_count: produitsCount,
+        }
+      }));
+    }
+  }, [produitsCount, setUser]);
 
   return (
     <div className="px-8">

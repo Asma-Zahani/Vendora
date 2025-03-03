@@ -66,80 +66,81 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                         <h1 className="text-2xl font-semibold mb-4">Panier</h1>
                         {formData?.produits && formData.produits.length > 0 ? (
-                            <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
-                                <thead>
-                                    <tr className="bg-contentLight dark:bg-contentDark">
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-6">Produit</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Nom</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Prix</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Quantité</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Action</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {formData.produits.map((produit, index) => (
-                                        <tr key={index} className="text-center">
-                                            <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                <img src={produit.image} alt={produit.nom} onError={(e) => e.target.src = img} className="w-16 h-16 object-cover mx-auto" />
-                                            </td>
-                                            <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{produit.nom}</td>
-                                            <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${produit.prix}</td>
-                                            <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                <div className="flex justify-center items-center gap-3">
-                                                    <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark"><Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} /></div>
-                                                    <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.quantite} readOnly />
-                                                    <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark"><Plus size={16} onClick={() => handleQuantityChange(index, "increment")} /></div>
-                                                </div>
-                                            </td>
-                                            <td className="border border-gray-300 px-4 py-2">
-                                                <button 
-                                                    className="p-2 text-red-600 hover:bg-gray-200 rounded-full"
-                                                    onClick={() => supprimerProduit(produit.produit_id)}
-                                                >
-                                                    <TiDeleteOutline size={24} />
-                                                </button>
-                                            </td>
-                                            <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.quantite).toFixed(2)}</td>
-                                        </tr>
-                                    ))}
-                                    <tr className="text-center">
-                                        <td colSpan="4" className="py-2 px-4 border border-borderGrayLight dark:border-borderDark text-start">
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex flex-row">
-                                                    <input type="text" placeholder="Entrez le coupon" value={promoCode} 
-                                                        className="py-1.5 px-4 rounded-l-lg dark:bg-contentDark border border-borderGrayLight dark:border-borderDark border-r-0 placeholder-gray-500 focus-visible:outline-0" onChange={(e) => setPromoCode(e.target.value)} />
-                                                    <button onClick={() => handleCodePromotion(promoCode)} className="bg-purpleLight hover:bg-purpleLightHover py-[7px] px-4 rounded-r-lg text-white" >
-                                                        Appliquer
-                                                    </button>
-                                                </div>
-                                                {codePromotionError && (
-                                                    <p className="text-red-600 text-sm mt-1">{codePromotionError}</p>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold text-xl">Prix Total: </td>
-                                        <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold">
-                                            {codePromotion ? (
-                                                <>
-                                                    <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
-                                                    <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
-                                                </>
-                                            ) : (
-                                                <span>${getTotalPrices().original}</span>
-                                            )}
-                                        </td>
-                                    </tr>
-                                    <tr className="py-2 text-center">
-                                        <td colSpan="5" className="py-3 px-4 border border-borderGrayLight dark:border-borderDark text-end">
-                                            <Link to={"/shop"} className="border border-purpleLight hover:border-purpleLightHover py-2 px-4 rounded-lg text-purpleLight hover:text-purpleLightHover">Continuer vos achats</Link>
-                                        </td>
-                                        <td className="py-3">
-                                            <button onClick={handleCheckout} className="bg-purpleLight hover:bg-purpleLightHover py-2 px-4 rounded-lg text-white">Passer à la caisse</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className="space-y-10">
+                                <div className="overflow-x-auto scrollbar">
+                                    <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
+                                        <thead>
+                                            <tr className="bg-contentLight dark:bg-contentDark">
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-6">Produit</th>
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Nom</th>
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Prix</th>
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Quantité</th>
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Action</th>
+                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {formData.produits.map((produit, index) => (
+                                                <tr key={index} className="text-center">
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
+                                                        <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-16 h-16 object-cover mx-auto" />
+                                                    </td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{produit.nom}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${produit.prix}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
+                                                        <div className="flex justify-center items-center gap-3">
+                                                            <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark"><Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} /></div>
+                                                            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.quantite} readOnly />
+                                                            <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark"><Plus size={16} onClick={() => handleQuantityChange(index, "increment")} /></div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="border border-gray-300 px-4 py-2">
+                                                        <button 
+                                                            className="p-2 text-red-600 hover:bg-gray-200 rounded-full"
+                                                            onClick={() => supprimerProduit(produit.produit_id)}
+                                                        >
+                                                            <TiDeleteOutline size={24} />
+                                                        </button>
+                                                    </td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.quantite).toFixed(2)}</td>
+                                                </tr>
+                                            ))}
+                                            <tr className="text-center">
+                                                <td colSpan="4" className="py-2 px-4 border border-borderGrayLight dark:border-borderDark text-start">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="flex flex-row">
+                                                            <input type="text" placeholder="Entrez le coupon" value={promoCode} 
+                                                                className="py-1.5 px-4 rounded-l-lg dark:bg-contentDark border border-borderGrayLight dark:border-borderDark border-r-0 placeholder-gray-500 focus-visible:outline-0" onChange={(e) => setPromoCode(e.target.value)} />
+                                                            <button onClick={() => handleCodePromotion(promoCode)} className="bg-purpleLight hover:bg-purpleLightHover py-[7px] px-4 rounded-r-lg text-white" >
+                                                                Appliquer
+                                                            </button>
+                                                        </div>
+                                                        {codePromotionError && (
+                                                            <p className="text-red-600 text-sm mt-1">{codePromotionError}</p>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold text-xl">Prix Total: </td>
+                                                <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold">
+                                                    {codePromotion ? (
+                                                        <>
+                                                            <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
+                                                            <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
+                                                        </>
+                                                    ) : (
+                                                        <span>${getTotalPrices().original}</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="flex justify-between">
+                                    <Link to={"/shop"} className="border border-purpleLight hover:border-purpleLightHover py-2 px-4 rounded-lg text-purpleLight hover:text-purpleLightHover">Continuer vos achats</Link>
+                                    <button onClick={handleCheckout} className="bg-purpleLight hover:bg-purpleLightHover py-2 px-4 rounded-lg text-white">Passer à la caisse</button>
+                                </div>
+                            </div>
                         ) : (
                             <EmptyCardState />
                         )}

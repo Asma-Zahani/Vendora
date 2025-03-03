@@ -17,7 +17,7 @@ const Card = ({ produit, ajouterAuPanier, setFormData }) => {
   return (
     <>
     <div className="bg-customLight dark:bg-customDark rounded-md shadow-md flex flex-col items-center">
-      <div className="relative w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
+      <div onClick={() => setIsModalOpen(true)} className="relative w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
         <img
           src={imageSrc}
           alt={produit.nom}
@@ -35,7 +35,7 @@ const Card = ({ produit, ajouterAuPanier, setFormData }) => {
               }
             }} 
           />
-          <Eye className="text-white hover:text-purpleLight w-6 h-6 mx-2" onClick={() => setIsModalOpen(true)} />
+          <Eye className="text-white hover:text-purpleLight w-6 h-6 mx-2" />
         </div>
 
         <div className={`absolute top-5 left-0 text-white px-4 py-1 rounded-r-md 

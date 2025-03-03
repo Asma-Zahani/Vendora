@@ -45,9 +45,12 @@ export const ProtectedFournisseurRoutes = () => {
 };
 
 export const ProtectedAuthRoutes = () => {
-    const { token } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
-    if (token) {
+    if (user) {
+        if (user.user.role === "admin") {
+            return <Navigate to="/dashboard" />;
+        }
         return <Navigate to="/" />;
     }
     return <Outlet />;
