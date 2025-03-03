@@ -5,8 +5,9 @@ import EmptyCardState from "./EmptyCardState";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
 import { Minus, Plus } from "lucide-react";
+import { TiDeleteOutline } from "react-icons/ti"; 
 
-const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, codePromotionError }) => {
+const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, codePromotionError , supprimerProduit}) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
 
@@ -72,6 +73,7 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Nom</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Prix</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Quantité</th>
+                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Action</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Total</th>
                                     </tr>
                                 </thead>
@@ -90,11 +92,19 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                                     <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark"><Plus size={16} onClick={() => handleQuantityChange(index, "increment")} /></div>
                                                 </div>
                                             </td>
+                                            <td className="border border-gray-300 px-4 py-2">
+                                                <button 
+                                                    className="p-2 text-red-600 hover:bg-gray-200 rounded-full"
+                                                    onClick={() => supprimerProduit(produit.produit_id)}
+                                                >
+                                                    <TiDeleteOutline size={24} />
+                                                </button>
+                                            </td>
                                             <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.quantite).toFixed(2)}</td>
                                         </tr>
                                     ))}
                                     <tr className="text-center">
-                                        <td colSpan="3" className="py-2 px-4 border border-borderGrayLight dark:border-borderDark text-start">
+                                        <td colSpan="4" className="py-2 px-4 border border-borderGrayLight dark:border-borderDark text-start">
                                             <div className="flex items-center gap-3">
                                                 <div className="flex flex-row">
                                                     <input type="text" placeholder="Entrez le coupon" value={promoCode} 
@@ -121,7 +131,7 @@ const CartTable = ({ formData, setFormData, codePromotion, handleCodePromotion, 
                                         </td>
                                     </tr>
                                     <tr className="py-2 text-center">
-                                        <td colSpan="4" className="py-3 px-4 border border-borderGrayLight dark:border-borderDark text-end">
+                                        <td colSpan="5" className="py-3 px-4 border border-borderGrayLight dark:border-borderDark text-end">
                                             <Link to={"/shop"} className="border border-purpleLight hover:border-purpleLightHover py-2 px-4 rounded-lg text-purpleLight hover:text-purpleLightHover">Continuer vos achats</Link>
                                         </td>
                                         <td className="py-3">

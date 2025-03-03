@@ -36,12 +36,12 @@ class PanierController extends Controller implements HasMiddleware
                 'required',
                 Rule::exists('users', 'id')->where('role', 'client')
             ],
-            'produits' => 'required|array',
+            'produits' => 'nullable|array',
             'produits.*.produit_id' => [
-                'required',
+                'nullable',
                 Rule::exists('produits', 'produit_id')->where('status', StatusProduitEnum::Disponible->value)
             ],
-            'produits.*.quantite' => 'required|integer|min:1',
+            'produits.*.quantite' => 'nullable|integer|min:1',
         ]);
 
         $panier = Panier::create([
@@ -86,12 +86,12 @@ class PanierController extends Controller implements HasMiddleware
                 'required',
                 Rule::exists('users', 'id')->where('role', 'client')
             ],
-            'produits' => 'required|array',
+            'produits' => 'nullable|array',
             'produits.*.produit_id' => [
-                'required',
+                'nullable',
                 Rule::exists('produits', 'produit_id')->where('status', StatusProduitEnum::Disponible->value)
             ],
-            'produits.*.quantite' => 'required|integer|min:1',
+            'produits.*.quantite' => 'nullable|integer|min:1',
         ]);
 
         if ($panier->client_id !== $validatedData['client_id']) {

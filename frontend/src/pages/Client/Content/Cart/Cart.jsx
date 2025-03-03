@@ -65,11 +65,27 @@ const Cart = () => {
             setCodePromotion(null);
         }
     };
+
+    const supprimerProduit = async (produit_id) => {
+        try {
+            const newProduits = formData.produits.filter(produit => produit.produit_id !== produit_id);
+            
+            // Mise à jour du panier sans supprimer l'objet panier
+            const newFormData = { ...formData, produits: newProduits };
+            setFormData(newFormData);  
+    
+            // Mise à jour du panier dans la base de données
+            await updatePanier(newFormData.panier_id, newFormData);
+        } catch (error) {
+            console.error("Erreur lors de la suppression du produit:", error);
+            alert("Une erreur est survenue lors de la suppression du produit");
+        }
+    };
      
       
     return (
         <div className="bg-contentLight dark:bg-contentDark duration-200">
-            <CartTable formData={formData} setFormData={setFormData} codePromotion={codePromotion} handleCodePromotion={handleCodePromotion} codePromotionError={codePromotionError} />
+            <CartTable formData={formData} setFormData={setFormData} codePromotion={codePromotion} handleCodePromotion={handleCodePromotion} codePromotionError={codePromotionError} supprimerProduit={supprimerProduit}/>
             <Footer />
         </div>
     );
