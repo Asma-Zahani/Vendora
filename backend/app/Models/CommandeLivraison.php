@@ -11,46 +11,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommandeLivraison extends Model
 {
-
     use HasFactory;
 
-    protected $table = 'commandes';
+    protected $table = 'commandes_livraisons'; // Correction du nom de la table
     protected $primaryKey = 'commande_id';
 
     protected $fillable = [
-        'panier_id',
-        'code_promotion_id',
-        'total',
-        'etatCommande',
-        'modeLivraison',
+        'commande_id', // Ajout de la référence de la commande
         'dateLivraison',
         'etatLivraison',
         'livreur_id'
     ];
 
     protected $casts = [
-        'modeLivraison' => ModeLivraisonEnum::class,
-        'etatCommande' => EtatCommandeEnum::class,
         'etatLivraison' => EtatLivraisonEnum::class,
     ];
 
+    // Relation avec le livreur
     public function livreur()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'livreur_id'); // Correction de la clé étrangère
     }
 
-    public function panier()
+    // Relation avec la Commande (une CommandeLivraison appartient à une Commande)
+    public function commande()
     {
-        return $this->belongsTo(Panier::class, 'panier_id');
-    }
-
-    public function codePromotion()
-    {
-        return $this->belongsTo(CodePromotion::class, 'code_promotion_id');
-    }
-
-    public function factureCommande()
-    {
-        return $this->hasOne(FactureCommande::class, 'commande_id');
+        return $this->belongsTo(Commande::class, 'commande_id', 'commande_id'); 
     }
 }

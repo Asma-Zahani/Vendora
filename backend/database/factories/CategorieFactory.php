@@ -12,8 +12,7 @@ class CategorieFactory extends Factory
     {
         return [
             'titre' => $this->faker->word(),
-            'image' => $this->faker->imageUrl(),
-            'rang' => $this->faker->numberBetween(1, 100)
+            'image' => $this->faker->imageUrl()
         ];
     }
 }

@@ -14,11 +14,9 @@ class FactureCommande extends Model
     protected $table = 'factures'; 
 
     protected $fillable = [
-        'date',
         'tva',
         'totalHT',
         'totalTTC',
-        'dtype',
         'remise',
         'commande_id'
     ];

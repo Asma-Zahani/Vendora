@@ -14,8 +14,8 @@ class PeriodeHoraire extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'heure_debut',
-        'heure_fin',
+        'heureDebut',
+        'heureFin',
         'horaire_id'
     ];
     

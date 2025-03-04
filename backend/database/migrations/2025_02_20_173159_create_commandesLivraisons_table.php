@@ -14,14 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commandes', function (Blueprint $table) {
-            $table->id('commande_id');
-            $table->foreignId('client_id')->constrained('users', 'id')->onDelete('cascade');
-            $table->foreignId('code_promotion_id')->nullable()->constrained('code_promotions', 'code_promotion_id')->onDelete('cascade');
-            $table->decimal('total', 10, 2);
-            $table->enum('etatCommande', EtatCommandeEnum::values())->default(EtatCommandeEnum::EnAttente->value);
+        Schema::create('commandes_livraisons', function (Blueprint $table) {
+            $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
+            $table->foreignId('livreur_id')->nullable()->constrained('users', 'id')->onDelete('cascade');
+            $table->date('dateLivraison')->nullable();
+            $table->enum('etatLivraison', EtatLivraisonEnum::values())->nullable();
             $table->timestamps();
-        });
+        }); 
+        
     }
 
     /**

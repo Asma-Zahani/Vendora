@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\EtatCommandeEnum;
 use App\Enums\EtatLivraisonEnum;
 use App\Enums\ModeLivraisonEnum;
+use App\Models\Commande;
 use App\Models\CommandeLivraison;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -25,7 +26,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return CommandeLivraison::where('modeLivraison', 'CommandeLivraison')->get();
+        return CommandeLivraison::with('commande')->get();
     }
 
     /**
@@ -34,7 +35,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'panier_id' => 'required|exists:paniers,panier_id',
+            'client_id' => 'required|exists:users,id',
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
             'total' => 'required|numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
@@ -43,15 +44,24 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur') ],
         ]);
         
-        if (empty($validatedData['etatCommande'])) {
-            $validatedData['etatCommande'] = EtatCommandeEnum::EnAttente->value;
-        }
-
-        $validatedData['modeLivraison'] = ModeLivraisonEnum::CommandeLivraison->value;
-
-        $commande = CommandeLivraison::create($validatedData);
-
-        return response()->json($commande, 201);
+        $commande = Commande::create([
+            'client_id' => $validatedData['client_id'],
+            'code_promotion_id' => $validatedData['code_promotion_id'] ?? null,
+            'total' => $validatedData['total'],
+            'etatCommande' => $validatedData['etatCommande'] ?? EtatCommandeEnum::EnAttente->value,
+        ]);
+    
+        $commandeLivraison = CommandeLivraison::create([
+            'commande_id' => $commande->commande_id,
+            'dateLivraison' => $validatedData['dateLivraison'] ?? null,
+            'etatLivraison' => $validatedData['etatLivraison'] ?? null,
+            'livreur_id' => $validatedData['livreur_id'] ?? null,
+        ]);
+    
+        return response()->json([
+            'commande' => $commande,
+            'livraison' => $commandeLivraison,
+        ], 201);
     }
 
     /**
@@ -59,8 +69,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $commandeLivraison = CommandeLivraison::where('commande_id', $id)
-            ->where('modeLivraison', 'CommandeLivraison')
+        $commandeLivraison = CommandeLivraison::where('commande_id', $id)->with('commande')
             ->firstOrFail();
     
         return response()->json($commandeLivraison);
@@ -71,23 +80,40 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
      */
     public function update(Request $request, $id)
     {
-        $commandeLivraison = CommandeLivraison::where('commande_id', $id)
-            ->where('modeLivraison', 'CommandeLivraison')
-            ->firstOrFail();
-        
+        // Récupérer les deux entités
+        $commandeLivraison = CommandeLivraison::where('commande_id', $id)->firstOrFail();
+        $commande = Commande::where('commande_id', $id)->firstOrFail();
+
+        // Validation des données
         $validatedData = $request->validate([
-            'panier_id' => 'required|exists:paniers,panier_id',
+            'client_id' => 'exists:users,id',
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
-            'total' => 'required|numeric|min:0',
+            'total' => 'numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
             'etatLivraison' => [Rule::in(EtatLivraisonEnum::values())],
-            'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur') ],
+            'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
         ]);
 
-        $commandeLivraison->update($validatedData);
+        // Mise à jour des données de la commande
+        $commande->update([
+            'client_id' => $validatedData['client_id'] ?? $commande->client_id,
+            'code_promotion_id' => $validatedData['code_promotion_id'] ?? $commande->code_promotion_id,
+            'total' => $validatedData['total'] ?? $commande->total,
+            'etatCommande' => $validatedData['etatCommande'] ?? $commande->etatCommande,
+        ]);
 
-        return response()->json($commandeLivraison, 200);
+        // Mise à jour des données de la commande de livraison
+        $commandeLivraison->update([
+            'dateLivraison' => $validatedData['dateLivraison'] ?? $commandeLivraison->dateLivraison,
+            'etatLivraison' => $validatedData['etatLivraison'] ?? $commandeLivraison->etatLivraison,
+            'livreur_id' => $validatedData['livreur_id'] ?? $commandeLivraison->livreur_id,
+        ]);
+
+        return response()->json([
+            'commande' => $commande,
+            'livraison' => $commandeLivraison,
+        ], 200);
     }
 
     /**
@@ -96,7 +122,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     public function destroy($id)
     {
         $commandeLivraison = CommandeLivraison::where('commande_id', $id)
-            ->where('modeLivraison', 'CommandeLivraison')
             ->firstOrFail();
         
         $commandeLivraison->delete();

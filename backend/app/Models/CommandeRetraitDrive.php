@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EtatCommandeEnum;
-use App\Enums\ModeLivraisonEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,45 +9,24 @@ class CommandeRetraitDrive extends Model
 {
     use HasFactory;
 
-    protected $table = 'commandes';
+    // Spécifie le nom de la table dans la base de données
+    protected $table = 'commandes_retrait_drives'; // Nom de la table corrigé
+
+    // Spécifie la clé primaire de la table
     protected $primaryKey = 'commande_id';
 
+    // Les champs qui peuvent être remplis en masse
     protected $fillable = [
-        'panier_id',
-        'code_promotion_id',
-        'total',
-        'etatCommande',
-        'modeLivraison',
+        'commande_id',
         'horaireRetrait',
     ];
 
-    protected $casts = [
-        'modeLivraison' => ModeLivraisonEnum::class,
-        'etatCommande' => EtatCommandeEnum::class,
-    ];
-    
-    public function JourFerier()
+    /**
+     * Relation avec le modèle Commande
+     * Une commande de retrait drive appartient à une commande.
+     */
+    public function commande()
     {
-        return $this->hasMany(JourFerie::class, 'jour_ferie_id');
-    }
-
-    public function Horaire()
-    {
-        return $this->hasMany(Horaire::class, 'horaire_id');
-    }
-
-    public function panier()
-    {
-        return $this->belongsTo(Panier::class, 'panier_id');
-    }
-
-    public function codePromotion()
-    {
-        return $this->belongsTo(CodePromotion::class, 'code_promotion_id');
-    }
-
-    public function factureCommande()
-    {
-        return $this->hasOne(FactureCommande::class, 'commande_id');
+        return $this->belongsTo(Commande::class, 'commande_id', 'commande_id');
     }
 }

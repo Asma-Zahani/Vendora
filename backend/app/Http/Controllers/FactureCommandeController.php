@@ -22,7 +22,7 @@ class FactureCommandeController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return FactureCommande::where('dtype', 'facture_commandes')->get();
+        return FactureCommande::all();
     }
 
     /**
@@ -32,14 +32,11 @@ class FactureCommandeController extends Controller implements HasMiddleware
     {
         $validatedData = $request->validate([
             'commande_id' => 'required|exists:commandes,commande_id',
-            'date' => 'required|date',
             'tva' => 'required|numeric|min:0|max:100',
             'totalHT' => 'required|numeric|min:0',
             'totalTTC' => 'required|numeric|min:0',
             'remise' => 'required|numeric|min:0'
         ]);
-
-        $validatedData['dtype'] = 'facture_commandes';
 
         $factureCommande = FactureCommande::create($validatedData);
 
@@ -52,7 +49,6 @@ class FactureCommandeController extends Controller implements HasMiddleware
     public function show($id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
-            ->where('dtype', 'facture_commandes')
             ->firstOrFail();
     
         return response()->json($factureCommande);
@@ -64,12 +60,10 @@ class FactureCommandeController extends Controller implements HasMiddleware
     public function update(Request $request, $id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
-            ->where('dtype', 'facture_commandes')
             ->firstOrFail();
         
         $validatedData = $request->validate([
             'commande_id' => 'required|exists:commandes,commande_id',
-            'date' => 'required|date',
             'tva' => 'required|numeric|min:0|max:100',
             'totalHT' => 'required|numeric|min:0',
             'totalTTC' => 'required|numeric|min:0',
@@ -87,7 +81,6 @@ class FactureCommandeController extends Controller implements HasMiddleware
     public function destroy($id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
-            ->where('dtype', 'facture_commandes')
             ->firstOrFail();
         $factureCommande->delete();
         return response()->json(['message' => 'FactureCommande avec id ' . $factureCommande->facture_id . ' effacer avec succés'], 200);

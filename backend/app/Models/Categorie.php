@@ -16,7 +16,6 @@ class Categorie extends Model
     protected $fillable = [
         'titre',
         'image',
-        'rang',
     ];
 
     public function sousCategories()

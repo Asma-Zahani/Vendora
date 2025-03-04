@@ -50,7 +50,6 @@ Route::apiResource('sousCategories', SousCategorieController::class); //tester
 Route::apiResource('detailFactures', DetailFactureController::class); //tester
 
 Route::apiResource('factureCommandes', FactureCommandeController::class); //tester
-Route::apiResource('factureFournisseurs', FactureFournisseurController::class); //tester
 
 Route::apiResource('produits', ProduitController::class); //tester
 Route::apiResource('paniers', PanierController::class); //tester
@@ -60,7 +59,6 @@ Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::clas
 
 Route::apiResource('admins', AdminController::class);
 Route::apiResource('clients', ClientController::class);
-Route::apiResource('fournisseurs', FournisseurController::class);
 Route::apiResource('livreurs', LivreurController::class);
 Route::apiResource('couleurs', CouleurController::class);
 

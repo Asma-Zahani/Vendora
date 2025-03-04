@@ -30,8 +30,8 @@ class PeriodeHoraireController extends Controller implements HasMiddleware
     {
         // Validation des données d'entrée
         $validatedData = $request->validate([
-            'heure_debut' => 'required|date_format:H:i',
-            'heure_fin' => 'required|date_format:H:i',
+            'heureDebut' => 'required|date_format:H:i',
+            'heureFin' => 'required|date_format:H:i',
             'horaire_id' => 'required|exists:horaires,horaire_id', // Vérifie si horaire_id existe dans la table horaires
         ]);
 
@@ -61,8 +61,8 @@ class PeriodeHoraireController extends Controller implements HasMiddleware
 
         // Validation des données d'entrée
         $validatedData = $request->validate([
-            'heure_debut' => 'required',
-            'heure_fin' => 'required',
+            'heureDebut' => 'required',
+            'heureFin' => 'required',
         ]);
 
         // Mise à jour des données de la période horaire

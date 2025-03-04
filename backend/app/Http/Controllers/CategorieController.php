@@ -32,7 +32,6 @@ class CategorieController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'titre' => 'required|string|max:255',
             'image' => 'required|string|max:255',
-            'rang' => 'required|integer',
         ]);
         
         $categorie = Categorie::create($validatedData);
@@ -59,7 +58,6 @@ class CategorieController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'titre' => 'required|string|max:255',
             'image' => 'required|string|max:255',
-            'rang' => 'required|integer',
         ]);
         
         $categorie->update($validatedData);

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('categorie_id');
             $table->string('titre');
             $table->string('image');
-            $table->string('rang');
             $table->timestamps();
         });
     }

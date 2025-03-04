@@ -13,8 +13,8 @@ class PeriodeHoraireFactory extends Factory
     public function definition()
     {
         return [
-            'heure_debut' => $this->faker->time('H:i', '08:00'),  // Heure de début entre 08:00 et 09:00
-            'heure_fin' => $this->faker->time('H:i', '17:00'),  // Heure de fin entre 09:00 et 17:00
+            'heureDebut' => $this->faker->time('H:i', '08:00'),  // Heure de début entre 08:00 et 09:00
+            'heureFin' => $this->faker->time('H:i', '17:00'),  // Heure de fin entre 09:00 et 17:00
         ];
     }
 

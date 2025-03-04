@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             CodePromotionSeeder::class,
             //JourFerieSeeder::class,
             //PanierSeeder::class,
-            //CommandeLivraisonSeeder::class,
+            CommandeLivraisonSeeder::class,
             //CommandeRetraitDriveSeeder::class,
             //DetailFactureSeeder::class,
             //FactureCommandeSeeder::class,
