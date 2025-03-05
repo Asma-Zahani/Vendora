@@ -38,22 +38,26 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
     
     const data = handleSort(datas);
 
-    const currentItems = data
-    .filter(item => {
+    const filteredItems = data.filter(item => {
         const matchesSearchTerm = searchTerm.length === 0 || formActions.columns.some(column =>
-            
             item[column.key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
-
+    
         const matchesFilter = selectedFilter === 'Tous' ||
-            filtres && filtres.field && item[filtres.field] === selectedFilter;
-
+            (filtres && filtres.field && item[filtres.field] === selectedFilter);
+    
         return matchesSearchTerm && matchesFilter;
-    })
-    .slice((currentPage * selectedItemPerPage) - selectedItemPerPage, currentPage * selectedItemPerPage);
-
-    const [itemToDelete, setItemToDelete] = useState(null);
+    });
+    
+    const currentItems = filteredItems.slice(
+        (currentPage - 1) * selectedItemPerPage, 
+        currentPage * selectedItemPerPage
+    );
+    
+    const [selectedItem, setSelectedItem] = useState(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isSwitchOpen, setIsSwitchOpen] = useState(false);
+    const [isFactureOpen, setIsFactureOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -85,12 +89,12 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                         <Trash2Icon size={20} />
                                     </button>
                                 }
-                                <button className="flex items-center px-2 py-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight">
+                                {formActions.download && <button className="flex items-center px-2 py-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight">
                                     <ArrowDownToLine size={20} />
-                                </button>
-                                <button onClick={() => {setIsFormOpen(true); formActions.setFormData({})}} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                </button>}
+                                {formActions.handleCreate && <button onClick={() => {setIsFormOpen(true); formActions.setFormData({})}} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
                                     <Plus size={17}/><span>Ajouter {label.slice(0, -1)}</span>
-                                </button>
+                                </button>}
                             </div>
                         </div>
 
@@ -134,7 +138,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                     <th key={index} className={`py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 ${column.type === "checkbox" ? "pr-2 pl-4 w-10" : "px-4"}`}>
                                                         {column.type === "checkbox" ? (
                                                             <Checkbox checked={isAllSelected} onChange={handleSelectAll} />
-                                                        ) : column.type === "text" ? (
+                                                        ) : column.type === "text" || column.type === "id" || column.type === "enum" ? (
                                                             <button onClick={() => toggleSortOrder(column.key)} className="flex items-center gap-x-2 focus:outline-none">
                                                                 {column.label} {sortedColumnKey === column.key && (sortOrder === "asc" ? <ArrowDownAZ size={15}/> : <ArrowUpAZ size={15}/>)}
                                                             </button> ) : ( column.label )}
@@ -153,6 +157,11 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                             {column.type === "text" && (
                                                                 <h4 className="text-gray-700 dark:text-gray-200">
                                                                     {item[column.key].length > 70 ? item[column.key].substring(0, 70) + '...' : item[column.key]}
+                                                                </h4>
+                                                            )}
+                                                            {column.type === "enum" && (
+                                                                <h4 className="text-gray-700 dark:text-gray-200">
+                                                                    {item[column.key]}
                                                                 </h4>
                                                             )}
                                                             {column.type === "id" && column.options && (() => {
@@ -181,7 +190,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                             )}
                                                             {column.type === "date" && (
                                                                 <h2 className="text-gray-800 dark:text-white">
-                                                                    {item[column.key].slice(0,10)}
+                                                                    {item[column.key] ? item[column.key].slice(0,10) :  "Non Valide"}
                                                                 </h2>
                                                             )}
                                                             {column.type === "date with Date" && (
@@ -212,9 +221,26 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                                         </button>
                                                                     )}
                                                                     {item.actions.delete && (
-                                                                        <button onClick={() => {setIsDeleteOpen(true); setItemToDelete(item)}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                        <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(item)}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    )}
+                                                                    {item.actions.switch && (
+                                                                        <button onClick={() => {setIsSwitchOpen(true); item.actions.switch(item[identifiant]);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
+                                                                                <path d="m16 3 4 4-4 4"/>
+                                                                                <path d="M20 7H4"/>
+                                                                                <path d="m8 21-4-4 4-4"/>
+                                                                                <path d="M4 17h16"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    )}
+                                                                    {item.actions.facture && (
+                                                                        <button onClick={() => {setIsFactureOpen(true); setSelectedItem(item)}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-purpleLight dark:text-gray-300 hover:text-purpleLight focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M20 2C21.6569 2 23 3.34315 23 5V7H21V19C21 20.6569 19.6569 22 18 22H4C2.34315 22 1 20.6569 1 19V17H17V19C17 19.5128 17.386 19.9355 17.8834 19.9933L18 20C18.5128 20 18.9355 19.614 18.9933 19.1166L19 19V15H3V5C3 3.34315 4.34315 2 6 2H20Z"></path>
                                                                             </svg>
                                                                         </button>
                                                                     )}
@@ -231,7 +257,16 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                         ) : (
                             <EmptyState label={label} searchTerm={searchTerm} setSearchTerm={setSearchTerm} data={data}/>
                         )}
-                        {data.length > 0 && currentItems.length > 0 && (<Pagination indexOfFirstItem={(currentPage * selectedItemPerPage) - selectedItemPerPage} indexOfLastItem={currentPage * selectedItemPerPage} currentPage={currentPage} totalItems={data.length} itemsPerPage={selectedItemPerPage} onPageChange={(pageNumber) => setCurrentPage(pageNumber)}/>)}
+                        {filteredItems.length > 0 && currentItems.length > 0 && (
+                            <Pagination 
+                                indexOfFirstItem={(currentPage - 1) * selectedItemPerPage} 
+                                indexOfLastItem={currentPage * selectedItemPerPage} 
+                                currentPage={currentPage} 
+                                totalItems={filteredItems.length} // Correction ici : basé sur les éléments filtrés
+                                itemsPerPage={selectedItemPerPage} 
+                                onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -244,21 +279,28 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                         await formActions.handleCreate()
                     }
                     setIsFormOpen(false); 
-                }} 
-            />}
+            }}/> }
             {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={label} viewData={viewData}/> }
             {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
-                message={itemToDelete ? `Êtes-vous sûr de vouloir supprimer ce ${label} ?` : `Êtes-vous sûr de vouloir supprimer tous ces ${label} ?`}
+                message={selectedItem ? `Êtes-vous sûr de vouloir supprimer ce ${label} ?` : `Êtes-vous sûr de vouloir supprimer tous ces ${label} ?`}
                 onConfirm={() => { 
-                    if (itemToDelete) {
-                        itemToDelete.actions.delete(itemToDelete[identifiant]); 
-                        setItemToDelete(null);
+                    if (selectedItem) {
+                        selectedItem.actions.delete(selectedItem[identifiant]); 
+                        setSelectedItem(null);
                     } else {
                         console.log("hello")
                     }
                     setIsDeleteOpen(false);
-                }} 
-            /> }
+            }}/> }
+            {isSwitchOpen && <FormModal isOpen={isSwitchOpen} onClose={() => setIsSwitchOpen(false)} action="Modifier"
+                formData={formActions.formData} setFormData={formActions.setFormData} fields={formActions.fields} formLabel={label}
+                onSubmit={async () => { 
+                    if (formActions.formData[identifiant]) {
+                        await formActions.handleEdit()
+                    }
+                    setIsSwitchOpen(false); 
+            }}/> }
+            {isFactureOpen && <ViewModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={label} viewData={viewData}/> }
         </section>
     );
 }

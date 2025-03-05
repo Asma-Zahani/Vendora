@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
 use App\Enums\EtatLivraisonEnum;
-use App\Enums\ModeLivraisonEnum;
 use App\Models\Commande;
 use App\Models\CommandeLivraison;
 use Illuminate\Http\Request;
@@ -40,7 +39,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'total' => 'required|numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
-            'etatLivraison' => [Rule::in(EtatLivraisonEnum::values())],
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur') ],
         ]);
         
@@ -54,7 +52,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         $commandeLivraison = CommandeLivraison::create([
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $validatedData['dateLivraison'] ?? null,
-            'etatLivraison' => $validatedData['etatLivraison'] ?? null,
             'livreur_id' => $validatedData['livreur_id'] ?? null,
         ]);
     
@@ -91,7 +88,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'total' => 'numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
-            'etatLivraison' => [Rule::in(EtatLivraisonEnum::values())],
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
         ]);
 
@@ -106,7 +102,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         // Mise à jour des données de la commande de livraison
         $commandeLivraison->update([
             'dateLivraison' => $validatedData['dateLivraison'] ?? $commandeLivraison->dateLivraison,
-            'etatLivraison' => $validatedData['etatLivraison'] ?? $commandeLivraison->etatLivraison,
             'livreur_id' => $validatedData['livreur_id'] ?? $commandeLivraison->livreur_id,
         ]);
 

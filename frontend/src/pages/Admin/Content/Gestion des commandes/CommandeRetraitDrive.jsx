@@ -1,83 +1,84 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import { getCategories, getCategorie, createCategorie, updateCategorie, deleteCategorie } from "@/service/CategorieService";
-import { Layers2Icon } from "lucide-react";
+import { getCommandesRetraitDrives, getCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
+import { getEtatCommandes } from "@/service/EnumsService";
+import { getClients } from "@/service/ClientService";
+import { Package } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
 const CommandeRetraitDrive = () => {
-  const [formData, setFormData] = useState({categorie_id: "", title: "", image: "", rang: "" });
-  const [categories, setCategories] = useState([]);
+  const [formData, setFormData] = useState({
+    client_id: "",
+    code_promotion_id: "",
+    total: 0,
+    etatCommande: "",
+    horaireRetrait: ""
+  });
+  
+  const [commandesRetraitDrives, setCommandesRetraitDrives] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
+
+  const dropdownOptions = {    
+    client_id: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))
+  };
 
   const columns = [
-    { label: "Titre", key: "titre", type: "text" },
-    { label: "Image", key: "image", type: "img" },
+    { label: "Num°", key: "commande_id", type: "text" },
+    { label: "Client", key: "client_id", type: "id", options: dropdownOptions.client_id},
+    { label: "Total", key: "total", type: "text" },
+    { label: "État Commande", key: "etatCommande", type: "enum" },
     { label: "Date de création", key: "created_at", type: "date" },
-    { label: "Rang", key: "rang", type: "progress" },
+    { label: "Date de Retrait", key: "horaireRetrait", type: "date" },
+    { label: "Point de vente", key: "commande_id", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
   ];
+  
   const fields = [
-    { label: "Titre", key: "titre", type: "text" },
-    { label: "Rang", key: "rang", type: "number" },
-    { label: "Image", key: "image", type: "image" }
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
   ];
+  
+  useEffect(() => { (async () => setCommandesRetraitDrives(await getCommandesRetraitDrives()))()}, [commandesRetraitDrives]);
 
-  useEffect(() => { (async () => setCategories(await getCategories()))()}, [categories]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setClients(await getClients());
+        setEtatCommandeOptions(await getEtatCommandes());
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const handleCategorie = async (categorie_id) => {
+  const handleCommandeRetraitDrive = async (commande_id) => {
     try {
-      const categorie = await getCategorie(categorie_id);
+      const categorie = await getCommandeRetraitDrive(commande_id);
       setFormData(categorie);
     } catch (error) {
       console.error("Erreur lors de la récupération du categorie:", error);
       alert('Une erreur est survenue lors de la récupération du categorie');
     }
   };
-  const handleCreate = async () => {
-    try {
-      await createCategorie(formData);
-      setCategories((prevCategories) => prevCategories.filter(categorie => categorie.categorie_id !== formData.categorie_id));
-      alert(`Categorie ajouter avec succès`);
-    } catch (error) {
-      console.error("Erreur d'ajout:", error);
-      alert('Une erreur est survenue lors de l\'ajout du categorie');
-    }
-  }; 
-  const handleEdit = async () => {
-    try {      
-      await updateCategorie(formData.categorie_id, formData);
-      setCategories((prevCategories) => prevCategories.filter(categorie => categorie.categorie_id !== formData.categorie_id));
-      alert(`Categorie avec l'ID ${formData.categorie_id} modifié avec succès`);
-    } catch (error) {
-      console.error("Erreur de modification:", error);
-      alert("Une erreur est survenue lors de la modification du categorie");
-    }
-  };
-  const handleDelete = async (categorie_id) => {
-    try {
-      console.log(categorie_id);
-      
-      await deleteCategorie(categorie_id);
-      setCategories((prevCategories) => prevCategories.filter(categorie => categorie.categorie_id !== formData.categorie_id));
-      alert(`Categorie with id ${categorie_id} supprimé avec succès`);
-    } catch (error) {
-      console.error("Erreur de suppression:", error);
-      alert('Une erreur est survenue lors de la suppression du categorie');
-    }
-  };
 
-  const formattedCategories = categories.map((item) => ({ ...item,
+  const formattedCommandesRetraitDrives = commandesRetraitDrives.map(({ commande, ...rest }) => ({
+    ...commande,
+    ...rest,
     actions: {
-      edit: () => handleCategorie(item.categorie_id),
-      delete: (categorie_id) => handleDelete(categorie_id)
+      view: () => handleCommandeRetraitDrive(commande.commande_id),
+      switch: () => handleCommandeRetraitDrive(commande.commande_id),
+      facture: () => handleCommandeRetraitDrive(commande.commande_id),
     }
   }));
+  
 
-  const formActions = {formData, setFormData, fields, handleCreate, handleEdit, columns};
+  const formActions = {formData, setFormData, fields, columns};
 
   return (
     <>
-      <Header title="Categories" icon={Layers2Icon} parent="Gestion des produits" current="Categories" />
-      <FilteredTable formActions={formActions} label={"categories"} datas={formattedCategories} identifiant={"categorie_id"} />
+      <Header title="Commandes Retrait Drives" icon={Package} parent="Gestion des commandes" current="Commandes / Retrait Drives" />
+      {<FilteredTable formActions={formActions} label={"commandesRetraitDrives"} datas={formattedCommandesRetraitDrives} identifiant={"commande_id"} />}
     </>
   );
 };

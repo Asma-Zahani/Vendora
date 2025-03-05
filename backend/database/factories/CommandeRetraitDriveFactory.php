@@ -8,6 +8,7 @@ use App\Models\CodePromotion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Enums\EtatCommandeEnum;
 use App\Enums\ModeLivraisonEnum;
+use App\Models\Commande;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommandeRetraitDrive>
@@ -18,13 +19,11 @@ class CommandeRetraitDriveFactory extends Factory
 
     public function definition(): array
     {
+        $commande = Commande::factory()->create();
+        
         return [
-            'panier_id' => Panier::factory(),
-            'code_promotion_id' => rand(0, 1) ? CodePromotion::factory() : null,
-            'total' => $this->faker->randomFloat(2, 10, 500),
-            'etatCommande' => $this->faker->randomElement(EtatCommandeEnum::values()),
+            'commande_id' => $commande->commande_id,
             'horaireRetrait' => $this->faker->optional()->time('H:i'),
-            'modeLivraison' => ModeLivraisonEnum::CommandeRetraitDrive->value,
-        ];
+        ];   
     }
 }

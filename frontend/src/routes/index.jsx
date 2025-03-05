@@ -14,7 +14,6 @@ import SousCategories from "@/pages/Admin/Content/Gestion des produits/SousCateg
 import Marques from "../pages/Admin/Content/Gestion des produits/Marques";
 import { ProtectedAdminRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "../pages/Admin/Content/Gestion des utilisateurs/Clients";
-import Fournisseurs from "../pages/Admin/Content/Gestion des utilisateurs/Fournisseurs";
 import Livreurs from "../pages/Admin/Content/Gestion des utilisateurs/Livreurs";
 import CommandeLivraison from "../pages/Admin/Content/Gestion des commandes/CommandeLivraison";
 import CommandeRetraitDrive from "../pages/Admin/Content/Gestion des commandes/CommandeRetraitDrive";
@@ -72,7 +71,6 @@ const routes = [
           { path: "sousCategories", element: <SousCategories /> },
           { path: "marques", element: <Marques /> },
           { path: "clients", element: <Clients /> },
-          { path: "fournisseurs", element: <Fournisseurs /> },
           { path: "livreurs", element: <Livreurs /> },
           { path: "commandesLivraison", element: <CommandeLivraison /> },
           { path: "commandesRetraitDrive", element: <CommandeRetraitDrive /> },

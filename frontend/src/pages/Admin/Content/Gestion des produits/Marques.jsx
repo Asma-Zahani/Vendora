@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
 import { getMarques, createMarque, deleteMarque, getMarque, updateMarque } from "@/service/MarqueService";
-import { Layers2Icon } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
 const Marques = () => {
@@ -72,7 +72,7 @@ const Marques = () => {
 
   return (
     <>
-      <Header title="Marques" icon={Layers2Icon} parent="Gestion des produits" current="Marques" />
+      <Header title="Marques" icon={Bookmark} parent="Gestion des produits" current="Marques" />
       <FilteredTable formActions={formActions} label={"Marques"} datas={formattedMarques} identifiant={"marque_id"}/>
     </>
   );

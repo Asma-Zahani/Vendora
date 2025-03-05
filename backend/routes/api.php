@@ -10,8 +10,6 @@ use App\Http\Controllers\JourFerieController;
 use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\FactureCommandeController;
-use App\Http\Controllers\FactureFournisseurController;
-use App\Http\Controllers\Users\FournisseurController;
 use App\Http\Controllers\Users\LivreurController;
 use App\Http\Controllers\MarqueController;
 use App\Http\Controllers\PanierController;
@@ -20,6 +18,7 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
+use App\Http\Controllers\Enums\EtatCommandeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Users\Client;
@@ -61,5 +60,7 @@ Route::apiResource('admins', AdminController::class);
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('livreurs', LivreurController::class);
 Route::apiResource('couleurs', CouleurController::class);
+
+Route::get('/etatCommandes', [EtatCommandeController::class, 'getEtatCommandes']);
 
 require __DIR__.'/auth.php';

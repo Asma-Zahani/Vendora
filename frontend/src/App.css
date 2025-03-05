@@ -19,6 +19,10 @@
     --color-grayDark: #898989;
     --color-borderGrayDark: #26262e;
     --color-borderGrayLight: #cbcbd3;
+    --color-bgYellow: #fefce8;
+    --color-bgGreen: #f0fdf4;
+    --color-bgRed: #fef2f2;
+    --color-bgGray: #f9fafb;
 }
 
 :root {

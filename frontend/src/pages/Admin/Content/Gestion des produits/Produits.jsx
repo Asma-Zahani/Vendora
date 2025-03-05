@@ -3,10 +3,9 @@ import Header from "../Header";
 import { getProduits, getProduit, createProduit, updateProduit, deleteProduit } from "@/service/ProduitService";
 import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
-import { getFournisseurs } from "@/service/FournisseurService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs, createCouleur } from "@/service/CouleurService";
-import { Layers2Icon } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
 const Produits = () => {
@@ -14,12 +13,10 @@ const Produits = () => {
   const [produits, setProduits] = useState([]);
   const [sousCategories, setSousCategories] = useState([]);
   const [marques, setMarques] = useState([]);
-  const [fournisseurs, setFournisseurs] = useState([]);
   const [promotions, setPromotions] = useState([]);
   const [couleurs, setCouleurs] = useState([]); 
   const dropdownSousCategoriesOptions = sousCategories.map(sousCategorie => ({ value: sousCategorie.sous_categorie_id, label: sousCategorie.titre }));
   const dropdownMarquesOptions = marques.map(marque => ({ value: marque.marque_id, label: marque.nom }));
-  const dropdownFournisseursOptions = fournisseurs.map(fournisseur => ({ value: fournisseur.id, label: fournisseur.nom + ' ' + fournisseur.prenom }));
   const dropdownPromotionsOptions = promotions.map(promotion => ({ value: promotion.promotion_id, label: promotion.nom + ' - ' + promotion.reduction + '%' }));
   
   const [formData, setFormData] = useState({
@@ -30,7 +27,6 @@ const Produits = () => {
     prix: "",
     sous_categorie_id: "",
     marque_id: "",
-    fournisseur_id: "",
     couleurs: []
   });
 
@@ -55,7 +51,7 @@ const Produits = () => {
     { label: "Sous Catégorie", key: "sous_categorie", type: "text" }, 
     { label: "Marque", key: "marque", type: "text" }, 
     { label: "Prix", key: "prix", type: "text" },
-    { label: "Couleurs", key: "couleurs", type: "text" }, 
+    //{ label: "Couleurs", key: "couleurs", type: "text" }, 
     { label: "Status", key: "status", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
   ];
@@ -66,7 +62,6 @@ const Produits = () => {
     { label: "Image", key: "image", type: "image" },
     { label: "Sous Catégorie", key: "sous_categorie_id", type: "dropdown", options: dropdownSousCategoriesOptions },
     { label: "Marque", key: "marque_id", type: "dropdown", options: dropdownMarquesOptions },
-    { label: "Fournisseur", key: "fournisseur_id", type: "dropdown", options: dropdownFournisseursOptions },
     { label: "Promotions", key: "promotion_id", type: "dropdown", options: dropdownPromotionsOptions },
     { label: "Couleurs", key: "couleurs", type: "colors", options: couleurs, form: formColor, setForm: setFormColor, handleCreate: handleCreateCouleur }, 
     { label: "Description", key: "description", type: "textarea" },
@@ -79,18 +74,17 @@ const Produits = () => {
   }, []);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
         setSousCategories(await getSousCategories());
         setMarques(await getMarques());
-        setFournisseurs(await getFournisseurs());
         setPromotions(await getPromotions());
         setCouleurs(await getCouleurs());
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
     };
-    fetchCategories();
+    fetchData();
   }, []);
 
   const handleProduit = async (produit_id) => {
@@ -143,8 +137,8 @@ const Produits = () => {
     ...item,
     sous_categorie: sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id)?.titre || "Non défini",
     marque: marques.find(m => m.marque_id === item.marque_id)?.nom || "Non défini",
-    couleurs: item.couleurs && Array.isArray(item.couleurs) ? 
-              item.couleurs.map(couleur => couleur.nom).join(", ") : "Aucune couleur", 
+    /*couleurs: item.couleurs && Array.isArray(item.couleurs) ? 
+              item.couleurs.map(couleur => couleur.nom).join(", ") : "Aucune couleur", */
     actions: {
       edit: () => handleProduit(item.produit_id),
       delete: (produit_id) => handleDelete(produit_id),
@@ -155,7 +149,7 @@ const Produits = () => {
 
   return (
     <>
-      <Header title="Produits" icon={Layers2Icon} parent="Gestion des produits" current="Produits" />
+      <Header title="Produits" icon={ShoppingBag} parent="Gestion des produits" current="Produits" />
       <FilteredTable formActions={formActions} label={"produits"} datas={formattedProduits} filtres={filtres} identifiant={"produit_id"} />
     </>
   );

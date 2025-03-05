@@ -1,4 +1,4 @@
-import { Home, Users, Truck, Tag, Briefcase, FileText, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon } from "lucide-react";
+import { Home, Users, Truck, Tag, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon } from "lucide-react";
 
 const menuItems = [
   {
@@ -20,7 +20,6 @@ const menuItems = [
     title: "Gestion des utilisateurs",
     items: [
       { label: "Clients", icon: <Users size={20} />, path: "/clients" },
-      { label: "Fournisseurs", icon: <Briefcase size={20} />, path: "/fournisseurs" },
       { label: "Livreurs", icon: <Truck size={20} />, path: "/livreurs" }
     ],
   },
@@ -34,20 +33,6 @@ const menuItems = [
         subItems: [
           { label: "Livraison", path: "/commandesLivraison" },
           { label: "Retrait Drive", path: "/commandesRetraitDrive" },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Gestion des factures",
-    items: [
-      /*{ label: "Détails Factures", icon: <FileText size={20} />, path: "/factures/details" },*/
-      {
-        label: "Factures",
-        icon: <FileText size={20} />,
-        subItems: [
-          { label: "Fournisseurs", path: "/facturesFournisseurs" },
-          { label: "Commandes", path: "/facturesCommandes" },
         ],
       },
     ],
