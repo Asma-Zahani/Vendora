@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { CgClose } from "react-icons/cg";
-import { CircleAlert } from "lucide-react";
+import { CircleCheckBig } from "lucide-react";
 
-const DeleteModal = ({ onClose, onConfirm, message }) => {
+const ConfirmModal = ({ onClose, onConfirm, message }) => {
   
   useEffect(() => {
       AOS.init({ duration: 500, once: true });
@@ -25,7 +25,7 @@ const DeleteModal = ({ onClose, onConfirm, message }) => {
             <CgClose size={20} />
           </button>
           <div className="p-4 md:p-5 text-center">
-            <CircleAlert size={56} className="mx-auto mb-4 text-gray-500 dark:text-gray-200" />
+            <CircleCheckBig size={56} className="mx-auto mb-4 text-gray-500 dark:text-gray-200" />
             <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-200 break-words text-wrap max-w-xs md:max-w-sm mx-auto whitespace-pre-wrap">
               {message || "Êtes-vous sûr de vouloir supprimer cet élément ?"}
             </h3>
@@ -52,4 +52,4 @@ const DeleteModal = ({ onClose, onConfirm, message }) => {
   );
 };
 
-export default DeleteModal;
+export default ConfirmModal;

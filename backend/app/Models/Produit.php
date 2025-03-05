@@ -50,8 +50,7 @@ class Produit extends Model
     public function clientsDansPanier()
     {
         return $this->belongsToMany(Client::class, 'panier_produits', 'produit_id', 'client_id')
-                    ->withPivot('quantite')
-                    ->withTimestamps();
+                    ->withPivot('quantite'); 
     }
 
     /**

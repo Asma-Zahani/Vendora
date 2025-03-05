@@ -88,13 +88,13 @@ const Shop = () => {
 
   const ajouterAuPanier = (produit_id) => {
     const produitExistant = user?.produits?.find(item => item.produit_id === produit_id);
-  
+
     if (produitExistant) {
       setFormData((prevData) => ({
         ...prevData,
         client_id: user?.id,
         produit_id: produit_id,
-        quantite: (produitExistant.pivot.quantite + 1),
+        quantite: (produitExistant.pivot?.quantite ? produitExistant.pivot.quantite + 1 : produitExistant.quantite),
       }));
     } else {
       setFormData((prevData) => ({
@@ -111,6 +111,7 @@ const Shop = () => {
   
   useEffect(() => {
     if (panierAjoute && formData) {
+      console.log(formData);
       const timeout = setTimeout(async () => {
         try {
           await addToPanier(formData);
@@ -125,7 +126,7 @@ const Shop = () => {
                           ...item, 
                           pivot: { 
                               ...item.pivot, 
-                              quantite: (Number(item.pivot.quantite) + 1) 
+                              quantite: (Number(item.pivot?.quantite ? item.pivot.quantite : item.quantite) + 1) 
                           } 
                       }
                       : item

@@ -4,16 +4,20 @@ import { useState } from "react";
 import EmptyCardState from "./EmptyCardState";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "@/components/Modals/DeleteModal";
 import { CircleX, Minus, Plus } from "lucide-react";
 
 const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit }) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
 
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
     const getTotalPrices = () => {
         if (!produits) return { original: 0, discounted: 0 };
     
-        let originalTotal = produits.reduce((sum, produit) => sum + produit.prix * produit.pivot.quantite, 0);
+        let originalTotal = produits.reduce((sum, produit) => sum + produit.prix * (produit.pivot?.quantite ?? produit.quantite), 0);
         let discountedTotal = originalTotal;
     
         if (codePromotion) {
@@ -32,10 +36,21 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         const produit = updatedProduits[index];
         
         if (action === "increment") {
-            produit.pivot.quantite += 1;
-        } else if (action === "decrement" && produit.pivot.quantite > 1) {
-            produit.pivot.quantite -= 1;
+            if (produit.pivot && produit.pivot.quantite) {
+                produit.pivot.quantite += 1;
+            } else if (produit.quantite) {
+                produit.quantite += 1;
+            } else {
+                produit.quantite = 1;
+            }
+        } else if (action === "decrement" && (produit.pivot?.quantite > 1 || produit.quantite > 1)) {
+            if (produit.pivot && produit.pivot.quantite > 1) {
+                produit.pivot.quantite -= 1;
+            } else if (produit.quantite > 1) {
+                produit.quantite -= 1;
+            }
         }
+
         
         modifierQuantitePanier(produit.produit_id, produit.pivot.quantite)
     };
@@ -49,6 +64,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         const checkoutData = {
             produits: produits,
             total: getTotalPrices().discounted,
+            PromoId: codePromotion ? codePromotion.code_promotion_id : null,
             codePromo: codePromotion ? codePromotion.code : null,
         };
     
@@ -88,18 +104,20 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                             <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark">
                                                                 <Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} />
                                                             </div>
-                                                            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.pivot.quantite} readOnly />
+                                                            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite} readOnly />
                                                             <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark">
                                                                 <Plus size={16} onClick={() => handleQuantityChange(index, "increment")} />
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="border border-gray-300 dark:border-borderDark  px-4 py-2">
-                                                        <button onClick={() => supprimerProduit(produit.produit_id)} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                        <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(produit);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                             <CircleX size={20} />
                                                         </button>
                                                     </td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${(produit.prix * produit.pivot.quantite).toFixed(2)}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
+                                                        ${(produit.prix * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}
+                                                    </td>
                                                 </tr>
                                             ))}
                                             <tr className="text-center">
@@ -143,6 +161,12 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                     </div>
                 </div>
             </div>
+            {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
+                message="Êtes-vous sûr de vouloir supprimer ce produit ?"
+                onConfirm={() => { 
+                    supprimerProduit(selectedItem.produit_id)
+                    setIsDeleteOpen(false);
+            }}/> }
         </section>
     );
 };

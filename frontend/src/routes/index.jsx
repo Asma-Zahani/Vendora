@@ -22,9 +22,10 @@ import Promotions from "../pages/Admin/Content/Promotions et Offres/Promotions";
 import Drives from "../pages/Admin/Content/Paramètres/Drives";
 import Horaires from "../pages/Admin/Content/Paramètres/Horaires";
 import JoursFeries from "../pages/Admin/Content/Paramètres/joursFeries";
-import Cart from "../pages/Client/Content/Cart/Cart";
-import Checkout from "../pages/Client/Content/Checkout/Checkout";
-
+import Cart from "../pages/Client/Content/Protected/Cart";
+import Wishlist from "../pages/Client/Content/Protected/Wishlist";
+import Checkout from "../pages/Client/Content/Protected/Checkout";
+import Account from "../pages/Client/Content/Protected/UserAccount/Account";
 
 const routes = [
   {
@@ -47,7 +48,9 @@ const routes = [
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
           { path: "cart", element: <Cart /> },
+          { path: "wishlist", element: <Wishlist /> },
           { path: "checkout", element: <Checkout /> },
+          { path: "account", element: <Account /> },
         ] 
       }
     ]

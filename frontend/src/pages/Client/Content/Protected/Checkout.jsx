@@ -1,27 +1,31 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Label from "@/components/Forms/Label";
 import Input from "@/components/Forms/Input";
 import Dropdown from "@/components/Forms/Dropdown";
+import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
 import { updateClient } from "@/service/ClientService";
+import { createCommandeLivraison } from "@/service/CommandeLivraisonService";
+import { createCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
+import { getDrives } from "@/service/DriveService";
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 import Footer from "../../Footer/Footer";
 
 const Checkout = () => {
     const { user, setUser } = useContext(UserContext);
-
-    const defaultUserInfo = user.user || {};
 
     const [paymentMethod, setPaymentMethod] = useState("carte");
     const [deliveryMethod, setDeliveryMethod] = useState("livraison");
 
     const [isRegionOpen, setIsRegionOpen] = useState(false);
     const [isVilleOpen, setIsVilleOpen] = useState(false);
+    const [isPointRetraitOpen, setIsPointRetraitOpen] = useState(false);
 
     const location = useLocation();
     const checkoutData = location.state;
 
-    const [formData, setFormData] = useState({ nom: defaultUserInfo.nom, prenom: defaultUserInfo.prenom, telephone: defaultUserInfo.telephone, email: defaultUserInfo.email, region: defaultUserInfo.region, ville: defaultUserInfo.ville, adresse: defaultUserInfo.adresse });
+    const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, point_retrait: '' });
       
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,7 +35,9 @@ const Checkout = () => {
           setIsRegionOpen(false);
         } else if (name === 'ville') {
           setIsVilleOpen(false);
-        }
+        } else if (name === 'point_retrait') {
+            setIsPointRetraitOpen(false);
+          }
       };
 
     const regions = [
@@ -67,10 +73,42 @@ const Checkout = () => {
         "Zaghouan": ["Zaghouan Ville", "El Fahs", "Bir Mcherga", "Nadhour"]
     };
 
+    const [drives, setDrives] = useState([]);
+    const dropdownOptions = {    
+        drive_id: drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))
+    };
+    useEffect(() => { (async () => setDrives(await getDrives()))()}, [drives]);
+
+    const [isOpen, setIsOpen] = useState(false);
+
     const handleEdit = async () => {
         try {      
-            const updatedUser = await updateClient(defaultUserInfo.id, formData);
-            setUser((prevUser) => ({ ...prevUser, user: updatedUser }));
+            const updatedUser = await updateClient(user.id, formData);
+            if (deliveryMethod === "drive") {                
+                createCommandeRetraitDrive({
+                    client_id: user.id,
+                    total: checkoutData.total,
+                    ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
+                    point_retrait: formData.point_retrait,
+                    produits: checkoutData.produits.map(produit => ({
+                        produit_id: produit.produit_id,
+                        quantite: produit.pivot.quantite
+                    }))
+                });
+            }
+            else {
+                createCommandeLivraison({
+                    client_id: user.id,
+                    total: checkoutData.total,
+                    ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
+                    produits: checkoutData.produits.map(produit => ({
+                        produit_id: produit.produit_id,
+                        quantite: produit.pivot.quantite
+                    }))
+                });
+            }
+            location.state = null;
+            setUser((prevUser) => ({ ...prevUser, user: { ...updatedUser, produits: [] }}));            
         } catch (error) {
           console.error("Erreur de modification:", error);
           alert("Une erreur est survenue lors de la modification du client");
@@ -145,7 +183,13 @@ const Checkout = () => {
                                         )}
                                         {deliveryMethod === "drive" && (
                                             <div className="col-span-2">
-                                                <Dropdown label="Point de retrait" name="point de retrait"/>
+                                                <Drop label="Point de retrait" name="point_retrait" options={dropdownOptions.drive_id} selectedValue={formData.point_retrait} 
+                                                onSelect={(selected) => { 
+                                                    setFormData({ ...formData, point_retrait: selected.value });
+                                                    setIsPointRetraitOpen(null);
+                                                }}
+                                                isOpen={isPointRetraitOpen}
+                                                toggleOpen={() => {setIsPointRetraitOpen(!isPointRetraitOpen)}} />
                                             </div>
                                         )}
                                     </div>
@@ -161,8 +205,8 @@ const Checkout = () => {
                                         {checkoutData.produits.map((produit, index) => {
                                             return (
                                                 <div key={index} className="flex justify-between">
-                                                    <p>{produit.nom} × {produit.pivot.quantite} </p>
-                                                    <strong>${produit.prix * produit.pivot.quantite}</strong>
+                                                    <p>{produit.nom} × {produit.pivot?.quantite ?? produit.quantite} </p>
+                                                    <strong>${produit.prix * (produit.pivot?.quantite ?? produit.quantite)}</strong>
                                                 </div>
                                             );
                                         })}
@@ -183,13 +227,19 @@ const Checkout = () => {
                                             <input type="radio" name="payment" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} /> Paiement par carte bancaire
                                         </label>
                                     </div>
-                                    <button onClick={() => {handleEdit()}} className="mt-6 bg-purpleLight text-white py-2 px-4 rounded">Passer la commande</button>
+                                    <button onClick={() => setIsOpen(true)} className="mt-6 bg-purpleLight text-white py-2 px-4 rounded">Passer la commande</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} 
+                message="test"
+                onConfirm={() => {
+                    setIsOpen(false);
+                    handleEdit();
+            }}/> }
             <Footer />
         </div>
     );

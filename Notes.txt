@@ -1,17 +1,24 @@
 en promotion lazem nbadlouha en arrivage
 
-role fournisseur obligatoire??
-
 popup 9bal confirmation mte3 lcommande
-
-popup 9bal delete mel panier
 
 users lazem nthabet fiha
 
-heure_debut , heure_fin ==> heureDebut , heure_fin
+heure_debut , heure_fin ==> heureDebut , heureFin
 
 commande retrait drive (horaire retrait lazem nraja3ha boolean wala n7othom date kima created_at)
 
 lazem nzid point de vente fel retrait drive
 
-scoll fel dropdown mte3 l formData
+relation jour feries w drive
+relation horaires w drive
+
+selected value fel checkout (point de retrait)
+
+z-index fel dropdown ???????????
+
+https://flowbite.com/docs/components/popover/
+https://flowbite.com/docs/components/speed-dial/
+
+https://admin.pixelstrap.net/zono/template/tour.html
+https://admin.pixelstrap.net/zono/template/ribbons.html

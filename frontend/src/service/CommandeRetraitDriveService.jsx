@@ -11,7 +11,10 @@ const getCommandesRetraitDrives = async () => {
   const createCommandeRetraitDrive = async (formData) => {
     const res = await fetch("/api/commandeRetraitDrives", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}` 
+      },
       body: JSON.stringify(formData),
     });
     return res.ok ? res.json() : Promise.reject(res.json());
@@ -20,7 +23,10 @@ const getCommandesRetraitDrives = async () => {
   const updateCommandeRetraitDrive = async (_id, formData) => {
     const res = await fetch(`/api/commandeRetraitDrives/${_id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}` 
+      },
       body: JSON.stringify(formData),
     });
     return res.ok ? res.json() : Promise.reject(res.json());
@@ -29,6 +35,10 @@ const getCommandesRetraitDrives = async () => {
   const deleteCommandeRetraitDrive = async (_id) => {
     const res = await fetch(`/api/commandeRetraitDrives/${_id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}` 
+      },
     });
     return res.ok ? res.json() : Promise.reject(res.json());
   };

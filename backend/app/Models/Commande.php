@@ -42,8 +42,7 @@ class Commande extends Model
     public function produits()
     {
         return $this->belongsToMany(Produit::class, 'commande_produits', 'commande_id', 'produit_id')
-                    ->withPivot('quantite')
-                    ->withTimestamps();
+                    ->withPivot('quantite'); 
     }
 
     // Une commande peut avoir une facture associée

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\EtatCommandeEnum;
 use App\Models\Commande;
 use App\Models\CommandeLivraison;
+use App\Models\CommandeProduit;
+use App\Models\PanierProduit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -30,33 +32,51 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'client_id' => 'required|exists:users,id',
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
             'total' => 'required|numeric|min:0',
-            'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
+            'etatCommande' => ['nullable', Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
-            'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur') ],
+            'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
+            'produits' => 'required|array',  // Valide que c'est un tableau de produits
+            'produits.*.produit_id' => 'required|exists:produits,produit_id',
+            'produits.*.quantite' => 'required|integer|min:1',
         ]);
-        
+
+        // Création de la commande
         $commande = Commande::create([
             'client_id' => $validatedData['client_id'],
             'code_promotion_id' => $validatedData['code_promotion_id'] ?? null,
             'total' => $validatedData['total'],
             'etatCommande' => $validatedData['etatCommande'] ?? EtatCommandeEnum::EnAttente->value,
         ]);
-    
+
+        // Création de la livraison associée (si applicable)
         $commandeLivraison = CommandeLivraison::create([
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $validatedData['dateLivraison'] ?? null,
             'livreur_id' => $validatedData['livreur_id'] ?? null,
         ]);
-    
+
+        // Ajout des produits à la commande
+        foreach ($validatedData['produits'] as $produit) {
+            CommandeProduit::create([
+                'commande_id' => $commande->commande_id,
+                'produit_id' => $produit['produit_id'],
+                'quantite' => $produit['quantite'],
+            ]);
+        }
+
+        PanierProduit::where('client_id', $validatedData['client_id'])->delete();
+
         return response()->json([
             'commande' => $commande,
             'livraison' => $commandeLivraison,
+            'produits' => $commande->produits,
         ], 201);
     }
 

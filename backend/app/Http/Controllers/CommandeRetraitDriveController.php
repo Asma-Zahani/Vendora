@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
 use App\Models\Commande;
+use App\Models\CommandeProduit;
 use App\Models\CommandeRetraitDrive;
+use App\Models\PanierProduit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -38,8 +40,11 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'total' => 'required|numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
             'horaireRetrait' => 'nullable|date_format:H:i',
+            'produits' => 'required|array',
+            'produits.*.produit_id' => 'required|exists:produits,produit_id',
+            'produits.*.quantite' => 'required|integer|min:1',
         ]);
-        
+
         $commande = Commande::create([
             'client_id' => $validatedData['client_id'],
             'code_promotion_id' => $validatedData['code_promotion_id'] ?? null,
@@ -51,10 +56,21 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'commande_id' => $commande->commande_id,
             'horaireRetrait' => $validatedData['horaireRetrait'] ?? null,
         ]);
-    
+
+        foreach ($validatedData['produits'] as $produit) {
+            CommandeProduit::create([
+                'commande_id' => $commande->commande_id,
+                'produit_id' => $produit['produit_id'],
+                'quantite' => $produit['quantite'],
+            ]);
+        }
+
+        PanierProduit::where('client_id', $validatedData['client_id'])->delete();
+
         return response()->json([
             'commande' => $commande,
             'retraiDrive' => $commandeRetraitDrive,
+            'produits' => $commande->produits,
         ], 201);
     }
 
