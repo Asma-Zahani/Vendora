@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             //PanierSeeder::class,
             CommandeLivraisonSeeder::class,
             CommandeRetraitDriveSeeder::class,
+            DriveSeeder::class,
             //DetailFactureSeeder::class,
             //FactureCommandeSeeder::class,
             //FactureFournisseurSeeder::class,

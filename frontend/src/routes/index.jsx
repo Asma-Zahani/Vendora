@@ -17,10 +17,9 @@ import Clients from "../pages/Admin/Content/Gestion des utilisateurs/Clients";
 import Livreurs from "../pages/Admin/Content/Gestion des utilisateurs/Livreurs";
 import CommandeLivraison from "../pages/Admin/Content/Gestion des commandes/CommandeLivraison";
 import CommandeRetraitDrive from "../pages/Admin/Content/Gestion des commandes/CommandeRetraitDrive";
-import FactureFournisseurs from "../pages/Admin/Content/Gestion des factures/FactureFournisseurs";
-import FactureCommandes from "../pages/Admin/Content/Gestion des factures/FactureCommandes";
 import CodePromotions from "../pages/Admin/Content/Promotions et Offres/CodePromotions";
 import Promotions from "../pages/Admin/Content/Promotions et Offres/Promotions";
+import Drives from "../pages/Admin/Content/Paramètres/Drives";
 import Horaires from "../pages/Admin/Content/Paramètres/Horaires";
 import JoursFeries from "../pages/Admin/Content/Paramètres/joursFeries";
 import Cart from "../pages/Client/Content/Cart/Cart";
@@ -74,10 +73,9 @@ const routes = [
           { path: "livreurs", element: <Livreurs /> },
           { path: "commandesLivraison", element: <CommandeLivraison /> },
           { path: "commandesRetraitDrive", element: <CommandeRetraitDrive /> },
-          { path: "facturesFournisseurs", element: <FactureFournisseurs /> },
-          { path: "facturesCommandes", element: <FactureCommandes /> },
           { path: "promotions", element: <Promotions /> },
           { path: "codePromotions", element: <CodePromotions /> },
+          { path: "drives", element: <Drives /> },
           { path: "horaires", element: <Horaires /> },
           { path: "joursFeries", element: <JoursFeries /> }
         ]

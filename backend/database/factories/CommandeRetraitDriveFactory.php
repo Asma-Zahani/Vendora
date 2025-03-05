@@ -3,11 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\CommandeRetraitDrive;
-use App\Models\Panier;
-use App\Models\CodePromotion;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Enums\EtatCommandeEnum;
-use App\Enums\ModeLivraisonEnum;
 use App\Models\Commande;
 
 /**

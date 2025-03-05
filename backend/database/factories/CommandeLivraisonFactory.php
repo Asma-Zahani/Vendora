@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\CommandeLivraison;
 use App\Models\Commande;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Enums\EtatLivraisonEnum;
 use App\Models\Users\User;
 use Database\Factories\Users\LivreurFactory;
 
@@ -25,7 +24,6 @@ class CommandeLivraisonFactory extends Factory
         return [
             'commande_id' => $commande->commande_id, // Associer la livraison à une commande existante
             'dateLivraison' => $dateLivraison ? $dateLivraison->format('Y-m-d') : null,
-            'etatLivraison' => $this->faker->randomElement(EtatLivraisonEnum::values()),
             'livreur_id' => rand(0, 1) ? LivreurFactory::new()->create()->id : null,
         ];        
     }

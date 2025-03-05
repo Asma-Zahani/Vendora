@@ -1,8 +1,5 @@
 <?php
 
-use App\Enums\EtatCommandeEnum;
-use App\Enums\EtatLivraisonEnum;
-use App\Enums\ModeLivraisonEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +15,6 @@ return new class extends Migration
             $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
             $table->foreignId('livreur_id')->nullable()->constrained('users', 'id')->onDelete('cascade');
             $table->date('dateLivraison')->nullable();
-            $table->enum('etatLivraison', EtatLivraisonEnum::values())->nullable();
             $table->timestamps();
         }); 
         

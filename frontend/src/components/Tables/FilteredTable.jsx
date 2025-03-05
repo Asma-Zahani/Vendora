@@ -7,6 +7,7 @@ import EmptyState from "@/components/Tables/EmptyState";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import ViewModal from "@/components/Modals/ViewModal";
+import FactureModal from "@/components/Modals/ViewModal";
 import FormModal from "@/components/Modals/FormModal";
 import Checkbox from "@/components/ui/Checkbox";
 
@@ -156,7 +157,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                             )}                                        
                                                             {column.type === "text" && (
                                                                 <h4 className="text-gray-700 dark:text-gray-200">
-                                                                    {item[column.key].length > 70 ? item[column.key].substring(0, 70) + '...' : item[column.key]}
+                                                                    {item[column.key].length > 40 ? item[column.key].substring(0, 40) + '...' : item[column.key]}
                                                                 </h4>
                                                             )}
                                                             {column.type === "enum" && (
@@ -300,7 +301,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                     }
                     setIsSwitchOpen(false); 
             }}/> }
-            {isFactureOpen && <ViewModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={label} viewData={viewData}/> }
+            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={label} viewData={viewData}/> }
         </section>
     );
 }

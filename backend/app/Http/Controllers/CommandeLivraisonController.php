@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
-use App\Enums\EtatLivraisonEnum;
 use App\Models\Commande;
 use App\Models\CommandeLivraison;
 use Illuminate\Http\Request;

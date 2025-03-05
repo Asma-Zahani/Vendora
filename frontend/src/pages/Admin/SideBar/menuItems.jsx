@@ -1,4 +1,4 @@
-import { Home, Users, Truck, Tag, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon } from "lucide-react";
+import { Home, Users, Truck, Tag, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon, Store } from "lucide-react";
 
 const menuItems = [
   {
@@ -47,6 +47,7 @@ const menuItems = [
   {
     title: "Paramètres",
     items: [
+      { label: "Drives", icon: <Store size={20} />, path: "/drives" },
       { label: "Horaires", icon: <Clock size={20} />, path: "/horaires" },
       { label: "Jours fériés", icon: <CalendarDaysIcon size={20} />, path: "/joursFeries" }
     ],

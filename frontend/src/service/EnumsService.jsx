@@ -3,4 +3,13 @@ const getEtatCommandes = async () => {
     return res.ok ? res.json() : Promise.reject(res.json());
 };
 
-export { getEtatCommandes };
+const getStatusDrives = async () => {
+    const res = await fetch("/api/statusDrives");
+    return res.ok ? res.json() : Promise.reject(res.json());
+};
+
+const getStatusProduits = async () => {
+    const res = await fetch("/api/statusProduits");
+    return res.ok ? res.json() : Promise.reject(res.json());
+};
+export { getEtatCommandes, getStatusDrives, getStatusProduits };

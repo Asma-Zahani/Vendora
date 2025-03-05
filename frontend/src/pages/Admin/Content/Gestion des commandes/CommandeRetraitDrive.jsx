@@ -54,8 +54,14 @@ const CommandeRetraitDrive = () => {
 
   const handleCommandeRetraitDrive = async (commande_id) => {
     try {
-      const categorie = await getCommandeRetraitDrive(commande_id);
-      setFormData(categorie);
+      const commandeRetraitDrive = await getCommandeRetraitDrive(commande_id);
+
+      const formattedCommandeRetraitDrive = { 
+        ...commandeRetraitDrive.commande, 
+        ...commandeRetraitDrive 
+      };
+      
+      setFormData(formattedCommandeRetraitDrive);
     } catch (error) {
       console.error("Erreur lors de la récupération du categorie:", error);
       alert('Une erreur est survenue lors de la récupération du categorie');

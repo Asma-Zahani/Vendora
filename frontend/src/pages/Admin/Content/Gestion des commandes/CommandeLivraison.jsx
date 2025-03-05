@@ -7,15 +7,7 @@ import { Package } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
 const CommandeLivraison = () => {
-  const [formData, setFormData] = useState({
-    client_id: "",
-    code_promotion_id: "",
-    total: 0,
-    etatCommande: "",
-    dateLivraison: "",
-    etatLivraison: "",
-    livreur_id: ""
-  });
+  const [formData, setFormData] = useState({etatCommande: ""});
   
   const [commandesLivraisons, setCommandesLivraisons] = useState([]);
   const [clients, setClients] = useState([]);
@@ -55,8 +47,14 @@ const CommandeLivraison = () => {
 
   const handleCommandeLivraison = async (commande_id) => {
     try {
-      const categorie = await getCommandeLivraison(commande_id);
-      setFormData(categorie);
+      const commandeLivraison = await getCommandeLivraison(commande_id);
+
+      const formattedCommandeLivraison = { 
+        ...commandeLivraison.commande, 
+        ...commandeLivraison 
+      };
+      
+      setFormData(formattedCommandeLivraison);
     } catch (error) {
       console.error("Erreur lors de la récupération du categorie:", error);
       alert('Une erreur est survenue lors de la récupération du categorie');

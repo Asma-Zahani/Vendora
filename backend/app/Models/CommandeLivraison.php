@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EtatCommandeEnum;
-use App\Enums\EtatLivraisonEnum;
-use App\Enums\ModeLivraisonEnum;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,14 +14,9 @@ class CommandeLivraison extends Model
     protected $primaryKey = 'commande_id';
 
     protected $fillable = [
-        'commande_id', // Ajout de la référence de la commande
+        'commande_id',
         'dateLivraison',
-        'etatLivraison',
         'livreur_id'
-    ];
-
-    protected $casts = [
-        'etatLivraison' => EtatLivraisonEnum::class,
     ];
 
     // Relation avec le livreur

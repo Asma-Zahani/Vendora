@@ -18,7 +18,10 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
+use App\Http\Controllers\DriveController;
 use App\Http\Controllers\Enums\EtatCommandeController;
+use App\Http\Controllers\Enums\StatusDriveController;
+use App\Http\Controllers\Enums\StatusProduitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Users\Client;
@@ -61,6 +64,10 @@ Route::apiResource('clients', ClientController::class);
 Route::apiResource('livreurs', LivreurController::class);
 Route::apiResource('couleurs', CouleurController::class);
 
+Route::apiResource('drives', DriveController::class);
+
 Route::get('/etatCommandes', [EtatCommandeController::class, 'getEtatCommandes']);
+Route::get('/statusDrives', [StatusDriveController::class, 'getStatusDrives']);
+Route::get('/statusProduits', [StatusProduitController::class, 'getStatusProduits']);
 
 require __DIR__.'/auth.php';

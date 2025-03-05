@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
-use App\Enums\ModeLivraisonEnum;
 use App\Models\Commande;
 use App\Models\CommandeRetraitDrive;
-use App\Models\RetraitDrive;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
