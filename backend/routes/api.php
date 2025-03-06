@@ -28,7 +28,7 @@ use App\Models\Users\Client;
 
 Route::get('/user', function (Request $request) {
     $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
-    return $client ? $client->load('produits', 'wishlist') : $request->user();
+    return $client ? $client->load('produits', 'wishlist', 'commandes') : $request->user();
 })->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {

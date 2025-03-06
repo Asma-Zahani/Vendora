@@ -2,6 +2,7 @@
 
 namespace App\Models\Users;
 
+use App\Models\Commande;
 use App\Models\Produit;
 use App\Models\ListeDeSouhait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,6 +50,11 @@ class Client extends Authenticatable
     public function wishlist()
     {
         return $this->belongsToMany(Produit::class, 'liste_de_souhaits', 'client_id', 'produit_id');
+    }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class, 'client_id');
     }
 
     /**

@@ -37,23 +37,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => RoleEnum::class,
     ];
-
-    public function livraisons()
-    {
-        return $this->hasMany(CommandeLivraison::class, 'id');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($commande) {
-            if ($commande->id) {
-                $user = User::find($commande->id);
-                if (!$user || $user->role !== RoleEnum::LIVREUR ->value) {
-                    throw new \Exception("Seuls les utilisateurs ayant le rôle LIVREUR peuvent être assignés.");
-                }
-            }
-        });
-    }
 }
