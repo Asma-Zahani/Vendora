@@ -4,8 +4,6 @@ popup 9bal confirmation mte3 lcommande
 
 users lazem nthabet fiha
 
-heure_debut , heure_fin ==> heureDebut , heureFin
-
 commande retrait drive (horaire retrait lazem nraja3ha boolean wala n7othom date kima created_at)
 
 lazem nzid point de vente fel retrait drive
