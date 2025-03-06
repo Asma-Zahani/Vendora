@@ -1,9 +1,10 @@
 <?php
 
+namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Models\Users\Client;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PasswordController extends Controller
@@ -21,8 +22,8 @@ class PasswordController extends Controller
         ]);
 
         if (!Hash::check($validatedData['current_password'], $client->password)) {
-            return response()->json(['error' => 'L\'ancien mot de passe est incorrect.'], 400);
-        }
+            return response()->json(['errors' => ['current_password' => 'L\'ancien mot de passe est incorrect.']], 400);
+        }        
 
         $client->password = Hash::make($validatedData['new_password']);
         $client->save();
