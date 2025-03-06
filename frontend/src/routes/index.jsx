@@ -27,6 +27,7 @@ import Checkout from "../pages/Client/Content/Protected/Checkout";
 import Account from "../pages/Client/Content/Protected/UserAccount/Account";
 import UpdateProfile from "../pages/Client/Content/Protected/UserAccount/UpdateProfile";
 import UpdatePassword from "../pages/Client/Content/Protected/UserAccount/UpdatePassword";
+import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHistory";
 
 const routes = [
   {
@@ -55,6 +56,7 @@ const routes = [
             children: [
               { path: "updateProfile", element: <UpdateProfile /> },
               { path: "updatePassword", element: <UpdatePassword /> },
+              { path: "orderHistory", element: <OrderHistory /> },
             ]
           }
         ] 

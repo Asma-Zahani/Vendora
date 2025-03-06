@@ -46,37 +46,25 @@ const Account = () => {
                                 <div className="mt-4">
                                     <ul className="flex-column space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
                                         <li>
-                                            <Link
-                                                to="/updateProfile"
-                                                className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/updateProfile" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}
-                                            >
+                                            <Link to="/updateProfile" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/updateProfile" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <CircleUserRound className="w-5 h-5 me-2" />
                                                 Information compte
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link
-                                                to="/order-history"
-                                                className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/order-history" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}
-                                            >
+                                            <Link to="/orderHistory" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/orderHistory" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <History className="w-5 h-5 me-2" />
                                                 Historique commandes
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link
-                                                to="/offres"
-                                                className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/offres" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}
-                                            >
+                                            <Link to="/offres" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/offres" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <Gift className="w-5 h-5 me-2" />
                                                 Offres
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link
-                                                to="/updatePassword"
-                                                className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/updatePassword" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}
-                                            >
+                                            <Link to="/updatePassword" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/updatePassword" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <Key className="w-5 h-5 me-2" />
                                                 Modifier mot de passe
                                             </Link>
