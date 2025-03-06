@@ -42,8 +42,8 @@ const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols, onSortChange }
           <List size={17} />
         </div>
         {isGrid && (
-          <div className="hidden sm:flex gap-2">
-            {[2, 3, 4, 6].map((cols) => (
+          <div className="hidden md:hidden lg:flex gap-2">
+            {[3, 4, 6].map((cols) => (
               <div key={cols} className="flex gap-0.5" onClick={() => onChange(cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
                   <button

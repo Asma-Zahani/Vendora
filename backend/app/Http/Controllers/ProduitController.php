@@ -72,10 +72,6 @@ class ProduitController extends Controller implements HasMiddleware
             'marque_id' => 'required|exists:marques,marque_id',
             'sous_categorie_id' => 'required|exists:sous_categories,sous_categorie_id',
             'promotion_id' => 'nullable|exists:promotions,promotion_id',
-            'fournisseur_id' => [
-                'required',
-                Rule::exists('users', 'id')->where('role', 'fournisseur')
-            ],
             'couleurs' => 'required|array',
             'couleurs.*.couleur_id' => [
                 Rule::exists('couleurs', 'couleur_id')
@@ -121,10 +117,6 @@ class ProduitController extends Controller implements HasMiddleware
             'marque_id' => 'required|exists:marques,marque_id',
             'sous_categorie_id' => 'required|exists:sous_categories,sous_categorie_id',
             'promotion_id' => 'nullable|exists:promotions,promotion_id',
-            'fournisseur_id' => [
-                'required',
-                Rule::exists('users', 'id')->where('role', 'fournisseur')
-            ],
             'couleurs' => 'required|array',
             'couleurs.*.couleur_id' => [
                 Rule::exists('couleurs', 'couleur_id')

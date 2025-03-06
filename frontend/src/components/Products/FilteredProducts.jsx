@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Card from "@/components/Products/Card";
+import Card from "@/components/Products/Card2";
 import List from "@/components/Products/List";
 import Filtre from "@/components/Products/Filtre";
 import FiltreHeader from "@/components/Products/FiltreHeader";
@@ -67,8 +67,9 @@ const FilteredProducts = ({ datas, gridInfo, filtres, ajouterAuPanier }) => {
                 searchTerm={searchTerm} setSearchTerm={setSearchTerm}
                 maxPrice={maxPrice} setMaxPrice={setMaxPrice}
             />
-            <div className={`mt-10 ${gridInfo.isGrid ? "grid gap-6" : "flex flex-col gap-4"}`}
-                style={gridInfo.isGrid ? { gridTemplateColumns: `repeat(${gridInfo.gridCols}, 1fr)` } : {}}>
+            <div className={`mt-10 gap-6 
+                ${gridInfo.isGrid ? `grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "flex flex-col gap-4"}`}>
+
                 {datas.length > 0 && currentItems.length > 0 ? (
                     currentItems.map((produit, index) => (
                         gridInfo.isGrid ? (
