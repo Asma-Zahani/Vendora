@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('retrait_drives', function (Blueprint $table) {
             $table->id('retrait_drive_id');
             $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
-            $table->string('horaireRetrait');
+            $table->date('dateRetrait');
             $table->timestamps();
         });
     }

@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CommandeFactory extends Factory
 {
-    protected $model = Commande::class;
-
     public function definition(): array
     {
+        $client = Client::inRandomOrder()->first();
+
         return [
-            'client_id' => Client::factory(), // Génère un client aléatoire
+            'client_id' => $client ? $client->id : null, // Génère un client aléatoire
             'code_promotion_id' => rand(0, 1) ? CodePromotion::factory() : null, // 50% de chance d'avoir un code promo
             'total' => $this->faker->randomFloat(2, 10, 500), // Prix total entre 10 et 500
             'etatCommande' => $this->faker->randomElement(EtatCommandeEnum::values()), // État de la commande aléatoire

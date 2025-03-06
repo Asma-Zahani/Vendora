@@ -18,7 +18,8 @@ class CommandeRetraitDrive extends Model
     // Les champs qui peuvent être remplis en masse
     protected $fillable = [
         'commande_id',
-        'horaireRetrait',
+        'dateRetrait',
+        'drive_id',  // Ajout du champ drive_id
     ];
 
     /**
@@ -28,5 +29,14 @@ class CommandeRetraitDrive extends Model
     public function commande()
     {
         return $this->belongsTo(Commande::class, 'commande_id', 'commande_id');
+    }
+
+    /**
+     * Relation avec le modèle Drive
+     * Une commande de retrait drive appartient à un drive.
+     */
+    public function drive()
+    {
+        return $this->belongsTo(Drive::class, 'drive_id', 'drive_id');
     }
 }

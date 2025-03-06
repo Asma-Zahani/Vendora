@@ -12,7 +12,7 @@ const CommandeRetraitDrive = () => {
     code_promotion_id: "",
     total: 0,
     etatCommande: "",
-    horaireRetrait: ""
+    dateRetrait: ""
   });
   
   const [commandesRetraitDrives, setCommandesRetraitDrives] = useState([]);
@@ -29,7 +29,7 @@ const CommandeRetraitDrive = () => {
     { label: "Total", key: "total", type: "text" },
     { label: "État Commande", key: "etatCommande", type: "enum" },
     { label: "Date de création", key: "created_at", type: "date" },
-    { label: "Date de Retrait", key: "horaireRetrait", type: "date" },
+    { label: "Date de Retrait", key: "dateRetrait", type: "date" },
     { label: "Point de vente", key: "commande_id", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
   ];

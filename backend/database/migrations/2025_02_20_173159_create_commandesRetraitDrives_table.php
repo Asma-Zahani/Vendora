@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('commandes_retrait_drives', function (Blueprint $table) {
             $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
-            $table->string('horaireRetrait')->nullable();
+            $table->foreignId('drive_id')->constrained('drives', 'drive_id')->onDelete('cascade');
+            $table->date('dateRetrait')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,6 @@ class CommandeLivraisonSeeder extends Seeder
      */
     public function run(): void
     {
-        CommandeLivraison::factory(20)->create();
+        CommandeLivraison::factory(5)->create();
     }
 }

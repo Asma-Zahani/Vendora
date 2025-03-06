@@ -19,4 +19,9 @@ class Drive extends Model
         'ville',
         'status'
     ];
+
+    public function commandesRetraitDrive()
+    {
+        return $this->hasMany(CommandeRetraitDrive::class, 'drive_id', 'drive_id');
+    }
 }

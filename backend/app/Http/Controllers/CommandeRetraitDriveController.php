@@ -39,7 +39,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
             'total' => 'required|numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
-            'horaireRetrait' => 'nullable|date_format:H:i',
+            'dateRetrait' => 'nullable|date',
+            'drive_id' => 'required|exists:drives,drive_id',
             'produits' => 'required|array',
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
@@ -54,7 +55,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
     
         $commandeRetraitDrive = CommandeRetraitDrive::create([
             'commande_id' => $commande->commande_id,
-            'horaireRetrait' => $validatedData['horaireRetrait'] ?? null,
+            'drive_id' => $validatedData['drive_id'],
+            'dateRetrait' => $validatedData['dateRetrait'] ?? null,
         ]);
 
         foreach ($validatedData['produits'] as $produit) {
@@ -100,7 +102,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
             'total' => 'numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
-            'horaireRetrait' => 'nullable|date_format:H:i',
+            'dateRetrait' => 'nullable|date',
+            'drive_id' => 'nullable|exists:drives,drive_id',
         ]);
 
         // Mise à jour des données de la commande
@@ -113,7 +116,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
 
         // Mise à jour des données de la commande de livraison
         $commandeRetraitDrive->update([
-            'horaireRetrait' => $validatedData['horaireRetrait'] ?? $commandeRetraitDrive->horaireRetrait
+            'dateRetrait' => $validatedData['dateRetrait'] ?? $commandeRetraitDrive->dateRetrait,
+            'drive_id' => $validatedData['drive_id'] ?? $commandeRetraitDrive->drive_id,
         ]);
 
         return response()->json([

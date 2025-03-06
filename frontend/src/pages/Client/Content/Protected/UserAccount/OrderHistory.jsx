@@ -38,7 +38,7 @@ const OrderHistory = () => {
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.etatCommande}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.commande_id}</td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2"> {commande.commande_retrait_drive.horaireRetrait ? (commande.commande_retrait_drive.horaireRetrait).slice(0,10) :  "Non Valide"}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2"> {commande.commande_retrait_drive.dateRetrait ? (commande.commande_retrait_drive.dateRetrait).slice(0,10) :  "Non Valide"}</td>
                                                 </>
                                             ) : null}
                                         </tr>
