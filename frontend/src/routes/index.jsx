@@ -5,7 +5,6 @@ import Login from "@/pages/Authentification/Login";
 import Register from "@/pages/Authentification/Register";
 import ForgetPassword from "@/pages/Authentification/ForgetPassword";
 import ResetPassword from "@/pages/Authentification/ResetPassword";
-import Home from "@/pages/Client/Content/Home/Home";
 import Shop from "@/pages/Client/Content/Boutique/Boutique";
 import Dashboard from "@/pages/Admin/Content/Dashboard/Dashboard";
 import Produits from "@/pages/Admin/Content/Gestion des produits/Produits";
@@ -26,6 +25,8 @@ import Cart from "../pages/Client/Content/Protected/Cart";
 import Wishlist from "../pages/Client/Content/Protected/Wishlist";
 import Checkout from "../pages/Client/Content/Protected/Checkout";
 import Account from "../pages/Client/Content/Protected/UserAccount/Account";
+import UpdateProfile from "../pages/Client/Content/Protected/UserAccount/UpdateProfile";
+import UpdatePassword from "../pages/Client/Content/Protected/UserAccount/UpdatePassword";
 
 const routes = [
   {
@@ -41,16 +42,21 @@ const routes = [
   {
     path: "/",
     element: <UserInterface />,
-    children: [
-      { path: "", element: <Home /> },
-      //{ path: "shop", element: <Shop /> },
+    children: [ 
       { path: "shop", element: <Shop /> },
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
           { path: "cart", element: <Cart /> },
           { path: "wishlist", element: <Wishlist /> },
           { path: "checkout", element: <Checkout /> },
-          { path: "account", element: <Account /> },
+          {
+            path: "", 
+            element: <Account />,
+            children: [
+              { path: "updateProfile", element: <UpdateProfile /> },
+              { path: "updatePassword", element: <UpdatePassword /> },
+            ]
+          }
         ] 
       }
     ]

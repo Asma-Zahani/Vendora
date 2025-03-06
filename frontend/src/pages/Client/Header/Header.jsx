@@ -127,7 +127,7 @@ const Header = () => {
                   <span className="text-md">{user.prenom + ' ' + user.nom}</span>
                 </div>
                 <ul className="absolute hidden group-hover:flex flex-col bg-contentLight dark:bg-contentDark shadow-md p-2 rounded w-40 z-80 top-[60px] right-[-20px]">
-                  <Link to={"account"} className="flex items-center py-3 px-4 leading-4 cursor-pointer border-b dark:border-borderDark">
+                  <Link to={"updateProfile"} className="flex items-center py-3 px-4 leading-4 cursor-pointer border-b dark:border-borderDark">
                     <User size={15} className="mr-2" /> Account
                   </Link>
                   <li className="flex items-center py-3 px-4 leading-4 cursor-pointer border-b dark:border-borderDark">

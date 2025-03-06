@@ -1,0 +1,52 @@
+import { useState } from "react";
+import Label from "@/components/Forms/Label";
+import Input from "@/components/Forms/Input";
+import ShowPassword from "@/components/Forms/ShowPassword";
+
+const UpdatePassword = () => {
+    const [inputType, setInputType] = useState("password");
+    const [inputType1, setInputType1] = useState("password");
+    const [inputType2, setInputType2] = useState("password");
+    const [formData, setFormData] = useState({ currentPassword: "", password: "", password_confirmation: "" });
+          
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    return (
+        <div className="col-span-2 w-full py-2">
+            <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
+                <h1 className="text-lg font-semibold mb-4">Modifier mot de passe</h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
+                    <div className="col-span-2">
+                        <Label label="Mot de passe Actuel"/>
+                        <div className="relative">
+                            <Input type={inputType} name="currentPassword" value={formData.currentPassword} onChange={handleChange} placeholder="*********" required />
+                            <ShowPassword onToggle={setInputType} />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <Label label="Nouveau mot de passe"/>
+                        <div className="relative">
+                            <Input type={inputType1} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
+                            <ShowPassword onToggle={setInputType1} />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <Label label="Confirmer le mot de passe"/>
+                        <div className="relative">
+                            <Input type={inputType2} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
+                            <ShowPassword onToggle={setInputType2} />
+                        </div>
+                    </div>
+                </div>
+                <div className="border-t pt-5 border-contentLight dark:border-borderDark -mx-6 flex">
+                    <button className="ml-auto mr-5 px-4 py-2 text-sm text-white bg-purpleLight rounded-md">Modifier mot de passe</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default UpdatePassword;
