@@ -22,6 +22,8 @@ use App\Http\Controllers\DriveController;
 use App\Http\Controllers\Enums\EtatCommandeController;
 use App\Http\Controllers\Enums\StatusDriveController;
 use App\Http\Controllers\Enums\StatusProduitController;
+use App\Models\CommandeLivraison;
+use App\Models\CommandeRetraitDrive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Users\Client;
@@ -35,9 +37,12 @@ Route::get('/user', function (Request $request) {
 
         // Charger la relation conditionnelle 'commandeLivraison' ou 'commandeRetraitDrive'
         $client->commandes->each(function ($commande) {
-            if ($commande->type === 'livraison') {
+            // Vérifier si le commande_id existe dans la table CommandeLivraison
+            if (CommandeLivraison::where('commande_id', $commande->commande_id)->exists()) {
+                // Si le commande_id existe dans CommandeLivraison
                 $commande->load('commandeLivraison');
-            } elseif ($commande->type === 'retraitDrive') {
+            } elseif (CommandeRetraitDrive::where('commande_id', $commande->commande_id)->exists()) {
+                // Si le commande_id existe dans CommandeRetraitDrive
                 $commande->load('commandeRetraitDrive');
             }
         });
@@ -47,6 +52,7 @@ Route::get('/user', function (Request $request) {
 
     return $request->user();
 })->middleware('auth:sanctum');
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
