@@ -28,8 +28,26 @@ use App\Models\Users\Client;
 
 Route::get('/user', function (Request $request) {
     $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
-    return $client ? $client->load('produits', 'wishlist', 'commandes') : $request->user();
+
+    if ($client) {
+        // Charger les relations 'produits', 'wishlist', 'commandes'
+        $client = $client->load('produits', 'wishlist', 'commandes');
+
+        // Charger la relation conditionnelle 'commandeLivraison' ou 'commandeRetraitDrive'
+        $client->commandes->each(function ($commande) {
+            if ($commande->type === 'livraison') {
+                $commande->load('commandeLivraison');
+            } elseif ($commande->type === 'retraitDrive') {
+                $commande->load('commandeRetraitDrive');
+            }
+        });
+
+        return $client;
+    }
+
+    return $request->user();
 })->middleware('auth:sanctum');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('panier', [ClientController::class, 'ajouterAuPanier']);

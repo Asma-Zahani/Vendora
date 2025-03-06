@@ -52,13 +52,13 @@ class Commande extends Model
     }
 
     // Optionnel: Un lien avec le statut de livraison (si la commande concerne la livraison)
-    public function livraison()
+    public function commandeLivraison()
     {
         return $this->hasOne(CommandeLivraison::class, 'commande_id');
     }
 
     // Optionnel: Un lien avec le retrait drive (si la commande concerne un retrait drive)
-    public function retraitDrive()
+    public function commandeRetraitDrive()
     {
         return $this->hasOne(CommandeRetraitDrive::class, 'commande_id');
     }
