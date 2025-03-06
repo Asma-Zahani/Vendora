@@ -7,7 +7,7 @@ const UpdatePassword = () => {
     const [inputType, setInputType] = useState("password");
     const [inputType1, setInputType1] = useState("password");
     const [inputType2, setInputType2] = useState("password");
-    const [formData, setFormData] = useState({ currentPassword: "", password: "", password_confirmation: "" });
+    const [formData, setFormData] = useState({ current_password: "", new_password: "", new_password_confirmation: "" });
           
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,21 +22,21 @@ const UpdatePassword = () => {
                     <div className="col-span-2">
                         <Label label="Mot de passe Actuel"/>
                         <div className="relative">
-                            <Input type={inputType} name="currentPassword" value={formData.currentPassword} onChange={handleChange} placeholder="*********" required />
+                            <Input type={inputType} name="current_password" value={formData.current_password} onChange={handleChange} placeholder="*********" required />
                             <ShowPassword onToggle={setInputType} />
                         </div>
                     </div>
                     <div className="mb-4">
                         <Label label="Nouveau mot de passe"/>
                         <div className="relative">
-                            <Input type={inputType1} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
+                            <Input type={inputType1} name="new_password" value={formData.new_password} onChange={handleChange} placeholder="*********" required />
                             <ShowPassword onToggle={setInputType1} />
                         </div>
                     </div>
                     <div className="mb-4">
                         <Label label="Confirmer le mot de passe"/>
                         <div className="relative">
-                            <Input type={inputType2} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
+                            <Input type={inputType2} name="new_password_confirmation" value={formData.new_password_confirmation} onChange={handleChange} placeholder="*********" required />
                             <ShowPassword onToggle={setInputType2} />
                         </div>
                     </div>
