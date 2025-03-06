@@ -28,6 +28,7 @@ import Account from "../pages/Client/Content/Protected/UserAccount/Account";
 import UpdateProfile from "../pages/Client/Content/Protected/UserAccount/UpdateProfile";
 import UpdatePassword from "../pages/Client/Content/Protected/UserAccount/UpdatePassword";
 import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHistory";
+import Offres from "../pages/Client/Content/Protected/UserAccount/Offres";
 
 const routes = [
   {
@@ -57,6 +58,7 @@ const routes = [
               { path: "updateProfile", element: <UpdateProfile /> },
               { path: "updatePassword", element: <UpdatePassword /> },
               { path: "orderHistory", element: <OrderHistory /> },
+              { path: "offres", element: <Offres /> },
             ]
           }
         ] 
