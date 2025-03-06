@@ -43,7 +43,7 @@ Route::get('/user', function (Request $request) {
                 $commande->load('commandeLivraison');
             } elseif (CommandeRetraitDrive::where('commande_id', $commande->commande_id)->exists()) {
                 // Si le commande_id existe dans CommandeRetraitDrive
-                $commande->load('commandeRetraitDrive');
+                $commande->load('commandeRetraitDrive.drive');
             }
         });
 
