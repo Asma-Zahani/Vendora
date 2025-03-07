@@ -32,32 +32,23 @@ Route::get('/user', function (Request $request) {
     $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
 
     if ($client) {
-        // Charger les relations 'produits', 'wishlist', 'commandes'
         $client = $client->load('produits', 'wishlist', 'commandes');
 
-        // Charger la relation conditionnelle 'commandeLivraison' ou 'commandeRetraitDrive'
         $client->commandes->each(function ($commande) {
-            // Vérifier si le commande_id existe dans la table CommandeLivraison
             if (CommandeLivraison::where('commande_id', $commande->commande_id)->exists()) {
-                // Si le commande_id existe dans CommandeLivraison
                 $commande->load('commandeLivraison');
             } elseif (CommandeRetraitDrive::where('commande_id', $commande->commande_id)->exists()) {
-                // Si le commande_id existe dans CommandeRetraitDrive
                 $commande->load('commandeRetraitDrive.drive');
             }
         });
-
         return $client;
     }
-
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('panier', [ClientController::class, 'ajouterAuPanier']);
-    Route::post('souhait', [ClientController::class, 'ajouterAListeDeSouhait']);
+    Route::post('souhait', [ClientController::class, 'ajouterAListeDeSouhaits']);
     Route::delete('panier', [ClientController::class, 'supprimerDuPanier']);
     Route::delete('souhait', [ClientController::class, 'supprimerDeListeSouhaits']);
 });
