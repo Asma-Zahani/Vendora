@@ -7,10 +7,11 @@ import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const Card = ({ produit, ajouterAuPanier }) => {
+const Card = ({ produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false); 
   const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
+  const [isHeartHovered, setIsHeartHovered] = useState(false);
   const [isViewHovered, setIsViewHovered] = useState(false);
   const [isShopHovered, setIsShopHovered] = useState(false);
 
@@ -96,7 +97,14 @@ const Card = ({ produit, ajouterAuPanier }) => {
             </div>
             }
           </div>
-          <Heart size={20} className="absolute left-4 top-4 text-white hover:text-purpleLight" />
+          <Heart onClick={() => {ajouterAuListeSouhait(produit.produit_id)}} size={20} className="absolute left-4 top-4 text-white hover:text-customDark"
+            onMouseEnter={() => setIsHeartHovered(true)} onMouseLeave={() => setIsHeartHovered(false)} />
+          {isHeartHovered && (
+            <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 rounded-md shadow-lg">
+              Ajouter à la liste de souhaits
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
+            </div>
+          )}
         </div>
       </div>
 

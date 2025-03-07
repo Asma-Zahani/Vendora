@@ -9,7 +9,7 @@ import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
-import { addToPanier } from "@/service/ClientService";
+import { addToPanier, addToWishlist } from "@/service/ClientService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
 import UserContext from '@/utils/UserContext';
 
@@ -104,6 +104,28 @@ const Shop = () => {
   
     setPanierAjoute(true);
   };  
+
+  const ajouterAuListeSouhait = async (produit_id) => {
+    try {
+      await addToWishlist(produit_id);
+      setUser((prevUser) => {
+        const produitExistant = prevUser.wishlist.find(item => item.produit_id === produit_id);            
+        if (!produitExistant) {
+          return {
+            ...prevUser,
+            wishlist: [
+              ...prevUser.wishlist,
+              { produit_id: produit_id }
+            ],
+          };
+        }
+      });
+
+      console.log("Panier mis à jour");
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du panier:", error);
+    }
+  };  
   
   useEffect(() => {
     if (panierAjoute && formData) {
@@ -153,7 +175,7 @@ const Shop = () => {
   
   return (
     <div className="px-8">
-      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} />
+      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

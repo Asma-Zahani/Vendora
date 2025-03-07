@@ -5,7 +5,7 @@ import List from "@/components/Products/List";
 import Filtre from "@/components/Products/Filtre";
 import FiltreHeader from "@/components/Products/FiltreHeader";
 
-const FilteredProducts = ({ datas, gridInfo, filtres, ajouterAuPanier }) => {
+const FilteredProducts = ({ datas, gridInfo, filtres, ajouterAuPanier, ajouterAuListeSouhait }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
@@ -73,9 +73,9 @@ const FilteredProducts = ({ datas, gridInfo, filtres, ajouterAuPanier }) => {
                 {datas.length > 0 && currentItems.length > 0 ? (
                     currentItems.map((produit, index) => (
                         gridInfo.isGrid ? (
-                            <Card key={index} produit={produit} ajouterAuPanier={ajouterAuPanier} />
+                            <Card key={index} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
                         ) : (
-                            <List key={index} produit={produit} ajouterAuPanier={ajouterAuPanier} />
+                            <List key={index} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
                         )
                     ))
                 ) : (
