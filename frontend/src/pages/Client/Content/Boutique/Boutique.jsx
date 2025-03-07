@@ -83,7 +83,6 @@ const Shop = () => {
   const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   
   const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
-
   const [panierAjoute, setPanierAjoute] = useState(false);
 
   const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
@@ -107,23 +106,33 @@ const Shop = () => {
 
   const ajouterAuListeSouhait = async (produit_id) => {
     try {
-      await addToWishlist(produit_id);
+      // Trouver le produit complet dans la liste des produits
+      const produit = produits.find(item => item.produit_id === produit_id);
+  
+      if (!produit) {
+        console.error("Produit non trouvé !");
+        return;
+      }
+  
+      const wishlistItem = { client_id: user?.id, produit_id };
+  
+      // Envoyer la requête à l'API pour ajouter à la wishlist
+      await addToWishlist(wishlistItem);
+  
+      // Mettre à jour l'état de l'utilisateur
       setUser((prevUser) => {
-        const produitExistant = prevUser.wishlist.find(item => item.produit_id === produit_id);            
-        if (!produitExistant) {
+        if (!prevUser.wishlist.some(item => item.produit_id === produit_id)) {
           return {
             ...prevUser,
-            wishlist: [
-              ...prevUser.wishlist,
-              { produit_id: produit_id }
-            ],
+            wishlist: [...prevUser.wishlist, produit], // Ajouter le produit entier
           };
         }
+        return prevUser;
       });
-
-      console.log("Panier mis à jour");
+  
+      console.log("Liste de souhaits mise à jour avec succès");
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du panier:", error);
+      console.error("Erreur lors de l'ajout à la liste de souhaits:", error);
     }
   };  
   
@@ -175,7 +184,7 @@ const Shop = () => {
   
   return (
     <div className="px-8">
-      <FilteredProducts datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
+      <FilteredProducts user={user} datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
 
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
         className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">

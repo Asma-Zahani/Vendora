@@ -74,7 +74,7 @@ const addToWishlist = async (formData) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({formData}),
+    body: JSON.stringify(formData),
   });
   return res.ok ? res.json() : Promise.reject(res.json());
 };

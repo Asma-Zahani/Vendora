@@ -3,11 +3,14 @@ import { Eye, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useNavigate } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const Card = ({ produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
+const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
+  const navigate = useNavigate();
+
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false); 
   const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
@@ -62,7 +65,7 @@ const Card = ({ produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
               <>
                 <div onClick={() => setIsShopModalOpen(true)} className="hidden md:hidden lg:flex bg-purpleLight py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300"
                   onMouseEnter={() => setIsShopHovered(true)} onMouseLeave={() => setIsShopHovered(false)} >
-                  {isShopHovered ? <span className="truncate"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span>Achat rapide</span>}
+                  {isShopHovered ? <span className="truncate"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="text-white">Achat rapide</span>}
                 </div>
                 <div className="absolute right-2 bottom-2">
                   <div onClick={() => setIsShopModalOpen(true)} className="flex md:flex lg:hidden bg-purpleLight py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
@@ -97,14 +100,33 @@ const Card = ({ produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
             </div>
             }
           </div>
-          <Heart onClick={() => {ajouterAuListeSouhait(produit.produit_id)}} size={20} className="absolute left-4 top-4 text-white hover:text-customDark"
-            onMouseEnter={() => setIsHeartHovered(true)} onMouseLeave={() => setIsHeartHovered(false)} />
+          {user?.wishlist && 
+            
+            <Heart size={20} fill={`${user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
+              onClick={() => {
+                const isProductInWishlist = user.wishlist.some(item => item.produit_id === produit.produit_id);
+
+                if (!isProductInWishlist) {
+                  ajouterAuListeSouhait(produit.produit_id);
+                }
+                else {
+                  console.log("test");
+                  navigate("/wishlist");
+                }
+              }}
+              className={`absolute left-4 top-4 ${user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : 'text-white hover:text-customDark'}`}
+              onMouseEnter={() => setIsHeartHovered(true)}
+              onMouseLeave={() => setIsHeartHovered(false)}
+            />
+          }
+          
           {isHeartHovered && (
             <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 rounded-md shadow-lg">
-              Ajouter à la liste de souhaits
+              {user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
             </div>
           )}
+
         </div>
       </div>
 
