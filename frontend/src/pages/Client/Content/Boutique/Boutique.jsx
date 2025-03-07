@@ -106,25 +106,15 @@ const Shop = () => {
 
   const ajouterAuListeSouhait = async (produit_id) => {
     try {
-      // Trouver le produit complet dans la liste des produits
       const produit = produits.find(item => item.produit_id === produit_id);
-  
-      if (!produit) {
-        console.error("Produit non trouvé !");
-        return;
-      }
-  
+      
       const wishlistItem = { client_id: user?.id, produit_id };
-  
-      // Envoyer la requête à l'API pour ajouter à la wishlist
       await addToWishlist(wishlistItem);
-  
-      // Mettre à jour l'état de l'utilisateur
       setUser((prevUser) => {
         if (!prevUser.wishlist.some(item => item.produit_id === produit_id)) {
           return {
             ...prevUser,
-            wishlist: [...prevUser.wishlist, produit], // Ajouter le produit entier
+            wishlist: [...prevUser.wishlist, produit],
           };
         }
         return prevUser;
@@ -143,28 +133,30 @@ const Shop = () => {
         try {
           await addToPanier(formData);
           setUser((prevUser) => {
-            const produitExistant = prevUser.produits.find(item => item.produit_id === formData.produit_id);            
+            const produitExistant = prevUser.produits.find(item => item.produit_id === formData.produit_id);
+  
             if (produitExistant) {
               return {
                 ...prevUser,
                 produits: prevUser.produits.map(item =>
                   item.produit_id === formData.produit_id
-                      ? { 
-                          ...item, 
-                          pivot: { 
-                              ...item.pivot, 
-                              quantite: (Number(item.pivot?.quantite ? item.pivot.quantite : item.quantite) + 1) 
-                          } 
+                    ? {
+                        ...item,
+                        pivot: {
+                          ...item.pivot,
+                          quantite: (formData.quantite),
+                        },
                       }
-                      : item
+                    : item
                 ),
               };
             } else {
+              const produit = produits.find(item => item.produit_id === formData.produit_id);
               return {
                 ...prevUser,
                 produits: [
                   ...prevUser.produits,
-                  { produit_id: formData.produit_id, quantite: '1' }
+                  { ...produit, quantite: formData.quantite },
                 ],
               };
             }

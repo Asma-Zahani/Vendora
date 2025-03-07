@@ -73,18 +73,18 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
                 </div>
               </> : 
               <div className="absolute right-2 bottom-2 sm:absolute md:absolute lg:static sm:right-2 sm:bottom-2 sm:flex md:right-2 md:bottom-2 flex items-center bg-contentLight rounded-full max-w-[130px] sm:max-w-[200px] overflow-hidden">
-                <button onClick={handleDecrease} className="p-1 py-2 md:py-3 dark:text-black rounded-l-full hover:bg-gray-300">
+                <button onClick={handleDecrease} className="p-1 py-2 lg:py-3 dark:text-black rounded-l-full hover:bg-gray-300">
                   <Minus size={16} />
                 </button>
-                <input type="number" value={quantity} min={1} onChange={handleChange} className="w-6 md:w-7 py-1 md:py-2 text-center dark:text-black hover:bg-gray-300 bg-transparent outline-none appearance-none 
+                <input type="number" value={quantity} min={1} onChange={handleChange} className="w-6 lg:w-7 py-1 lg:py-2 text-center dark:text-black hover:bg-gray-300 bg-transparent outline-none appearance-none 
                             [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/>
-                <button onClick={handleIncrease} className="p-1 py-2 md:py-3 dark:text-black hover:bg-gray-300">
+                <button onClick={handleIncrease} className="p-1 py-2 lg:py-3 dark:text-black hover:bg-gray-300">
                   <Plus size={16} />
                 </button>
                 <button onMouseEnter={() => setIsShopHovered(true)} onMouseLeave={() => setIsShopHovered(false)} className="hidden md:hidden lg:flex px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
                   {isShopHovered ? <span onClick={() => ajouterAuPanier(produit.produit_id, quantity)} className="truncate w-full block px-9"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="truncate w-full block">Ajouter Au panier</span>}
                 </button>
-                <button className="flex md:flex lg:hidden px-3 sm:px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
+                <button onClick={() => ajouterAuPanier(produit.produit_id, quantity)} className="flex md:flex lg:hidden px-3 sm:px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
                   <ShoppingCart size={17} data-aos="fade-up" data-aos-duration="300" className="text-white" />
                 </button>
               </div> : 
