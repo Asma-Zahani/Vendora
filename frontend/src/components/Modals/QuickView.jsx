@@ -82,7 +82,7 @@ const QuickView = ({ produit, onClose  }) => {
                 <div className="mt-4">
                   <h4 className="font-medium">Select Color:</h4>
                   <div className="flex space-x-2 mt-2">
-                    {produit.couleurs.length > 0 ? (
+                    {produit.couleurs?.length > 0 ? (
                       produit.couleurs.map((couleur) => (
                         <button
                           key={couleur.couleur_id}

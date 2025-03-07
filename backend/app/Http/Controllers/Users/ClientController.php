@@ -213,7 +213,9 @@ class ClientController extends Controller implements HasMiddleware
                                       ->first();
 
         if ($wishlistItem) {
-            $wishlistItem->delete();
+            ListeDeSouhait::where('client_id', $client->id)
+                ->where('produit_id', $produit->produit_id)
+                ->delete();
             return response()->json(['message' => 'Produit supprimé de la liste de souhaits avec succès'], 200);
         } else {
             return response()->json(['message' => 'Produit non trouvé dans la liste de souhaits'], 404);

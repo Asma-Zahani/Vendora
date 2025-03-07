@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Eye, Heart, Link2, Minus, Plus, ShoppingCart } from "lucide-react";
+import { Eye, Heart, Link2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -8,13 +8,14 @@ import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
+const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist, effacerDeListeSouhait }) => {
   const navigate = useNavigate();
 
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false); 
   const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
   const [isHeartHovered, setIsHeartHovered] = useState(false);
+  const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const [isViewHovered, setIsViewHovered] = useState(false);
   const [isShopHovered, setIsShopHovered] = useState(false);
 
@@ -101,7 +102,7 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
               </> 
             }
           </div>
-          {user?.wishlist && 
+          {!wishlist && user?.wishlist && 
             <Heart size={20} fill={`${user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
               onClick={() => {
                 const isProductInWishlist = user.wishlist.some(item => item.produit_id === produit.produit_id);
@@ -121,8 +122,21 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait }) => {
           }
           
           {isHeartHovered && (
-            <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 rounded-md shadow-lg">
+            <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
               {user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
+            </div>
+          )}
+
+          {wishlist && user?.wishlist && 
+            <button onClick={() => effacerDeListeSouhait(produit.produit_id)} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}
+                className="absolute left-4 top-4 bg-contentLight hover:bg-contentDark text-black hover:text-white rounded-full p-2">
+              <Trash2 size={17}/> 
+            </button>
+          }
+          {isDeleteHovered && (
+            <div className="absolute left-14 top-[34px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
+              Effacer de la liste de souhaits
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
             </div>
           )}
