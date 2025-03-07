@@ -86,28 +86,24 @@ const Shop = () => {
 
   const [panierAjoute, setPanierAjoute] = useState(false);
 
-  const ajouterAuPanier = (produit_id) => {
+  const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
     const produitExistant = user?.produits?.find(item => item.produit_id === produit_id);
+    
+    console.log(quantiteAjoutee);
 
-    if (produitExistant) {
-      setFormData((prevData) => ({
-        ...prevData,
-        client_id: user?.id,
-        produit_id: produit_id,
-        quantite: (produitExistant.pivot?.quantite ? produitExistant.pivot.quantite + 1 : produitExistant.quantite),
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        client_id: user?.id,
-        produit_id: produit_id,
-        quantite: '1',
-      }));
-    }
+    setFormData((prevData) => ({
+      ...prevData,
+      client_id: user?.id,
+      produit_id: produit_id,
+      quantite: produitExistant 
+        ? (produitExistant.pivot?.quantite 
+            ? parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) 
+            : parseInt(produitExistant.quantite) + parseInt(quantiteAjoutee)) 
+        : quantiteAjoutee,
+    }));
   
-    // Une fois l'ajout effectué, on met à jour l'état pour indiquer qu'un produit a été ajouté
     setPanierAjoute(true);
-  };
+  };  
   
   useEffect(() => {
     if (panierAjoute && formData) {

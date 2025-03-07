@@ -11,6 +11,8 @@ selected value fel checkout (point de retrat)
 
 z-index fel dropdown ???????????
 
+problem de quantite
+
 https://flowbite.com/docs/components/popover/
 https://flowbite.com/docs/components/speed-dial/
 

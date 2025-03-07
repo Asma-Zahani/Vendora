@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Card from "@/components/Products/Card2";
+import Card from "@/components/Products/Card";
 import List from "@/components/Products/List";
 import Filtre from "@/components/Products/Filtre";
 import FiltreHeader from "@/components/Products/FiltreHeader";

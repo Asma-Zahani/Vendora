@@ -2,7 +2,7 @@
 import { Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import defaultImg from "@/assets/default/image.png";
-import ViewProduit from "@/components/Modals/ViewProduit";
+import QuickView from "@/components/Modals/QuickView";
 
 const List = ({ produit }) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
@@ -31,7 +31,7 @@ const List = ({ produit }) => {
         <p className="text-sm text-gray-600 dark:text-gray-300">{produit.description}</p>
         <div className="mt-2 text-xl font-bold">${produit.prix}</div>
       </div>
-      <ViewProduit produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <QuickView produit={produit} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
