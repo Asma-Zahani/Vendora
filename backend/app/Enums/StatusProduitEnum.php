@@ -6,7 +6,7 @@ enum StatusProduitEnum: string
 {
     case Disponible = 'Disponible';
     case RuptureDeStock = 'Rupture de stock';
-    case EnPromotion = 'En promotion';
+    case EnArrivage = 'En arrivage';
     case HorsVente = 'Hors vente';
 
     public static function values(): array

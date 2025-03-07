@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Footer from "../../Footer/Footer";
 import CartTable from "@/components/Tables/CartTable";
 import { getCodePromotionByCode } from "@/service/CodePromotionService";
 import { addToPanier, deleteFromPanier } from "@/service/ClientService";
@@ -109,17 +108,14 @@ const Cart = () => {
     }, [panierUpdate, formData]);
 
     return (
-        <div>
-            <CartTable 
-                produits={produits}
-                modifierQuantitePanier={modifierQuantitePanier}
-                codePromotion={codePromotion} 
-                handleCodePromotion={handleCodePromotion} 
-                codePromotionError={codePromotionError}
-                supprimerProduit={supprimerProduit}
-            />
-            <Footer />
-        </div>
+        <CartTable 
+            produits={produits}
+            modifierQuantitePanier={modifierQuantitePanier}
+            codePromotion={codePromotion} 
+            handleCodePromotion={handleCodePromotion} 
+            codePromotionError={codePromotionError}
+            supprimerProduit={supprimerProduit}
+        />
     );
 };
 

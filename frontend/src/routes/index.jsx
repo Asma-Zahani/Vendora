@@ -29,6 +29,7 @@ import UpdateProfile from "../pages/Client/Content/Protected/UserAccount/UpdateP
 import UpdatePassword from "../pages/Client/Content/Protected/UserAccount/UpdatePassword";
 import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHistory";
 import Offres from "../pages/Client/Content/Protected/UserAccount/Offres";
+import DetailProduit from "../pages/Client/Content/Boutique/DetailProduit";
 
 const routes = [
   {
@@ -46,6 +47,7 @@ const routes = [
     element: <UserInterface />,
     children: [ 
       { path: "shop", element: <Shop /> },
+      { path: "shop/:id", element: <DetailProduit /> },
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
           { path: "cart", element: <Cart /> },

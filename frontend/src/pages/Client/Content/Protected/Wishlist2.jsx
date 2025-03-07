@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import img from "@/assets/default/image.png";
-import Footer from "../../Footer/Footer";
 import UserContext from '@/utils/UserContext';
 
 const Wishlist = () => {
@@ -66,7 +65,6 @@ const Wishlist = () => {
                     </div>
                 </div>
             </section>
-            <Footer />
         </div>
     );
 };

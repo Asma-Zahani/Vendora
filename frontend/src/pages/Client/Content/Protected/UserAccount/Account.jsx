@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
-import Footer from "../../../Footer/Footer";
 import Profile from "@/assets/dashboard/profile.png";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
@@ -89,8 +88,6 @@ const Account = () => {
                     </div>
                 </div>
             </section>
-
-            <Footer />
         </div>
     );
 };

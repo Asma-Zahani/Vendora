@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FaArrowUp } from 'react-icons/fa';
 import { useState, useEffect, useContext } from "react";
-import Footer from "../../Footer/Footer";
 import "aos/dist/aos.css";
 import { getProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";
@@ -18,7 +16,6 @@ const Shop = () => {
 
   const [gridCols, setGridCols] = useState(3);
   const [isGrid, setIsGrid] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
 
   const [produits, setProduits] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -46,11 +43,6 @@ const Shop = () => {
       }
     };
     fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
-    return () => window.removeEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
   }, []);
 
   const formattedProduits = produits.map((item) => {
@@ -177,13 +169,6 @@ const Shop = () => {
   return (
     <div className="px-8">
       <FilteredProducts user={user} datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
-
-      {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
-        className="fixed bottom-16 right-4 bg-purpleLight text-white p-4 rounded-full shadow-lg hover:bg-purpleLight transition-all transform hover:scale-110 z-10">
-          <FaArrowUp />
-      </button>)}
-
-      <Footer />
     </div>
   );
 };

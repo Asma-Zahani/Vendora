@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router";
 import { useState } from "react";
-import EmptyCardState from "./EmptyCardState";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "@/components/Modals/DeleteModal";
-import { CircleX, Minus, Plus } from "lucide-react";
+import { CircleX, Minus, Plus, ShoppingCart } from "lucide-react";
 
 const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit }) => {
     const navigate = useNavigate();
@@ -76,8 +75,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
             <div className="flex flex-col">
                 <div className="inline-block min-w-full py-2 align-middle">
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
-                        <h1 className="text-2xl font-semibold mb-4">Panier</h1>
-                        {produits && produits.length > 0 ? (
+                        {produits?.length > 0 && <h1 className="text-2xl font-semibold mb-4">Panier</h1> }
+                        {produits?.length > 0 ? (
                             <div className="space-y-10">
                                 <div className="overflow-x-auto scrollbar">
                                     <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
@@ -156,7 +155,23 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                 </div>
                             </div>
                         ) : (
-                            <EmptyCardState />
+                            <div className="flex items-center justify-center text-center h-100">
+                                <div className="flex flex-col max-w-lg">
+                                    <div className="p-3 mx-auto text-purpleLight">
+                                        <ShoppingCart size={80} />
+                                    </div>
+                                    <h1 className="mt-3 text-2xl font-semibold uppercase text-gray-800 dark:text-white">votre panier est vide</h1>
+                                    <div className="pt-2 text-sm">
+                                        <p>Avant de passer à la caisse, vous devez ajouter des produits à votre panier.</p>
+                                        <p>Vous trouverez de nombreux produits intéressants sur notre page &quot;Boutique&quot;.</p>
+                                    </div>
+                                    <div className="flex items-center justify-center mt-4 gap-x-3">
+                                        <Link to={"/shop"} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                            <span className="text-lg">Acheter maintenant</span>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>

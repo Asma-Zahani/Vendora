@@ -44,7 +44,7 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
     <>
     <div className="bg-customLight dark:bg-customDark rounded-xl shadow-md flex flex-col items-center">
       <div className="relative w-full h-full rounded-t-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
-        <img
+        <img onClick={() => console.log("ujedcfs")}
           src={imageSrc}
           alt={produit.nom}
           onError={handleImageError} 
@@ -90,12 +90,12 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
                 </button>
               </div> : 
               <> 
-                <div className="hidden md:hidden lg:flex bg-purpleLight py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300"
+                <div onClick={() => navigate(`/shop/${produit.produit_id}`)} className="hidden md:hidden lg:flex bg-purpleLight py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300"
                   onMouseEnter={() => setIsShopHovered(true)} onMouseLeave={() => setIsShopHovered(false)} >
                   {isShopHovered ? <span className="truncate"><Link2 data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="text-white">Lire Plus</span>}
                 </div>
                 <div className="absolute right-2 bottom-2">
-                  <div className="flex md:flex lg:hidden bg-purpleLight py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
+                  <div onClick={() => navigate(`/shop/${produit.produit_id}`)} className="flex md:flex lg:hidden bg-purpleLight py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
                     <Link2 size={18}/>
                   </div>
                 </div> 

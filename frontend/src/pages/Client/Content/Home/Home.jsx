@@ -1,6 +1,5 @@
 import Hero from "./Hero";
 import Features from "./Features";
-import Footer from "../../Footer/Footer";
 import Products from "./Products";
 import TopProducts from "./TopProducts";
 import { useEffect } from "react";
@@ -20,12 +19,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-customLight dark:bg-customDark duration-200">
+    <div className="duration-200">
       <Hero />
+      <Features />
       <Products />
       <TopProducts />
-      <Features />
-      <Footer />
     </div>
   );
 };

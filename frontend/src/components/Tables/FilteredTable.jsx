@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { ArrowDownToLine, Plus, Search, ChevronDown, ArrowDownAZ, ArrowUpAZ, Trash2Icon } from "lucide-react";
+import { ArrowDownToLine, Plus, Search, ChevronDown, ArrowDownAZ, ArrowUpAZ, Trash2Icon, Database } from "lucide-react";
 import FilterButtons from "@/components/Tables/FilterButtons";
 import Pagination from "@/components/Pagination/Pagination";
-import EmptyState from "@/components/Tables/EmptyState";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import ViewModal from "@/components/Modals/ViewModal";
@@ -256,7 +255,35 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                 </div>
                             </div>
                         ) : (
-                            <EmptyState label={label} searchTerm={searchTerm} setSearchTerm={setSearchTerm} data={data}/>
+                            <div className="flex items-center justify-center text-center h-80">
+                                <div className="flex flex-col max-w-sm">
+                                    {data.length > 0 ?
+                                        <div className="p-3 mx-auto bg-bgLight dark:bg-bgDark text-purpleLight rounded-full">
+                                            <Search size={20} />
+                                        </div> :
+                                        <div className="p-3 mx-auto bg-bgLight dark:bg-bgDark text-purpleLight rounded-full">
+                                            <Database size={20} />
+                                        </div>
+                                    }
+                                    <h1 className="mt-3 text-lg text-gray-800 dark:text-white">Aucun {label.slice(0, -1)} trouvé</h1>
+                                    {data.length > 0 ? 
+                                        <p className="mt-2 text-gray-500 dark:text-gray-400">Votre recherche “{searchTerm}” n’a pas correspondue à aucune {label.slice(0, -1)}. Veuillez réessayer ou ajouter un nouveau {label.slice(0, -1)}.</p> 
+                                        :
+                                        <p className="mt-2 text-gray-500 dark:text-gray-400">Aucune donnée à afficher pour le moment.</p>
+                                    }
+                                    <div className="flex items-center justify-center mt-4 gap-x-3">
+                                        {data.length > 0 && 
+                                            <button onClick={() => {setSearchTerm('');}} className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border border-borderGrayLight dark:border-borderGrayDark rounded-md">
+                                                Effacer la recherche
+                                            </button>
+                                        }
+                                        <button className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                            <Plus size={17} />
+                                            <span>Ajouter {label}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         )}
                         {filteredItems.length > 0 && currentItems.length > 0 && (
                             <Pagination 

@@ -1,26 +1,16 @@
-en promotion lazem nbadlouha en arrivage
-
 popup 9bal confirmation mte3 lcommande
+lazem popup ki n3ml delete mel wishlist ??
 
 users lazem nthabet fih
 
 relation jour feries w drive
 relation horaires w drive
 
-selected value fel checkout (point de retrat)
-
 z-index fel dropdown ???????????
 
 problem de quantite
 
-https://flowbite.com/docs/components/popover/
-https://flowbite.com/docs/components/speed-dial/
+Suivi des expéditions
 
 https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
-
-
-
-historique commandes
-Suivi des expéditions
-deconnexion
