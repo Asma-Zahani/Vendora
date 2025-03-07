@@ -3,10 +3,14 @@ import UserContext from '@/utils/UserContext';
 import Label from "@/components/Forms/Label";
 import Input from "@/components/Forms/Input";
 import Dropdown from "@/components/Forms/Dropdown";
+import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
 
 const UpdateProfile = () => {
     const { user } = useContext(UserContext);
 
+    const [isEmploiOpen, setIsEmploiOpen] = useState(false);
+    const [isHousingTypeOpen, setIsHousingTypeOpen] = useState(false);
+    const [isOccupancyStatusOpen, setIsOccupancyStatusOpen] = useState(false);
     const [isRegionOpen, setIsRegionOpen] = useState(false);
     const [isVilleOpen, setIsVilleOpen] = useState(false);
 
@@ -15,46 +19,19 @@ const UpdateProfile = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        if (name === 'region') {
-            setFormData((prev) => ({ ...prev, ville: "" }));
-            setIsRegionOpen(false);
+        if (name === 'emploi') {
+          setIsEmploiOpen(false);
+        } else if (name === 'typeLogement') {
+          setIsHousingTypeOpen(false);
+        } else if (name === 'statusLogement') {
+          setIsOccupancyStatusOpen(false);
+        } else if (name === 'region') {
+          setFormData((prev) => ({ ...prev, ville: "" }));
+          setIsRegionOpen(false);
         } else if (name === 'ville') {
-            setIsVilleOpen(false);
+          setIsVilleOpen(false);
         }
-    };
-
-    const regions = [
-        "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan", 
-        "Kasserine", "Kébili", "Le Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul", 
-        "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"
-    ];
-      
-    const villes = {
-        "Ariana": ["Ariana Ville", "Ettadhamen", "Kalâat el-Andalous", "La Soukra", "Mnihla", "Raoued", "Sidi Thabet"],
-        "Béja": ["Béja Ville", "Amdoun", "Goubellat", "Medjez el-Bab", "Nefza", "Téboursouk", "Testour"],
-        "Ben Arous": ["Ben Arous", "Bou Mhel el-Bassatine", "El Mourouj", "Ezzahra", "Fouchana", "Hammam Chott", "Hammam Lif", "Mohamedia", "Mornag", "Radès"],
-        "Bizerte": ["Bizerte", "Mateur", "Ras Jebel", "Menzel Bourguiba", "Ghar El Melh", "Joumine", "Sejnane"],
-        "Gabès": ["Gabès Ville", "Mareth", "Matmata", "Métouia", "El Hamma", "Ghannouch", "Nouvelle Matmata"],
-        "Gafsa": ["Gafsa Ville", "Métlaoui", "Mdhilla", "Redeyef", "El Guettar", "Sned"],
-        "Jendouba": ["Jendouba Ville", "Aïn Draham", "Bou Salem", "Fernana", "Tabarka"],
-        "Kairouan": ["Kairouan Ville", "Sbikha", "Haffouz", "Nasrallah", "Hajeb El Ayoun"],
-        "Kasserine": ["Kasserine Ville", "Fériana", "Thala", "Sbiba", "Sbeitla"],
-        "Kébili": ["Kébili Ville", "Douz", "Souk Lahad", "El Faouar"],
-        "Le Kef": ["Le Kef Ville", "Dahmani", "Jérissa", "Sakiet Sidi Youssef"],
-        "Mahdia": ["Mahdia Ville", "Chebba", "Rejiche", "Ksour Essef", "El Jem"],
-        "Manouba": ["Manouba", "Douar Hicher", "Oued Ellil", "Tebourba"],
-        "Médenine": ["Médenine Ville", "Zarzis", "Djerba Midoun", "Djerba Houmt Souk", "Ben Guerdane"],
-        "Monastir": ["Monastir Ville", "Jemmal", "Ksibet el-Médiouni", "Moknine", "Téboulba", "Sahline"],
-        "Nabeul": ["Nabeul Ville", "Hammamet", "Korba", "Kelibia", "Soliman", "Menzel Temime"],
-        "Sfax": ["Sfax Ville", "El Amra", "Agareb", "Bir Ali Ben Khalifa", "Mahrès", "Skhira"],
-        "Sidi Bouzid": ["Sidi Bouzid Ville", "Regueb", "Jilma", "Meknassy", "Mezzouna"],
-        "Siliana": ["Siliana Ville", "Bargou", "Gaâfour", "Makthar", "El Krib"],
-        "Sousse": ["Sousse Ville", "Msaken", "Akouda", "Hammam Sousse", "Kalaa Kebira", "Kalaa Sghira"],
-        "Tataouine": ["Tataouine Ville", "Bir Lahmar", "Ghomrassen", "Remada"],
-        "Tozeur": ["Tozeur Ville", "Degache", "Nefta", "Tamerza"],
-        "Tunis": ["Tunis Ville", "Le Bardo", "La Marsa", "Carthage", "El Menzah", "El Omrane", "Le Kram"],
-        "Zaghouan": ["Zaghouan Ville", "El Fahs", "Bir Mcherga", "Nadhour"]
-    };
+      };
 
     return (
         <div className="col-span-2 w-full py-2">
@@ -87,27 +64,30 @@ const UpdateProfile = () => {
                             setIsRegionOpen(!isRegionOpen);
                             setIsVilleOpen(false);
                         }} />
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
+                        <Dropdown label="Ville" name="ville" options={villes[formData.region] || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
                         toggleOpen={() => {
                             setIsVilleOpen(!isVilleOpen);
                             setIsRegionOpen(false);
                         }} />
                     </div>
                     <div className="col-span-2 grid grid-cols-3 gap-6">
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
-                        toggleOpen={() => {
-                            setIsVilleOpen(!isVilleOpen);
-                            setIsRegionOpen(false);
+                        <Dropdown label="Emploi" name="emploi" options={emplois} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen}
+                            toggleOpen={() => {
+                            setIsEmploiOpen(!isEmploiOpen);
+                            setIsHousingTypeOpen(false);
+                            setIsOccupancyStatusOpen(false);
                         }} />
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
-                        toggleOpen={() => {
-                            setIsVilleOpen(!isVilleOpen);
-                            setIsRegionOpen(false);
+                        <Dropdown label="Type de logement" name="typeLogement" options={housingTypes} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen}
+                            toggleOpen={() => {
+                            setIsHousingTypeOpen(!isHousingTypeOpen);
+                            setIsEmploiOpen(false);
+                            setIsOccupancyStatusOpen(false);
                         }} />
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
-                        toggleOpen={() => {
-                            setIsVilleOpen(!isVilleOpen);
-                            setIsRegionOpen(false);
+                        <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen}
+                            toggleOpen={() => {
+                            setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
+                            setIsEmploiOpen(false);
+                            setIsHousingTypeOpen(false);
                         }} />
                     </div>
                 </div>

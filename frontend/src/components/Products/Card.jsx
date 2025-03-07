@@ -68,7 +68,7 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
                   {isShopHovered ? <span className="truncate"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="text-white">Achat rapide</span>}
                 </div>
                 <div className="absolute right-2 bottom-2">
-                  <div onClick={() => setIsShopModalOpen(true)} className="flex md:flex lg:hidden bg-purpleLight py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
+                  <div onClick={() => setIsShopModalOpen(true)} className="flex md:flex lg:hidden bg-purpleLight text-white py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
                     <ShoppingCart size={18}/>
                   </div>
                 </div>
@@ -95,7 +95,7 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
                   {isShopHovered ? <span className="truncate"><Link2 data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="text-white">Lire Plus</span>}
                 </div>
                 <div className="absolute right-2 bottom-2">
-                  <div onClick={() => navigate(`/shop/${produit.produit_id}`)} className="flex md:flex lg:hidden bg-purpleLight py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
+                  <div onClick={() => navigate(`/shop/${produit.produit_id}`)} className="flex md:flex lg:hidden bg-purpleLight text-white py-2 rounded-full items-center justify-center p-2 cursor-pointer transition-all duration-300">
                     <Link2 size={18}/>
                   </div>
                 </div> 

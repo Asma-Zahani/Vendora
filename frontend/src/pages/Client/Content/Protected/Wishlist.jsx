@@ -5,11 +5,20 @@ import "aos/dist/aos.css";
 import UserContext from '@/utils/UserContext';
 import Card from "@/components/Products/Card";
 import { addToPanier, deleteFromWishlist } from "@/service/ClientService";
+import { getCategories } from "@/service/CategorieService";
+import { getSousCategories } from "@/service/SousCategorieService";
+import { getMarques } from "@/service/MarqueService";
+import { getPromotions } from "@/service/PromotionService";
 import { HeartOff } from "lucide-react";
 
 const Wishlist = () => {
     const { user, setUser } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
+    
+    const [categories, setCategories] = useState([]);
+    const [sousCategories, setSousCategories] = useState([]);
+    const [marques, setMarques] = useState([]);
+    const [promotions, setPromotions] = useState([]);
 
     useEffect(() => {
         AOS.init({ 
@@ -24,6 +33,39 @@ const Wishlist = () => {
     useEffect(() => {
         setProduits(user.wishlist);
     }, [user]); 
+
+    useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          setCategories(await getCategories());
+          setSousCategories(await getSousCategories());
+          setMarques(await getMarques());
+          setPromotions(await getPromotions());
+        } catch (error) {
+          console.error("Erreur lors de la récupération des données :", error);
+        }
+      };
+      fetchCategories();
+    }, []);
+
+    const formattedProduits = produits?.map((item) => {
+      const promotion = promotions.find(p => p.promotion_id === item.promotion_id);
+      const remise = promotion ? promotion.reduction : 0;
+      const prixApresPromo = remise ? (Number(item.prix) - (Number(item.prix) * remise / 100)).toFixed(2) : Number(item.prix).toFixed(2);
+    
+      const sousCategorie = sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id);  
+      const categorie = sousCategorie ? categories.find(c => c.categorie_id === sousCategorie.categorie_id) : null;
+    
+      return {
+        ...item,
+        categorie: categorie ? categorie.titre : "Non défini",
+        categorie_id: categorie ? categorie.categorie_id : null,
+        sous_categorie: sousCategorie ? sousCategorie.titre : "Non défini",
+        marque: marques.find(m => m.marque_id === item.marque_id)?.nom || "Non défini",
+        promotion: promotion ? promotion.nom : "Non défini",
+        prix_apres_promo: prixApresPromo
+      };
+    });
 
     const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
     const [panierAjoute, setPanierAjoute] = useState(false);
@@ -117,7 +159,7 @@ const Wishlist = () => {
                     {produits?.length > 0 && <h1 className="text-2xl font-semibold mb-4">Liste de souhait</h1>}
                     {produits?.length > 0 ? (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-lg">
-                            {produits.map((produit, index) => (
+                            {formattedProduits.map((produit, index) => (
                                 <Card key={index} user={user} produit={produit} ajouterAuPanier={ajouterAuPanier} wishlist={true} effacerDeListeSouhait={effacerDeListeSouhait} />
                             ))}
                         </div>
