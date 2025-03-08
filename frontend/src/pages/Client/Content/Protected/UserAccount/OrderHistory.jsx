@@ -3,20 +3,37 @@ import UserContext from '@/utils/UserContext';
 import { PackageX } from "lucide-react";
 
 const OrderHistory = () => {
-    const { user } = useContext(UserContext);
+    const { token } = useContext(UserContext);
 
-    const [commandes, setCommandes] = useState(null);
+    const [commandes, setCommandes] = useState([]);
 
     useEffect(() => {
-        setCommandes(user.commandes);
-    }, [user]); 
+        const fetchCommandes = async () => {
+            if (!token) return;
+            
+            try {
+                const res = await fetch('/api/commande/user', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
 
+                if (!res.ok) throw new Error("Erreur lors de la récupération des commandes");
+
+                const data = await res.json();
+                setCommandes(data);
+            } catch (error) {
+                console.error("Erreur :", error);
+            }
+        };
+
+        fetchCommandes();
+    }, [token]);
+    
     return (
         <div className="col-span-2 w-full py-2 space-y-5">
             <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                 {commandes?.some(item => item.commande_retrait_drive) && <h1 className="text-lg font-semibold mb-4">Historique des commandes de Retrait Drive</h1>}
                 <div className="grid grid-cols-1 gap-4 rounded-lg">
-                    {commandes?.length > 0 && ( commandes?.some(item => item.commande_retrait_drive) ?
+                    {!(commandes.length === 0 || !commandes.some(item => item.commande_retrait_drive)) ?
                             <div className="overflow-x-auto scrollbar">
                                 <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
                                     <thead>
@@ -60,14 +77,13 @@ const OrderHistory = () => {
                                 </div>
                             </div>
                         </div>
-
-                    )}
+                    }
                 </div>
             </div>
             <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                 {commandes?.some(item => item.commande_livraison) && <h1 className="text-lg font-semibold mb-4">Historique des commandes de Livraison</h1>}
                 <div className="grid grid-cols-1 gap-4 rounded-lg">
-                    {commandes?.length > 0 && ( commandes?.some(item => item.commande_livraison) ?
+                    {!(commandes.length === 0 || !commandes.some(item => item.commande_livraison)) ?
                             <div className="overflow-x-auto scrollbar">
                                 <table className="min-w-full border-collapse border border-borderGrayLight dark:border-borderDark">
                                     <thead>
@@ -109,7 +125,7 @@ const OrderHistory = () => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    }
                 </div>
             </div>
         </div>

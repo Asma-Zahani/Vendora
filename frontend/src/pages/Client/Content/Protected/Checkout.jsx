@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Label from "@/components/ui/Label";
@@ -26,8 +27,6 @@ const Checkout = () => {
     const location = useLocation();
     const checkoutData = location.state;
 
-    
-
     const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, drive_id: '' });
       
     const handleChange = (e) => {
@@ -51,7 +50,9 @@ const Checkout = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleEdit = async () => {
+    const navigate = useNavigate();
+
+    const passerCommande = async () => {
         try {      
             const updatedUser = await updateClient(user.id, formData);
             if (deliveryMethod === "drive") {                
@@ -62,7 +63,7 @@ const Checkout = () => {
                     drive_id: formData.drive_id,
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
-                        quantite: produit.pivot.quantite
+                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite
                     }))
                 });
             }
@@ -73,28 +74,29 @@ const Checkout = () => {
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
-                        quantite: produit.pivot.quantite
+                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite
                     }))
                 });
             }
-            location.state = null;
-            setUser((prevUser) => ({ ...prevUser, user: { ...updatedUser, produits: [] }}));            
+            setUser((prevUser) => ({ ...prevUser, user: { ...updatedUser, produits: [] }}));
+            console.log(user);
+            navigate("/orderHistory");
         } catch (error) {
           console.error("Erreur de modification:", error);
           alert("Une erreur est survenue lors de la modification du client");
         }
     };
-    const navigate = useNavigate();
     
     useEffect(() => {
         if (!checkoutData) { 
             navigate("/cart") 
         };
-      }, [checkoutData, navigate]);
+    }, [checkoutData]);
 
     if (!checkoutData) {
         return null;
     }
+
     return (
         <section className="mx-6 py-6">
             <div className="flex flex-col lg:flex-row gap-6">
@@ -216,7 +218,7 @@ const Checkout = () => {
                 message="test"
                 onConfirm={() => {
                     setIsOpen(false);
-                    handleEdit();
+                    passerCommande();
             }}/> }
         </section>
     );

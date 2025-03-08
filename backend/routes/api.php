@@ -46,6 +46,19 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('commande/user', function (Request $request) {
+    $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
+
+    if ($client) {
+        $commandes = $client->commandes()->with('commandeLivraison', 'commandeRetraitDrive.drive')->get();
+        
+        return response()->json($commandes);
+    }
+
+    return response()->json(['message' => 'Client non trouvé'], 404);
+})->middleware('auth:sanctum');
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('panier', [ClientController::class, 'ajouterAuPanier']);
     Route::post('souhait', [ClientController::class, 'ajouterAListeDeSouhaits']);
@@ -71,8 +84,8 @@ Route::apiResource('factureCommandes', FactureCommandeController::class); //test
 Route::apiResource('produits', ProduitController::class); //tester
 Route::apiResource('paniers', PanierController::class); //tester
 
-Route::apiResource('commandeLivraisons', CommandeLivraisonController::class); //tester
-Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class); //tester
+Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
+Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
 
 Route::apiResource('admins', AdminController::class);
 Route::apiResource('clients', ClientController::class);
