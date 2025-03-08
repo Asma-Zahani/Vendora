@@ -8,6 +8,9 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState(null);
+    const [panier, setPanier] = useState(null);
+    const [wishlist, setWishlist] = useState(null);
+    const [commandes, setCommandes] = useState(null);
 
     async function getUser() {
         if (!token) return;
@@ -15,13 +18,18 @@ export const UserProvider = ({ children }) => {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
-        if(res.ok){setUser(data)};
+        if(res.ok){
+            setUser(data);
+            setPanier(data.produits); 
+            setWishlist(data.wishlist); 
+            setCommandes(data.commandes)
+        };
     }
 
     useEffect(() => {if(token) {getUser()}}, [token])
     
     return (
-        <UserContext.Provider value={{ user, token, setUser, setToken }}>
+        <UserContext.Provider value={{ user, token, panier, wishlist, commandes, setUser, setToken, setPanier, setWishlist, setCommandes }}>
             {children}
         </UserContext.Provider>
     );

@@ -1,28 +1,14 @@
 import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
-import Profile from "@/assets/dashboard/profile.png";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import ProfileMale from "@/assets/default/user_male.png";
+import ProfileFemale from "@/assets/default/user_female.png";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
+import { handleLogout } from "@/service/AuthService";
 
 const Account = () => {
     const { user, token, setUser, setToken } = useContext(UserContext);
     const location = useLocation();
-    const navigate = useNavigate();
-
-    async function handleLogout(e) {
-        e.preventDefault();
-    
-        const res = await fetch('api/logout', {
-          method: 'post',
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        if(res.ok){
-          setUser(null);
-          setToken(null);
-          localStorage.removeItem("token");
-          navigate('/');
-        }
-      }
 
     return (
         <div>
@@ -35,7 +21,7 @@ const Account = () => {
                                 <div className="flex gap-3">
                                     <button type="button" className="transition-all duration-200 ease-linear rounded-full">
                                         <div className="bg-bgDark rounded-full w-16 h-16">
-                                            <img src={Profile} alt="" className="w-full h-full rounded-full" />
+                                            {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
                                         </div>
                                     </button>
                                     <div className="flex items-center">
@@ -69,7 +55,7 @@ const Account = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <form onSubmit={handleLogout}>
+                                            <form onSubmit={() => handleLogout(token, setUser, setToken)}>
                                                 <button className={`inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer ${location.pathname === "/logout" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                     <LogOut className="w-5 h-5 me-2" />
                                                     Déconnexion

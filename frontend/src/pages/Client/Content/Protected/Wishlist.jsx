@@ -12,7 +12,7 @@ import { getPromotions } from "@/service/PromotionService";
 import { HeartOff } from "lucide-react";
 
 const Wishlist = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
     
     const [categories, setCategories] = useState([]);
@@ -31,8 +31,8 @@ const Wishlist = () => {
     }, []);
 
     useEffect(() => {
-        setProduits(user.wishlist);
-    }, [user]); 
+        setProduits(wishlist);
+    }, [wishlist]); 
 
     useEffect(() => {
       const fetchCategories = async () => {
@@ -71,9 +71,7 @@ const Wishlist = () => {
     const [panierAjoute, setPanierAjoute] = useState(false);
 
     const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
-        const produitExistant = user?.produits?.find(item => item.produit_id === produit_id);
-        
-        console.log(quantiteAjoutee);
+        const produitExistant = panier?.find(item => item.produit_id === produit_id);
     
         setFormData((prevData) => ({
           ...prevData,
@@ -91,40 +89,28 @@ const Wishlist = () => {
     
     useEffect(() => {
         if (panierAjoute && formData) {
-          console.log(formData);
           const timeout = setTimeout(async () => {
             try {
               await addToPanier(formData);
-              setUser((prevUser) => {
-                const produitExistant = prevUser.produits.find(item => item.produit_id === formData.produit_id);
-      
+              setPanier((prevProduits) => {
+                const produitExistant = prevProduits.find(item => item.produit_id === formData.produit_id);
+              
                 if (produitExistant) {
-                  return {
-                    ...prevUser,
-                    produits: prevUser.produits.map(item =>
-                      item.produit_id === formData.produit_id
-                        ? {
-                            ...item,
-                            pivot: {
-                              ...item.pivot,
-                              quantite: (formData.quantite),
-                            },
-                          }
-                        : item
-                    ),
-                  };
+                  return prevProduits.map(item =>
+                    item.produit_id === formData.produit_id ? 
+                      { ...item, pivot: {
+                        ...item.pivot,
+                        quantite: formData.quantite,
+                      }} : item
+                  );
                 } else {
                   const produit = produits.find(item => item.produit_id === formData.produit_id);
-                  return {
-                    ...prevUser,
-                    produits: [
-                      ...prevUser.produits,
-                      { ...produit, quantite: formData.quantite },
-                    ],
-                  };
+                  if (produit) {
+                    return [...prevProduits, { ...produit, pivot: { quantite: formData.quantite } }];
+                  }
+                  return prevProduits;
                 }
               });
-      
               console.log("Panier mis à jour");
             } catch (error) {
               console.error("Erreur lors de la mise à jour du panier:", error);
@@ -139,12 +125,7 @@ const Wishlist = () => {
     const effacerDeListeSouhait = async (produit_id) => {
         try {
             await deleteFromWishlist({ client_id: user?.id, produit_id });
-    
-            setUser((prevUser) => ({
-                ...prevUser,
-                wishlist: prevUser.wishlist.filter(item => item.produit_id !== produit_id),
-            }));
-    
+            setWishlist((prevWishlist) => prevWishlist.filter(item => item.produit_id !== produit_id));
             console.log("Produit supprimé de la liste de souhaits avec succès");
         } catch (error) {
             console.error("Erreur lors de la suppression de la liste de souhaits:", error);
@@ -160,7 +141,7 @@ const Wishlist = () => {
                     {produits?.length > 0 ? (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-lg">
                             {formattedProduits.map((produit, index) => (
-                                <Card key={index} user={user} produit={produit} ajouterAuPanier={ajouterAuPanier} wishlist={true} effacerDeListeSouhait={effacerDeListeSouhait} />
+                                <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} effacerDeListeSouhait={effacerDeListeSouhait} />
                             ))}
                         </div>
                     ) : (

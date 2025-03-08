@@ -1,36 +1,22 @@
 import { useContext , useState, useRef } from "react";
 import { Search, ShoppingCart, Settings, User, LogIn, User2, Menu, Heart } from 'lucide-react';
-import Profile from "@/assets/dashboard/profile.png";
+import ProfileMale from "@/assets/default/user_male.png";
+import ProfileFemale from "@/assets/default/user_female.png";
 import logo from "@/assets/logo/logo.svg";
 import DarkMode from "@/utils/DarkMode";
 import { UserContext } from "@/utils/UserContext";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { handleLogout } from "@/service/AuthService";
 
 const Header = () => {
-  const { user, token, setUser, setToken } = useContext(UserContext);
+  const { user, panier, wishlist, token, setUser, setToken } = useContext(UserContext);
   const menuRef = useRef(null);
-  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-
-  async function handleLogout(e) {
-    e.preventDefault();
-
-    const res = await fetch('api/logout', {
-      method: 'post',
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    if(res.ok){
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem("token");
-      navigate('/');
-    }
-  }
   return (
     <header
       className="w-full bg-customLight dark:bg-customDark dark:shadow-none transition-all duration-300 relative">
@@ -93,9 +79,9 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-                {user && user.produits &&
+                {user && panier &&
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {user.produits.reduce((total) => total + 1, 0)} 
+                    {panier.reduce((total) => total + 1, 0)} 
                   </span>
                 }
               </Link>
@@ -104,9 +90,9 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
-                {user && user.wishlist &&
+                {user && wishlist &&
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {user.wishlist.reduce((total) => total + 1, 0)} 
+                    {wishlist.reduce((total) => total + 1, 0)} 
                   </span>
                 }
               </Link>
@@ -120,7 +106,7 @@ const Header = () => {
               <div className="relative group flex items-center dark:border-borderDark pl-4 -my-3">
                 <button type="button" className="inline-block p-0 transition-all duration-200 ease-linear rounded-full">
                   <div className="bg-bgDark rounded-full w-[29px] h-[29px] md:w-[39px] md:h-[39px] lg:w-[39px] lg:h-[39px]">
-                    <img src={Profile} alt="" className="w-full h-full rounded-full" />
+                    {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
                   </div>
                 </button>
                 <div className="lg:flex hidden flex-col items-start justify-center pl-2">
@@ -134,7 +120,7 @@ const Header = () => {
                     <Settings size={15} className="mr-2" /> Settings
                   </li>
                   <li className="flex items-center py-3 px-4 leading-4 cursor-pointer">
-                    <form onSubmit={handleLogout} className="w-full">
+                    <form onSubmit={() => handleLogout(token, setUser, setToken)} className="w-full">
                       <button className="flex items-center w-full">
                         <LogIn size={15} className="mr-2" /> Log Out
                       </button>

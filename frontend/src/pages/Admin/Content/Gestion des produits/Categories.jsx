@@ -53,9 +53,7 @@ const Categories = () => {
     }
   };
   const handleDelete = async (categorie_id) => {
-    try {
-      console.log(categorie_id);
-      
+    try {      
       await deleteCategorie(categorie_id);
       setCategories((prevCategories) => prevCategories.filter(categorie => categorie.categorie_id !== formData.categorie_id));
       alert(`Categorie with id ${categorie_id} supprimé avec succès`);

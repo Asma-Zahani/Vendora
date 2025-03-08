@@ -316,7 +316,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                         selectedItem.actions.delete(selectedItem[identifiant]); 
                         setSelectedItem(null);
                     } else {
-                        console.log("hello")
+                        console.log("delete??")
                     }
                     setIsDeleteOpen(false);
             }}/> }

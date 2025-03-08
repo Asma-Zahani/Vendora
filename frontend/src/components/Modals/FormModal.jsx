@@ -144,9 +144,7 @@ const FormModal = ({ onClose, formLabel, action, formData, setFormData, fields, 
                               const updatedColors = formData.couleurs.map(c =>
                                 c.couleur_id === selectedColor.couleur_id ? { ...c, quantite: e.target.value } : c
                               );
-                              setFormData({ ...formData, couleurs: updatedColors });
-                              console.log(formData);
-                              
+                              setFormData({ ...formData, couleurs: updatedColors });                              
                             }}
                             className="w-24 border border-gray-300 rounded"
                           />

@@ -1,29 +1,15 @@
 import { ChevronsLeft, ChevronsRight, Search, ShoppingCart, Settings, ChevronDown, User, LogIn, Bell, Menu } from 'lucide-react';
-import Profile from "@/assets/dashboard/profile.png";
+import ProfileMale from "@/assets/default/user_male.png";
+import ProfileFemale from "@/assets/default/user_female.png";
 import DarkMode from "@/utils/DarkMode";
 import { UserContext } from '@/utils/UserContext';
-import { useNavigate } from 'react-router';
 import { useContext } from 'react';
+import { handleLogout } from "@/service/AuthService";
 
 // eslint-disable-next-line react/prop-types
 const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
   const { user, token, setUser, setToken } = useContext(UserContext);
-  const navigate = useNavigate();
 
-  async function handleLogout(e) {
-    e.preventDefault();
-
-    const res = await fetch('api/logout', {
-      method: 'post',
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    if(res.ok){
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem("token");
-      navigate('/');
-    }
-  }
   return (
     <header className={`w-full fixed z-20 left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none
       ${ isSidebarVisible ? "lg:ml-[16.25rem] lg:w-[calc(100%-16.25rem)]" : " lg:w-[calc(100%-5rem)] lg:ml-[5rem]" }
@@ -79,7 +65,7 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
             <div className="relative group flex items-center dark:border-borderDark pl-4 -my-4">
               <button type="button" className="inline-block p-0 transition-all duration-200 ease-linear rounded-full">
                 <div className="bg-bgDark rounded-full w-[29px] h-[29px] md:w-[39px] md:h-[39px] lg:w-[39px] lg:h-[39px]">
-                  <img src={Profile} alt="" className="w-full h-full rounded-full" />
+                {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
                 </div>
               </button>
               <div className="lg:flex hidden flex-col items-start justify-center pl-2">
@@ -97,7 +83,7 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
                   <Settings size={15} className="mr-2" /> Settings
                 </li>
                 <li className="flex items-center py-3 px-4 leading-4 hover:bg-gray-100 dark:hover:bg-[#3D3D3D] cursor-pointer">
-                  <form onSubmit={handleLogout} className="w-full">
+                  <form onSubmit={() => handleLogout(token, setUser, setToken)} className="w-full">
                     <button className="flex items-center w-full">
                       <LogIn size={15} className="mr-2" /> Log Out
                     </button>

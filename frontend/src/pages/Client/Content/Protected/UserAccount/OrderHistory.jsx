@@ -1,32 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from '@/utils/UserContext';
 import { PackageX } from "lucide-react";
+import { getCommandes } from "@/service/CommandeService";
 
 const OrderHistory = () => {
     const { token } = useContext(UserContext);
 
     const [commandes, setCommandes] = useState([]);
 
-    useEffect(() => {
-        const fetchCommandes = async () => {
-            if (!token) return;
-            
-            try {
-                const res = await fetch('/api/commande/user', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
-                if (!res.ok) throw new Error("Erreur lors de la récupération des commandes");
-
-                const data = await res.json();
-                setCommandes(data);
-            } catch (error) {
-                console.error("Erreur :", error);
-            }
-        };
-
-        fetchCommandes();
-    }, [token]);
+    useEffect(() => { (async () => setCommandes(await getCommandes(token)))()}, [commandes, token]);
     
     return (
         <div className="col-span-2 w-full py-2 space-y-5">

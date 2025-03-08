@@ -22,8 +22,6 @@ use App\Http\Controllers\DriveController;
 use App\Http\Controllers\Enums\EtatCommandeController;
 use App\Http\Controllers\Enums\StatusDriveController;
 use App\Http\Controllers\Enums\StatusProduitController;
-use App\Models\CommandeLivraison;
-use App\Models\CommandeRetraitDrive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Users\Client;
@@ -32,15 +30,7 @@ Route::get('/user', function (Request $request) {
     $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
 
     if ($client) {
-        $client = $client->load('produits', 'wishlist', 'commandes');
-
-        $client->commandes->each(function ($commande) {
-            if (CommandeLivraison::where('commande_id', $commande->commande_id)->exists()) {
-                $commande->load('commandeLivraison');
-            } elseif (CommandeRetraitDrive::where('commande_id', $commande->commande_id)->exists()) {
-                $commande->load('commandeRetraitDrive.drive');
-            }
-        });
+        $client = $client->load('produits', 'wishlist');
         return $client;
     }
     return $request->user();

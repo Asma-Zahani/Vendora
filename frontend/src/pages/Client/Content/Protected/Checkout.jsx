@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { regions, villes } from '@/service/UserInfos';
 
 const Checkout = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, setPanier } = useContext(UserContext);
 
     const [paymentMethod, setPaymentMethod] = useState("carte");
     const [deliveryMethod, setDeliveryMethod] = useState("livraison");
@@ -78,8 +78,8 @@ const Checkout = () => {
                     }))
                 });
             }
-            setUser((prevUser) => ({ ...prevUser, user: { ...updatedUser, produits: [] }}));
-            console.log(user);
+            setUser(() => ({ ...updatedUser }));
+            setPanier([]);
             navigate("/orderHistory");
         } catch (error) {
           console.error("Erreur de modification:", error);

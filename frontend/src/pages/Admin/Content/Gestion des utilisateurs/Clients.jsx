@@ -32,7 +32,6 @@ const Clients = () => {
 
   const handleClient = async (id) => {
     try {
-      console.log(id);
       const client = await getClient(id);
       setFormData(client);
     } catch (error) {

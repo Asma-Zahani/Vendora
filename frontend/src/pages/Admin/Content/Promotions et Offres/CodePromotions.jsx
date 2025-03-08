@@ -56,9 +56,7 @@ const CodePromotions = () => {
     }
   };
   const handleDelete = async (code_promotion_id) => {
-    try {
-      console.log(code_promotion_id);
-      
+    try {      
       await deleteCodePromotion(code_promotion_id);
       setCodePromotions((prevCodePromotions) => prevCodePromotions.filter(codePromotion => codePromotion.code_promotion_id !== formData.code_promotion_id));
       alert(`CodePromotion with id ${code_promotion_id} supprimé avec succès`);

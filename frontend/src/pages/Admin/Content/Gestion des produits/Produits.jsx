@@ -89,8 +89,6 @@ const Produits = () => {
   const handleProduit = async (produit_id) => {
     try {
       const produit = await getProduit(produit_id);
-      console.log(produit);
-      
       setFormData(produit);
     } catch (error) {
       console.error("Erreur lors de la récupération du produit:", error);

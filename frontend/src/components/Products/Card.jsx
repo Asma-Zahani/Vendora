@@ -8,7 +8,7 @@ import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist, effacerDeListeSouhait }) => {
+const Card = ({ wishlist, produit, ajouterAuPanier, ajouterAuListeSouhait, effacerDeListeSouhait }) => {
   const navigate = useNavigate();
 
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
@@ -44,12 +44,8 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
     <>
     <div className="bg-customLight dark:bg-customDark rounded-xl shadow-md flex flex-col items-center">
       <div className="relative w-full h-full rounded-t-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
-        <img onClick={() => console.log("ujedcfs")}
-          src={imageSrc}
-          alt={produit.nom}
-          onError={handleImageError} 
-          className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110 rounded-t-xl"
-        />
+        <img src={imageSrc} alt={produit.nom} onError={handleImageError} 
+          className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110 rounded-t-xl"/>
         <div className="absolute top-0 left-0 sm:top-0 sm:left-0 right-0 bottom-0 rounded-t-xl bg-customDark/25 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex flex-col space-y-1 md:space-y-2">
             <div onClick={() => setIsViewModalOpen(true)} className={`hidden md:hidden lg:flex bg-contentLight hover:bg-contentDark dark:text-black py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300
@@ -102,20 +98,19 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
               </> 
             }
           </div>
-          {!wishlist && user?.wishlist && 
-            <Heart size={20} fill={`${user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
+          {!effacerDeListeSouhait && wishlist && 
+            <Heart size={20} fill={`${wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
               onClick={() => {
-                const isProductInWishlist = user.wishlist.some(item => item.produit_id === produit.produit_id);
+                const isProductInWishlist = wishlist.some(item => item.produit_id === produit.produit_id);
 
                 if (!isProductInWishlist) {
                   ajouterAuListeSouhait(produit.produit_id);
                 }
                 else {
-                  console.log("test");
                   navigate("/wishlist");
                 }
               }}
-              className={`absolute left-4 top-4 ${user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : 'text-white hover:text-customDark'}`}
+              className={`absolute left-4 top-4 ${wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : 'text-white hover:text-customDark'}`}
               onMouseEnter={() => setIsHeartHovered(true)}
               onMouseLeave={() => setIsHeartHovered(false)}
             />
@@ -123,12 +118,12 @@ const Card = ({ user, produit, ajouterAuPanier, ajouterAuListeSouhait, wishlist,
           
           {isHeartHovered && (
             <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
-              {user.wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
+              {wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
             </div>
           )}
 
-          {wishlist && user?.wishlist && 
+          {effacerDeListeSouhait && wishlist && 
             <button onClick={() => effacerDeListeSouhait(produit.produit_id)} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}
                 className="absolute left-4 top-4 bg-contentLight hover:bg-contentDark text-black hover:text-white rounded-full p-2">
               <Trash2 size={17}/> 

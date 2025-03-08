@@ -7,7 +7,7 @@ import { addToPanier, deleteFromPanier } from "@/service/ClientService";
 import UserContext from '@/utils/UserContext';
 
 const Cart = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, panier, setPanier } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
     const [formData, setFormData] = useState(null);
     const [codePromotion, setCodePromotion] = useState(null);
@@ -24,8 +24,8 @@ const Cart = () => {
     }, []);
 
     useEffect(() => {
-        setProduits(user.produits);
-    }, [user]);
+        setProduits(panier);
+    }, [panier]);
 
     const handleCodePromotion = async (code) => {
         try {
@@ -72,13 +72,7 @@ const Cart = () => {
             if (panierDelete && formData) {
                 try {
                     await deleteFromPanier(formData);
-                    setUser((prevUser) => {
-                        const updatedProduits = prevUser.produits.filter(item => item.produit_id !== formData.produit_id);
-                        return {
-                            ...prevUser,
-                            produits: updatedProduits,
-                        };
-                    });
+                    setPanier((prevProduits) => prevProduits.filter(item => item.produit_id !== formData.produit_id));
                     console.log("Element effacé du panier");
                 } catch (error) {
                     console.error("Erreur lors de la mise à jour du panier:", error);
@@ -88,7 +82,7 @@ const Cart = () => {
         };
     
         handleDelete();
-    }, [panierDelete, formData, setUser]);
+    }, [panierDelete, formData, setPanier]);
     
 
     useEffect(() => {
