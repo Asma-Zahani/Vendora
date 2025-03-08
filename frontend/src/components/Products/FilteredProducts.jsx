@@ -75,7 +75,7 @@ const FilteredProducts = ({ wishlist, datas, gridInfo, filtres, ajouterAuPanier,
                         gridInfo.isGrid ? (
                             <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
                         ) : (
-                            <List key={index} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
+                            <List key={index} list={true} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
                         )
                     ))
                 ) : (
