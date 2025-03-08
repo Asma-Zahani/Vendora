@@ -28,7 +28,7 @@ const Checkout = () => {
 
     
 
-    const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, point_retrait: '' });
+    const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, drive_id: '' });
       
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,7 +38,7 @@ const Checkout = () => {
           setIsRegionOpen(false);
         } else if (name === 'ville') {
           setIsVilleOpen(false);
-        } else if (name === 'point_retrait') {
+        } else if (name === 'drive_id') {
             setIsPointRetraitOpen(false);
           }
     };
@@ -59,7 +59,7 @@ const Checkout = () => {
                     client_id: user.id,
                     total: checkoutData.total,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
-                    point_retrait: formData.point_retrait,
+                    drive_id: formData.drive_id,
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
                         quantite: produit.pivot.quantite
@@ -162,9 +162,9 @@ const Checkout = () => {
                                     )}
                                     {deliveryMethod === "drive" && (
                                         <div className="col-span-2">
-                                            <Drop label="Point de retrait" name="point_retrait" options={dropdownOptions.drive_id} selectedValue={formData.point_retrait} 
+                                            <Drop label="Point de retrait" name="drive_id" options={dropdownOptions.drive_id} selectedValue={formData.drive_id} 
                                             onSelect={(selected) => { 
-                                                setFormData({ ...formData, point_retrait: selected.value });
+                                                setFormData({ ...formData, drive_id: selected.value });
                                                 setIsPointRetraitOpen(null);
                                             }}
                                             isOpen={isPointRetraitOpen}
