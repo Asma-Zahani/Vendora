@@ -6,8 +6,6 @@ users lazem nthabet fih
 relation jour feries w drive
 relation horaires w drive
 
-z-index fel dropdown ???????????
-
 problem de quantite (quantité fel produit)
 
 Suivi des expéditions
@@ -18,3 +16,5 @@ https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
 
 setUser fel checkout --> commande pasé avec succés
+
+add Couleur (formModel)

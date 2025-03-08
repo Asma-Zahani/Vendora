@@ -11,7 +11,6 @@ import Dropdown from "@/components/ui/Dropdown";
 import { Plus } from "lucide-react";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
-import Colors from "../ColorPicker/ColorPicker";
 
 const FormModal = ({ onClose, formLabel, action, formData, setFormData, fields, onSubmit }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -76,140 +75,95 @@ const FormModal = ({ onClose, formLabel, action, formData, setFormData, fields, 
                   <ImageUpload label={formLabel} name={key} value={formData[key] || ""} onChange={(fileName) => setFormData({ ...formData, [key]: fileName })} />
                 }
                 {type === "dropdown" && options &&
-                  <Dropdown
-                    label={label}
-                    name={key}
-                    options={options}
-                    selectedValue={formData[key] || ""}
+                  <Dropdown label={label} name={key} options={options} selectedValue={formData[key] || ""} isOpen={activeDropdown === key}
                     onSelect={(selected) => { 
                       setFormData({ ...formData, [key]: selected.value });
                       setActiveDropdown(null);
                     }}
-                    isOpen={activeDropdown === key}
-                    toggleOpen={() => toggleDropdown(key)} 
-                  />
+                    toggleOpen={() => toggleDropdown(key)} />
                 }
                 {type === "colors" && options && (
-                  <div className="flex w-full flex-col gap-2">
-                    {/* Liste des couleurs disponibles */}
-                    <div className="flex gap-2 overflow-y-auto scrollbar flex-grow">
-                      {options.map((color) => {
-                        const isSelected = formData.couleurs?.some(c => c.id === color.id);
-                        return (
-                          <div key={color.id} className="relative">
-                            <div
-                              className={`w-8 h-8 rounded-full border-2 cursor-pointer ${isSelected ? 'border-purpleLight' : 'border-gray-300'}`}
-                              style={{ backgroundColor: color.code_hex }}
-                              onClick={() => {
-                                if (isSelected) {
-                                  // Retirer la couleur si elle est déjà sélectionnée
-                                  setFormData({
-                                    ...formData,
-                                    couleurs: formData.couleurs.filter(c => c.id !== color.id)
+                  <div className="flex w-[417px] sm:w-[430px] flex-col gap-2">
+                    <div className="flex">
+                      <div className="flex gap-2 overflow-y-auto scrollbar flex-grow pr-2">
+                        {options.map((color) => {
+                          return (
+                            <div key={color.couleur_id} className="relative">
+                              <div style={{ backgroundColor: color.code_hex }} className={`w-8 h-8 rounded-full border-2 cursor-pointer ${formData.couleurs && formData.couleurs.some(c => c.couleur_id === color.couleur_id) ? 'border-purpleLight' : 'border-borderGrayLight dark:border-borderGrayDark'}`}
+                                onClick={() => {
+                                  setFormData((prevData) => {
+                                    const couleurs = prevData.couleurs || [];
+                                    if (!(couleurs).some(c => c.couleur_id === color.couleur_id)) {
+                                      return {
+                                        ...prevData,
+                                        couleurs: [...(prevData.couleurs || []), color]
+                                      }
+                                    }
+                                    else {
+                                      return {
+                                        ...prevData,
+                                        couleurs: couleurs.filter(c => c.couleur_id !== color.couleur_id)
+                                      }
+                                    }
                                   });
-                                } else {
-                                  // Ajouter la nouvelle couleur avec quantité vide
-                                  setFormData({
-                                    ...formData,
-                                    couleurs: [...(formData.couleurs || []), {
-                                      id: color.id,
-                                      nom: color.nom,
-                                      code_hex: color.code_hex,
-                                      quantite: ""
-                                    }]
-                                  });
-                                }
-                              }}
-                            />
+                                }}/>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div  className="relative w-8 h-8 rounded-full border-2 border-purpleLight shrink-0 ml-2 flex items-center justify-center cursor-pointer">
+                        <Plus onClick={togglePalette} size={17} className="text-purpleLight font-bold" strokeWidth={3} />
+                        {showPalette && (
+                          <div className="absolute bottom-full -right-2 mb-2 p-2 rounded shadow-lg z-50 bg-white">
+                            <div className="space-y-2">
+                              <div className="max-h-60 overflow-y-auto">
+                                <ColorPicker color={color} onChange={(newColor) => { setColor(newColor); setForm({ ...form, code_hex: newColor.hex }) }} />
+                              </div>
+                              <input type="text" name="nom" placeholder="Nom de la couleur" value={form.nom || ""}
+                                onChange={(e) => setForm({ ...form, nom: e.target.value })} className="border border-gray-300 rounded p-1 w-full" />
+                            </div>
+                            <div className="flex gap-2 justify-end mt-2">
+                              <button onClick={togglePalette} className="px-4 py-1 border border-purpleLight text-purpleLight rounded">Annuler</button>
+                              <button onClick={() => { handleCreate(); togglePalette(); }} className="px-4 py-1 bg-purpleLight text-white rounded">Ajouter</button>
+                            </div>
                           </div>
-                        );
-                      })}
-
-                      {/* Bouton pour la palette de couleurs */}
-                      <div
-                        onClick={togglePalette}
-                        className="w-8 h-8 rounded-full border-2 border-purpleLight shrink-0 ml-2 flex items-center justify-center cursor-pointer"
-                      >
-                        <Plus size={17} className="text-purpleLight font-bold" strokeWidth={3} />
+                        )}
                       </div>
                     </div>
 
-                    {/* Affichage des couleurs sélectionnées avec leurs quantités */}
-                    <div className="flex flex-col gap-2 mt-3">
+                    <div className="flex flex-col gap-2 mt-3 ml-25">
                       {formData.couleurs?.map((selectedColor) => (
-                        <div key={selectedColor.id} className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: selectedColor.code_hex }} />
+                        <div key={selectedColor.couleur_id} className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full border border-borderGrayLight dark:border-borderGrayDark" style={{ backgroundColor: selectedColor.code_hex }} />
                           <span className="text-sm">{selectedColor.nom}</span>
                           <input
                             type="number"
                             placeholder="Quantité"
-                            value={selectedColor.quantite}
+                            value={selectedColor.quantite ? selectedColor.quantite : ''}
                             onChange={(e) => {
                               const updatedColors = formData.couleurs.map(c =>
-                                c.id === selectedColor.id ? { ...c, quantite: e.target.value } : c
+                                c.couleur_id === selectedColor.couleur_id ? { ...c, quantite: e.target.value } : c
                               );
                               setFormData({ ...formData, couleurs: updatedColors });
+                              console.log(formData);
+                              
                             }}
                             className="w-24 border border-gray-300 rounded"
                           />
                         </div>
                       ))}
                     </div>
-
-                    {/* Palette de sélection de couleur personnalisée */}
-                    {showPalette && (
-                      <div className="absolute top-12 right-0 p-2 rounded shadow-lg z-50 bg-white">
-                        <div className="max-h-60 overflow-y-auto">
-                          <ColorPicker
-                            color={color}
-                            onChange={(newColor) => {
-                              setColor(newColor);
-                              setForm({ ...form, code_hex: newColor.hex });
-                            }}
-                          />
-                        </div>
-                        <input
-                          type="text"
-                          name="nom"
-                          placeholder="Nom de la couleur"
-                          value={form.nom || ""}
-                          onChange={(e) => setForm({ ...form, nom: e.target.value })}
-                          className="border border-gray-300 rounded p-1 w-full"
-                        />
-                        <div className="flex gap-2 justify-end mt-2">
-                          <button onClick={togglePalette} className="px-4 py-1 border border-purpleLight text-purpleLight rounded">Annuler</button>
-                          <button
-                            onClick={() => {
-                              handleCreate(); // ajouter la nouvelle couleur dans la liste options
-                              togglePalette();
-                            }}
-                            className="px-4 py-1 bg-purpleLight text-white rounded"
-                          >
-                            Ajouter
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 )}
-
               </div>
             ))}
           </div>
 
           <div className="flex items-center p-4 md:p-5 rounded-b dark:border-gray-600 justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="border border-purpleLight text-purpleLight text-[14px] py-2 px-6 rounded-md"
-            >
+            <button type="button" onClick={onClose} className="border border-purpleLight text-purpleLight text-[14px] py-2 px-6 rounded-md">
               Annuler
             </button>
-            <button
-              type="button"
-              onClick={onSubmit}
-              className="bg-purpleLight dark:bg-purpleDark text-white dark:text-purpleLight text-[14px] py-2 px-6 rounded-md"
-            >
+            <button type="button" onClick={onSubmit} className="bg-purpleLight dark:bg-purpleDark text-white dark:text-purpleLight text-[14px] py-2 px-6 rounded-md">
               {action}
             </button>
           </div>

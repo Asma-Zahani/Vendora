@@ -32,25 +32,17 @@ const Produits = () => {
 
   const [formColor, setFormColor] = useState({nom: "", code_hex: ""});
 
-  
   const handleCreateCouleur = async () => {
-    try {
-      const newCouleur = await createCouleur(formColor); // Crée la couleur avec les informations fournies
-      const couleurAvecQuantite = { ...newCouleur, pivot: { produit_id: formData.produit_id, couleur_id: newCouleur.couleur_id, quantite: formColor.quantite } };
-      
-      // Mettre à jour l'état de formData pour inclure la nouvelle couleur avec la quantité
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        couleurs: [...prevFormData.couleurs, couleurAvecQuantite],
-      }));
+    try {      
+      const newCouleur = await createCouleur(formColor);
   
-      alert(`Couleur ajoutée avec succès`);
+      setCouleurs((prevCouleurs) => [...prevCouleurs, newCouleur]);
+      alert(`Couleur ajouté avec succès`);
     } catch (error) {
-      console.error("Erreur d'ajout :", error);
-      alert("Une erreur est survenue lors de l'ajout de la couleur");
+      console.error("Erreur d'ajout:", error);
+      alert('Une erreur est survenue lors de l\'ajout du couleur');
     }
   };
-  
   
   const columns = [
     { label: "Titre", key: "nom", type: "text" },
