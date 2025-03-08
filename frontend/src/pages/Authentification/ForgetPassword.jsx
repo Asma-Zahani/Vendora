@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "./Form";
-import Input from "@/components/Forms/Input";
+import Input from "@/components/ui/Input";
 
 const ForgetPassword = () => {
   const [formData, setFormData] = useState({ email: "" });

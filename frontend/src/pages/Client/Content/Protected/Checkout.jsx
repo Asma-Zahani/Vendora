@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Label from "@/components/Forms/Label";
-import Input from "@/components/Forms/Input";
+import Label from "@/components/ui/Label";
+import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
@@ -99,7 +99,7 @@ const Checkout = () => {
         <section className="mx-6 py-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 <div className="inline-block min-w-full py-2 align-middle">
-                    <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
+                    <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                         <div className="flex flex-col lg:flex-row gap-6">
                             {/* Formulaire de facturation */}
                             <div className="flex-1/5 py-4 px-2">
@@ -153,7 +153,7 @@ const Checkout = () => {
                                                 setIsRegionOpen(!isRegionOpen);
                                                 setIsVilleOpen(false);
                                             }} />
-                                            <Dropdown label="Ville" name="ville" options={villes[formData.region]} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
+                                            <Dropdown label="Ville" name="ville" options={villes[formData.region] || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
                                             toggleOpen={() => {
                                                 setIsVilleOpen(!isVilleOpen);
                                                 setIsRegionOpen(false);

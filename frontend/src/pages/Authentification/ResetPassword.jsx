@@ -1,11 +1,11 @@
 import { useState, useEffect }  from "react";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
-import Input from "@/components/Forms/Input";
-import ShowPassword from "@/components/Forms/ShowPassword";
+import Input from "@/components/ui/Input";
+import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
-import Label from "@/components/Forms/Label";
-import Button from "@/components/Forms/Button";
+import Label from "@/components/ui/Label";
+import Button from "@/components/ui/Button";
 
 const ResetPassword = () => {
     const [inputType, setInputType] = useState("password");

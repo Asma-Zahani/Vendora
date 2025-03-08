@@ -2,9 +2,9 @@ import { useContext, useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import UserContext from "@/utils/UserContext";
-import Label from "@/components/Forms/Label";
-import Input from "@/components/Forms/Input";
-import ShowPassword from "@/components/Forms/ShowPassword";
+import Label from "@/components/ui/Label";
+import Input from "@/components/ui/Input";
+import ShowPassword from "@/components/ui/ShowPassword";
 import Alert from "@/components/Alert/Alert";
 
 const UpdatePassword = () => {

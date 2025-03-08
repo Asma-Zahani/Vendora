@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Input from "@/components/Forms/Input";
-import ShowPassword from "@/components/Forms/ShowPassword";
+import Input from "@/components/ui/Input";
+import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
-import Label from "@/components/Forms/Label";
+import Label from "@/components/ui/Label";
 import Dropdown from "@/components/Forms/Dropdown";
 import { UserContext } from "@/utils/UserContext";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
