@@ -90,27 +90,109 @@ const FormModal = ({ onClose, formLabel, action, formData, setFormData, fields, 
                   />
                 }
                 {type === "colors" && options && (
-                  <div className="flex w-full items-center">
+                  <div className="flex w-full flex-col gap-2">
+                    {/* Liste des couleurs disponibles */}
                     <div className="flex gap-2 overflow-y-auto scrollbar flex-grow">
-                      <Colors options={options} formData={formData} setFormData={setFormData} />
+                      {options.map((color) => {
+                        const isSelected = formData.couleurs?.some(c => c.id === color.id);
+                        return (
+                          <div key={color.id} className="relative">
+                            <div
+                              className={`w-8 h-8 rounded-full border-2 cursor-pointer ${isSelected ? 'border-purpleLight' : 'border-gray-300'}`}
+                              style={{ backgroundColor: color.code_hex }}
+                              onClick={() => {
+                                if (isSelected) {
+                                  // Retirer la couleur si elle est déjà sélectionnée
+                                  setFormData({
+                                    ...formData,
+                                    couleurs: formData.couleurs.filter(c => c.id !== color.id)
+                                  });
+                                } else {
+                                  // Ajouter la nouvelle couleur avec quantité vide
+                                  setFormData({
+                                    ...formData,
+                                    couleurs: [...(formData.couleurs || []), {
+                                      id: color.id,
+                                      nom: color.nom,
+                                      code_hex: color.code_hex,
+                                      quantite: ""
+                                    }]
+                                  });
+                                }
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+
+                      {/* Bouton pour la palette de couleurs */}
+                      <div
+                        onClick={togglePalette}
+                        className="w-8 h-8 rounded-full border-2 border-purpleLight shrink-0 ml-2 flex items-center justify-center cursor-pointer"
+                      >
+                        <Plus size={17} className="text-purpleLight font-bold" strokeWidth={3} />
+                      </div>
                     </div>
-                    <div onClick={togglePalette} className="w-8 h-8 rounded-full border-2 border-purpleLight shrink-0 ml-2 flex items-center justify-center">
-                      <Plus size={17} className="text-purpleLight font-bold" strokeWidth={3} />
+
+                    {/* Affichage des couleurs sélectionnées avec leurs quantités */}
+                    <div className="flex flex-col gap-2 mt-3">
+                      {formData.couleurs?.map((selectedColor) => (
+                        <div key={selectedColor.id} className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: selectedColor.code_hex }} />
+                          <span className="text-sm">{selectedColor.nom}</span>
+                          <input
+                            type="number"
+                            placeholder="Quantité"
+                            value={selectedColor.quantite}
+                            onChange={(e) => {
+                              const updatedColors = formData.couleurs.map(c =>
+                                c.id === selectedColor.id ? { ...c, quantite: e.target.value } : c
+                              );
+                              setFormData({ ...formData, couleurs: updatedColors });
+                            }}
+                            className="w-24 border border-gray-300 rounded"
+                          />
+                        </div>
+                      ))}
                     </div>
+
+                    {/* Palette de sélection de couleur personnalisée */}
                     {showPalette && (
                       <div className="absolute top-12 right-0 p-2 rounded shadow-lg z-50 bg-white">
                         <div className="max-h-60 overflow-y-auto">
-                          <ColorPicker color={color} onChange={(newColor) => {setColor(newColor);setForm({ ...form, code_hex: newColor.hex });}} />
+                          <ColorPicker
+                            color={color}
+                            onChange={(newColor) => {
+                              setColor(newColor);
+                              setForm({ ...form, code_hex: newColor.hex });
+                            }}
+                          />
                         </div>
-                        <Input type="text" name="Nom" placeholder={`Nom de la couleur`} value={form.nom || ""} onChange={(e) => setForm({ ...form, "nom": e.target.value })} required />
+                        <input
+                          type="text"
+                          name="nom"
+                          placeholder="Nom de la couleur"
+                          value={form.nom || ""}
+                          onChange={(e) => setForm({ ...form, nom: e.target.value })}
+                          className="border border-gray-300 rounded p-1 w-full"
+                        />
                         <div className="flex gap-2 justify-end mt-2">
                           <button onClick={togglePalette} className="px-4 py-1 border border-purpleLight text-purpleLight rounded">Annuler</button>
-                          <button onClick={() => {handleCreate();togglePalette();}} className="px-4 py-1 bg-purpleLight text-white rounded">Ajouter</button>
+                          <button
+                            onClick={() => {
+                              handleCreate(); // ajouter la nouvelle couleur dans la liste options
+                              togglePalette();
+                            }}
+                            className="px-4 py-1 bg-purpleLight text-white rounded"
+                          >
+                            Ajouter
+                          </button>
                         </div>
                       </div>
                     )}
                   </div>
                 )}
+
               </div>
             ))}
           </div>
