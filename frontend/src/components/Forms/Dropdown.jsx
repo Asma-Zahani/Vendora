@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import Label from "./Label";
-import Input from "./Input";
+import Label from "@/components/ui/Label";
+import Input from "@/components/ui/Input";
 
 const Dropdown = ({ label, name, options, selectedValue, onSelect, isOpen, toggleOpen }) => {
   return (

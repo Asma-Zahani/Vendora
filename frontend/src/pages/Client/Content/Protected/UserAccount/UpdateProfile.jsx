@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import UserContext from '@/utils/UserContext';
-import Label from "@/components/Forms/Label";
-import Input from "@/components/Forms/Input";
+import Label from "@/components/ui/Label";
+import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
 
@@ -35,7 +35,7 @@ const UpdateProfile = () => {
 
     return (
         <div className="col-span-2 w-full py-2">
-            <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
+            <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                 <h1 className="text-lg font-semibold mb-4">Modifier Profile</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
                     <div>
