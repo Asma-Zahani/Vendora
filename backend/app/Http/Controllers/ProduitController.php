@@ -14,7 +14,7 @@ class ProduitController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except:['index','show'])
+            new Middleware('auth:sanctum', except:['index','latestProducts','show'])
         ];
     }
 
@@ -23,44 +23,13 @@ class ProduitController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-
-        /*$query = Produit::query();
-
-        if ($request->has('categories')) { 
-            $categories = explode(',', $request->categories);
-            $query->whereHas('sousCategorie', function ($q) use ($categories) {
-                $q->whereIn('categorie_id', $categories);
-            });
-        }
-
-        if ($request->has('marques')) {
-            $marques = explode(',', $request->marques);
-            $query->whereIn('marque_id', $marques);
-        }
-
-        if ($request->has('couleurs') && !empty($request->couleurs)) {
-            $couleurs = explode(',', $request->couleurs);
-            $query->whereHas('couleurs', function ($q) use ($couleurs) {
-                $q->whereIn('produit_couleur.couleur_id', $couleurs); 
-            });
-        }
-        
-
-        if ($request->has('prix_max') && !empty($request->prix_max)) {
-            $prix_max = $request->prix_max;
-            $query->where('prix', '<=', $prix_max);
-        }
-    
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where('nom', 'LIKE', "%$search%"); 
-        }
-
-        $produits = $query->with('couleurs')->get();
-
-        return response()->json($produits);*/
-
         return Produit::with('couleurs')->get();
+    }
+
+    public function latestProducts()
+    {
+        $produits = Produit::with('couleurs')->latest('created_at')->take(6)->get();
+        return response()->json($produits);
     }
 
     /**

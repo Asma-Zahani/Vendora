@@ -1,7 +1,7 @@
 import Hero from "./Hero";
 import Features from "./Features";
-import Products from "./Products";
 import TopProducts from "./TopProducts";
+import RecentsProduits from "./RecentsProduits";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -22,7 +22,7 @@ const Home = () => {
     <div className="duration-200">
       <Hero />
       <Features />
-      <Products />
+      <RecentsProduits />
       <TopProducts />
     </div>
   );

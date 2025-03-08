@@ -3,7 +3,7 @@ import logo from "@/assets/logo/logo.svg";
 const Footer = () => {
   return (
     <footer className="relative bg-customLight dark:bg-customDark">
-        <hr className="my-6 border-t border-gray-300/50 backdrop-blur-sm sm:mx-auto dark:border-gray-700/50 lg:my-8" />
+        <hr className="my-6 border-t border-gray-300/50 backdrop-blur-sm sm:mx-auto dark:border-borderDark lg:my-8" />
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
             <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">
@@ -47,8 +47,8 @@ const Footer = () => {
                 </div>
             </div>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <div className="sm:flex sm:items-center sm:justify-between">
+        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-borderDark lg:my-8" />
+        <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-between">
             <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" className="hover:underline">KD Marche™</a>. All Rights Reserved.
             </span>
             <div className="flex mt-4 sm:justify-center sm:mt-0">

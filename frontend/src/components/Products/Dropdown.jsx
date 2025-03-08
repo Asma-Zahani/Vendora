@@ -46,20 +46,14 @@ const Dropdown = ({ isOpen, toggleOpen, categories, brands, colors , selectedCat
 
           <div className="mb-4">
             <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Couleurs</h4>
-            <div className="flex flex-wrap space-x-2 space-y-2">
-              {colors.map((color) => (
-                <div key={color.couleur_id} className={`mb-2`} style={{ display: "flex", justifyContent: "center" }} >
-                  <div
-                    className={`w-8 h-8 rounded-full cursor-pointer transition-all duration-200 border-2 ${
-                      selectedColors.includes(color.couleur_id)
-                        ? "border-purpleLight scale-110"
-                        : "border-transparent"
-                    }`}
-                    style={{ backgroundColor: color.code_hex }}
-                    onClick={() => toggleColor(color.couleur_id)}
-                  />
-                </div>
-              ))}
+            <div className="flex gap-2 overflow-y-auto scrollbar flex-grow pr-2">
+              {colors.map((color) => {
+                return (
+                  <div key={color.couleur_id} className="relative">
+                    <div style={{ backgroundColor: color.code_hex }} onClick={() => toggleColor(color.couleur_id)} className={`w-8 h-8 rounded-full border-2 cursor-pointer ${selectedColors.includes(color.couleur_id) ? 'border-purpleLight scale-110' : 'border-borderGrayLight dark:border-borderGrayDark'}`}/>
+                  </div>
+                );
+              })}
             </div>
           </div>
 

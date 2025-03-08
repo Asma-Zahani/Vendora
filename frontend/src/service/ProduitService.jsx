@@ -1,12 +1,17 @@
 const getProduits = async () => {
-    const res = await fetch("/api/produits");
-    return res.ok ? res.json() : Promise.reject(res.json());
-  };
+  const res = await fetch("/api/produits");
+  return res.ok ? res.json() : Promise.reject(res.json());
+};
+
+const getRecentsProduits = async () => {
+  const res = await fetch("/api/recentProduits");
+  return res.ok ? res.json() : Promise.reject(res.json());
+};
   
-  const getProduit = async (_id) => {
+const getProduit = async (_id) => {
     const res = await fetch(`/api/produits/${_id}`);
     return res.ok ? res.json() : Promise.reject(res.json());
-  };
+};
   
   const createProduit = async (formData) => {
     const res = await fetch("/api/produits", {
@@ -43,4 +48,4 @@ const getProduits = async () => {
     return res.ok ? res.json() : Promise.reject(res.json());
   };
 
-  export { getProduits, getProduit, createProduit, updateProduit, deleteProduit }; 
+  export { getProduits, getRecentsProduits, getProduit, createProduit, updateProduit, deleteProduit }; 

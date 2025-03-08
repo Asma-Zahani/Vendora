@@ -1,35 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
-import "aos/dist/aos.css";
-import { getProduits } from "@/service/ProduitService";
+import { getRecentsProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";
 import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
-import { getCouleurs } from "@/service/CouleurService";
-import { addToPanier, addToWishlist } from "@/service/ClientService";
-import FilteredProducts from '@/components/Products/FilteredProducts';
 import UserContext from '@/utils/UserContext';
+import Card from '@/components/Products/Card';
+import { addToPanier, addToWishlist } from "@/service/ClientService";
+import { Link } from "react-router";
 
-const Shop = () => {
+const RecentsProduits = () => {
   const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
-
-  const [gridCols, setGridCols] = useState(3);
-  const [isGrid, setIsGrid] = useState(true);
 
   const [produits, setProduits] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sousCategories, setSousCategories] = useState([]);
   const [marques, setMarques] = useState([]);
   const [promotions, setPromotions] = useState([]);
-  const [couleurs, setCouleurs] = useState([]); 
 
   useEffect(() => { 
     (async () => {
-      setProduits(await getProduits()); 
+      setProduits(await getRecentsProduits()); 
     })(); 
   }, []);
-
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -37,7 +32,6 @@ const Shop = () => {
         setSousCategories(await getSousCategories());
         setMarques(await getMarques());
         setPromotions(await getPromotions());
-        setCouleurs(await getCouleurs());
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
@@ -45,6 +39,7 @@ const Shop = () => {
     fetchCategories();
   }, []);
 
+  
   const formattedProduits = produits.map((item) => {
     const promotion = promotions.find(p => p.promotion_id === item.promotion_id);
     const remise = promotion ? promotion.reduction : 0;
@@ -52,7 +47,7 @@ const Shop = () => {
   
     const sousCategorie = sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id);  
     const categorie = sousCategorie ? categories.find(c => c.categorie_id === sousCategorie.categorie_id) : null;
-  
+
     return {
       ...item,
       categorie: categorie ? categorie.titre : "Non défini",
@@ -63,9 +58,6 @@ const Shop = () => {
       prix_apres_promo: prixApresPromo
     };
   });
-  
-  const filtres = {categories, marques, couleurs};
-  const gridInfo = {isGrid, setIsGrid, gridCols, setGridCols}
   
   const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
   const [panierAjoute, setPanierAjoute] = useState(false);
@@ -136,13 +128,33 @@ const Shop = () => {
       return () => clearTimeout(timeout);
     }
   }, [panierAjoute, formData]);
-  
-  
+
   return (
-    <div className="px-8">
-      <FilteredProducts wishlist={wishlist} datas={formattedProduits} gridInfo={gridInfo} filtres={filtres} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
+    <div className="px-8 py-12">
+      <div className="flex flex-col items-center text-center mb-5">
+        <div className="flex items-center w-full justify-center">
+          <div className="border-t-2 w-20 mr-5"></div> 
+          <h1 className="text-2xl font-semibold uppercase">Produits récents</h1>
+          <div className="border-t-2 w-20 ml-5"></div> 
+        </div>
+        <p className="italic text-gray-500">Nouveautés cette semaine</p>
+      </div>
+      <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        {produits.length > 0 &&
+          formattedProduits.map((produit, index) => {
+            return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
+          })
+        }
+      </div>
+
+      <div className="flex justify-center">
+        <Link to={"/shop"} className="mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md">
+          Voir tous les produits
+        </Link>
+      </div>
     </div>
+
   );
 };
 
-export default Shop;
+export default RecentsProduits;

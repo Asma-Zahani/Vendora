@@ -12,7 +12,6 @@ use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\FactureCommandeController;
 use App\Http\Controllers\Users\LivreurController;
 use App\Http\Controllers\MarqueController;
-use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PeriodeHoraireController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
@@ -30,7 +29,7 @@ Route::get('/user', function (Request $request) {
     $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
 
     if ($client) {
-        $client = $client->load('produits', 'wishlist');
+        $client = $client->load('produits.couleurs', 'wishlist.couleurs');
         return $client;
     }
     return $request->user();
@@ -71,8 +70,8 @@ Route::apiResource('detailFactures', DetailFactureController::class); //tester
 
 Route::apiResource('factureCommandes', FactureCommandeController::class); //tester
 
-Route::apiResource('produits', ProduitController::class); //tester
-Route::apiResource('paniers', PanierController::class); //tester
+Route::apiResource('produits', ProduitController::class);
+Route::get('/recentProduits', [ProduitController::class, 'latestProducts']);
 
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
