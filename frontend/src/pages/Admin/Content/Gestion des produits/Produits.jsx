@@ -32,6 +32,7 @@ const Produits = () => {
 
   const [formColor, setFormColor] = useState({nom: "", code_hex: ""});
 
+  
   const handleCreateCouleur = async () => {
     try {      
       const newCouleur = await createCouleur(formColor);
@@ -62,7 +63,7 @@ const Produits = () => {
     { label: "Sous Catégorie", key: "sous_categorie_id", type: "dropdown", options: dropdownSousCategoriesOptions },
     { label: "Marque", key: "marque_id", type: "dropdown", options: dropdownMarquesOptions },
     { label: "Promotions", key: "promotion_id", type: "dropdown", options: dropdownPromotionsOptions },
-    { label: "Couleurs", key: "couleurs", type: "colors", options: couleurs, form: formColor, setForm: setFormColor, handleCreate: handleCreateCouleur }, 
+    { label: "Type de produit", key: "couleurs", type: "produits", options: couleurs, form: formColor, setForm: setFormColor, handleCreate: handleCreateCouleur }, 
     { label: "Description", key: "description", type: "textarea" },
   ];
 
@@ -89,6 +90,8 @@ const Produits = () => {
   const handleProduit = async (produit_id) => {
     try {
       const produit = await getProduit(produit_id);
+      console.log(produit);
+      
       setFormData(produit);
     } catch (error) {
       console.error("Erreur lors de la récupération du produit:", error);

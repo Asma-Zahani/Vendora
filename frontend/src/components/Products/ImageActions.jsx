@@ -37,8 +37,24 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
     }
   };
 
-  const handleIncrease = () => setQuantity((prev) => prev + 1);
-  const handleDecrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const maxQuantity = produit.quantite;
+
+
+  // const handleIncrease = () => setQuantity((prev) => prev + 1);
+  // const handleDecrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleIncrease = () => {
+    if (quantity < maxQuantity) {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+  
 
   return (
     <>
@@ -138,8 +154,8 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
         )}
 
       </div>
-      {isViewModalOpen && <QuickView produit={produit} onClose={() => setIsViewModalOpen(false)} />}
-      {isShopModalOpen && <QuickShop produit={produit} onClose={() => setIsShopModalOpen(false)} />}
+      {isViewModalOpen && <QuickView produit={produit} onClose={() => setIsViewModalOpen(false)} ajouterAuPanier={ajouterAuPanier}/>}
+      {isShopModalOpen && <QuickShop produit={produit} onClose={() => setIsShopModalOpen(false)} ajouterAuPanier={ajouterAuPanier} />}
     </>
   );
 };

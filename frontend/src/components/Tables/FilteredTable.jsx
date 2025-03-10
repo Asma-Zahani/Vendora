@@ -298,7 +298,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                     </div>
                 </div>
             </div>
-            {isFormOpen && <FormModal isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} action={formActions.formData[identifiant] ? "Modifier" : "Ajouter"} 
+            {isFormOpen && <FormModal  isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} action={formActions.formData[identifiant] ? "Modifier" : "Ajouter"} 
                 formData={formActions.formData} setFormData={formActions.setFormData} fields={formActions.fields} formLabel={label}
                 onSubmit={async () => { 
                     if (formActions.formData[identifiant]) {
