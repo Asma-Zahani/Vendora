@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import { getLivreurs, getLivreur, createLivreur, updateLivreur, deleteLivreur } from "@/service/LivreurService";
+import { getLivreurs, getUser, createLivreur, updateUser, deleteUser } from "@/service/UsersService";
 import { Truck } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
@@ -32,7 +32,7 @@ const Livreurs = () => {
 
   const handleLivreur = async (id) => {
     try {
-      setFormData(await getLivreur(id));
+      setFormData(await getUser(id));
     } catch (error) {
       console.error("Erreur lors de la récupération du livreur:", error);
       alert('Une erreur est survenue lors de la récupération du livreur');
@@ -50,7 +50,7 @@ const Livreurs = () => {
   }; 
   const handleEdit = async () => {
     try {      
-      await updateLivreur(formData.id, formData);
+      await updateUser(formData.id, formData);
       setLivreurs((prevLivreurs) => prevLivreurs.filter(livreur => livreur.id !== formData.id));
       alert(`Livreur avec l'ID ${formData.id} modifié avec succès`);
     } catch (error) {
@@ -60,7 +60,7 @@ const Livreurs = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await deleteLivreur(id);
+      await deleteUser(id);
       setLivreurs((prevPosts) => prevPosts.filter(post => post.id !== id));
       alert(`Livreur with id ${id} supprimé avec succès`);
     } catch (error) {

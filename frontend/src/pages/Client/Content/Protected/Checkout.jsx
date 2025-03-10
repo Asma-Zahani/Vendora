@@ -6,7 +6,7 @@ import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
-import { updateClient } from "@/service/ClientService";
+import { updateUser } from "@/service/UsersService";
 import { createCommandeLivraison } from "@/service/CommandeLivraisonService";
 import { createCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
 import { getDrives } from "@/service/DriveService";
@@ -54,7 +54,7 @@ const Checkout = () => {
 
     const passerCommande = async () => {
         try {      
-            const updatedUser = await updateClient(user.id, formData);
+            const updatedUser = await updateUser(user.id, formData);
             if (deliveryMethod === "drive") {                
                 createCommandeRetraitDrive({
                     client_id: user.id,

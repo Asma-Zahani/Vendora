@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategorieController;
-use App\Http\Controllers\ClientController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodePromotionController;
 use App\Http\Controllers\CommandeLivraisonController;
 use App\Http\Controllers\CommandeRetraitDriveController;
@@ -17,9 +17,7 @@ use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
 use App\Http\Controllers\DriveController;
-use App\Http\Controllers\Enums\EtatCommandeController;
-use App\Http\Controllers\Enums\StatusDriveController;
-use App\Http\Controllers\Enums\StatusProduitController;
+use App\Http\Controllers\EnumsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,12 +29,16 @@ Route::get('commande/user', function (Request $request) {
     return $request->user()->commandes()->with('commandeLivraison', 'commandeRetraitDrive.drive')->get();
 })->middleware('auth:sanctum');
 
+Route::apiResource('users', UserController::class);
+
+Route::get('clients', [UserController::class, 'clients']);
+Route::get('livreurs', [UserController::class, 'livreurs']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('panier', [ClientController::class, 'ajouterAuPanier']);
-    Route::post('souhait', [ClientController::class, 'ajouterAListeDeSouhaits']);
-    Route::delete('panier', [ClientController::class, 'supprimerDuPanier']);
-    Route::delete('souhait', [ClientController::class, 'supprimerDeListeSouhaits']);
+    Route::post('panier', [UserController::class, 'ajouterAuPanier']);
+    Route::post('souhait', [UserController::class, 'ajouterAListeDeSouhaits']);
+    Route::delete('panier', [UserController::class, 'supprimerDuPanier']);
+    Route::delete('souhait', [UserController::class, 'supprimerDeListeSouhaits']);
 });
 
 Route::apiResource('codePromotions', CodePromotionController::class); //tester
@@ -60,14 +62,12 @@ Route::get('/recentProduits', [ProduitController::class, 'latestProducts']);
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
 
-Route::apiResource('clients', ClientController::class);
-Route::apiResource('livreurs', LivreurController::class);
 Route::apiResource('couleurs', CouleurController::class);
 
 Route::apiResource('drives', DriveController::class);
 
-Route::get('/etatCommandes', [EtatCommandeController::class, 'getEtatCommandes']);
-Route::get('/statusDrives', [StatusDriveController::class, 'getStatusDrives']);
-Route::get('/statusProduits', [StatusProduitController::class, 'getStatusProduits']);
+Route::get('/etatCommandes', [EnumsController::class, 'getEtatCommandes']);
+Route::get('/statusDrives', [EnumsController::class, 'getStatusDrives']);
+Route::get('/statusProduits', [EnumsController::class, 'getStatusProduits']);
 
 require __DIR__.'/auth.php';

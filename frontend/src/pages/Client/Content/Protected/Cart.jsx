@@ -3,7 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import CartTable from "@/components/Tables/CartTable";
 import { getCodePromotionByCode } from "@/service/CodePromotionService";
-import { addToPanier, deleteFromPanier } from "@/service/ClientService";
+import { addToPanier, deleteFromPanier } from "@/service/PanierService";
 import UserContext from '@/utils/UserContext';
 
 const Cart = () => {

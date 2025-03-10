@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import { getClients, getClient, createClient, updateClient, deleteClient } from "@/service/ClientService";
+import { getClients, getUser, createClient, updateUser, deleteUser } from "@/service/UsersService";
 import { Users } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
@@ -32,7 +32,7 @@ const Clients = () => {
 
   const handleClient = async (id) => {
     try {
-      const client = await getClient(id);
+      const client = await getUser(id);
       setFormData(client);
     } catch (error) {
       console.error("Erreur lors de la récupération du client:", error);
@@ -51,7 +51,7 @@ const Clients = () => {
   }; 
   const handleEdit = async () => {
     try {      
-      await updateClient(formData.id, formData);
+      await updateUser(formData.id, formData);
       setClients((prevClients) => prevClients.filter(client => client.id !== formData.id));
       alert(`Client avec l'ID ${formData.id} modifié avec succès`);
     } catch (error) {
@@ -61,7 +61,7 @@ const Clients = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await deleteClient(id);
+      await deleteUser(id);
       setClients((prevPosts) => prevPosts.filter(post => post.id !== id));
       alert(`Client with id ${id} supprimé avec succès`);
     } catch (error) {

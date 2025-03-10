@@ -6,6 +6,7 @@ import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import ShowPassword from "@/components/ui/ShowPassword";
 import Alert from "@/components/Alert/Alert";
+import { updatePassword } from "@/service/AuthService";
 
 const UpdatePassword = () => {
     const { user } = useContext(UserContext);
@@ -28,19 +29,9 @@ const UpdatePassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({});
-        setSuccessMessage("");
+        setErrors({}); setSuccessMessage("");
 
-        const response = await fetch(`api/updatePassword/${user.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify(formData),
-        });
-
-        const data = await response.json();
+        const data = updatePassword(user.id,formData);
 
         if (data.errors) {
             setErrors(data.errors);

@@ -7,7 +7,8 @@ import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import UserContext from '@/utils/UserContext';
 import Card from '@/components/Products/Card';
-import { addToPanier, addToWishlist } from "@/service/ClientService";
+import { addToPanier } from "@/service/PanierService";
+import { addToWishlist } from "@/service/WishlistService";
 import { Link } from "react-router";
 
 const RecentsProduits = () => {

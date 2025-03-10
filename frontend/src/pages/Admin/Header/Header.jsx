@@ -8,7 +8,7 @@ import { handleLogout } from "@/service/AuthService";
 
 // eslint-disable-next-line react/prop-types
 const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
-  const { user, token, setUser, setToken } = useContext(UserContext);
+  const { user, setUser, setToken } = useContext(UserContext);
 
   return (
     <header className={`w-full fixed z-20 left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none
@@ -77,7 +77,7 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
                   <Settings size={15} className="mr-2" /> Settings
                 </li>
                 <li className="flex items-center py-3 px-4 leading-4 hover:bg-gray-100 dark:hover:bg-[#3D3D3D] cursor-pointer">
-                  <form onSubmit={(e) => {e.preventDefault();handleLogout(token, setUser, setToken);}} className="w-full">
+                  <form onSubmit={(e) => {e.preventDefault();handleLogout(setUser, setToken);}} className="w-full">
                     <button className="flex items-center w-full">
                       <LogIn size={15} className="mr-2" /> Log Out
                     </button>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import { getCommandesRetraitDrives, getCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
 import { getEtatCommandes } from "@/service/EnumsService";
-import { getClients } from "@/service/ClientService";
+import { getClients } from "@/service/UsersService";
 import { Package } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 

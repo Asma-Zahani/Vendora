@@ -9,7 +9,7 @@ import { Link } from "react-router";
 import { handleLogout } from "@/service/AuthService";
 
 const Header = () => {
-  const { user, panier, wishlist, token, setUser, setToken } = useContext(UserContext);
+  const { user, panier, wishlist, setUser, setToken } = useContext(UserContext);
   const menuRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -120,7 +120,7 @@ const Header = () => {
                     <Settings size={15} className="mr-2" /> Settings
                   </li>
                   <li className="flex items-center py-3 px-4 leading-4 cursor-pointer">
-                    <form onSubmit={(e) => {e.preventDefault();handleLogout(token, setUser, setToken);}} className="w-full">
+                    <form onSubmit={(e) => {e.preventDefault();handleLogout(setUser, setToken);}} className="w-full">
                       <button className="flex items-center w-full">
                         <LogIn size={15} className="mr-2" /> Log Out
                       </button>

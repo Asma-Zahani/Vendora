@@ -1,5 +1,5 @@
-const addToPanier = async (formData) => {
-  const res = await fetch(`/api/panier`, {
+const addToWishlist = async (formData) => {
+  const res = await fetch(`/api/souhait`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,8 +10,8 @@ const addToPanier = async (formData) => {
   return res.ok ? res.json() : Promise.reject(res.json());
 };
 
-const deleteFromPanier = async (formData) => {
-  const res = await fetch(`/api/panier`, {
+const deleteFromWishlist = async (formData) => {
+  const res = await fetch(`/api/souhait`, {
     method: "DELETE",
     headers: { 
       "Content-Type": "application/json",
@@ -21,5 +21,4 @@ const deleteFromPanier = async (formData) => {
   });
   return res.ok ? res.json() : Promise.reject(res.json());
 };
-
-export { addToPanier, deleteFromPanier };
+export { addToWishlist, deleteFromWishlist };

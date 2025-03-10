@@ -7,7 +7,7 @@ import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
 import { handleLogout } from "@/service/AuthService";
 
 const Account = () => {
-    const { user, token, setUser, setToken } = useContext(UserContext);
+    const { user, setUser, setToken } = useContext(UserContext);
     const location = useLocation();
 
     return (
@@ -55,7 +55,7 @@ const Account = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <form onSubmit={(e) => {e.preventDefault();handleLogout(token, setUser, setToken);}}>
+                                            <form onSubmit={(e) => {e.preventDefault();handleLogout(setUser, setToken);}}>
                                                 <button className={`inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer ${location.pathname === "/logout" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                     <LogOut className="w-5 h-5 me-2" />
                                                     Déconnexion

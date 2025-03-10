@@ -7,7 +7,8 @@ import { getSousCategories } from "@/service/SousCategorieService";
 import { getMarques } from "@/service/MarqueService";
 import { getPromotions } from "@/service/PromotionService";
 import { getCouleurs } from "@/service/CouleurService";
-import { addToPanier, addToWishlist } from "@/service/ClientService";
+import { addToPanier } from "@/service/PanierService";
+import { addToWishlist } from "@/service/WishlistService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
 import UserContext from '@/utils/UserContext';
 
