@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Users\AdminController;
 use App\Http\Controllers\CategorieController;
-use App\Http\Controllers\Users\ClientController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CodePromotionController;
 use App\Http\Controllers\CommandeLivraisonController;
 use App\Http\Controllers\CommandeRetraitDriveController;
@@ -10,7 +9,7 @@ use App\Http\Controllers\JourFerieController;
 use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\FactureCommandeController;
-use App\Http\Controllers\Users\LivreurController;
+use App\Http\Controllers\LivreurController;
 use App\Http\Controllers\MarqueController;
 use App\Http\Controllers\PeriodeHoraireController;
 use App\Http\Controllers\ProduitController;
@@ -23,28 +22,13 @@ use App\Http\Controllers\Enums\StatusDriveController;
 use App\Http\Controllers\Enums\StatusProduitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Users\Client;
 
 Route::get('/user', function (Request $request) {
-    $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
-
-    if ($client) {
-        $client = $client->load('produits.couleurs', 'wishlist.couleurs');
-        return $client;
-    }
-    return $request->user();
+    return $request->user()->load('roles', 'produits.couleurs', 'wishlist.couleurs');
 })->middleware('auth:sanctum');
 
 Route::get('commande/user', function (Request $request) {
-    $client = Client::where('id', $request->user()->id)->where('role', 'client')->first();
-
-    if ($client) {
-        $commandes = $client->commandes()->with('commandeLivraison', 'commandeRetraitDrive.drive')->get();
-        
-        return response()->json($commandes);
-    }
-
-    return response()->json(['message' => 'Client non trouvé'], 404);
+    return $request->user()->commandes()->with('commandeLivraison', 'commandeRetraitDrive.drive')->get();
 })->middleware('auth:sanctum');
 
 
@@ -76,7 +60,6 @@ Route::get('/recentProduits', [ProduitController::class, 'latestProducts']);
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
 
-Route::apiResource('admins', AdminController::class);
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('livreurs', LivreurController::class);
 Route::apiResource('couleurs', CouleurController::class);

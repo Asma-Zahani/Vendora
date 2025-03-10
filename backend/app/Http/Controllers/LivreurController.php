@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
-use App\Http\Controllers\Controller;
-use App\Models\Users\Admin;
-use App\Models\Users\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
-class AdminController extends Controller implements HasMiddleware
+class LivreurController extends Controller implements HasMiddleware
 {
     public static function middleware()
     {
@@ -25,7 +24,7 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return User::where('role', 'admin')->get();
+        return User::where('role', 'livreur')->get();
     }
 
     /**
@@ -37,15 +36,14 @@ class AdminController extends Controller implements HasMiddleware
             'nom' => 'required|max:255',
             'prenom' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
             'telephone' => 'string',
             'genre' => 'string',
             'date_naissance' => 'string'
         ]);
 
-        $validatedData['role'] = RoleEnum::ADMIN->value;
+        $validatedData['role'] = RoleEnum::LIVREUR->value;
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['nom'].$validatedData['prenom']);
 
         $user = User::create($validatedData);
         
@@ -62,10 +60,10 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $admin = User::where('id', $id)
-            ->where('role', 'admin')
+        $livreur = User::where('id', $id)
+            ->where('role', 'livreur')
             ->firstOrFail();
-        return response()->json($admin);
+        return response()->json($livreur);
     }
 
     /**
@@ -73,25 +71,28 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function update(Request $request, $id)
     {
-        $admin = User::where('id', $id)
-            ->where('role', 'admin')
+        $livreur = User::where('id', $id)
+            ->where('role', 'livreur')
             ->firstOrFail();
         
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
             'prenom' => 'required|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($livreur->id),
+            ],
             'telephone' => 'string',
             'genre' => 'string',
             'date_naissance' => 'string'
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['nom'].$validatedData['prenom']);
         
-        $admin->update($validatedData);
+        $livreur->update($validatedData);
 
-        return response()->json($admin, 200);
+        return response()->json($livreur, 200);
     }
 
     /**
@@ -99,10 +100,11 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function destroy($id)
     {
-        $admin = User::where('id', $id)
-            ->where('role', 'admin')
+        $livreur = User::where('id', $id)
+            ->where('role', 'livreur')
             ->firstOrFail();
-        $admin->delete();
-        return response()->json(['message' => 'Admin avec id ' . $admin->id . ' effacer avec succés'], 200);
+
+        $livreur->delete();
+        return response()->json(['message' => 'Livreur avec id ' . $livreur->id . ' effacer avec succés'], 200);
     }
 }

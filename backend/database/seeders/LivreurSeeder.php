@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders\Users;
+namespace Database\Seeders;
 
-use Database\Factories\Users\LivreurFactory;
+use Database\Factories\LivreurFactory;
 use Illuminate\Database\Seeder;
 
 class LivreurSeeder extends Seeder

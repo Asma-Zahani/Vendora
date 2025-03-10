@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Models\Users;
+namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\RoleEnum;
 use App\Models\Commande;
 use App\Models\Produit;
-use App\Models\ListeDeSouhait;
+use App\Models\RoleUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Client extends Authenticatable
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory;
-
-    protected $table = 'users';
-    protected $primaryKey = 'id';
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'nom',
@@ -25,7 +26,6 @@ class Client extends Authenticatable
         'telephone',
         'genre',
         'date_naissance',
-        'role',
         'adresse',
         'region',
         'ville',
@@ -34,19 +34,27 @@ class Client extends Authenticatable
         'statusLogement'
     ];
 
-    /**
-     * Relation Many-to-Many avec les produits via le pivot panier
-     * La table pivot peut contenir une colonne 'quantite'.
-     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'role' => RoleEnum::class,
+    ];
+
+    public function roles()
+    {
+        return $this->hasMany(RoleUser::class, 'user_id');
+    }
+
     public function produits()
     {
         return $this->belongsToMany(Produit::class, 'panier_produits', 'client_id', 'produit_id')
             ->withPivot('quantite');
     }
 
-    /**
-     * Relation Many-to-Many avec la liste des souhaits
-     */
     public function wishlist()
     {
         return $this->belongsToMany(Produit::class, 'liste_de_souhaits', 'client_id', 'produit_id');
@@ -57,18 +65,12 @@ class Client extends Authenticatable
         return $this->hasMany(Commande::class, 'client_id');
     }
 
-    /**
-     * Gérer la suppression du panier lors de la suppression d'un client.
-     */
     protected static function boot()
     {
         parent::boot();
 
         static::deleting(function ($client) {
-            // Suppression des produits du panier (table pivot)
             $client->produits()->detach();
-            
-            // Suppression des produits de la liste de souhaits
             $client->wishlist()->detach();
         });
     }

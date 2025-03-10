@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Commande;
 use App\Models\CodePromotion;
 use App\Enums\EtatCommandeEnum;
-use App\Models\Users\Client;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,7 +15,7 @@ class CommandeFactory extends Factory
 {
     public function definition(): array
     {
-        $client = Client::inRandomOrder()->first();
+        $client = User::inRandomOrder()->first();
 
         return [
             'client_id' => $client ? $client->id : null, // Génère un client aléatoire

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Panier;
-use App\Models\Users\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,7 +29,7 @@ class RegisterController extends Controller
 
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $user = Client::create($validatedData);
+        $user = User::create($validatedData);
         
         $token = $user->createToken($user->nom.' '.$user->prenom);
 

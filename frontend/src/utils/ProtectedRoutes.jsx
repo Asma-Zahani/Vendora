@@ -10,13 +10,13 @@ export const ProtectedAdminRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user && user.role === "admin" ? <Outlet /> : <Navigate to="/login" />;
+    return user && user.roles.some(role => role.role === "admin") ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedClientRoutes = () => {
     const { user } = useContext(UserContext);
 
-    return user && user.role === "client" ? <Outlet /> : '';
+    return user && user.roles.some(role => role.role === "client") ? <Outlet /> : '';
 };
 
 export const ProtectedLivreurRoutes = () => {
@@ -26,24 +26,14 @@ export const ProtectedLivreurRoutes = () => {
         return <LoadingSpinner />;
     }
 
-    return user && user.role === "livreur" ? <Outlet /> : <Navigate to="/login" />;
-};
-
-export const ProtectedFournisseurRoutes = () => {
-    const { user } = useContext(UserContext);
-
-    if (!user) {
-        return <LoadingSpinner />;
-    }
-
-    return user && user.role === "fournisseur" ? <Outlet /> : <Navigate to="/login" />;
+    return user && user.roles.some(role => role.role === "livreur") ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedAuthRoutes = () => {
     const { user } = useContext(UserContext);
 
     if (user) {
-        if (user.role === "admin") {
+        if (user.roles.some(role => role.role === "admin")) {
             return <Navigate to="/dashboard" />;
         }
         return <Navigate to="/" />;

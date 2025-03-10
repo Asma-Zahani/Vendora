@@ -2,11 +2,7 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Users\AdminSeeder;
-use Database\Seeders\Users\ClientSeeder;
-use Database\Seeders\Users\FournisseurSeeder;
-use Database\Seeders\Users\LivreurSeeder;
-use Database\Seeders\Users\UserSeeder;
+use Database\Seeders\ClientSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

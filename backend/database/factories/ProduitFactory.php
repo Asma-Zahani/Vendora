@@ -8,7 +8,6 @@ use App\Models\SousCategorie;
 use App\Models\Promotion;
 use App\Models\Couleur;
 use App\Enums\StatusProduitEnum;
-use Database\Factories\Users\FournisseurFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProduitFactory extends Factory

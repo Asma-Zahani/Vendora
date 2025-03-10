@@ -5,8 +5,7 @@ namespace Database\Factories;
 use App\Models\CommandeLivraison;
 use App\Models\Commande;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Users\User;
-use Database\Factories\Users\LivreurFactory;
+use Database\Factories\LivreurFactory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommandeLivraison>

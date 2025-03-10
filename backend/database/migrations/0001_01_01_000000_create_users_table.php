@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('telephone');
             $table->string('genre');
             $table->string('date_naissance');
-            $table->enum('role', RoleEnum::values())->default(RoleEnum::CLIENT->value);
             $table->string('adresse')->nullable();
             $table->string('region')->nullable();
             $table->string('ville')->nullable();
@@ -33,6 +32,12 @@ return new class extends Migration
             $table->string('statusLogement')->nullable();
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->enum('role', RoleEnum::values())->default(RoleEnum::CLIENT->value);
+            $table->primary(['user_id', 'role']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -50,15 +55,19 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        DB::table('users')->insert([
+        $adminId = DB::table('users')->insert([
             'nom' => "Doe",
             'prenom' => "John",
             'email' => "admin@gmail.com",
             'telephone' => "12345678",
             'genre' => 'male',
             'date_naissance' => "2002-02-02",
-            'role' => 'admin',
             'password' => Hash::make("admin")
+        ]);
+
+        DB::table('role_user')->insert([
+            ['user_id' => $adminId, 'role' => RoleEnum::ADMIN->value],
+            ['user_id' => $adminId, 'role' => RoleEnum::CLIENT->value],
         ]);
     }
 
@@ -67,6 +76,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('role_user');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EtatCommandeEnum;
-use App\Models\Users\User;
+use App\Models\User;
 use App\Models\CodePromotion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

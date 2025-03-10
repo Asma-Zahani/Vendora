@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Panier;
 use App\Models\Users\Client;
 use Illuminate\Http\Request;
@@ -13,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Produit;
 use App\Models\PanierProduit;
 use App\Models\ListeDeSouhait;
+use App\Models\User;
 
 class ClientController extends Controller implements HasMiddleware
 {
@@ -28,7 +28,7 @@ class ClientController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Client::where('role', 'client')->get();
+        return User::where('role', 'client')->get();
     }
 
     /**
@@ -54,7 +54,7 @@ class ClientController extends Controller implements HasMiddleware
 
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $user = Client::create($validatedData);
+        $user = User::create($validatedData);
         
         $panier = Panier::create([
             'client_id' => $user->id
@@ -73,15 +73,18 @@ class ClientController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $client = Client::findOrFail($id);
+        $client = User::findOrFail($id);
         return response()->json($client);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, $id)
     {
+        $client = User::findOrFail($id);
+        $client->delete();
+
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
             'prenom' => 'required|max:255',
@@ -106,7 +109,7 @@ class ClientController extends Controller implements HasMiddleware
      */
     public function destroy($id)
     {
-        $client = Client::findOrFail($id);
+        $client = User::findOrFail($id);
         $client->delete();
         return response()->json(['message' => 'Client avec id ' . $client->id . ' effacer avec succés'], 200);
     }
@@ -119,7 +122,7 @@ class ClientController extends Controller implements HasMiddleware
             'quantite' => 'required|integer|min:1',
         ]);
 
-        $client = Client::findOrFail($validatedData['client_id']);
+        $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
         $panierProduit = PanierProduit::where('client_id', $client->id)
@@ -148,7 +151,7 @@ class ClientController extends Controller implements HasMiddleware
             'produit_id' => 'required|exists:produits,produit_id',
         ]);
 
-        $client = Client::findOrFail($validatedData['client_id']);
+        $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
         $wishlistItem = ListeDeSouhait::where('client_id', $client->id)
@@ -175,7 +178,7 @@ class ClientController extends Controller implements HasMiddleware
             'produit_id' => 'required|exists:produits,produit_id',
         ]);
 
-        $client = Client::findOrFail($validatedData['client_id']);
+        $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
         $panierProduit = PanierProduit::where('client_id', $client->id)
@@ -204,7 +207,7 @@ class ClientController extends Controller implements HasMiddleware
         ]);
 
         // Récupérer le client et le produit
-        $client = Client::findOrFail($validatedData['client_id']);
+        $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
         // Trouver et supprimer le produit de la liste de souhaits

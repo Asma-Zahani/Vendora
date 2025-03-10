@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\StatusProduitEnum;
-use App\Models\Users\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,7 +49,7 @@ class Produit extends Model
 
     public function clientsDansPanier()
     {
-        return $this->belongsToMany(Client::class, 'panier_produits', 'produit_id', 'client_id')
+        return $this->belongsToMany(User::class, 'panier_produits', 'produit_id', 'client_id')
                     ->withPivot('quantite'); 
     }
 
@@ -59,7 +58,7 @@ class Produit extends Model
      */
     public function clientsDansWishlist()
     {
-        return $this->belongsToMany(Client::class, 'liste_de_souhaits', 'produit_id', 'client_id');
+        return $this->belongsToMany(User::class, 'liste_de_souhaits', 'produit_id', 'client_id');
     }
 
     public function couleurs(){
