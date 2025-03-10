@@ -1,34 +1,63 @@
 import { useState, useEffect }  from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
 import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
+import { resetPassword } from "@/service/AuthService";
 
-const ResetPassword = () => {
+const ResetPassword = () => {    
+    const location = useLocation();
+    const [token, setToken] = useState(null);
+    const [formData, setFormData] = useState({token: "", password: "", password_confirmation: ""});
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const token = params.get('token');
+        setToken(token);
+    }, [location]);
+
+    useEffect(() => {
+        if (token) {
+          setFormData((prevState) => ({
+            ...prevState,
+            token: token,
+          }));
+        }
+      }, [token]);
+
     const [inputType, setInputType] = useState("password");
     const [inputType1, setInputType1] = useState("password");
-    const [formData, setFormData] = useState({password: "", confirmPassword: ""});
     const [isValid, setIsValid] = useState(false);
     const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    const handleSubmit = (e) => {
-        e.preventDefault(); 
-        if (isValid) {
-            console.log("Formulaire soumis avec succès !", formData);
-            navigate("/home");
+    
+    const [errors, setErrors] = useState({});
+
+    const handleSubmit = async (e) => {
+          e.preventDefault();
+          if (!isValid) return;
+      
+          const data = await resetPassword(formData);
+          
+          if (data.errors) { 
+            setErrors(data.errors); 
+          } else if (data.message) {
+            console.log(data.message);
+            
+            navigate("/login");
         }
     };
 
     useEffect(() => {
         setIsValid(formData.password.trim() !== "" &&
-        formData.confirmPassword.trim() !== "" &&
-        formData.password === formData.confirmPassword);
+        formData.password_confirmation.trim() !== "" &&
+        formData.password === formData.password_confirmation);
     }, [formData]);
 
     return (
@@ -41,11 +70,12 @@ const ResetPassword = () => {
                         <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
                         <ShowPassword onToggle={setInputType} />
                     </div>
+                    {errors.password && <p className="error">{errors.password}</p>}
                 </div>
                 <div className="mb-4">
                     <Label label="Confirmer le nouveau mot de passe"/>
                     <div className="relative">
-                        <Input type={inputType1} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="*********" required />
+                        <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
                         <ShowPassword onToggle={setInputType1} />
                     </div>
                 </div>

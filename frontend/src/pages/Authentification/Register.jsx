@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
@@ -6,8 +6,8 @@ import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Dropdown from "@/components/Forms/Dropdown";
-import { UserContext } from "@/utils/UserContext";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
+import { handleRegister } from "@/service/AuthService";
 
 const Register = () => {
   const [inputType, setInputType] = useState("password");
@@ -24,10 +24,11 @@ const Register = () => {
   const [isValid, setIsValid] = useState(false);
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "",
     password_confirmation: "", date_naissance: "", genre: "", emploi: "", typeLogement: "", statusLogement: "", region: "", ville: "", adresse: "" });
-  const [errors, setErrors] = useState({});
-  const {setToken} = useContext(UserContext);
+
   const nextStep = () => { if (step < 4 && isValid) { setStep(step + 1); } };
   const prevStep = () => { if (step > 1) { setStep(step - 1); } };
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,20 +64,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid) return;
-    const response = await fetch("api/register", {
-      method: 'post',
-      body: JSON.stringify(formData)
-    });
 
-    const data = await response.json();
+    const data = await handleRegister(formData);
 
-    if (data.errors) { setErrors(data.errors); }
-    else {
-      localStorage.setItem('token',data.token);
-      setToken(data.token);
-      console.log("Inscription réussie :", formData);
-      navigate("/");
-    }
+    if (data.errors) { 
+      setErrors(data.errors); 
+    } else if (data.message) {
+      navigate("/login");
+  }
   };
 
   return (

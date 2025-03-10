@@ -18,3 +18,5 @@ footer
 pagination boutique
 paiement
 dashboard
+
+renvoyer email

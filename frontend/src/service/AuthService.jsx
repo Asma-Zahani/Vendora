@@ -1,3 +1,30 @@
+const handleRegister = async (formData) => {
+  const response = await fetch(`api/register`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+
+  return await response.json();
+};
+
+const forgotPassword = async (formData) => {
+  const response = await fetch(`api/forgot-password`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+
+  return await response.json();
+};
+
+const resetPassword = async (formData) => {
+  const response = await fetch(`api/reset-password`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+
+  return await response.json();
+};
+
 const updatePassword = async (_id, formData) => {
   const response = await fetch(`api/updatePassword/${_id}`, {
     method: "PUT",
@@ -12,7 +39,7 @@ const updatePassword = async (_id, formData) => {
 };
 
 const updateProfile = async (_id, formData) => {
-  const response = await fetch(`api/updateProfile/${_id}`, {
+  const response = await fetch(`api/users/${_id}`, {
     method: "PUT",
     headers: {
         "Content-Type": "application/json",
@@ -43,4 +70,4 @@ const handleLogout = async (setUser, setToken) => {
   }
 };
 
-export { updatePassword, updateProfile, handleLogout };
+export { handleRegister, forgotPassword, resetPassword, updatePassword, updateProfile, handleLogout };

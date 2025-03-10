@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
-import "aos/dist/aos.css";
 import { getProduits } from "@/service/ProduitService";
 import { getCategories } from "@/service/CategorieService";
 import { getSousCategories } from "@/service/SousCategorieService";

@@ -1,8 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
@@ -21,19 +18,10 @@ const FormModal = ({
   setFormData,
   fields,
   onSubmit,
-  isProductForm,
 }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [showPalette, setShowPalette] = useState(false);
   const [color, setColor] = useColor("#561ecb");
-  const [isStandardProduct, setIsStandardProduct] = useState(
-    formData?.quantite !== undefined
-  );
-
-  useEffect(() => {
-    AOS.init({ duration: 500, once: true });
-    AOS.refresh();
-  }, []);
 
   const toggleDropdown = (key) => {
     setActiveDropdown((prevKey) => (prevKey === key ? null : key));
@@ -53,23 +41,10 @@ const FormModal = ({
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleColorSelection = (color) => {
-    setFormData((prevData) => {
-      const couleurs = prevData.couleurs || [];
-      const isColorSelected = couleurs.some((c) => c.couleur_id === color.couleur_id);
-      return {
-        ...prevData,
-        couleurs: isColorSelected
-          ? couleurs.filter((c) => c.couleur_id !== color.couleur_id)
-          : [...couleurs, color],
-      };
-    });
-  };
-
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className="fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity" aria-hidden="true" />
-      <div className="relative p-4 w-full max-w-lg max-h-full" data-aos="fade-down"data-aos-duration="500">
+      <div className="relative p-4 w-full max-w-lg max-h-full" data-aos="fade-down"data-aos-duration="500" data-aos-once="true">
         <div className="relative bg-customLight dark:bg-customDark rounded-md shadow-[0px_0px_6px_0px] shadow-gray-200 dark:shadow-borderGrayDark">
           <div className="flex items-center justify-between p-4 md:p-5 border-b dark:border-borderDark border-contentLight">
             <h3 className="text-xl font-semibold">

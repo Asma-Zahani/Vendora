@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { CgClose } from "react-icons/cg";
 import { Minus, Plus } from "lucide-react";
 import defaultImg from "@/assets/default/image.png";
@@ -45,9 +43,6 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
   };
 
   useEffect(() => {
-    AOS.init({ duration: 500, once: true });
-    AOS.refresh();
-
     if (produit.couleurs?.length > 0) {
       setSelectedColor(
         produit.couleurs.find((c) => c.selectionne) || produit.couleurs[0]
@@ -61,7 +56,7 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className="fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity" aria-hidden="true"></div>
-      <div className="relative p-4 w-full max-w-4xl max-h-full" data-aos="fade-down" data-aos-duration="500">
+      <div className="relative p-4 w-full max-w-4xl max-h-full" data-aos="fade-down" data-aos-duration="500" data-aos-once="true">
         <div className="relative bg-customLight dark:bg-customDark rounded-md shadow-md p-5 flex flex-col">
           
           <button

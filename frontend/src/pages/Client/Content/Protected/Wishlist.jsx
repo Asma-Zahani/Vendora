@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css";
 import UserContext from '@/utils/UserContext';
 import Card from "@/components/Products/Card";
 import { addToPanier } from "@/service/PanierService";

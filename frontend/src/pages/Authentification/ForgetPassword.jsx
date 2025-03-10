@@ -1,21 +1,32 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import FormContainer from "./Form";
 import Input from "@/components/ui/Input";
+import { forgotPassword } from "@/service/AuthService";
 
 const ForgetPassword = () => {
   const [formData, setFormData] = useState({ email: "" });
   const [isValid, setIsValid] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isValid) {
-      console.log("Formulaire soumis avec succès !", formData);
-      navigate("/reset-password");
+  
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!isValid) return;
+  
+      const data = await forgotPassword(formData);
+  
+      if (data.errors) { 
+        setErrors(data.errors); 
+      } else if (data.message) {
+        console.log(data.message);
+        
+        // navigate("/reset-password");
     }
   };
 
@@ -30,6 +41,7 @@ const ForgetPassword = () => {
         <h4 className="text-2xl font-semibold mb-2 dark:text-white">Vous avez oublié votre mot de passe ?</h4>
         <p className="text-sm text-gray-600 dark:text-grayDark mb-2">Entrez votre email</p>
         <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
+        {errors.email && <p className="error">{errors.email}</p>}
         <div className="flex justify-end">
             <button className={`mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md
                 ${!isValid ? "opacity-50 cursor-not-allowed" : ""}`} type="submit" disabled={!isValid}>

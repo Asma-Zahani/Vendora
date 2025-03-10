@@ -69,7 +69,7 @@ class UserController extends Controller implements HasMiddleware
         
         $user->update($validatedData);
 
-        return response()->json($user, 200);
+        return response()->json(['message' => 'User modifié avec succès'], 200);
     }
 
     public function destroy($id)

@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css";
 import CartTable from "@/components/Tables/CartTable";
 import { getCodePromotionByCode } from "@/service/CodePromotionService";
 import { addToPanier, deleteFromPanier } from "@/service/PanierService";

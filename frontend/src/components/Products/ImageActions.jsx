@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Eye, Heart, Link2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
@@ -22,11 +20,6 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
   const handleImageError = () => {
     setImageSrc(defaultImg); 
   };
-
-  useEffect(() => {
-    AOS.init({ duration: 500, once: true });
-    AOS.refresh();
-  }, []);
 
   const [quantity, setQuantity] = useState(1);
 

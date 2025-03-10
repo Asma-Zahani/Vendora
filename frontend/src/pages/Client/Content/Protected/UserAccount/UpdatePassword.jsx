@@ -1,6 +1,4 @@
-import { useContext, useState, useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useContext, useState } from "react";
 import UserContext from "@/utils/UserContext";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
@@ -18,10 +16,6 @@ const UpdatePassword = () => {
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
 
-    useEffect(() => {
-        AOS.init();
-    }, []);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -31,8 +25,10 @@ const UpdatePassword = () => {
         e.preventDefault();
         setErrors({}); setSuccessMessage("");
 
-        const data = updatePassword(user.id,formData);
+        const data = await updatePassword(user.id,formData);
 
+        console.log(data);
+        
         if (data.errors) {
             setErrors(data.errors);
         } else if (data.message) {
@@ -40,16 +36,6 @@ const UpdatePassword = () => {
             setFormData({ current_password: "", new_password: "", new_password_confirmation: "" });
         }
     };
-
-    useEffect(() => {
-        if (successMessage) {
-            const timer = setTimeout(() => {
-                setSuccessMessage("");
-            }, 10000);
-    
-            return () => clearTimeout(timer);
-        }
-    }, [successMessage]);
 
     return (
         <div className="col-span-2 w-full py-2">
