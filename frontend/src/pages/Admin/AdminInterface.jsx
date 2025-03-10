@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/pages/Admin/SideBar/Sidebar";
 import SidebarFixed from "@/pages/Admin/SideBar/SidebarFixed";
 import Header from "@/pages/Admin/Header/Header";
+import Footer from "@/pages/Admin/Footer/Footer";
 import { Outlet } from "react-router";
+import { ChevronsUp } from "lucide-react";
 
 const AdminInterface = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -21,6 +23,13 @@ const AdminInterface = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    window.addEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
+    return () => window.removeEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
+  }, []);
+    
   return (
     <div className="text-base dark:text-zinc-100 min-h-screen flex flex-col">
       <div className="flex flex-grow">
@@ -52,8 +61,16 @@ const AdminInterface = () => {
             toggleSidebar={toggleSidebar}
             toggleDrawerOpen={toggleDrawerOpen}
           />
-          <Outlet />
+          <div className="">
+            <Outlet />
+          </div>
+          <Footer isSidebarVisible={isSidebarVisible}/>
         </div>
+        
+        {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
+          className="fixed bottom-8 right-8 bg-purpleLight/75 text-borderGrayLight p-2 rounded-full shadow-lg transition-all transform hover:scale-110 z-10">
+            <ChevronsUp size={23} />
+        </button>)}
       </div>
     </div>
   );

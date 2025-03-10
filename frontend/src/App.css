@@ -21,7 +21,9 @@
     --color-borderGrayLight: #cbcbd3;
     --color-bgYellow: #fefce8;
     --color-bgGreen: #f0fdf4;
-    --color-bgRed: #fef2f2;
+    --color-bgGreenDark: #1a3526;
+    --color-bgRed: #fcedee;
+    --color-bgRedDark: #291b1c;
     --color-bgGray: #f9fafb;
 }
 
