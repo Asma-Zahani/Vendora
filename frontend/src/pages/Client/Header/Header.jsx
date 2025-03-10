@@ -120,7 +120,7 @@ const Header = () => {
                     <Settings size={15} className="mr-2" /> Settings
                   </li>
                   <li className="flex items-center py-3 px-4 leading-4 cursor-pointer">
-                    <form onSubmit={() => handleLogout(token, setUser, setToken)} className="w-full">
+                    <form onSubmit={(e) => {e.preventDefault();handleLogout(token, setUser, setToken);}} className="w-full">
                       <button className="flex items-center w-full">
                         <LogIn size={15} className="mr-2" /> Log Out
                       </button>

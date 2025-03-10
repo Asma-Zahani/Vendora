@@ -1,4 +1,4 @@
-import { ChevronsLeft, ChevronsRight, Search, ShoppingCart, Settings, ChevronDown, User, LogIn, Bell, Menu } from 'lucide-react';
+import { ChevronsLeft, ChevronsRight, Search, Settings, ChevronDown, User, LogIn, Bell, Menu } from 'lucide-react';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemale from "@/assets/default/user_female.png";
 import DarkMode from "@/utils/DarkMode";
@@ -44,12 +44,6 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
 
             <div className="relative flex items-center border-l dark:border-borderDark pl-1 w-990:border-none -mr-2">
               <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
-                <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-              </button>
-            </div>
-
-            <div className="relative flex items-center border-l  dark:border-borderDark pl-1 -mr-2">
-              <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <Bell className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                 <span className="absolute top-2 right-2.5 flex w-1.5 h-1.5">
                   <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-red-500"></span>
@@ -83,7 +77,7 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
                   <Settings size={15} className="mr-2" /> Settings
                 </li>
                 <li className="flex items-center py-3 px-4 leading-4 hover:bg-gray-100 dark:hover:bg-[#3D3D3D] cursor-pointer">
-                  <form onSubmit={() => handleLogout(token, setUser, setToken)} className="w-full">
+                  <form onSubmit={(e) => {e.preventDefault();handleLogout(token, setUser, setToken);}} className="w-full">
                     <button className="flex items-center w-full">
                       <LogIn size={15} className="mr-2" /> Log Out
                     </button>
