@@ -25,6 +25,7 @@ class Produit extends Model
         'status',
         'description',
         'prix',
+        'quantite',
         'image',
     ];
 

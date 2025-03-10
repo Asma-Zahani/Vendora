@@ -50,6 +50,7 @@ class ProduitController extends Controller implements HasMiddleware
             'status' => [Rule::in(StatusProduitEnum::values())],
             'description' => 'required|string|max:255',
             'prix' => 'required|numeric|min:0',
+            'quantite' => 'nullable|numeric',
             'image' => 'required|string|max:255',
         ]);
         
@@ -104,7 +105,9 @@ class ProduitController extends Controller implements HasMiddleware
             'status' => [Rule::in(StatusProduitEnum::values())],
             'description' => 'required|string|max:255',
             'prix' => 'required|numeric|min:0',
+            'quantite' => 'nullable|numeric',
             'image' => 'required|string|max:255',
+
         ]);
 
         // Mise à jour des informations du produit
