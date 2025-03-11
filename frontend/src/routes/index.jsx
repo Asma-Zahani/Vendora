@@ -30,6 +30,7 @@ import UpdatePassword from "../pages/Client/Content/Protected/UserAccount/Update
 import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHistory";
 import Offres from "../pages/Client/Content/Protected/UserAccount/Offres";
 import DetailProduit from "../pages/Client/Content/Boutique/DetailProduit";
+import Tracking from "../pages/Client/Content/Protected/UserAccount/Tracking";
 
 const routes = [
   {
@@ -59,6 +60,7 @@ const routes = [
             children: [
               { path: "updateProfile", element: <UpdateProfile /> },
               { path: "updatePassword", element: <UpdatePassword /> },
+              { path: "tracking", element: <Tracking /> },
               { path: "orderHistory", element: <OrderHistory /> },
               { path: "offres", element: <Offres /> },
             ]

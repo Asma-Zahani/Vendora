@@ -114,7 +114,7 @@ class AuthController extends Controller
         }
 
         if (!$user->email_verified_at) {
-            return response()->json(['errors' => ['email' => ['Veuillez vérifier votre adresse email avant de vous connecter.']]], 403);
+            return response()->json(['errors' => ['email' => ['Votre adresse email n\'a pas été vérifiée.']]], 403);
         }
         
         $token = $user->createToken($user->first_name.' '.$user->last_name);
@@ -123,6 +123,24 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token->plainTextToken
         ];
+    }
+
+    public function resend(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        
+        $token = Str::random(60);
+
+        // Stocker temporairement dans le cache (ex: Redis) avec une expiration de 1 heure
+        Cache::put("email_verification_{$token}", $user->id, now()->addHour());
+
+        Mail::to($user->email)->send(new VerifyEmail($user, $token));
+
+        return response()->json(['message' => 'Un nouvel email de vérification a été envoyé.'], 201);  
     }
 
     public function logout(Request $request){

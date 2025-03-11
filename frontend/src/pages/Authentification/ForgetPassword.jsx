@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import FormContainer from "./Form";
 import Input from "@/components/ui/Input";
 import { forgotPassword } from "@/service/AuthService";
-import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
+import { resendForgotPasswordEmail } from "@/service/AuthService";
 
 const ForgetPassword = () => {
   const [formData, setFormData] = useState({ email: "" });
@@ -28,6 +29,20 @@ const ForgetPassword = () => {
     }
   };
 
+  const renvoyerEmail = async (e) => {
+    e.preventDefault();
+    if (!isValid) return;
+
+    const data = await resendForgotPasswordEmail(formData);
+    
+    if (data.errors) { 
+      setErrors(data.errors); 
+    } else if (data.message) {
+      console.log(data);
+      setSuccessMessage(data.message);
+    }
+  };
+
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValid(emailRegex.test(formData.email.trim()));
@@ -47,9 +62,9 @@ const ForgetPassword = () => {
             </button>
         </div>
         <div className="mt-4 text-[14px]">
-            <span className="dark:text-grayDark">
-                Vous n&apos;avez pas reçu l&apos;email ?{" "}<a className="text-purpleLight hover:underline cursor-pointer  ">Renvoyer</a>
-            </span>
+            <p className="dark:text-grayDark">
+                Vous n&apos;avez pas reçu l&apos;email ?{" "}<span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span>
+            </p>
         </div>
     </form>
     </FormContainer>

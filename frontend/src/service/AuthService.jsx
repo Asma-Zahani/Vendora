@@ -7,8 +7,26 @@ const handleRegister = async (formData) => {
   return await response.json();
 };
 
+const resendVerificationEmail = async (formData) => {
+  const response = await fetch(`api/email/resend`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+
+  return await response.json();
+};
+
 const forgotPassword = async (formData) => {
   const response = await fetch(`api/forgot-password`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+
+  return await response.json();
+};
+
+const resendForgotPasswordEmail = async (formData) => {
+  const response = await fetch(`api/forgot-password/resend`, {
     method: "POST",
     body: JSON.stringify(formData),
   });
@@ -70,4 +88,4 @@ const handleLogout = async (setUser, setToken) => {
   }
 };
 
-export { handleRegister, forgotPassword, resetPassword, updatePassword, updateProfile, handleLogout };
+export { handleRegister, resendVerificationEmail, forgotPassword, resendForgotPasswordEmail, resetPassword, updatePassword, updateProfile, handleLogout };

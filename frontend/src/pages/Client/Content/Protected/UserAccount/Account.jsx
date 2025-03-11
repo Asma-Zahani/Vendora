@@ -43,6 +43,12 @@ const Account = () => {
                                             </Link>
                                         </li>
                                         <li>
+                                            <Link to="/tracking" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/tracking" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
+                                                <History className="w-5 h-5 me-2" />
+                                                Suivi des commandes
+                                            </Link>
+                                        </li>
+                                        <li>
                                             <Link to="/offres" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/offres" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <Gift className="w-5 h-5 me-2" />
                                                 Offres

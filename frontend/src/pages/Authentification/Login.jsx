@@ -6,13 +6,18 @@ import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
 import { UserContext } from "@/utils/UserContext";
+import { resendVerificationEmail } from "@/service/AuthService";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const Login = () => {
     const [inputType, setInputType] = useState("password");
     const [formData, setFormData] = useState({email: "", password: ""});
     const [isValid, setIsValid] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+
     const [errors, setErrors] = useState({});
+    const { setSuccessMessage } = useContext(SuccessMessageContext);
+
     const {setToken} = useContext(UserContext);
 
     const handleChange = (e) => {
@@ -37,6 +42,20 @@ const Login = () => {
         }
     };
 
+    const renvoyerEmail = async (e) => {
+        e.preventDefault();
+        if (!isValid) return;
+    
+        const data = await resendVerificationEmail(formData);
+        
+        if (data.errors) { 
+          setErrors(data.errors); 
+        } else if (data.message) {
+          console.log(data);
+          setSuccessMessage(data.message);
+      }
+    };
+
     useEffect(() => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         setIsValid(emailRegex.test(formData.email.trim()) && formData.password.trim() !== "");
@@ -50,7 +69,12 @@ const Login = () => {
                 <div className="mb-4">
                     <Label label="Email Address"/>
                     <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
-                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                    {errors.email && 
+                        <>
+                            <p className="text-sm text-red-500">{errors.email}</p>
+                            <p className="text-sm">Vous n&apos;avez pas reçu l&apos;email ? <span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span></p>
+                        </>
+                    }
                 </div>
                 <div className="mb-4">
                     <Label label="Mot de passe"/>

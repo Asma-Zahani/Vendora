@@ -13,6 +13,8 @@ Route::post('/createLivreur', [AuthController::class, 'createLivreur'])->middlew
 
 Route::post('login', [AuthController::class,'login']);
 
+Route::post('/email/resend', [AuthController::class,'resend']);
+
 Route::post('logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
 
 Route::put('/updatePassword/{id}', [AuthController::class, 'updatePassword'])->middleware('auth:sanctum');
@@ -20,5 +22,7 @@ Route::put('/updatePassword/{id}', [AuthController::class, 'updatePassword'])->m
 Route::get('/auth/verify-email', [AuthController::class, 'verifyEmail']);
 
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
+
+Route::post('/forgot-password/resend', [AuthController::class, 'sendResetLink']);
 
 Route::post('/reset-password', [AuthController::class, 'reset']);

@@ -47,7 +47,7 @@ const OrderHistory = () => {
                                 </table>
                             </div>
                         : 
-                        <div className="flex items-center justify-center text-center h-70">
+                        <div className="flex items-center justify-center text-center h-95">
                             <div className="flex flex-col max-w-lg">
                                 <div className="p-3 mx-auto text-purpleLight">
                                     <PackageX size={80} />
@@ -95,7 +95,7 @@ const OrderHistory = () => {
                                 </table>
                             </div>
                         : 
-                        <div className="flex items-center justify-center text-center h-70">
+                        <div className="flex items-center justify-center text-center h-95">
                             <div className="flex flex-col max-w-lg">
                                 <div className="p-3 mx-auto text-purpleLight">
                                     <PackageX size={80} />

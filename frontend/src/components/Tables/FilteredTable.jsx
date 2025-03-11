@@ -277,10 +277,9 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                                 Effacer la recherche
                                             </button>
                                         }
-                                        <button className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
-                                            <Plus size={17} />
-                                            <span>Ajouter {label}</span>
-                                        </button>
+                                        {formActions.handleCreate && <button onClick={() => {setIsFormOpen(true); formActions.setFormData({})}} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                            <Plus size={17}/><span>Ajouter {label.slice(0, -1)}</span>
+                                        </button>}
                                     </div>
                                 </div>
                             </div>
