@@ -62,7 +62,8 @@ return new class extends Migration
             'telephone' => "12345678",
             'genre' => 'male',
             'date_naissance' => "2002-02-02",
-            'password' => Hash::make("admin")
+            'password' => Hash::make("admin"),
+            'email_verified_at' => now(),
         ]);
 
         DB::table('role_user')->insert([
