@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
 import { updateProfile } from "@/service/AuthService";
-import Alert from "@/components/Alert/Alert";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const UpdateProfile = () => {
     const { user } = useContext(UserContext);
@@ -18,8 +18,9 @@ const UpdateProfile = () => {
 
     const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, emploi: user.emploi, typeLogement: user.typeLogement, statusLogement: user.statusLogement });
         
-    const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState("");    
+    const [errors, setErrors] = useState({}); 
+    const { setSuccessMessage } = useContext(SuccessMessageContext);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -119,10 +120,6 @@ const UpdateProfile = () => {
                     </div>
                 </form>
             </div>
-
-            {successMessage && (
-                <Alert successMessage={successMessage} setSuccessMessage={setSuccessMessage} />
-            )}
 
         </div>
     );

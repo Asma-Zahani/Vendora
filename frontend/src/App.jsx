@@ -4,7 +4,9 @@ import UserInterface from "@/pages/Client/UserInterface";
 import Home from "@/pages/Client/Content/Home/Home";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
+import Alert from "@/components/Alert/Alert";
 
 function renderRoutes(routesArray) {
   return routesArray.map((route, index) => (
@@ -21,13 +23,18 @@ function App() {
     });
   }, []);
 
+  const { successMessage, setSuccessMessage } = useContext(SuccessMessageContext);
+
   return (
-    <Routes>
-      {renderRoutes(routes)}
-      <Route path="/" element={<UserInterface />}>
-          <Route index element={<Home />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        {renderRoutes(routes)}
+        <Route path="/" element={<UserInterface />}>
+            <Route index element={<Home />} />
+        </Route>
+      </Routes>
+      {successMessage && <Alert successMessage={successMessage} setSuccessMessage={setSuccessMessage} />}
+    </>
     );
 }
 

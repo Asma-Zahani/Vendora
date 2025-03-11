@@ -1,4 +1,4 @@
-import { useState, useEffect }  from "react";
+import { useState, useEffect, useContext }  from "react";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
@@ -7,6 +7,7 @@ import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
 import { resetPassword } from "@/service/AuthService";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const ResetPassword = () => {    
     const location = useLocation();
@@ -38,6 +39,7 @@ const ResetPassword = () => {
     };
     
     const [errors, setErrors] = useState({});
+        const { setSuccessMessage } = useContext(SuccessMessageContext);
 
     const handleSubmit = async (e) => {
           e.preventDefault();
@@ -48,8 +50,7 @@ const ResetPassword = () => {
           if (data.errors) { 
             setErrors(data.errors); 
           } else if (data.message) {
-            console.log(data.message);
-            
+            setSuccessMessage(data.message);
             navigate("/login");
         }
     };

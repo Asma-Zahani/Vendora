@@ -3,8 +3,8 @@ import UserContext from "@/utils/UserContext";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import ShowPassword from "@/components/ui/ShowPassword";
-import Alert from "@/components/Alert/Alert";
 import { updatePassword } from "@/service/AuthService";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const UpdatePassword = () => {
     const { user } = useContext(UserContext);
@@ -14,7 +14,7 @@ const UpdatePassword = () => {
     const [inputType2, setInputType2] = useState("password");
     const [formData, setFormData] = useState({ current_password: "", new_password: "", new_password_confirmation: "" });
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState("");
+    const { setSuccessMessage } = useContext(SuccessMessageContext);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -79,11 +79,6 @@ const UpdatePassword = () => {
                     </div>
                 </form>
             </div>
-
-            {successMessage && (
-                <Alert successMessage={successMessage} setSuccessMessage={setSuccessMessage} />
-            )}
-
         </div>
     );
 };

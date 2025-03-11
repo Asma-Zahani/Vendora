@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
@@ -8,6 +8,7 @@ import Label from "@/components/ui/Label";
 import Dropdown from "@/components/Forms/Dropdown";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
 import { handleRegister } from "@/service/AuthService";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const Register = () => {
   const [inputType, setInputType] = useState("password");
@@ -29,6 +30,7 @@ const Register = () => {
   const prevStep = () => { if (step > 1) { setStep(step - 1); } };
 
   const [errors, setErrors] = useState({});
+  const { setSuccessMessage } = useContext(SuccessMessageContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +72,9 @@ const Register = () => {
     if (data.errors) { 
       setErrors(data.errors); 
     } else if (data.message) {
+      console.log(data);
+      setSuccessMessage(data.message);
+      
       navigate("/login");
   }
   };

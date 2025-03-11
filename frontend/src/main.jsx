@@ -7,14 +7,16 @@ import App from './App.jsx';
 import './App.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import { SuccessMessageProvider } from "@/utils/SuccessMessageContext"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
         <ThemeProvider>
-          <App />
+          <SuccessMessageProvider>
+            <App />
+          </SuccessMessageProvider>
         </ThemeProvider>
       </UserProvider>
     </BrowserRouter>

@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import FormContainer from "./Form";
 import Input from "@/components/ui/Input";
 import { forgotPassword } from "@/service/AuthService";
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const ForgetPassword = () => {
   const [formData, setFormData] = useState({ email: "" });
   const [isValid, setIsValid] = useState(false);
-  // const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
   
   const [errors, setErrors] = useState({});
+  const { setSuccessMessage } = useContext(SuccessMessageContext);
 
   const handleSubmit = async (e) => {
       e.preventDefault();
@@ -24,9 +24,7 @@ const ForgetPassword = () => {
       if (data.errors) { 
         setErrors(data.errors); 
       } else if (data.message) {
-        console.log(data.message);
-        
-        // navigate("/reset-password");
+        setSuccessMessage(data.message);
     }
   };
 
