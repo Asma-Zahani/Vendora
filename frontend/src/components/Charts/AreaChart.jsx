@@ -1,10 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { useEffect, useRef } from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const AreaChart = ({ chartData }) => {
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
+  }, []);
+
   const options = {
     responsive: true,
     plugins: {
@@ -33,7 +45,7 @@ const AreaChart = ({ chartData }) => {
     },
   };
 
-  return <Line options={options} data={chartData} />;
+  return <Line ref={chartRef} options={options} data={chartData} />;
 };
 
 export default AreaChart;
