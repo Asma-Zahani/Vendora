@@ -196,6 +196,8 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users,email',
         ]);
 
+        $user = User::where('email', $request->email)->first();
+
         PasswordResetToken::where('email', $request->email)
             ->delete();
 
@@ -210,7 +212,7 @@ class AuthController extends Controller
         ]);
 
         // Envoyer l'email avec le lien de réinitialisation
-        Mail::to($request->email)->send(new PasswordResetEmail($token));
+        Mail::to($request->email)->send(new PasswordResetEmail($token, $user));
 
         return response()->json(['message' => $message]);
     }

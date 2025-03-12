@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vérification de l'adresse email</title>
+    <title>Réinitialisation du mot de passe</title>
 </head>
-<body>
-    Bonjour,
+<body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+    <div style="max-width: 600px; margin: auto; border: 1px solid #dadce0; padding: 20px; border-radius: 8px;">        
+        <!-- Logo -->
+        <div style="text-align: center;">
+            <img src="logo.png" alt="Logo" style="height: 50px;">
+        </div>
 
-    Nous avons reçu une demande pour réinitialiser votre mot de passe. Si vous n'avez pas effectué cette demande, veuillez ignorer cet e-mail.
+        <h2 style="color: #333;">Bonjour {{ $user->prenom }} {{ $user->nom }},</h2>
+        <p style="color: #555;">Nous avons reçu une demande pour réinitialiser votre mot de passe. Si vous n'avez pas effectué cette demande, veuillez ignorer cet e-mail.</p>
 
-    Pour réinitialiser votre mot de passe, cliquez sur le bouton ci-dessous :
+        <p style="color: #555;">Pour réinitialiser votre mot de passe, cliquez sur le bouton ci-dessous :</p>
 
-    <a href="{{ $url }}">Vérifier mon adresse email</a>
+        <a href="{{ $url }}" style="display: inline-block; padding: 10px 20px; margin: 20px 0; color: white; background-color: #665292FF; text-decoration: none; border-radius: 5px;">
+            Réinitialiser mon mot de passe
+        </a>
 
-    Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter.
+        <p style="color: #555;">Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter.</p>
 
-    Cordialement,  
-    L'équipe de votre application
+        <p style="color: #555;">Cordialement, <br> L'équipe de KD Marché</p>
+
+        <!-- Footer -->
+        <p style="margin-top: 20px; color: #999; font-size: 12px;">
+            © {{ date('Y') }} KD Marché. Tous droits réservés.
+        </p>
+    </div>
 </body>
 </html>
