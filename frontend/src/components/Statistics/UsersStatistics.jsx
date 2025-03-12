@@ -85,7 +85,7 @@ const UsersStatistics = () => {
       {/* Bloc commandes récentes */}
       <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm w-full sm:col-span-2">
         <div className="flex items-center justify-center h-100">
-          <div className="flex flex-col max-w-lg">Commandes récentes</div>
+          <div className="flex flex-col max-w-lg">Users</div>
         </div>
       </div>
 

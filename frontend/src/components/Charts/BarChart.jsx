@@ -2,11 +2,16 @@
 /* eslint-disable react/prop-types */
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import    ThemeContext from "@/utils/ThemeContext"
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const BarChart = ({ data }) => {
+  const { theme } = useContext(ThemeContext);
+
+  const textColor = theme === 'dark' ? '#fff' : '#000';
+
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -18,15 +23,31 @@ const BarChart = ({ data }) => {
   }, []);
 
   const options = {
-    // indexAxis: 'y', // <-- Permet d'afficher un bar chart horizontal
+    // indexAxis: 'y',
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        labels: {
+          color: textColor,
+        },
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: textColor,
+        },
       },
-      title: {
-        display: true,
-        text: 'Statistiques des commandes',
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: textColor,
+        },
       },
     },
   };

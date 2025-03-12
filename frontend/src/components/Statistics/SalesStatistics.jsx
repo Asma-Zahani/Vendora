@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import { useState } from "react";
 import Dropdown from "@/components/Forms/Dropdown";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
@@ -19,13 +18,13 @@ const SalesStatistics = () => {
       avgRevenuePerOrder: "$523",
       monthlySales: [100, 500, 700, 600, 900, 750, 400, 800, 1100, 900, 950, 1050],
     },
-    "2023": {
+    "2022": {
       totalSales: "$600.00K",
       totalOrders: "1,100",
       avgRevenuePerOrder: "$545",
       monthlySales: [150, 400, 600, 650, 800, 700, 450, 750, 1050, 850, 900, 1020],
     },
-    "2022": {
+    "2023": {
       totalSales: "$550.00K",
       totalOrders: "1,050",
       avgRevenuePerOrder: "$500",
@@ -36,13 +35,16 @@ const SalesStatistics = () => {
   const [isOpen, setIsOpen] = useState(false);
   const data = salesDataByYear[selectedYear];
 
+  const previousSales = salesDataByYear[String(Number(selectedYear) - 1)]?.totalSales || "$0";
+  const salesDifference = previousSales.replace(/[^\d.]/g, "") ? 
+    ((data.totalSales.replace(/[^\d.]/g, "") - previousSales.replace(/[^\d.]/g, "")) / previousSales.replace(/[^\d.]/g, "")) * 100 : 0;
+
   const labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'];
 
   const salesChartData = {
     labels,
     datasets: [
       {
-        fill: true,
         label: "Ventes mensuelles",
         data: data.monthlySales,
         borderColor: "#665292FF",
@@ -62,21 +64,21 @@ const SalesStatistics = () => {
               Jan 1, {selectedYear} - Dec 31, {selectedYear}
             </p>
             <p className="text-3xl font-bold">{data.totalSales}</p>
-            {true ? (
+            {salesDifference < 0 ? (
               <div className="flex items-center gap-1 mt-2">
                 <div className="bg-bgRed dark:bg-bgRedDark p-1 rounded-full">
                   <ArrowBigDown className="w-4 h-4 text-red-600" />
                 </div>
-                <span className="text-sm font-semibold text-red-600">95%</span>
-                <span className="text-xs">Un an auparavant</span>
+                <span className="text-sm font-semibold text-red-600">{Math.abs(salesDifference).toFixed(2)}%</span>
+                <span className="text-xs">Il y&apos;a un an</span>
               </div>
             ) : (
               <div className="flex items-center gap-1 mt-2">
                 <div className="bg-bgGreen dark:bg-bgGreenDark p-1 rounded-full">
                   <ArrowBigUp className="w-4 h-4 text-green-600" />
                 </div>
-                <span className="text-sm font-semibold text-green-600">95%</span>
-                <span className="text-xs">Un an auparavant</span>
+                <span className="text-sm font-semibold text-green-600">{salesDifference.toFixed(2)}%</span>
+                <span className="text-xs">Il y&apos;a un an</span>
               </div>
             )}
           </div>
