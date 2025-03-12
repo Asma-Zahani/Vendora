@@ -23,6 +23,6 @@ Route::get('/auth/verify-email', [AuthController::class, 'verifyEmail']);
 
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
 
-Route::post('/forgot-password/resend', [AuthController::class, 'sendResetLink']);
+Route::post('/forgot-password/resend', [AuthController::class, 'resendResetLink']);
 
 Route::post('/reset-password', [AuthController::class, 'reset']);

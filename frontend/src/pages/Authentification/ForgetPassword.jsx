@@ -38,7 +38,6 @@ const ForgetPassword = () => {
     if (data.errors) { 
       setErrors(data.errors); 
     } else if (data.message) {
-      console.log(data);
       setSuccessMessage(data.message);
     }
   };

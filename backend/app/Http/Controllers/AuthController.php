@@ -101,7 +101,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Mot de passe mis à jour avec succès.'], 200);
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required'
@@ -159,9 +160,9 @@ class AuthController extends Controller
     
         $userId = Cache::get("email_verification_{$token}");
 
-    if (!$userId) {
-        return response()->json(['message' => 'Token expiré ou invalide.'], 400);
-    }
+        if (!$userId) {
+            return response()->json(['message' => 'Token expiré ou invalide.'], 400);
+        }
 
         // Récupérer l'utilisateur et vérifier l'email
         $user = User::find($userId);
@@ -181,9 +182,22 @@ class AuthController extends Controller
 
     public function sendResetLink(Request $request)
     {
+        return $this->resetLink($request, 'Un email a été envoyé pour réinitialiser votre mot de passe.');
+    }
+
+    public function resendResetLink(Request $request)
+    {
+        return $this->resetLink($request, 'Un nouvel email de réinitialisation de mot de passe a été envoyé.');
+    }
+
+    public function resetLink(Request $request, $message)
+    {
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
+
+        PasswordResetToken::where('email', $request->email)
+            ->delete();
 
         // Générer un token unique
         $token = bin2hex(random_bytes(32));
@@ -198,7 +212,7 @@ class AuthController extends Controller
         // Envoyer l'email avec le lien de réinitialisation
         Mail::to($request->email)->send(new PasswordResetEmail($token));
 
-        return response()->json(['message' => 'Un email a été envoyé pour réinitialiser votre mot de passe.']);
+        return response()->json(['message' => $message]);
     }
 
     public function reset(Request $request)
