@@ -47,8 +47,8 @@ const SalesStatistics = () => {
       {
         label: "Ventes mensuelles",
         data: data.monthlySales,
-        borderColor: "#665292FF",
-        backgroundColor: "#E6E6FA",
+        borderColor: "rgba(153, 102, 255, 0.5)",
+        backgroundColor: "rgba(153, 102, 255, 0.5)",
       },
     ],
   };
@@ -114,8 +114,8 @@ const SalesStatistics = () => {
           <div className="flex flex-col items-start">
             <p className="text-3xl font-bold">{data.totalSales}</p>
             <p className="text-sm text-grayDark">Total des ventes</p>
-            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-              <div className="bg-blue-600 h-2 rounded-full" style={{ width: "80%" }}></div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+              <div className="h-2 rounded-full" style={{ width: "80%", backgroundColor: "rgba(54, 162, 235, 0.5)" }}></div>
             </div>
           </div>
 
@@ -123,8 +123,8 @@ const SalesStatistics = () => {
           <div className="flex flex-col items-start">
             <p className="text-3xl font-bold">{data.totalOrders}</p>
             <p className="text-sm text-grayDark">Nombre de commandes</p>
-            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-              <div className="bg-green-500 h-2 rounded-full" style={{ width: "70%" }}></div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+              <div className="h-2 rounded-full" style={{ width: "70%", backgroundColor: "rgba(75, 192, 192, 0.5)" }}></div>
             </div>
           </div>
 
@@ -132,8 +132,8 @@ const SalesStatistics = () => {
           <div className="flex flex-col items-start">
             <p className="text-3xl font-bold">{data.avgRevenuePerOrder}</p>
             <p className="text-sm text-grayDark">Revenu par commande</p>
-            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-              <div className="bg-purple-500 h-2 rounded-full" style={{ width: "90%" }}></div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+              <div className="h-2 rounded-full" style={{ width: "90%", backgroundColor: "rgba(255, 99, 132, 0.5)" }}></div>
             </div>
           </div>
         </div>
