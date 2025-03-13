@@ -17,7 +17,7 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except:['clients','livreurs','show'])
+            new Middleware('auth:sanctum', except:['index','clients','livreurs','show'])
         ];
     }
 

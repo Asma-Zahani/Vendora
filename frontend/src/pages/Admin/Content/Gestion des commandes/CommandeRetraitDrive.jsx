@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import { getCommandesRetraitDrives, getCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
 import { getEtatCommandes } from "@/service/EnumsService";
-import { getClients } from "@/service/UsersService";
+import { getUsers } from "@/service/UsersService";
 import { Package } from "lucide-react";
 import FilteredTable from "@/components/Tables/FilteredTable";
 
@@ -43,7 +43,7 @@ const CommandeRetraitDrive = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setClients(await getClients());
+        setClients(await getUsers());
         setEtatCommandeOptions(await getEtatCommandes());
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
