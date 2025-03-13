@@ -21,6 +21,11 @@ class UserController extends Controller implements HasMiddleware
         ];
     }
 
+    public function index()
+    {
+        return User::all();
+    }
+
     public function clients()
     {
         return response()->json(User::whereHas('roles', function ($query) {
