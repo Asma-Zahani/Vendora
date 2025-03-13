@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header
-      className="w-full bg-customLight dark:bg-customDark dark:shadow-none transition-all duration-300 relative">
+      className="w-full fixed left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none transition-all">
       <div className="mx-0 lg:mx-10 px-4 py-2 md:py-4 lg:py-4">
         <div className="flex items-center w-full">
           <div className="flex items-center justify-between px-4 py-2 relative">
