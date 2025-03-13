@@ -128,11 +128,10 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                         </div>
 
                         {data.length > 0 && currentItems.length > 0 ? (
-                            <div className="mt-6 py-2 flex flex-col w-full max-w-sm sm:max-w-[310px] md:max-w-3xl w-990:max-w-[650px] lg:max-w-full max-h-[400px] overflow-y-auto">
-                            {/* <div className="mt-6 py-2 flex flex-col w-full max-w-[100vh] lg:max-w-full max-h-[400px] overflow-y-auto"> */}    
-                            <div className="overflow-x-auto scrollbar">
+                            <div className="mt-6 py-2 flex flex-col w-full max-w-sm w-500:max-w-full md:max-w-3xl w-990:max-w-[650px] lg:max-w-full max-h-[400px] overflow-y-auto">
+                                <div className="overflow-x-auto scrollbar">
                                     <table className="min-w-full">
-                                        <thead>
+                                        <thead className="sticky top-0 bg-customLight dark:bg-customDark z-10 border-b border-contentLight dark:border-borderDark shadow-xs dark:shadow-borderDark">
                                             <tr className="border-b border-contentLight dark:border-borderDark">
                                                 {formActions.columns.map((column, index) => (
                                                     <th key={index} className={`py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 ${column.type === "checkbox" ? "pr-2 pl-4 w-10" : "px-4"}`}>
