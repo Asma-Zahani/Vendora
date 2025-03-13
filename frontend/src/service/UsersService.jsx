@@ -1,3 +1,8 @@
+const getUsers = async () => {
+  const res = await fetch("/api/users");
+  return res.ok ? res.json() : Promise.reject(res.json());
+};
+
 const getClients = async () => {
   const res = await fetch("/api/clients");
   return res.ok ? res.json() : Promise.reject(res.json());
@@ -61,5 +66,4 @@ const deleteUser = async (_id) => {
   return res.ok ? res.json() : Promise.reject(res.json());
 };
 
-export { getClients, getLivreurs, getUser, createClient, createLivreur, updateUser, deleteUser };
-  
+export { getUsers, getClients, getLivreurs, getUser, createClient, createLivreur, updateUser, deleteUser };
