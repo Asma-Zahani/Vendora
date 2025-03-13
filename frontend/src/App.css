@@ -4,6 +4,7 @@
 
 @theme {
     --breakpoint-w-990: 990px;
+    --breakpoint-w-500: 500px;
 
     --color-contentLight: #f5f5f5;
     --color-contentDark: #121313;
