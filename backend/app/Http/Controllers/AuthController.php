@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
-use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -57,19 +56,9 @@ class AuthController extends Controller
         $user = User::create($validatedData);
         
         if ($role === "client") {
-            RoleUser::create([
-                'user_id' => $user->id,
-                'role' => RoleEnum::CLIENT->value,
-            ]);
+            $validatedData['role'] = RoleEnum::CLIENT->value;
         } else if ($role === "livreur") {
-            RoleUser::create([
-                'user_id' => $user->id,
-                'role' => RoleEnum::LIVREUR->value,
-            ]);
-            RoleUser::create([
-                'user_id' => $user->id,
-                'role' => RoleEnum::CLIENT->value,
-            ]);
+            $validatedData['role'] = RoleEnum::LIVREUR->value;
         }
         
         $token = Str::random(60);

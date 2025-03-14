@@ -31,7 +31,8 @@ class User extends Authenticatable
         'ville',
         'emploi',
         'typeLogement',
-        'statusLogement'
+        'statusLogement',
+        'role'
     ];
 
     protected $hidden = [

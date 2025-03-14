@@ -8,7 +8,7 @@ pagination boutique
 paiement
 dashboard
 
-commande (user (yjib fel client mech fel user)) -----> role
-
 https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
+
+admin ynjeem y3ady commande ??

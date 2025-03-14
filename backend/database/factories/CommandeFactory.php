@@ -15,7 +15,7 @@ class CommandeFactory extends Factory
 {
     public function definition(): array
     {
-        $client = User::inRandomOrder()->first();
+        $client = User::inRandomOrder()->where('role', '!=', 'admin')->first();
 
         return [
             'client_id' => $client ? $client->id : null, // Génère un client aléatoire

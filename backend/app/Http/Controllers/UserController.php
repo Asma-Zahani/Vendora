@@ -9,7 +9,6 @@ use App\Models\Produit;
 use App\Models\PanierProduit;
 use App\Models\ListeDeSouhait;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller implements HasMiddleware
@@ -28,18 +27,12 @@ class UserController extends Controller implements HasMiddleware
 
     public function clients()
     {
-        return response()->json(User::whereHas('roles', function ($query) {
-            $query->where('role', 'client');
-        })->whereDoesntHave('roles', function ($query) {
-            $query->where('role', '!=', 'client');
-        })->get());
+        return response()->json(User::where('role', 'client')->get());
     }   
 
     public function livreurs()
     {
-        return response()->json(User::whereHas('roles', function ($query) {
-            $query->where('role', 'livreur');
-        })->get());
+        return response()->json(User::where('role', 'livreur')->get());
     }  
     
     public function show($id)

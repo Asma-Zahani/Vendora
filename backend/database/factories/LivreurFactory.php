@@ -29,22 +29,7 @@ class LivreurFactory extends Factory
             'emploi' => $this->faker->randomElement(["Employé", "Sans emploi", "Retraité", "Indépendant"]),
             'typeLogement' => $this->faker->randomElement(["Appartement", "Maison individuelle", "Hébergement"]),
             'statusLogement' => $this->faker->randomElement(["Propriétaire", "Locataire", "Hébergé à titre gratuit"]),
+            'role' => RoleEnum::LIVREUR->value,
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (User $user) {
-            $role = RoleEnum::LIVREUR->value;
-            RoleUser::create([
-                'user_id' => $user->id,
-                'role' => $role,
-            ]);
-            $role = RoleEnum::CLIENT->value;
-            RoleUser::create([
-                'user_id' => $user->id,
-                'role' => $role,
-            ]);
-        });
     }
 }
