@@ -107,7 +107,7 @@ const FilteredTable = ({ label, datas, viewData, filtres, formActions, identifia
                                         </button>
                                         <div className="relative">
                                             {isSelectedItemOpen && (
-                                            <div className="absolute mt-1 z-10 bg-customLight dark:bg-contentDark border border-bgLight dark:border-bgDark rounded-lg shadow-lg w-full">
+                                            <div className="absolute mt-1 z-50 bg-customLight dark:bg-contentDark border border-bgLight dark:border-bgDark rounded-lg shadow-lg w-full">
                                                 {itemsPerPage.map((option, index) => (
                                                 <div key={index} className={`px-4 py-1 text-gray-700 hover:bg-bgLight hover:dark:bg-bgDark dark:hover:text-white cursor-pointer text-center
                                                     ${selectedItemPerPage === option ? "bg-bgLight dark:bg-bgDark dark:text-white" : "dark:text-grayDark" } ${index === 0 ? "rounded-t-md" : ""} ${index === itemsPerPage.length - 1 ? "rounded-b-md" : ""}`}
