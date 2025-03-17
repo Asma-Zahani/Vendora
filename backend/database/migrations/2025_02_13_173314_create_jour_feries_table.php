@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('jour_feries', function (Blueprint $table) {
             $table->id('jour_ferie_id');
+            $table->foreignId('drive_id')->constrained('drives', 'drive_id')->onDelete('cascade');
             $table->string('title');
             $table->date('start');
             $table->date('end');

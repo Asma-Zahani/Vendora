@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\PeriodeHoraire;
-use App\Models\Horaire;  // Assurez-vous d'importer le modèle Horaire
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Schema;
 
 class PeriodeHoraireController extends Controller implements HasMiddleware
 {
@@ -20,9 +19,9 @@ class PeriodeHoraireController extends Controller implements HasMiddleware
     }
 
     // Retourne toutes les périodes horaires
-    public function index()
+    public function index(Request $request)
     {
-        return PeriodeHoraire::all();
+        return response()->json(PeriodeHoraire::with('periodesHoraires')->get());
     }
 
     // Stocke une nouvelle période horaire avec validation des horaires
@@ -40,7 +39,10 @@ class PeriodeHoraireController extends Controller implements HasMiddleware
         $periode = PeriodeHoraire::create($validatedData);
 
         // Retourne la réponse en JSON
-        return response()->json($periode, 201);  // Code 201 pour la création
+        return response()->json([
+            'message' => 'Période horaire ajouter avec succès',
+            'data' => $periode
+        ], 201);
     }
 
     // Affiche une période horaire spécifique
@@ -68,20 +70,18 @@ class PeriodeHoraireController extends Controller implements HasMiddleware
         // Mise à jour des données de la période horaire
         $periode->update($validatedData);
 
-        // Retourne la période horaire mise à jour en JSON
-        return response()->json($periode, 200);
+        return response()->json([
+            'message' => 'Période horaire mise à jour avec succès',
+            'data' => $periode
+        ], 200);
     }
 
-    // Supprime une période horaire
     public function destroy($id)
     {
-        // Trouve la période horaire par son ID ou échoue
-        $periode = PeriodeHoraire::findOrFail($id);
+        PeriodeHoraire::findOrFail($id)->delete();
 
-        // Supprime la période horaire
-        $periode->delete();
-
-        // Retourne une réponse JSON avec un message de succès
-        return response()->json(['message' => 'Période horaire supprimée avec succès'], 200);
+        return response()->json([
+            'message' => 'Période horaire supprimée avec succès'
+        ], 200);    
     }
 }

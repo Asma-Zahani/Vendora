@@ -15,16 +15,11 @@ return new class extends Migration
     {
         Schema::create('horaires', function (Blueprint $table) {
             $table->id('horaire_id');
-            $table->enum('jour', JourEnum::values())->unique();
+            $table->foreignId('drive_id')->constrained('drives', 'drive_id')->onDelete('cascade');
+            $table->enum('jour', JourEnum::values());
             $table->boolean('ouvert');
+            $table->unique(['drive_id', 'jour']);
         });
-
-        foreach (JourEnum::values() as $jour) {
-            DB::table('horaires')->insert([
-                'jour' => $jour,
-                'ouvert' => $jour !== 'Dimanche' ? true : false ,
-            ]);
-        }
     }
 
     /**

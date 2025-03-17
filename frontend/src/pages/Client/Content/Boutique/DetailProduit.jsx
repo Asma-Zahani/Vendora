@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { getProduit } from "@/service/ProduitService";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
+import { getEntity } from "@/service/EntitesService";
 
 const DetailProduit = () => {
     const { id } = useParams();
@@ -13,10 +13,11 @@ const DetailProduit = () => {
     setImageSrc(defaultImg); 
   };
 
-  useEffect(() => { 
-    (async () => {
-      setProduit(await getProduit(id)); 
-    })(); 
+  useEffect(() => {
+    const fetchData = async () => {
+      setProduit(await getEntity("produits", id));
+    }; 
+    fetchData();
   }, []);
   
   return (

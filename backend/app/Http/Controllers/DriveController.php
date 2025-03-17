@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JourEnum;
 use App\Enums\StatusDriveEnum;
 use App\Models\Drive;
 use App\Models\Horaire;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class DriveController extends Controller implements HasMiddleware
@@ -19,9 +22,31 @@ class DriveController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Drive::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(Drive::with('horaires.periodesHoraires','jourFeries')->get());
+        }
+
+        $query = Drive::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nom', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('region', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('ville', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('status', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('drives', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $categories = $query->paginate($request->input('per_page'));
+
+        return response()->json($categories);
     }
 
     public function store(Request $request)
@@ -36,7 +61,18 @@ class DriveController extends Controller implements HasMiddleware
         
         $drive = Drive::create($validatedData);
 
-        return response()->json($drive, 200);
+        foreach (JourEnum::values() as $jour) {
+            DB::table('horaires')->insert([
+                'drive_id' => $drive->id,
+                'jour' => $jour,
+                'ouvert' => $jour !== 'Dimanche' ? true : false ,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Drive ajouter avec succès',
+            'data' => $drive
+        ], 201);
     }
 
     public function show($id)
@@ -59,13 +95,19 @@ class DriveController extends Controller implements HasMiddleware
         
         $drive->update($validatedData);
 
-        return response()->json($drive, 200);
+        return response()->json([
+            'message' => 'Drive mise à jour avec succès',
+            'data' => $drive
+        ], 200);
     }
 
     public function destroy($id)
     {
         $drive = Drive::findOrFail($id);
         $drive->delete();
-        return response()->json(['message' => 'Drive supprimé avec succès'], 200);
+        
+        return response()->json([
+            'message' => 'Drive supprimée avec succès'
+        ], 200);    
     }
 }

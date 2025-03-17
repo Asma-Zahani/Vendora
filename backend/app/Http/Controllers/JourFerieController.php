@@ -6,6 +6,7 @@ use App\Models\JourFerie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class JourFerieController extends Controller implements HasMiddleware
 {
@@ -19,9 +20,9 @@ class JourFerieController extends Controller implements HasMiddleware
     /**
      * Affiche la liste des jours fériés.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return JourFerie::all();
+        return response()->json(JourFerie::all());
     }
 
     /**
@@ -30,6 +31,7 @@ class JourFerieController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'drive_id' => ['required', 'exists:drives,drive_id'],
             'title' => 'required|string|max:255',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -37,26 +39,29 @@ class JourFerieController extends Controller implements HasMiddleware
         
         $jourFerie = JourFerie::create($validatedData);
 
-        return response()->json($jourFerie, 200);
+        return response()->json([
+            'message' => 'Jour férié ajouter avec succès',
+            'data' => $jourFerie
+        ], 201);
     }
 
-    /**
-     * Affiche un jour férié spécifique.
-     */
     public function show($id)
     {
         $jourFerie = JourFerie::findOrFail($id);
         return response()->json($jourFerie);
     }
+    
+    public function getJourFerieByDrive($id) {
+        $joursFeries = JourFerie::where('drive_id', $id)->get();    
+        return response()->json($joursFeries);
+    }    
 
-    /**
-     * Met à jour un jour férié existant.
-     */
     public function update(Request $request, $id)
     {
         $jourFerie = JourFerie::findOrFail($id);
 
         $validatedData = $request->validate([
+            'drive_id' => ['required', 'exists:drives,drive_id'],
             'title' => 'required|string|max:255',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -64,7 +69,10 @@ class JourFerieController extends Controller implements HasMiddleware
         
         $jourFerie->update($validatedData);
 
-        return response()->json($jourFerie, 200);
+        return response()->json([
+            'message' => 'Jour férié mise à jour avec succès',
+            'data' => $jourFerie
+        ], 200);
     }
 
     /**
@@ -74,6 +82,9 @@ class JourFerieController extends Controller implements HasMiddleware
     {
         $jourFerie = JourFerie::findOrFail($id);
         $jourFerie->delete();
-        return response()->json(['message' => 'Jour férié avec id ' . $jourFerie->jour_ferie_id . ' supprimé avec succès'], 200);
+        
+        return response()->json([
+            'message' => 'Jour férié supprimée avec succès'
+        ], 200);    
     }
 }

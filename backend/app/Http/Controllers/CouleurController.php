@@ -7,17 +7,11 @@ use Illuminate\Http\Request;
 
 class CouleurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Couleur::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -27,21 +21,18 @@ class CouleurController extends Controller
         
         $couleur = Couleur::create($validatedData);
 
-        return response()->json($couleur, 200);
+        return response()->json([
+            'message' => 'Couleur ajouter avec succès',
+            'data' => $couleur
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $couleur = Couleur::findOrFail($id);
         return response()->json($couleur);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $couleur = Couleur::findOrFail($id);
@@ -53,16 +44,19 @@ class CouleurController extends Controller
         
         $couleur->update($validatedData);
 
-        return response()->json($couleur, 200);
+        return response()->json([
+            'message' => 'Couleur mise à jour avec succès',
+            'data' => $couleur
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $couleur = Couleur::findOrFail($id);
         $couleur->delete();
-        return response()->json(['message' => 'couleur avec id ' . $couleur->couleur_id . ' effacer avec succés'], 200);
+        
+        return response()->json([
+            'message' => 'Couleur supprimée avec succès'
+        ], 200);    
     }
 }

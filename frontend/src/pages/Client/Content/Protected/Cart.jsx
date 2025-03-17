@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import AOS from "aos";
 import CartTable from "@/components/Tables/CartTable";
-import { getCodePromotionByCode } from "@/service/CodePromotionService";
 import { addToPanier, deleteFromPanier } from "@/service/PanierService";
 import UserContext from '@/utils/UserContext';
+import { getEntityBy } from "@/service/EntitesService";
 
 const Cart = () => {
     const { user, panier, setPanier } = useContext(UserContext);
@@ -28,8 +28,7 @@ const Cart = () => {
 
     const handleCodePromotion = async (code) => {
         try {
-            const codePromotion = await getCodePromotionByCode(code);
-            setCodePromotion(codePromotion);
+            setCodePromotion(await getEntityBy("codePromotions", "code", code));
             setCodePromotionError(null);
         } catch (error) {
             console.error("Erreur lors de la récupération du code promotion:", error);

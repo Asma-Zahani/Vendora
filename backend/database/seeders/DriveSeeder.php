@@ -13,6 +13,6 @@ class DriveSeeder extends Seeder
      */
     public function run(): void
     {
-        Drive::factory(20)->create();
+        Drive::factory(10)->create();
     }
 }

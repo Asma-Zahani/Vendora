@@ -7,6 +7,7 @@ use App\Models\Horaire;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class HoraireController extends Controller implements HasMiddleware
@@ -18,18 +19,19 @@ class HoraireController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Horaire::with('periodesHoraires')->get();
+        return response()->json(Horaire::with('periodesHoraires')->get());
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'drive_id' => ['required', 'exists:drives,drive_id'],
             'jour' => [
                 'required',
                 'string',
-                'unique:horaires,jour',
+                'unique:horaires,jour,NULL,NULL,drive_id,' . $request->drive_id, // unique sur drive_id et jour
                 Rule::in(JourEnum::cases()),
             ],
             'ouvert' => 'required|boolean',
@@ -37,7 +39,10 @@ class HoraireController extends Controller implements HasMiddleware
         
         $horaire = Horaire::create($validatedData);
 
-        return response()->json($horaire, 200);
+        return response()->json([
+            'message' => 'Horaire ajouter avec succès',
+            'data' => $horaire
+        ], 201);
     }
 
     public function show($id)
@@ -51,24 +56,33 @@ class HoraireController extends Controller implements HasMiddleware
         $horaire = Horaire::findOrFail($id);
 
         $validatedData = $request->validate([
+            'drive_id' => ['required', 'exists:drives,drive_id'],
             'jour' => [
                 'required',
                 'string',
                 Rule::in(JourEnum::cases()),
-                Rule::unique('horaires')->ignore($id, 'horaire_id'),
+                Rule::unique('horaires')->where(function ($query) use ($request) {
+                    return $query->where('drive_id', $request->drive_id);
+                })->ignore($id, 'horaire_id'),
             ],
             'ouvert' => 'required|boolean',
         ]);
         
         $horaire->update($validatedData);
 
-        return response()->json($horaire, 200);
+        return response()->json([
+            'message' => 'Horaire mise à jour avec succès',
+            'data' => $horaire
+        ], 200);
     }
 
     public function destroy($id)
     {
         $horaire = Horaire::findOrFail($id);
         $horaire->delete();
-        return response()->json(['message' => 'Horaire supprimé avec succès'], 200);
+        
+        return response()->json([
+            'message' => 'Horaire supprimée avec succès'
+        ], 200);    
     }
 }

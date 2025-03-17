@@ -1,15 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
-import { getRecentsProduits } from "@/service/ProduitService";
-import { getCategories } from "@/service/CategorieService";
-import { getSousCategories } from "@/service/SousCategorieService";
-import { getMarques } from "@/service/MarqueService";
-import { getPromotions } from "@/service/PromotionService";
 import UserContext from '@/utils/UserContext';
 import Card from '@/components/Products/Card';
 import { addToPanier } from "@/service/PanierService";
 import { addToWishlist } from "@/service/WishlistService";
 import { Link } from "react-router";
+import { getEntities, getRecentsEntities } from "@/service/EntitesService";
 
 const RecentsProduits = () => {
   const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
@@ -20,26 +16,22 @@ const RecentsProduits = () => {
   const [marques, setMarques] = useState([]);
   const [promotions, setPromotions] = useState([]);
 
-  useEffect(() => { 
-    (async () => {
-      setProduits(await getRecentsProduits()); 
-    })(); 
-  }, []);
-  
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setCategories(await getCategories());
-        setSousCategories(await getSousCategories());
-        setMarques(await getMarques());
-        setPromotions(await getPromotions());
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      }
-    };
-    fetchCategories();
+    const fetchData = async () => {
+      setProduits(await getRecentsEntities("recentProduits"));
+    }; 
+    fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setCategories(await getEntities("categories"));
+      setSousCategories(await getEntities("sousCategories"));
+      setMarques(await getEntities("marques"));
+      setPromotions(await getEntities("promotions"));
+    }; 
+    fetchData();
+  }, []);
   
   const formattedProduits = produits.map((item) => {
     const promotion = promotions.find(p => p.promotion_id === item.promotion_id);

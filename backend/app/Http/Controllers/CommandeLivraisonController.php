@@ -10,6 +10,7 @@ use App\Models\PanierProduit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class CommandeLivraisonController extends Controller implements HasMiddleware
@@ -21,12 +22,49 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return CommandeLivraison::with('commande')->get();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(CommandeLivraison::with('commande')->get());
+        }
+
+        $query = CommandeLivraison::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            if (strpos($searchTerm, '#') === 0) {
+                $searchTerm = substr($searchTerm, 1);
+                $query->where('commande_id', 'LIKE', "%{$searchTerm}%"); 
+            } else {
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->whereHas('commande', function($q) use ($searchTerm) {
+                        $q->where(function($q) use ($searchTerm) {
+                            $searchParts = explode(' ', $searchTerm); 
+    
+                            $q->orWhereHas('client', function($q) use ($searchParts) {
+                                if (isset($searchParts[0])) {
+                                    $q->where('prenom', 'LIKE', "%{$searchParts[0]}%");
+                                }
+                                if (isset($searchParts[1])) {
+                                    $q->orWhere('nom', 'LIKE', "%{$searchParts[1]}%");
+                                }
+                            });
+                        })
+                        ->orWhere('etatCommande', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('total', 'LIKE', "%{$searchTerm}%");
+                    });
+                });
+            }
+        }
+             
+
+        if (Schema::hasColumn('commandes_livraisons', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $commandeLivraison = $query->with('commande')->paginate($request->input('per_page'));
+
+        return response()->json($commandeLivraison);
     }
 
     /**
@@ -78,6 +116,10 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'livraison' => $commandeLivraison,
             'produits' => $commande->produits,
         ], 201);
+        return response()->json([
+            'message' => 'Période horaire ajouter avec succès',
+            'data' => $periode
+        ], 201);
     }
 
     /**
@@ -128,6 +170,10 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'commande' => $commande,
             'livraison' => $commandeLivraison,
         ], 200);
+        return response()->json([
+            'message' => 'Promotion mise à jour avec succès',
+            'data' => $promotion
+        ], 200);
     }
 
     /**
@@ -137,8 +183,10 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     {
         $commandeLivraison = CommandeLivraison::where('commande_id', $id)
             ->firstOrFail();
-        
         $commandeLivraison->delete();
-        return response()->json(['message' => 'Livraison avec id ' . $commandeLivraison->commande_id . ' effacer avec succés'], 200);
+
+        return response()->json([
+            'message' => 'Commande livraison supprimée avec succès'
+        ], 200);    
     }
 }

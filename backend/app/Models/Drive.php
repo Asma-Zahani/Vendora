@@ -24,4 +24,14 @@ class Drive extends Model
     {
         return $this->hasMany(CommandeRetraitDrive::class, 'drive_id', 'drive_id');
     }
+
+    public function horaires()
+    {
+        return $this->hasMany(Horaire::class, 'drive_id', 'drive_id');
+    }
+
+    public function jourFeries()
+    {
+        return $this->hasMany(JourFerie::class, 'drive_id', 'drive_id');
+    }
 }

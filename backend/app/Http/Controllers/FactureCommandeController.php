@@ -7,6 +7,7 @@ use App\Models\FactureCommande;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class FactureCommandeController extends Controller implements HasMiddleware
 {
@@ -17,17 +18,31 @@ class FactureCommandeController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return FactureCommande::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(FactureCommande::all());
+        }
+
+        $query = FactureCommande::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('titre', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('factures', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $categories = $query->paginate($request->input('per_page'));
+
+        return response()->json($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -40,23 +55,17 @@ class FactureCommandeController extends Controller implements HasMiddleware
 
         $factureCommande = FactureCommande::create($validatedData);
 
-        return response()->json($factureCommande, 200);
+        return response()->json([
+            'message' => 'Facture commande ajouter avec succès',
+            'data' => $factureCommande
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
-    {
-        $factureCommande = FactureCommande::where('facture_id', $id)
-            ->firstOrFail();
-    
-        return response()->json($factureCommande);
+    {    
+        return response()->json(FactureCommande::where('facture_id', $id)->firstOrFail());
     }    
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
@@ -72,17 +81,20 @@ class FactureCommandeController extends Controller implements HasMiddleware
 
         $factureCommande->update($validatedData);
 
-        return response()->json($factureCommande, 200);
+        return response()->json([
+            'message' => 'Facture commande mise à jour avec succès',
+            'data' => $factureCommande
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
             ->firstOrFail();
         $factureCommande->delete();
-        return response()->json(['message' => 'FactureCommande avec id ' . $factureCommande->facture_id . ' effacer avec succés'], 200);
+        
+        return response()->json([
+            'message' => 'Facture commande supprimée avec succès'
+        ], 200);    
     }
 }

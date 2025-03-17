@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Mail;
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/createClient', [AuthController::class, 'createClient'])->middleware('auth:sanctum');
+Route::post('/clients', [AuthController::class, 'createClient'])->middleware('auth:sanctum');
 
-Route::post('/createLivreur', [AuthController::class, 'createLivreur'])->middleware('auth:sanctum');
+Route::post('/livreurs', [AuthController::class, 'createLivreur'])->middleware('auth:sanctum');
 
 Route::post('login', [AuthController::class,'login']);
 

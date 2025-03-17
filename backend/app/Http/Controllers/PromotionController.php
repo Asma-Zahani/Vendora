@@ -6,6 +6,7 @@ use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class PromotionController extends Controller implements HasMiddleware
 {
@@ -19,9 +20,31 @@ class PromotionController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Promotion::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(Promotion::all());
+        }
+
+        $query = Promotion::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nom', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('reduction', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('dateDebut', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('dateFin', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('promotions', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+
+        $promotion = $query->paginate($request->input('per_page', 5));
+
+        return response()->json($promotion);
     }
 
     /**
@@ -38,7 +61,10 @@ class PromotionController extends Controller implements HasMiddleware
         
         $promotion = Promotion::create($validatedData);
 
-        return response()->json($promotion, 200);
+        return response()->json([
+            'message' => 'Promotion ajouter avec succès',
+            'data' => $promotion
+        ], 200);
     }
 
     /**
@@ -66,7 +92,10 @@ class PromotionController extends Controller implements HasMiddleware
         
         $promotion->update($validatedData);
 
-        return response()->json($promotion, 200);
+        return response()->json([
+            'message' => 'Promotion mise à jour avec succès',
+            'data' => $promotion
+        ], 200);
     }
 
     /**
@@ -76,6 +105,9 @@ class PromotionController extends Controller implements HasMiddleware
     {
         $promotion = Promotion::findOrFail($id);
         $promotion->delete();
-        return response()->json(['message' => 'Promotion avec id ' . $promotion->promotion_id . ' effacer avec succés'], 200);
+
+        return response()->json([
+            'message' => 'Promotion supprimée avec succès'
+        ], 200);    
     }
 }

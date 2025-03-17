@@ -17,19 +17,20 @@ class Horaire extends Model
     protected $fillable = [
         'jour',
         'ouvert',
+        'drive_id'
     ];
 
     protected $casts = [
         'jour' => JourEnum::class
     ];
 
-    public function retraitDrive()
-    {
-        return $this->belongsTo(CommandeRetraitDrive::class, 'horaire_id');
-    }
-
     public function periodesHoraires()
     {
         return $this->hasMany(PeriodeHoraire::class, 'horaire_id', 'horaire_id');
+    }
+
+    public function drive()
+    {
+        return $this->belongsTo(Drive::class, 'drive_id', 'drive_id');
     }
 }

@@ -1,42 +1,18 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import { getCommandesLivraisons, getCommandeLivraison } from "@/service/CommandeLivraisonService";
-import { getEtatCommandes } from "@/service/EnumsService";
-import { getUsers } from "@/service/UsersService";
 import { Package } from "lucide-react";
-import FilteredTable from "@/components/Tables/FilteredTable";
+import EntityManager from "../EntityManager";
+import { getEtatCommandes } from "@/service/EnumsService";
+import { getEntities } from "@/service/EntitesService";
 
 const CommandeLivraison = () => {
-  const [formData, setFormData] = useState({etatCommande: ""});
-  
-  const [commandesLivraisons, setCommandesLivraisons] = useState([]);
-  const [clients, setClients] = useState([]);
   const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
-
-  const dropdownOptions = {    
-    client_id: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))
-  };
-
-  const columns = [
-    { label: "Num°", key: "commande_id", type: "text" },
-    { label: "Client", key: "client_id", type: "id", options: dropdownOptions.client_id},
-    { label: "Total", key: "total", type: "text" },
-    { label: "État Commande", key: "etatCommande", type: "enum" },
-    { label: "Date de création", key: "created_at", type: "date" },
-    { label: "Date de Livraison", key: "dateLivraison", type: "date" },
-    { label: "Actions", key: "actions", type: "actions" }
-  ];
-  
-  const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
-  ];
-  
-  useEffect(() => { (async () => setCommandesLivraisons(await getCommandesLivraisons()))()}, [commandesLivraisons]);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setClients(await getUsers());
+      try {  
+        setClients(await getEntities("users"));
         setEtatCommandeOptions(await getEtatCommandes());
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
@@ -45,39 +21,24 @@ const CommandeLivraison = () => {
     fetchData();
   }, []);
 
-  const handleCommandeLivraison = async (commande_id) => {
-    try {
-      const commandeLivraison = await getCommandeLivraison(commande_id);
+  const [formData, setFormData] = useState({etatCommande: ""});
 
-      const formattedCommandeLivraison = { 
-        ...commandeLivraison.commande, 
-        ...commandeLivraison 
-      };
-      
-      setFormData(formattedCommandeLivraison);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du categorie:", error);
-      alert('Une erreur est survenue lors de la récupération du categorie');
-    }
-  };
-
-  const formattedCommandesLivraisons = commandesLivraisons.map(({ commande, ...rest }) => ({
-    ...commande,
-    ...rest,
-    actions: {
-      view: () => handleCommandeLivraison(commande.commande_id),
-      switch: () => handleCommandeLivraison(commande.commande_id),
-      facture: () => handleCommandeLivraison(commande.commande_id),
-    }
-  }));
+  const columns = [
+    { label: "Num°", key: "commande_id", type: "text", prefix: "#" },
+    { label: "Client", key: "commande_client_id", type: "id", options: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))},
+    { label: "Total", key: "commande_total", type: "enum" },
+    { label: "État Commande", key: "commande_etatCommande", type: "enum" },
+    { label: "Actions", key: "actions", type: "actions" }
+  ];
   
+  const fields = [
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
+  ];
 
-  const formActions = {formData, setFormData, fields, columns};
-  
   return (
     <>
       <Header title="Commandes Livraisons" icon={Package} parent="Gestion des commandes" current="Commandes / Livraisons" />
-      {<FilteredTable formActions={formActions} label={"commandesLivraisons"} datas={formattedCommandesLivraisons} identifiant={"commande_id"} />}
+      <EntityManager notAdd={true} columns={columns} fields={fields} label="commandeLivraisons" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
     </>
   );
 };

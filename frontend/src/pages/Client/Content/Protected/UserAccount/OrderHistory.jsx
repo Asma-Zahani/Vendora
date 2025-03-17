@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from '@/utils/UserContext';
+import { useEffect, useState } from "react";
 import { PackageX } from "lucide-react";
-import { getCommandes } from "@/service/CommandeService";
+import { getCommandes } from "@/service/UsersService";
 
 const OrderHistory = () => {
-    const { token } = useContext(UserContext);
 
     const [commandes, setCommandes] = useState([]);
 
-    useEffect(() => { (async () => setCommandes(await getCommandes(token)))()}, [commandes, token]);
+    useEffect(() => { (async () => setCommandes(await getCommandes()))()}, [commandes]);
     
     return (
         <div className="col-span-2 w-full py-2 space-y-5">

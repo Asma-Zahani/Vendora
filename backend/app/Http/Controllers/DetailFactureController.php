@@ -6,6 +6,7 @@ use App\Models\DetailFacture;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class DetailFactureController extends Controller implements HasMiddleware
 {
@@ -16,17 +17,31 @@ class DetailFactureController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Affiche la liste des détails de factures.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return DetailFacture::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(DetailFacture::all());
+        }
+
+        $query = DetailFacture::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('titre', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('detail_factures', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $categories = $query->paginate($request->input('per_page'));
+
+        return response()->json($categories);
     }
 
-    /**
-     * Enregistre un nouveau détail de facture.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -40,21 +55,18 @@ class DetailFactureController extends Controller implements HasMiddleware
         
         $detailFacture = DetailFacture::create($validatedData);
 
-        return response()->json($detailFacture, 200);
+        return response()->json([
+            'message' => 'Détail facture ajouter avec succès',
+            'data' => $detailFacture
+        ], 201);
     }
 
-    /**
-     * Affiche un détail de facture spécifique.
-     */
     public function show($id)
     {
         $detailFacture = DetailFacture::findOrFail($id);
         return response()->json($detailFacture);
     }
 
-    /**
-     * Met à jour un détail de facture existant.
-     */
     public function update(Request $request, $id)
     {
         $detailFacture = DetailFacture::findOrFail($id);
@@ -69,16 +81,19 @@ class DetailFactureController extends Controller implements HasMiddleware
         
         $detailFacture->update($validatedData);
 
-        return response()->json($detailFacture, 200);
+        return response()->json([
+            'message' => 'Détail facture mise à jour avec succès',
+            'data' => $detailFacture
+        ], 200);
     }
 
-    /**
-     * Supprime un détail de facture.
-     */
     public function destroy($id)
     {
         $detailFacture = DetailFacture::findOrFail($id);
         $detailFacture->delete();
-        return response()->json(['message' => 'Détail de facture supprimé avec succès'], 200);
+
+        return response()->json([
+            'message' => 'Détail facture supprimée avec succès'
+        ], 200);    
     }
 }

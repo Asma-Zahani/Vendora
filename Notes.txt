@@ -12,3 +12,9 @@ https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
 
 admin ynjeem y3ady commande ??
+
+code_promo (nbUser)
+
+facturee w detailfacture
+
+si quantite delete color

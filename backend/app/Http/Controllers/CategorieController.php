@@ -6,6 +6,7 @@ use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class CategorieController extends Controller implements HasMiddleware
 {
@@ -16,41 +17,51 @@ class CategorieController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return Categorie::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(Categorie::all());
+        }
+
+        $query = Categorie::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('titre', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('categories', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $categories = $query->paginate($request->input('per_page'));
+
+        return response()->json($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'titre' => 'required|string|max:255',
             'image' => 'required|string|max:255',
         ]);
-        
+
         $categorie = Categorie::create($validatedData);
 
-        return response()->json($categorie, 200);
+        return response()->json([
+            'message' => 'Catégorie ajouter avec succès',
+            'data' => $categorie
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $categorie = Categorie::findOrFail($id);
-        return response()->json($categorie);
+        return response()->json(Categorie::findOrFail($id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $categorie = Categorie::findOrFail($id);
@@ -59,19 +70,21 @@ class CategorieController extends Controller implements HasMiddleware
             'titre' => 'required|string|max:255',
             'image' => 'required|string|max:255',
         ]);
-        
+
         $categorie->update($validatedData);
 
-        return response()->json($categorie, 200);
+        return response()->json([
+            'message' => 'Catégorie mise à jour avec succès',
+            'data' => $categorie
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $categorie = Categorie::findOrFail($id);
-        $categorie->delete();
-        return response()->json(['message' => 'Categorie avec id ' . $categorie->categorie_id . ' effacer avec succés'], 200);
+        Categorie::findOrFail($id)->delete();
+
+        return response()->json([
+            'message' => 'Catégorie supprimée avec succès'
+        ], 200);
     }
 }

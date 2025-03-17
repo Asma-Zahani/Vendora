@@ -7,6 +7,7 @@ use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class ProduitController extends Controller implements HasMiddleware
@@ -23,7 +24,39 @@ class ProduitController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        return Produit::with('couleurs')->get();
+        $query = Produit::with('couleurs');
+
+        if ($request->has('filtre')) {
+            $filtre = $request->input('filtre');
+            if ($filtre != 'Tous') {
+                $query->where('status', $filtre);
+            }
+        }
+        
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nom', 'LIKE', "%{$searchTerm}%")
+                ->orWhereHas('sousCategorie', function($q) use ($searchTerm) {
+                    $q->where('titre', 'LIKE', "%{$searchTerm}%");
+                })
+                ->orWhere('prix', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('status', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if ($request->has('sort_by') && $request->has('sort_order')) {
+            $sortBy = $request->input('sort_by');
+            $sortOrder = $request->input('sort_order');
+            
+            if (Schema::hasColumn('produits', $sortBy)) {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        }
+
+        $produits = $query->paginate($request->input('per_page', 5));
+
+        return response()->json($produits);
     }
 
     public function latestProducts()
@@ -67,7 +100,10 @@ class ProduitController extends Controller implements HasMiddleware
             $produit->couleurs()->sync($couleursData);
         }
 
-        return response()->json($produit, 200);
+        return response()->json([
+            'message' => 'Produit ajouter avec succès',
+            'data' => $produit
+        ], 200);
     }
 
 
@@ -75,13 +111,13 @@ class ProduitController extends Controller implements HasMiddleware
      * Display the specified resource.
      */
     public function show($id)
-{
-    $produit = Produit::with(['couleurs' => function ($query) {
-        $query->select('couleurs.*', 'produit_couleur.quantite');  // Assurez-vous d'inclure 'quantite'
-    }])->find($id);
+    {
+        $produit = Produit::with(['couleurs' => function ($query) {
+            $query->select('couleurs.*', 'produit_couleur.quantite');  // Assurez-vous d'inclure 'quantite'
+        }])->find($id);
 
-    return response()->json($produit);
-}
+        return response()->json($produit);
+    }
 
 
     /**
@@ -129,8 +165,10 @@ class ProduitController extends Controller implements HasMiddleware
             $produit->couleurs()->sync($couleursData);
         }
 
-        // Retourner le produit mis à jour avec ses couleurs
-        return response()->json($produit->load('couleurs'), 200);
+        return response()->json([
+            'message' => 'Produit mise à jour avec succès',
+            'data' => $produit->load('couleurs')
+        ], 200);
     }
 
     /**
@@ -140,6 +178,9 @@ class ProduitController extends Controller implements HasMiddleware
     {
         $produit = Produit::findOrFail($id);
         $produit->delete();
-        return response()->json(['message' => 'Produit avec id ' . $produit->produit_id . ' effacer avec succés'], 200);
+        
+        return response()->json([
+            'message' => 'Produit supprimée avec succès'
+        ], 200);    
     }
 }

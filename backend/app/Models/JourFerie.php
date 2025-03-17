@@ -17,10 +17,11 @@ class JourFerie extends Model
         'title',
         'start',
         'end',
+        'drive_id'
     ];
 
-    public function retraitDrive()
+    public function drive()
     {
-        return $this->belongsTo(CommandeRetraitDrive::class, 'jour_ferie_id');
+        return $this->belongsTo(Drive::class, 'drive_id', 'drive_id');
     }
 }

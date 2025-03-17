@@ -6,6 +6,7 @@ use App\Models\Marque;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class MarqueController extends Controller implements HasMiddleware
 {
@@ -19,9 +20,29 @@ class MarqueController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Marque::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(Marque::all());
+        }
+
+        $query = Marque::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nom', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('marques', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $marques = $query->paginate($request->input('per_page', 5));
+
+        return response()->json($marques);
     }
 
     /**
@@ -36,7 +57,10 @@ class MarqueController extends Controller implements HasMiddleware
         
         $marque = Marque::create($validatedData);
 
-        return response()->json($marque, 200);
+        return response()->json([
+            'message' => 'Marque ajouter avec succès',
+            'data' => $marque
+        ], 200);
     }
 
     /**
@@ -62,7 +86,10 @@ class MarqueController extends Controller implements HasMiddleware
         
         $marque->update($validatedData);
 
-        return response()->json($marque, 200);
+        return response()->json([
+            'message' => 'Marque mise à jour avec succès',
+            'data' => $marque
+        ], 200);
     }
 
     /**
@@ -72,6 +99,9 @@ class MarqueController extends Controller implements HasMiddleware
     {
         $marque = Marque::findOrFail($id);
         $marque->delete();
-        return response()->json(['message' => 'Marque avec id ' . $marque->marque_id . ' effacer avec succés'], 200);
+
+        return response()->json([
+            'message' => 'Marque supprimée avec succès'
+        ], 200);
     }
 }

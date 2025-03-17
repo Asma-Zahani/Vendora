@@ -6,6 +6,7 @@ use App\Models\SousCategorie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 
 class SousCategorieController extends Controller implements HasMiddleware
 {
@@ -19,9 +20,41 @@ class SousCategorieController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return SousCategorie::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(SousCategorie::all());
+        }
+
+        $query = SousCategorie::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('titre', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('categorie', function($q) use ($searchTerm) {
+                      $q->where('titre', 'LIKE', "%{$searchTerm}%");
+                  })
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if ($request->has('sort_by') && $request->has('sort_order')) {
+            $sortBy = $request->input('sort_by');
+            $sortOrder = $request->input('sort_order', 'asc');
+    
+            if ($sortBy === 'categories.titre') {
+                $query->join('categories', 'sous_categories.categorie_id', '=', 'categories.categorie_id')
+                      ->orderBy('categories.titre', $sortOrder)
+                      ->select('sous_categories.*');
+            } elseif (Schema::hasColumn('sous_categories', $sortBy)) {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        }
+
+        $sousCategories = $query->paginate($request->input('per_page', 5));
+
+        return response()->json($sousCategories);
     }
 
     /**
@@ -37,7 +70,10 @@ class SousCategorieController extends Controller implements HasMiddleware
         
         $sousCategorie = SousCategorie::create($validatedData);
 
-        return response()->json($sousCategorie, 200);
+        return response()->json([
+            'message' => 'Sous catégorie ajouter avec succès',
+            'data' => $sousCategorie
+        ], 200);
     }
 
     /**
@@ -64,7 +100,10 @@ class SousCategorieController extends Controller implements HasMiddleware
         
         $sousCategorie->update($validatedData);
 
-        return response()->json($sousCategorie, 200);
+        return response()->json([
+            'message' => 'Sous catégorie mise à jour avec succès',
+            'data' => $sousCategorie
+        ], 200);
     }
 
     /**
@@ -74,6 +113,9 @@ class SousCategorieController extends Controller implements HasMiddleware
     {
         $sousCategorie = SousCategorie::findOrFail($id);
         $sousCategorie->delete();
-        return response()->json(['message' => 'Sous categorie avec id ' . $sousCategorie->sous_categorie_id . ' effacer avec succés'], 200);
+
+        return response()->json([
+            'message' => 'Sous catégorie supprimée avec succès'
+        ], 200);    
     }
 }

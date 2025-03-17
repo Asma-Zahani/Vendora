@@ -71,7 +71,15 @@ body {
 .dark body {
     background-color: #121313;
 }
-  
+::selection {
+    background-color: #E6E6FA;
+    color: #665292FF;
+}
+
+.dark ::selection {
+    background-color: #6652921a;
+}
+   
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0);
 }

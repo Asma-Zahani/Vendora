@@ -46,7 +46,10 @@ Route::get('codePromotions/code/{code}', [CodePromotionController::class, 'getPr
 
 Route::apiResource('categories', CategorieController::class); //tester
 Route::apiResource('PeriodesHoraires', PeriodeHoraireController::class); //tester
+
 Route::apiResource('joursFeries', JourFerieController::class); //tester
+Route::get('joursFeries/drive/{id}', [JourFerieController::class, 'getJourFerieByDrive']);
+
 Route::apiResource('marques', MarqueController::class); //tester
 Route::apiResource('promotions', PromotionController::class); //tester
 

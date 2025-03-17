@@ -25,9 +25,4 @@ class DetailFacture extends Model
     {
         return $this->belongsTo(FactureCommande::class, 'facture_id');
     }
-
-    public function factureFournisseur()
-    {
-        return $this->belongsTo(FactureFournisseur::class, 'facture_id');
-    }
 }

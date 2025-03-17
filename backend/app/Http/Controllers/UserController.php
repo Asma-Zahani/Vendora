@@ -9,6 +9,7 @@ use App\Models\Produit;
 use App\Models\PanierProduit;
 use App\Models\ListeDeSouhait;
 use App\Models\User;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller implements HasMiddleware
@@ -25,15 +26,47 @@ class UserController extends Controller implements HasMiddleware
         return User::all();
     }
 
-    public function clients()
+    public function clients(Request $request)
     {
-        return response()->json(User::where('role', 'client')->get());
-    }   
-
-    public function livreurs()
+        return $this->getUser($request, "client");
+    }
+    
+    public function livreurs(Request $request)
     {
-        return response()->json(User::where('role', 'livreur')->get());
+        return $this->getUser($request, "livreur");
     }  
+
+    public function getUser(Request $request, string $role)
+    {
+        $query = User::where('role', $role);
+
+        if ($request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            if ($request->has('search') && !empty($request->search)) {
+                $searchTerm = $request->search;
+                $query->where(function ($q) use ($searchTerm) {
+                    $searchParts = explode(' ', $searchTerm); 
+            
+                    $q->where(function($q) use ($searchParts) {
+                        if (isset($searchParts[0])) {
+                            $q->where('prenom', 'LIKE', "%{$searchParts[0]}%");
+                        }
+                        if (isset($searchParts[1])) {
+                            $q->orWhere('nom', 'LIKE', "%{$searchParts[1]}%");
+                        }
+                    })
+                    ->orWhere('telephone', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%");
+                });
+            }            
+            if (Schema::hasColumn('users', $request->input('sort_by'))) {
+                $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+            }
+            $client = $query->paginate($request->input('per_page'));
+        } else {
+            $client = $query->get();
+        }
+        return response()->json($client);
+    }
     
     public function show($id)
     {
@@ -57,26 +90,30 @@ class UserController extends Controller implements HasMiddleware
             'telephone' => 'required|string|max:20',
             'genre' => 'nullable|string|max:20',
             'date_naissance' => 'nullable|date',
-            'emploi' => 'required|string|max:500',
-            'typeLogement' => 'required|string|max:100',
-            'statusLogement' => 'required|string|max:50',
-            'region' => 'required|string|max:100',
-            'ville' => 'required|string|max:100',
-            'adresse' => 'required|string|max:255',
+            'emploi' => 'nullable|string|max:500',
+            'typeLogement' => 'nullable|string|max:100',
+            'statusLogement' => 'nullable|string|max:50',
+            'region' => 'nullable|string|max:100',
+            'ville' => 'nullable|string|max:100',
+            'adresse' => 'nullable|string|max:255',
         ]);
         
         $user->update($validatedData);
 
-        return response()->json(['message' => 'User modifié avec succès'], 200);
+        return response()->json([
+            'message' => $user->role->value . ' mise à jour avec succès',
+            'data' => $user
+        ], 200);
     }
 
     public function destroy($id)
     {
-        $user = User::where('id', $id)
-            ->firstOrFail();
-
+        $user = User::where('id', $id)->firstOrFail();
         $user->delete();
-        return response()->json(['message' => 'User avec id ' . $user->id . ' effacer avec succés'], 200);
+
+        return response()->json([
+            'message' => $user->role->value . ' supprimée avec succès'
+        ], 200);
     }
 
     public function ajouterAuPanier(Request $request)

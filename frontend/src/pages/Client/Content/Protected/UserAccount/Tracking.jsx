@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PackageSearch, CheckCircle, Clock, XCircle } from "lucide-react";
-// import { getCommandeById } from "@/service/CommandeService";
-import { getCommandeLivraison } from "@/service/CommandeLivraisonService";
+import { getEntity } from "@/service/EntitesService";
 
 const Tracking = () => {
     const [orderId, setOrderId] = useState("");
@@ -18,7 +17,7 @@ const Tracking = () => {
         }
 
         try {
-            const commandeLivraison = await getCommandeLivraison(orderId);
+            const commandeLivraison = await getEntity("commandeLivraisons", orderId);
     
             const formattedCommandeLivraison = { 
             ...commandeLivraison.commande, 

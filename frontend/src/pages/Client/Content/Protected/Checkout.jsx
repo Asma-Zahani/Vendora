@@ -6,13 +6,10 @@ import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
-import { updateUser } from "@/service/UsersService";
-import { createCommandeLivraison } from "@/service/CommandeLivraisonService";
-import { createCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
-import { getDrives } from "@/service/DriveService";
 import ConfirmModal from "@/components/Modals/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { regions, villes } from '@/service/UserInfos';
+import { getEntities, updateEntity, createEntity } from "@/service/EntitesService";
 
 const Checkout = () => {
     const { user, setUser, setPanier } = useContext(UserContext);
@@ -43,20 +40,22 @@ const Checkout = () => {
     };
     
     const [drives, setDrives] = useState([]);
-    const dropdownOptions = {    
-        drive_id: drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))
-    };
-    useEffect(() => { (async () => setDrives(await getDrives()))()}, [drives]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+          setDrives(await getEntities("drives"));
+        }; 
+        fetchData();
+    }, []);
     const [isOpen, setIsOpen] = useState(false);
 
     const navigate = useNavigate();
 
     const passerCommande = async () => {
         try {      
-            const updatedUser = await updateUser(user.id, formData);
+            const updatedUser = await updateEntity("users", user.id, formData);
             if (deliveryMethod === "drive") {                
-                createCommandeRetraitDrive({
+                createEntity("commandeRetraitDrives",{
                     client_id: user.id,
                     total: checkoutData.total,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
@@ -68,7 +67,7 @@ const Checkout = () => {
                 });
             }
             else {
-                createCommandeLivraison({
+                createEntity("commandeLivraisons",{
                     client_id: user.id,
                     total: checkoutData.total,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
@@ -164,7 +163,7 @@ const Checkout = () => {
                                     )}
                                     {deliveryMethod === "drive" && (
                                         <div className="col-span-2">
-                                            <Drop label="Point de retrait" name="drive_id" options={dropdownOptions.drive_id} selectedValue={formData.drive_id} 
+                                            <Drop label="Point de retrait" name="drive_id" options={drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))} selectedValue={formData.drive_id} 
                                             onSelect={(selected) => { 
                                                 setFormData({ ...formData, drive_id: selected.value });
                                                 setIsPointRetraitOpen(null);

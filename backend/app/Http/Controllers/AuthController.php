@@ -19,47 +19,44 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        return $this->createUser($request);
+        return $this->createUser($request, "", "Compte créé. Veuillez vérifier votre email.");
     }
 
     public function createClient(Request $request)
     {
-        return $this->createUser($request, "client");
+        return $this->createUser($request, "", "Client ajouter avec succès");
     }
 
     public function createLivreur(Request $request)
     {
-        return $this->createUser($request, "livreur");
+        return $this->createUser($request, "livreur", "Livreur ajouter avec succès");
     }
 
-    private function createUser(Request $request, string $role = "client")
+    private function createUser(Request $request, string $role, string $message)
     {
-        
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
             'prenom' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'nullable|confirmed',
             'telephone' => 'required|string|max:20',
             'genre' => 'required|string|max:20',
             'date_naissance' => 'required|date',
-            'emploi' => 'required|string|max:500',
-            'typeLogement' => 'required|string|max:100',
-            'statusLogement' => 'required|string|max:50',
-            'region' => 'required|string|max:100',
-            'ville' => 'required|string|max:100',
-            'adresse' => 'required|string|max:255',
+            'emploi' => 'nullable|string|max:500',
+            'typeLogement' => 'nullable|string|max:100',
+            'statusLogement' => 'nullable|string|max:50',
+            'region' => 'nullable|string|max:100',
+            'ville' => 'nullable|string|max:100',
+            'adresse' => 'nullable|string|max:255',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        $user = User::create($validatedData);
+        $validatedData['password'] = Hash::make($validatedData['password'] ?? $role);
         
-        if ($role === "client") {
-            $validatedData['role'] = RoleEnum::CLIENT->value;
-        } else if ($role === "livreur") {
+        if ($role === "livreur") {
             $validatedData['role'] = RoleEnum::LIVREUR->value;
         }
+        
+        $user = User::create($validatedData);
         
         $token = Str::random(60);
 
@@ -68,7 +65,7 @@ class AuthController extends Controller
 
         Mail::to($user->email)->send(new VerifyEmail($user, $token));
 
-        return response()->json(['message' => 'Compte créé. Veuillez vérifier votre email.'], 201);  
+        return response()->json(['message' => $message], 201);  
     }
 
     public function updatePassword(Request $request, $id)

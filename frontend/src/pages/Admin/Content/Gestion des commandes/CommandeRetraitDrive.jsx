@@ -1,49 +1,18 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import { getCommandesRetraitDrives, getCommandeRetraitDrive } from "@/service/CommandeRetraitDriveService";
-import { getEtatCommandes } from "@/service/EnumsService";
-import { getUsers } from "@/service/UsersService";
 import { Package } from "lucide-react";
-import FilteredTable from "@/components/Tables/FilteredTable";
+import EntityManager from "../EntityManager";
+import { getEtatCommandes } from "@/service/EnumsService";
+import { getEntities } from "@/service/EntitesService";
 
-const CommandeRetraitDrive = () => {
-  const [formData, setFormData] = useState({
-    client_id: "",
-    code_promotion_id: "",
-    total: 0,
-    etatCommande: "",
-    dateRetrait: ""
-  });
-  
-  const [commandesRetraitDrives, setCommandesRetraitDrives] = useState([]);
-  const [clients, setClients] = useState([]);
+const CommandeLivraison = () => {
   const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
-
-  const dropdownOptions = {    
-    client_id: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))
-  };
-
-  const columns = [
-    { label: "Num°", key: "commande_id", type: "text" },
-    { label: "Client", key: "client_id", type: "id", options: dropdownOptions.client_id},
-    { label: "Total", key: "total", type: "text" },
-    { label: "État Commande", key: "etatCommande", type: "enum" },
-    { label: "Date de création", key: "created_at", type: "date" },
-    { label: "Date de Retrait", key: "dateRetrait", type: "date" },
-    { label: "Point de vente", key: "commande_id", type: "text" },
-    { label: "Actions", key: "actions", type: "actions" }
-  ];
-  
-  const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
-  ];
-  
-  useEffect(() => { (async () => setCommandesRetraitDrives(await getCommandesRetraitDrives()))()}, [commandesRetraitDrives]);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setClients(await getUsers());
+      try {  
+        setClients(await getEntities("users"));
         setEtatCommandeOptions(await getEtatCommandes());
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
@@ -52,41 +21,26 @@ const CommandeRetraitDrive = () => {
     fetchData();
   }, []);
 
-  const handleCommandeRetraitDrive = async (commande_id) => {
-    try {
-      const commandeRetraitDrive = await getCommandeRetraitDrive(commande_id);
+  const [formData, setFormData] = useState({etatCommande: ""});
 
-      const formattedCommandeRetraitDrive = { 
-        ...commandeRetraitDrive.commande, 
-        ...commandeRetraitDrive 
-      };
-      
-      setFormData(formattedCommandeRetraitDrive);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du categorie:", error);
-      alert('Une erreur est survenue lors de la récupération du categorie');
-    }
-  };
-
-  const formattedCommandesRetraitDrives = commandesRetraitDrives.map(({ commande, ...rest }) => ({
-    ...commande,
-    ...rest,
-    actions: {
-      view: () => handleCommandeRetraitDrive(commande.commande_id),
-      switch: () => handleCommandeRetraitDrive(commande.commande_id),
-      facture: () => handleCommandeRetraitDrive(commande.commande_id),
-    }
-  }));
+  const columns = [
+    { label: "Num°", key: "commande_id", type: "text" },
+    { label: "Client", key: "commande_client_id", type: "id", options: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))},
+    { label: "Total", key: "commande_total", type: "enum" },
+    { label: "État Commande", key: "commande_etatCommande", type: "enum" },
+    { label: "Actions", key: "actions", type: "actions" }
+  ];
   
-
-  const formActions = {formData, setFormData, fields, columns};
+  const fields = [
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
+  ];
 
   return (
     <>
       <Header title="Commandes Retrait Drives" icon={Package} parent="Gestion des commandes" current="Commandes / Retrait Drives" />
-      {<FilteredTable formActions={formActions} label={"commandesRetraitDrives"} datas={formattedCommandesRetraitDrives} identifiant={"commande_id"} />}
+      <EntityManager notAdd={true} columns={columns} fields={fields} label="commandeRetraitDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
     </>
   );
 };
 
-export default CommandeRetraitDrive;
+export default CommandeLivraison;

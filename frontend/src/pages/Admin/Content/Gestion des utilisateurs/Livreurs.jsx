@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "../Header";
-import { getLivreurs, getUser, createLivreur, updateUser, deleteUser } from "@/service/UsersService";
 import { Truck } from "lucide-react";
-import FilteredTable from "@/components/Tables/FilteredTable";
+import EntityManager from "../EntityManager";
 
 const Livreurs = () => {
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "", password_confirmation: "", date_naissance: "", genre: "" });
   
-  const [livreurs, setLivreurs] = useState([]);
-
   const columns = [
-    { label: "Nom", key: "nom", type: "text" },
-    { label: "Prénom", key: "prenom", type: "text" },
+    { label: "Livreur", type: "nomComplete" },
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "text" },
-    { label: "Date de naissance", key: "date_naissance", type: "date" },
-    { label: "Genre", key: "genre", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
   ];  
   const fields = [
@@ -24,64 +18,13 @@ const Livreurs = () => {
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "email" },
     { label: "Date de naissance", key: "date_naissance", type: "date" },
-    { label: "Genre", key: "genre", type: "genre" }
+    { label: "Genre", key: "genre", type: "radio", options: ["Male", "Femalle"]}
   ];
-  
-
-  useEffect(() => { (async () => setLivreurs(await getLivreurs()))()}, [livreurs]);
-
-  const handleLivreur = async (id) => {
-    try {
-      setFormData(await getUser(id));
-    } catch (error) {
-      console.error("Erreur lors de la récupération du livreur:", error);
-      alert('Une erreur est survenue lors de la récupération du livreur');
-    }
-  };
-  const handleCreate = async () => {
-    try {
-      await createLivreur(formData);
-      setLivreurs((prevLivreurs) => prevLivreurs.filter(livreur => livreur.id !== formData.id));
-      alert(`Livreur ajouter avec succès`);
-    } catch (error) {
-      console.error("Erreur d'ajout:", error);
-      alert('Une erreur est survenue lors de l\'ajout du livreur');
-    }
-  }; 
-  const handleEdit = async () => {
-    try {      
-      await updateUser(formData.id, formData);
-      setLivreurs((prevLivreurs) => prevLivreurs.filter(livreur => livreur.id !== formData.id));
-      alert(`Livreur avec l'ID ${formData.id} modifié avec succès`);
-    } catch (error) {
-      console.error("Erreur de modification:", error);
-      alert("Une erreur est survenue lors de la modification du livreur");
-    }
-  };
-  const handleDelete = async (id) => {
-    try {
-      await deleteUser(id);
-      setLivreurs((prevPosts) => prevPosts.filter(post => post.id !== id));
-      alert(`Livreur with id ${id} supprimé avec succès`);
-    } catch (error) {
-      console.error("Erreur de suppression:", error);
-      alert('Une erreur est survenue lors de la suppression du livreur');
-    }
-  };
-
-  const formattedLivreurs = livreurs.map((item) => ({ ...item,
-    actions: {
-      edit: () => handleLivreur(item.id),
-      delete: (id) => handleDelete(id)
-    }
-  }));
-
-  const formActions = {formData, setFormData, fields, handleCreate, handleEdit, columns};
 
   return (
     <>
       <Header title="Livreurs" icon={Truck} parent="Gestion des utilisateurs" current="Livreurs" />
-      <FilteredTable formActions={formActions} label={"livreurs"} datas={formattedLivreurs} identifiant={"id"}/>
+      <EntityManager columns={columns} fields={fields} label="livreurs" identifiant="id" formData={formData} setFormData={setFormData} actionList={["edit", "delete"]} />
     </>
   );
 };

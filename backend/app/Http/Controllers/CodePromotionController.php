@@ -6,6 +6,7 @@ use App\Models\CodePromotion;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class CodePromotionController extends Controller implements HasMiddleware
@@ -17,17 +18,34 @@ class CodePromotionController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return CodePromotion::all();
+        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json(CodePromotion::all());
+        }
+
+        $query = CodePromotion::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('code', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('reduction', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('dateExpiration', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('nbUtilisationMax', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('created_at', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        if (Schema::hasColumn('code_promotions', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        }
+        
+        $categories = $query->paginate($request->input('per_page'));
+
+        return response()->json($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -39,16 +57,15 @@ class CodePromotionController extends Controller implements HasMiddleware
         
         $codePromotion = CodePromotion::create($validatedData);
 
-        return response()->json($codePromotion, 200);
+        return response()->json([
+            'message' => 'Code Promotion ajouter avec succès',
+            'data' => $codePromotion
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $codePromotion = CodePromotion::findOrFail($id);
-        return response()->json($codePromotion);
+        return response()->json(CodePromotion::findOrFail($id));
     }
 
     public function getPromoByName($code)
@@ -61,20 +78,13 @@ class CodePromotionController extends Controller implements HasMiddleware
 
         return response()->json($codePromotion);
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, $id)
     {
         $codePromotion = CodePromotion::findOrFail($id);
 
         $validatedData = $request->validate([
-            'code' => [
-                'required',
-                'string',
-                'max:120',
-                Rule::unique('code_promotions')->ignore($codePromotion->code_promotion_id, 'code_promotion_id'),
-            ],
+            'code' => ['required', 'string', 'max:120', Rule::unique('code_promotions')->ignore($codePromotion->code_promotion_id, 'code_promotion_id')],
             'reduction' => 'required|numeric|min:0|max:99.99',
             'dateExpiration' => 'required|date',
             'nbUtilisationMax' => 'required|integer|min:1'
@@ -82,16 +92,18 @@ class CodePromotionController extends Controller implements HasMiddleware
 
         $codePromotion->update($validatedData);
 
-        return response()->json($codePromotion, 200);
+        return response()->json([
+            'message' => 'Code Promotion mise à jour avec succès',
+            'data' => $codePromotion
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $codePromotion = CodePromotion::findOrFail($id);
-        $codePromotion->delete();
-        return response()->json(['message' => 'CodePromotion avec id ' . $codePromotion->code_promotion_id . ' effacer avec succés'], 200);
+        CodePromotion::findOrFail($id)->delete();
+        
+        return response()->json([
+            'message' => 'Code Promotion supprimée avec succès'
+        ], 200);    
     }
 }
