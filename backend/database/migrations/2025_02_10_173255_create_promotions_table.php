@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('reduction');
             $table->date('dateDebut');
             $table->date('dateFin');
-            $table->timestamps();
         });
     }
 

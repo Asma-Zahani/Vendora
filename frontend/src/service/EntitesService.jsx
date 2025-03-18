@@ -1,4 +1,4 @@
-const getEntities = async (label, currentPage, selectedItemPerPage, search, sortBy, sortOrder, filtre) => {
+const getEntities = async (label, currentPage, selectedItemPerPage, search, sortBy, sortOrder, filtreObj) => {
   const params = new URLSearchParams();
 
   if (currentPage) params.append("page", currentPage);
@@ -6,7 +6,19 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
   if (search) params.append("search", search);
   if (sortBy) params.append("sort_by", sortBy);
   if (sortOrder) params.append("sort_order", sortOrder);
-  if (filtre) params.append("filtre", filtre);
+  // if (filtre) params.append("filtre_column", filtre[0]);
+  // if (filtre) params.append("filtre_text", filtre[1]);
+  
+  if (filtreObj) {
+    Object.entries(filtreObj).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        // Si c'est un tableau, ajouter plusieurs fois la clé
+        value.forEach((val) => params.append(`filtre[${key}][]`, val));
+      } else {
+        params.append(`filtre[${key}]`, value);
+      }
+    });
+  }
 
   const url = `/api/${label}${params.toString() ? "?" + params.toString() : ""}`;
   const response = await fetch(url);

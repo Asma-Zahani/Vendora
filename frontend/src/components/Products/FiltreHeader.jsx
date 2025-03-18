@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Grid, List } from "lucide-react";
 import Dropdown from "@/components/ui/Dropdown";
 
-const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols, onSortChange }) => {
+const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, totalItems }) => {
   const [selectedSort, setSelectedSort] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -26,30 +26,30 @@ const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols, onSortChange }
     <div className="mt-4 flex items-center justify-between">
       <div className="flex gap-3">
         <div
-          onClick={() => onToggleView(true)}
+          onClick={() => gridInfo.handleConfigGridChange("isGrid",true)}
           className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
-            isGrid ? "bg-bgLight dark:bg-bgDark" : ""
+            gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""
           }`}
         >
           <Grid size={17} />
         </div>
         <div
-          onClick={() => onToggleView(false)}
+          onClick={() => gridInfo.handleConfigGridChange("isGrid",false)}
           className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
-            !isGrid ? "bg-bgLight dark:bg-bgDark" : ""
+            !gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""
           }`}
         >
           <List size={17} />
         </div>
-        {isGrid && (
+        {gridInfo.isGrid && (
           <div className="hidden md:hidden lg:flex gap-2">
             {[3, 4, 6].map((cols) => (
-              <div key={cols} className="flex gap-0.5" onClick={() => onChange(cols)}>
+              <div key={cols} className="flex gap-0.5" onClick={() => gridInfo.handleConfigGridChange("gridCols",cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
                   <button
                     key={index}
                     className={`my-2 w-1 rounded-md ${
-                      gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"
+                      gridInfo.gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"
                     }`}
                   ></button>
                 ))}
@@ -59,14 +59,22 @@ const FiltreHeader = ({ onChange, onToggleView, isGrid, gridCols, onSortChange }
         )}
       </div>
 
-      {/* Dropdown de tri */}
-      <Dropdown
-        options={sortOptions}
-        selectedValue={selectedSort}
-        onSelect={handleSortChange}
-        isOpen={isDropdownOpen}
-        toggleOpen={() => setIsDropdownOpen(!isDropdownOpen)}
-      />
+      <div className="flex items-center gap-3">
+        {totalItems > 0 && 
+          <span className="text-sm text-gray-700 dark:text-gray-400 hidden md:block lg:block">
+              Affichage de <span className="font-semibold text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span> {" "}
+              à <span className="font-semibold text-gray-900 dark:text-white">{indexOfLastItem}</span> sur {" "}
+              <span className="font-semibold text-gray-900 dark:text-white">{totalItems}</span> entrées
+          </span>
+        }
+        <Dropdown
+          options={sortOptions}
+          selectedValue={selectedSort}
+          onSelect={handleSortChange}
+          isOpen={isDropdownOpen}
+          toggleOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+        />
+      </div>
     </div>
   );
 };

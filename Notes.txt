@@ -1,10 +1,6 @@
-relation jour feries w drive
-relation horaires w drive
-
 problem de quantite (quantité fel produit)
 
 footer
-pagination boutique
 paiement
 dashboard
 
@@ -13,8 +9,4 @@ https://admin.pixelstrap.net/zono/template/ribbons.html
 
 admin ynjeem y3ady commande ??
 
-code_promo (nbUser)
-
 facturee w detailfacture
-
-si quantite delete color

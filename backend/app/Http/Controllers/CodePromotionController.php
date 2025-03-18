@@ -51,10 +51,10 @@ class CodePromotionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'code' => 'required|string|max:120|unique:code_promotions,code',
             'reduction' => 'required|numeric|min:0|max:99.99',
-            'dateExpiration' => 'required|date',
+            'dateExpiration' => 'required|date|after:today',
             'nbUtilisationMax' => 'required|integer|min:1'
         ]);
-        
+
         $codePromotion = CodePromotion::create($validatedData);
 
         return response()->json([
@@ -86,10 +86,15 @@ class CodePromotionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'code' => ['required', 'string', 'max:120', Rule::unique('code_promotions')->ignore($codePromotion->code_promotion_id, 'code_promotion_id')],
             'reduction' => 'required|numeric|min:0|max:99.99',
-            'dateExpiration' => 'required|date',
-            'nbUtilisationMax' => 'required|integer|min:1'
+            'dateExpiration' => 'required|date|after:today',
+            'nbUtilisationMax' => 'required|integer|min:1',
+            'nbUtilisation' => 'required|integer|min:0|lte:nbUtilisationMax'
         ]);
 
+        if ($validatedData['nbUtilisation'] > $validatedData['nbUtilisationMax']) {
+            return response()->json(['errors' => 'nbUtilisation ne peut pas dépasser nbUtilisationMax'], 404);
+        }
+        
         $codePromotion->update($validatedData);
 
         return response()->json([
@@ -105,5 +110,20 @@ class CodePromotionController extends Controller implements HasMiddleware
         return response()->json([
             'message' => 'Code Promotion supprimée avec succès'
         ], 200);    
+    }
+
+    public function utiliserCodePromotionnel($codePromotionId)
+    {
+        $codePromotion = CodePromotion::findOrFail($codePromotionId);
+
+        if ($codePromotion->nbUtilisation >= $codePromotion->nbUtilisationMax) {
+            return response()->json(['message' => 'Le code promotionnel a atteint sa limite d\'utilisation.'], 400);
+        }
+
+        // Incrémenter nbUtilisation
+        $codePromotion->nbUtilisation += 1;
+        $codePromotion->save();
+
+        return response()->json(['message' => 'Code promotionnel utilisé avec succès !']);
     }
 }

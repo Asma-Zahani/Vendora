@@ -8,7 +8,7 @@ import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 
 const Produits = () => {
   const [selectedFilter, setSelectedFilter] = useState("Tous");
-  const filtres = { field: "status", value: ['Tous', 'Disponible', 'Rupture de stock'], selectedFilter, setSelectedFilter};
+  const filtres = { field: "status", value: ['Tous', 'Disponible', 'Rupture de stock', 'Hors vente', 'En arrivage'], selectedFilter, setSelectedFilter};
   const [sousCategories, setSousCategories] = useState([]);
   const [marques, setMarques] = useState([]);
   const [promotions, setPromotions] = useState([]);
@@ -26,7 +26,7 @@ const Produits = () => {
     fetchData();
   }, []);
 
-  const [formData, setFormData] = useState({nom: "", description: "", status: "", image: "", prix: "", sous_categorie_id: "", marque_id: "", couleurs: [], quantite: ""});
+  const [formData, setFormData] = useState({nom: "", description: "", status: "", image: "", prix: "", sous_categorie_id: "", marque_id: "", couleurs: [], quantite: "", caracteristique: ""});
 
   const [formColor, setFormColor] = useState({nom: "", code_hex: ""});
 
@@ -38,14 +38,18 @@ const Produits = () => {
       return true;
     }
   };
-
-  const [productFeature, setProductFeature] = useState("Standard");
-
+  
   useEffect(() => {
     if (formData.quantite === null) {
-      setProductFeature("Avec caractéristiques");
+      setFormData(prev => ({
+        ...prev,
+        caracteristique: "Avec caractéristiques"
+      }))
     } else {
-      setProductFeature("Standard");
+      setFormData(prev => ({
+        ...prev,
+        caracteristique: "Standard"
+      }))
     }
   }, [formData.quantite]);
   
@@ -64,11 +68,11 @@ const Produits = () => {
     { label: "Sous Catégorie", key: "sous_categorie_id", type: "dropdown", options: sousCategories.map(sousCategorie => ({ value: sousCategorie.sous_categorie_id, label: sousCategorie.titre })) },
     { label: "Marque", key: "marque_id", type: "dropdown", options: marques.map(marque => ({ value: marque.marque_id, label: marque.nom })) },
     { label: "Promotions", key: "promotion_id", type: "dropdown", options: promotions.map(promotion => ({ value: promotion.promotion_id, label: promotion.nom + ' - ' + promotion.reduction + '%' })) },
-    { label: "Caractéristiques du produit", type: "radio", options: ["Standard", "Avec caractéristiques"], form: productFeature, setForm: setProductFeature},
-    ...(productFeature === "Avec caractéristiques" ? [
+    { label: "Caractéristiques du produit", key: "caracteristique", type: "radio", options: ["Standard", "Avec caractéristiques"]},
+    ...(formData.caracteristique === "Avec caractéristiques" ? [
       { label: "Couleurs", key: "couleurs", type: "couleurs", options: couleurs, form: formColor, setForm: setFormColor, handleCreate: handleCreateCouleur }
     ] : []),
-    ...(productFeature === "Standard" ? [
+    ...(formData.caracteristique === "Standard" ? [
       { label: "Quantité", key: "quantite", type: "number" }
     ] : []),
     { label: "Description", key: "description", type: "textarea" },

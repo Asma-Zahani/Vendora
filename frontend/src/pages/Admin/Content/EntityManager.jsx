@@ -26,7 +26,7 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
   }, [sortBy]);
 
   useEffect(() => {
-    fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities, filtres?.selectedFilter);    
+    fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities, { [filtres?.field]: filtres?.selectedFilter } );    
   }, [currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filtres?.selectedFilter]);
   
   const handlePageChange = (pageNumber) => {
@@ -74,7 +74,7 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
   const entityConfig = {label, formData, setFormData, fields, errors, setErrors, columns, identifiant,
     handleCreate: notAdd ? undefined : () => handleCreate(label, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities)), 
     handleEdit: () => handleEdit(CRUDLabel, identifiant, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities)) };
-  const tableConfig = {currentPage, selectedItemPerPage, handlePageChange, handleConfigChange, searchTerm, sortOrder, sortBy, toggleSortOrder};
+  const tableConfig = {selectedItemPerPage, handlePageChange, handleConfigChange, searchTerm, sortOrder, sortBy, toggleSortOrder};
 
   return (
     <FilteredTable filtres={filtres} entityConfig={entityConfig} tableConfig={tableConfig} data={formattedData} />

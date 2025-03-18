@@ -24,7 +24,7 @@ const CommandeLivraison = () => {
   const [formData, setFormData] = useState({etatCommande: ""});
 
   const columns = [
-    { label: "Num°", key: "commande_id", type: "text" },
+    { label: "Num°", key: "commande_id", type: "text", prefix: "#" },
     { label: "Client", key: "commande_client_id", type: "id", options: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))},
     { label: "Total", key: "commande_total", type: "enum" },
     { label: "État Commande", key: "commande_etatCommande", type: "enum" },

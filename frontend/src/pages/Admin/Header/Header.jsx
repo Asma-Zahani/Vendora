@@ -17,16 +17,16 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
       <div className="px-4 py-2 md:py-4 lg:py-4">
         <div className="flex items-center w-full">
           <div className="px-1 pr-3">
-            <button type="button" className="w-990:inline-flex hidden relative justify-center items-center p-0 transition-all w-[37.5px] h-[37.5px] duration-75 ease-linear rounded-md"
+            <button type="button" className="lg:inline-flex hidden relative justify-center items-center p-0 transition-all w-[37.5px] h-[37.5px] duration-75 ease-linear rounded-md"
               onClick={toggleSidebar} >
               {isSidebarVisible ? ( <ChevronsLeft className="w-5 h-5" /> ) : ( <ChevronsRight className="w-5 h-5" /> )}
             </button>
-            <button type="button" className="w-990:hidden inline-flex relative justify-center items-center p-0 transition-all h-[37.5px] duration-75 ease-linear rounded-md"
+            <button type="button" className="lg:hidden inline-flex relative justify-center items-center p-0 transition-all h-[37.5px] duration-75 ease-linear rounded-md"
               onClick={toggleDrawerOpen} >
               <Menu className="w-5 h-5"/>
             </button>
           </div>
-          <div className="relative w-990:inline-flex hidden">
+          <div className="relative lg:inline-flex hidden">
             <input type="text" className="py-3 p-6 dark:bg-contentDark bg-contentLight placeholder:text-black text-sm dark:placeholder:text-white rounded focus-visible:outline-0 min-w-[400px]" 
               placeholder="Type to Search .." autoComplete="off" 
             />
@@ -36,13 +36,13 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
           </div>
 
           <div className="flex gap-3 ms-auto pr-0 lg:pr-2 md:pr-5">
-            <div className="w-990:hidden relative flex items-center -mr-2">
+            <div className="lg:hidden relative flex items-center -mr-2">
               <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <Search className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
               </button>
             </div>
 
-            <div className="relative flex items-center border-l dark:border-borderDark pl-1 w-990:border-none -mr-2">
+            <div className="relative flex items-center border-l dark:border-borderDark pl-1 lg:border-none -mr-2">
               <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <Bell className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                 <span className="absolute top-2 right-2.5 flex w-1.5 h-1.5">

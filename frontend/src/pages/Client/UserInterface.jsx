@@ -14,7 +14,7 @@ const UserInterface = () => {
   
   return (
     <div className="text-base dark:text-zinc-100 min-h-screen flex flex-col relative">
-      <div className="absolute top-0 left-0 w-full z-50">
+      <div className="absolute top-0 left-0 w-full z-100">
         <Header />
       </div>
       <div className="mt-20">

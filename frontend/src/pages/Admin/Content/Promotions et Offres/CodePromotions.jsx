@@ -8,9 +8,9 @@ const CodePromotions = () => {
   const columns = [
     { label: "Code", key: "code", type: "text" },
     { label: "Réduction (%)", key: "reduction", type: "text" },
+    { label: "Utilisation", key: "nbUtilisation", type: "text" },
+    { label: "Utilisation Max", key: "nbUtilisationMax", type: "text" },
     { label: "Date d'expiration", key: "dateExpiration", type: "date" },
-    { label: "Nombre d'utilisations max", key: "nbUtilisationMax", type: "text" },
-    { label: "Date de création", key: "created_at", type: "date" },
     { label: "Actions", key: "actions", type: "actions" }
   ];
 

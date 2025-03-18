@@ -21,8 +21,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className={`h-full shadow-xl shadow-slate-300/50 dark:shadow-gray-800/50  ${ isHover ? "hidden" : "block" }`} 
-        onMouseLeave={toggleSidebarHover} >
+    <div className={`h-full shadow-xl shadow-slate-300/50 dark:shadow-gray-800/50  ${ isHover ? "hidden" : "block" }`} onMouseLeave={toggleSidebarHover} >
       <div className="flex items-center justify-between px-5 py-4 mt-2">
         <Link to="/">
           <img src={logo} alt="Logo" className="h-8" />

@@ -24,12 +24,32 @@ class ProduitController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        $query = Produit::with('couleurs');
+        $query = Produit::with('couleurs', 'sousCategorie.categorie');
 
         if ($request->has('filtre')) {
-            $filtre = $request->input('filtre');
-            if ($filtre != 'Tous') {
-                $query->where('status', $filtre);
+            $filtres = $request->input('filtre');
+    
+            foreach ($filtres as $column => $value) {
+                if (!empty($value) && $value !== 'Tous') {
+                    if (strpos($column, '.') !== false) {
+                        if ($column === 'sousCategorie.categorie_id') {
+                            $query->whereHas('sousCategorie.categorie', function ($q) use ($value) {
+                                $q->whereIn('categorie_id', (array) $value);
+                            });
+                        } elseif ($column === 'couleurs.couleur_id') {
+                            $query->whereHas('couleurs', function ($q) use ($value) {
+                                $q->whereIn('couleurs.couleur_id', (array) $value);
+                            });
+                        }
+                    } else {
+                        if ($column === 'maxPrice') {
+                            $query->whereRaw("(prix - (prix * COALESCE((SELECT reduction FROM promotions WHERE promotion_id = produits.promotion_id), 0) / 100)) <= ?", [$value]);
+                        }          
+                        else {
+                            $query->whereIn($column, (array) $value);
+                        }              
+                    }
+                }
             }
         }
         
@@ -49,11 +69,35 @@ class ProduitController extends Controller implements HasMiddleware
             $sortBy = $request->input('sort_by');
             $sortOrder = $request->input('sort_order');
             
+            if ($sortBy === "prix_apres_promo") {
+                $produits = $query->paginate($request->input('per_page', 5));
+        
+                $produitsItems = $produits->items();
+        
+                foreach ($produitsItems as $produit) {
+                    $produit->prix_apres_promo = $produit->prix_apres_promo;
+                }
+        
+                $sortedItems = collect($produitsItems)->sortBy(function ($produit) {
+                    return $produit->prix_apres_promo;
+                }, SORT_REGULAR, $sortOrder === 'desc');
+        
+                $produits = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $sortedItems->values()->all(),
+                    $produits->total(),
+                    $produits->perPage(),
+                    $produits->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+        
+                return $produits;
+            }
+        
             if (Schema::hasColumn('produits', $sortBy)) {
                 $query->orderBy($sortBy, $sortOrder);
             }
         }
-
+        
         $produits = $query->paginate($request->input('per_page', 5));
 
         return response()->json($produits);
@@ -74,19 +118,40 @@ class ProduitController extends Controller implements HasMiddleware
             'marque_id' => 'required|exists:marques,marque_id',
             'sous_categorie_id' => 'required|exists:sous_categories,sous_categorie_id',
             'promotion_id' => 'nullable|exists:promotions,promotion_id',
-            'couleurs' => 'array', // Couleurs peuvent être null ou une array
-            'couleurs.*.couleur_id' => [
-                Rule::exists('couleurs', 'couleur_id')
+            'caracteristique' => 'required',
+            'quantite' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                Rule::requiredIf(fn() => request('caracteristique') === 'Standard'),
             ],
-            'couleurs.*.quantite' => 'nullable|numeric|min:0', // Quantité est obligatoire si couleur est présente
+            'couleurs' => ['array', Rule::requiredIf(fn() => request('caracteristique') !== 'Standard')],
+            'couleurs.*.couleur_id' => [
+                Rule::exists('couleurs', 'couleur_id'),
+                Rule::requiredIf(fn() => request('caracteristique') !== 'Standard'),
+            ],
+            'couleurs.*.quantite' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                Rule::requiredIf(fn() => request('caracteristique') !== 'Standard'),
+            ],
             'nom' => 'required|string|max:255',
             'status' => [Rule::in(StatusProduitEnum::values())],
             'description' => 'required|string|max:255',
             'prix' => 'required|numeric|min:0',
-            'quantite' => 'nullable|numeric',
             'image' => 'required|string|max:255',
+        ], [
+            'couleurs.*.quantite' => 'The quantite field is required.'
         ]);
         
+        if ($validatedData["caracteristique"] === 'Standard') {
+            $validatedData['couleurs'] = [];
+        }
+        elseif ($validatedData["caracteristique"] === 'Avec caractéristiques') {
+            $validatedData['quantite'] = null;
+        }
+
         // Création du produit
         $produit = Produit::create($validatedData);
 
@@ -132,36 +197,53 @@ class ProduitController extends Controller implements HasMiddleware
             'marque_id' => 'required|exists:marques,marque_id',
             'sous_categorie_id' => 'required|exists:sous_categories,sous_categorie_id',
             'promotion_id' => 'nullable|exists:promotions,promotion_id',
-            'couleurs' => 'array', // Couleurs peuvent être null ou une array
-            'couleurs.*.couleur_id' => [
-                Rule::exists('couleurs', 'couleur_id')
+            'caracteristique' => 'required',
+            // 'quantite' => 'nullable|numeric',
+            'quantite' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                Rule::requiredIf(fn() => request('caracteristique') === 'Standard'),
             ],
-            'couleurs.*.quantite' => 'nullable|numeric|min:0', // Quantité est obligatoire si couleur est présente
+            'couleurs' => ['array', Rule::requiredIf(fn() => request('caracteristique') !== 'Standard')],
+            'couleurs.*.couleur_id' => [
+                Rule::exists('couleurs', 'couleur_id'),
+                Rule::requiredIf(fn() => request('caracteristique') !== 'Standard'),
+            ],
+            'couleurs.*.quantite' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                Rule::requiredIf(fn() => request('caracteristique') !== 'Standard'),
+            ],
             'nom' => 'required|string|max:255',
             'status' => [Rule::in(StatusProduitEnum::values())],
             'description' => 'required|string|max:255',
             'prix' => 'required|numeric|min:0',
-            'quantite' => 'nullable|numeric',
-            'image' => 'required|string|max:255',
-
+            'image' => 'required|string|max:255'
         ]);
 
-        // Mise à jour des informations du produit
+        if ($validatedData["caracteristique"] === 'Standard') {
+            $validatedData['couleurs'] = [];
+            $produit->couleurs()->detach(); 
+        }
+        elseif ($validatedData["caracteristique"] === 'Avec caractéristiques') {
+            $validatedData['quantite'] = null;
+        }
+
         $produit->update($validatedData);
 
-        if ($request->has('couleurs')) {
+        if ($request->has('couleurs') && $validatedData["caracteristique"] !== 'Standard') {
             $couleursData = [];
 
             foreach ($request->couleurs as $couleur) {
-                // On associe chaque couleur au produit avec la quantité correspondante
                 if (isset($couleur['couleur_id'])) {
                     $couleursData[$couleur['couleur_id']] = [
-                        'quantite' => $couleur['quantite'] ?? 0, // Utilisation de 0 si aucune quantité n'est spécifiée
+                        'quantite' => $couleur['quantite'] ?? 0, 
                     ];
                 }
             }
 
-            // Mise à jour de la relation produit-couleur avec les quantités dans la table pivot
             $produit->couleurs()->sync($couleursData);
         }
 

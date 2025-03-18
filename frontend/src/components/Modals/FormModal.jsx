@@ -142,22 +142,29 @@ const FormModal = ({onClose, formLabel, action, formData, setFormData, fields, o
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 mt-3 ml-25">
-                      {formData.couleurs?.map((selectedColor) => (
-                        <div key={selectedColor.couleur_id} className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full border border-borderGrayLight dark:border-borderGrayDark"
-                            style={{ backgroundColor: selectedColor.code_hex }}/>
-                          <span className="text-sm">{selectedColor.nom}</span>
-                          <input type="number" placeholder="Quantité" value={selectedColor.quantite || ""} className="w-24 border border-gray-300 rounded"
-                            onChange={(e) => {
-                              const updatedColors = formData.couleurs.map((c) => c.couleur_id === selectedColor.couleur_id ? { ...c, quantite: e.target.value } : c );
-                              setFormData({ ...formData, couleurs: updatedColors });
-                            }}/>
+                      {formData.couleurs?.map((selectedColor, index) => (
+                        <div key={selectedColor.couleur_id} className="">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full border border-borderGrayLight dark:border-borderGrayDark"
+                              style={{ backgroundColor: selectedColor.code_hex }}/>
+                            <span className="text-sm">{selectedColor.nom}</span>
+                            <input type="number" placeholder="Quantité" value={selectedColor.quantite || ""} className="w-24 border border-gray-300 rounded"
+                              onChange={(e) => {
+                                const updatedColors = formData.couleurs.map((c) => c.couleur_id === selectedColor.couleur_id ? { ...c, quantite: e.target.value } : c );
+                                setFormData({ ...formData, couleurs: updatedColors });
+                              }}/>
+                          </div>
+                          {errors && errors[`couleurs.${index}.quantite`] && (
+                              <p className="text-sm text-red-500 ml-4 mt-1">
+                                  {errors[`couleurs.${index}.quantite`]}
+                              </p>
+                          )}
                         </div>
-                      ))}
+                      ))}             
                     </div>
                   </div>
                 )}
-                {errors && errors[key] && <p className="text-sm text-red-500 ml-4">{errors[key]}</p>}
+                {errors && errors[key] && <p className="text-sm text-red-500 ml-4 -mb-3 mt-1">{errors[key]}</p>}
               </div>
             ))}
           </div>

@@ -1,77 +1,46 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/components/Products/Card";
 import List from "@/components/Products/List";
 import Filtre from "@/components/Products/Filtre";
 import FiltreHeader from "@/components/Products/FiltreHeader";
+import Pagination from "@/components/Pagination/ProductPagination";
 
-const FilteredProducts = ({ wishlist, datas, gridInfo, filtres, ajouterAuPanier, ajouterAuListeSouhait }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    const [selectedColors, setSelectedColors] = useState([]);
-    const [maxPrice, setMaxPrice] = useState(1000);
+const FilteredProducts = ({ wishlist, data, gridInfo, filtres, ajouterAuPanier, ajouterAuListeSouhait, productConfig, selectedFiltres }) => {
     const [sortOption, setSortOption] = useState("default");
 
-    // Filtrage des produits
-    let currentItems = datas.filter(item => {
-        const matchesSearchTerm =
-            searchTerm.length === 0 ||
-            item.nom?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.description?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-
-        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.categorie_id);
-        const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(item.marque_id);
-        const matchesColor = selectedColors.length === 0 || item.couleurs.some(couleur => selectedColors.includes(couleur.couleur_id));
-        const matchesPrice = parseFloat(item.prix_apres_promo) <= parseFloat(maxPrice);
-
-        return matchesSearchTerm && matchesCategory && matchesBrand && matchesColor && matchesPrice;
-    });
-
-    // Tri des produits en fonction de l'option sélectionnée
-    switch (sortOption) {
-        case "lowToHigh":
-            currentItems.sort((a, b) => parseFloat(a.prix_apres_promo) - parseFloat(b.prix_apres_promo));
-            break;
-        case "highToLow":
-            currentItems.sort((a, b) => parseFloat(b.prix_apres_promo) - parseFloat(a.prix_apres_promo));
-            break;
-        case "alphaAsc":
-            currentItems.sort((a, b) => a.nom.localeCompare(b.nom));
-            break;
-        case "alphaDesc":
-            currentItems.sort((a, b) => b.nom.localeCompare(a.nom));
-            break;
-        default:
-            break;
-    }
-
-    const selectedFiltres = {
-        selectedCategories, setSelectedCategories,
-        selectedBrands, setSelectedBrands,
-        selectedColors, setSelectedColors
-    };
+    useEffect(() => {
+        switch (sortOption) {
+            case "default":
+                productConfig.toggleSortOrder("");
+                break;
+            case "lowToHigh":
+                productConfig.toggleSortOrder("prix_apres_promo", "asc");
+                break;
+            case "highToLow":
+                productConfig.toggleSortOrder("prix_apres_promo", "desc");
+                break;
+            case "alphaAsc":
+                productConfig.toggleSortOrder("nom", "asc");
+                break;
+            case "alphaDesc":
+                productConfig.toggleSortOrder("nom", "desc");
+                break;
+            default:
+                break;
+        }
+    }, [sortOption]);  
 
     return (
         <div>
-            <FiltreHeader
-                onChange={gridInfo.setGridCols}
-                onToggleView={gridInfo.setIsGrid}
-                isGrid={gridInfo.isGrid}
-                gridCols={gridInfo.gridCols}
-                onSortChange={setSortOption}  // Ajout de la gestion du tri
-            />
-            <Filtre
-                filtres={filtres}
-                selectedFiltres={selectedFiltres}
-                searchTerm={searchTerm} setSearchTerm={setSearchTerm}
-                maxPrice={maxPrice} setMaxPrice={setMaxPrice}
-            />
+            <FiltreHeader gridInfo={gridInfo} indexOfFirstItem={data.from - 1} indexOfLastItem={data.to} totalItems={data.total} onSortChange={setSortOption}/>
+            <Filtre filtres={filtres} selectedFiltres={selectedFiltres} productConfig={productConfig}/>
             <div className={`mt-10 gap-6 
                 ${gridInfo.isGrid ? `grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "flex flex-col gap-4"}`}>
 
-                {datas.length > 0 && currentItems.length > 0 ? (
-                    currentItems.map((produit, index) => (
+                {data.data?.length > 0 ? (
+                    data.data?.map((produit, index) => (
                         gridInfo.isGrid ? (
                             <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
                         ) : (
@@ -84,6 +53,10 @@ const FilteredProducts = ({ wishlist, datas, gridInfo, filtres, ajouterAuPanier,
                     </div>
                 )}
             </div>
+            {data.data?.length > 0 && (
+                <Pagination currentPage={data.current_page} totalItems={data.total} itemsPerPage={data.per_page} 
+                    onPageChange={(pageNumber) => productConfig.handlePageChange(pageNumber)}/>
+            )}
         </div>
     );
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { addToPanier } from "@/service/PanierService";
 import { addToWishlist } from "@/service/WishlistService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
@@ -14,49 +14,83 @@ const Shop = () => {
 
   const [produits, setProduits] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [sousCategories, setSousCategories] = useState([]);
   const [marques, setMarques] = useState([]);
-  const [promotions, setPromotions] = useState([]);
   const [couleurs, setCouleurs] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedItemPerPage, setSelectedItemPerPage] = useState(15);
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortBy, setSortBy] = useState("");
+
+  const [formData, setFormData] = useState(null);
+  const [panierAjoute, setPanierAjoute] = useState(false);
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(1000);
+
+  const filters = {};
+
+  if (selectedBrands && selectedBrands.length > 0) {
+    filters.marque_id = selectedBrands;
+  }
+  if (selectedColors && selectedColors.length > 0) {
+    filters["couleurs.couleur_id"] = selectedColors;
+  }
+  if (selectedCategories && selectedCategories.length > 0) {
+    filters["sousCategorie.categorie_id"] = selectedCategories;
+  }
+  if (maxPrice > 0) {
+    filters.maxPrice = maxPrice;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      setProduits(await getEntities("produits", 1, 50));
+      setProduits(await getEntities("produits", currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters));         
+    };
+    fetchData();
+  }, [currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters]);
+
+  // console.log(produits);
+  
+  useEffect(() => {
+    const fetchData = async () => {
       setCategories(await getEntities("categories"));
-      setSousCategories(await getEntities("sousCategories"));
       setMarques(await getEntities("marques"));
-      setPromotions(await getEntities("promotions"));
       setCouleurs(await getEntities("couleurs"));
     };
     fetchData();
   }, []);
+  
+  const handlePageChange = (pageNumber) => {    
+    setCurrentPage(pageNumber);
+  }
 
-  const formattedProduits = (produits.data || []).map((item) => {
-    const promotion = promotions.find(p => p.promotion_id === item.promotion_id);
-    const remise = promotion?.reduction || 0;
-    const prixApresPromo = remise 
-      ? (Number(item.prix) - (Number(item.prix) * remise / 100)).toFixed(2) 
-      : Number(item.prix).toFixed(2);
+  const handleConfigChange = useCallback((key, value) => {
+    setCurrentPage(1);
+    if (key === "itemsPerPage") setSelectedItemPerPage(value);
+    if (key === "searchTerm") setSearchTerm(value);
+  }, []);
 
-    const sousCategorie = sousCategories.find(s => s.sous_categorie_id === item.sous_categorie_id);
-    const categorie = categories.find(c => c.categorie_id === sousCategorie?.categorie_id);
-
-    return {
-      ...item,
-      categorie: categorie?.titre || "Non défini",
-      categorie_id: categorie?.categorie_id || null,
-      sous_categorie: sousCategorie?.titre || "Non défini",
-      marque: marques.find(m => m.marque_id === item.marque_id)?.nom || "Non défini",
-      promotion: promotion?.nom || "Non défini",
-      prix_apres_promo: prixApresPromo,
+  const handleConfigGridChange = useCallback((key, value) => {
+    if (key === "isGrid") {
+      setIsGrid(value);
+      value ? setSelectedItemPerPage(15) : setSelectedItemPerPage(10);
     };
-  });
+    if (key === "gridCols") {
+      setGridCols(value);
+      value === 3 ? setSelectedItemPerPage(15) : value === 4 ? setSelectedItemPerPage(20) : setSelectedItemPerPage(30);
+    }
+  }, []);
 
-  const filtres = { categories, marques, couleurs };
-  const gridInfo = { isGrid, setIsGrid, gridCols, setGridCols };
-
-  const [formData, setFormData] = useState(null);
-  const [panierAjoute, setPanierAjoute] = useState(false);
+  const toggleSortOrder = useCallback((columnKey, columnOrder) => {    
+    setSortBy(prevKey => (prevKey === columnKey ? prevKey : columnKey));
+    setSortOrder(prevOrder => (prevOrder === columnOrder ? prevOrder : columnOrder));
+    setCurrentPage(1);
+  }, [sortBy]);  
 
   const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
     const produitExistant = panier?.find(item => item.produit_id === produit_id);
@@ -119,16 +153,15 @@ const Shop = () => {
     }
   }, [panierAjoute, formData]);
 
+  const filtres = { categories, marques, couleurs };
+  const gridInfo = { isGrid, gridCols, handleConfigGridChange };
+  const productConfig = {currentPage, selectedItemPerPage, handlePageChange, handleConfigChange, searchTerm, sortOrder, sortBy, toggleSortOrder};
+  const selectedFiltres = {selectedCategories, setSelectedCategories, selectedBrands, setSelectedBrands, selectedColors, setSelectedColors, maxPrice, setMaxPrice};
+  
   return (
     <div className="px-8">
-      <FilteredProducts 
-        wishlist={wishlist} 
-        datas={formattedProduits} 
-        gridInfo={gridInfo} 
-        filtres={filtres} 
-        ajouterAuPanier={ajouterAuPanier} 
-        ajouterAuListeSouhait={ajouterAuListeSouhait} 
-      />
+      <FilteredProducts wishlist={wishlist} data={produits} gridInfo={gridInfo} productConfig={productConfig} filtres={filtres} selectedFiltres={selectedFiltres}
+        ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
     </div>
   );
 };

@@ -55,7 +55,7 @@ class PromotionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'nom' => 'required|string|max:255',
             'reduction' => 'required|numeric|min:0|max:100',
-            'dateDebut' => 'required|date',
+            'dateDebut' => 'required|date|after:today',
             'dateFin' => 'required|date|after:dateDebut',
         ]);
         
@@ -86,7 +86,7 @@ class PromotionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'nom' => 'required|string|max:255',
             'reduction' => 'required|numeric|min:0|max:100',
-            'dateDebut' => 'required|date',
+            'dateDebut' => 'required|date|after:today',
             'dateFin' => 'required|date|after:dateDebut',
         ]);
         

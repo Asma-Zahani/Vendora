@@ -27,6 +27,8 @@ class Produit extends Model
         'quantite',
         'image',
     ];
+    
+    protected $appends = ['prix_apres_promo'];
 
     protected $casts = [
         'status' => StatusProduitEnum::class,
@@ -66,4 +68,11 @@ class Produit extends Model
         ->withPivot('quantite');
     }
 
+    public function getPrixApresPromoAttribute()
+    {
+        $reduction = $this->promotion ? $this->promotion->reduction : 0;
+        $prixApresPromo = $this->prix - ($this->prix * $reduction / 100);
+    
+        return number_format($prixApresPromo, 2, '.', '');
+    }
 }

@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('code', 120)->unique();
             $table->integer('reduction');
             $table->date('dateExpiration'); 
-            $table->integer('nbUtilisation');
+            $table->integer('nbUtilisation')->default(0); 
             $table->integer('nbUtilisationMax');
-            $table->timestamps();
         });
     }
 

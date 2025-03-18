@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ArrowDownToLine, Plus, Search, ChevronDown, Trash2Icon, Database, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import FilterButtons from "@/components/Tables/FilterButtons";
-import Pagination from "@/components/Pagination/Pagination";
+import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import ViewModal from "@/components/Modals/ViewModal";
@@ -37,7 +37,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
             <div className="flex flex-col">
                 <div className="inline-block min-w-full py-2 align-middle">
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
-                        <div className="sm:flex items-center justify-between">
+                        <div className="lg:flex items-center justify-between">
                             <div className="flex items-center gap-x-3">
                                 <h2 className="text-lg font-medium text-gray-800 dark:text-white">{entityConfig.label.charAt(0).toUpperCase() + entityConfig.label.slice(1)}</h2>
                                 <span className="px-3 py-1 text-xs bg-bgLight dark:bg-bgDark text-purpleLight rounded-full">{data.total} {entityConfig.label}</span>
@@ -57,10 +57,10 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                             </div>
                         </div>
 
-                        <div className="mt-6 md:flex md:items-center md:justify-between">
-                            <div className="block sm:flex justify-between md:w-1/2 lg:w-1/2 gap-5">
+                        <div className="mt-6 lg:flex lg:items-center lg:justify-between">
+                            <div className="mr-2">
                                 {data.total > 5 && 
-                                    <div className="mb-6 sm:mb-0 -mt-[60px] sm:mt-0">
+                                    <div className="mb-6 lg:mb-0 -mt-[60px] lg:mt-0">
                                         <button onClick={() => {setIsSelectedItemOpen(!isSelectedItemOpen)}} className="flex items-center px-3 py-2 gap-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight text-sm">
                                             <span>{tableConfig.selectedItemPerPage}</span><ChevronDown size={20} />
                                         </button>
@@ -74,15 +74,14 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                 </div> ))}
                                             </div>)}
                                         </div>
-                                    </div>
-                                }
-                                {filtres && <FilterButtons filtre={filtres.value} selectedFilter={filtres.selectedFilter} setSelectedFilter={filtres.setSelectedFilter} />}
+                                    </div>}
                             </div>
-                            <div className="relative flex items-center mt-4 md:pl-4 md:mt-0">
+                            {filtres && <FilterButtons filtre={filtres.value} selectedFilter={filtres.selectedFilter} setSelectedFilter={filtres.setSelectedFilter} />}
+                            <div className="relative flex items-center mt-4 lg:pl-4 lg:mt-0">
                                 <span className="absolute">
                                     <Search fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600 focus:dark:text-bgDark"/>
                                 </span>
-                                <input type="text" placeholder="Rechercher" value={tableConfig.searchTerm} onChange={(e) => {tableConfig.handleConfigChange("searchTerm",e.target.value);}} className="block w-full py-1.5 pr-5 dark:bg-contentDark text-gray-700 dark:text-gray-300 border border-borderGrayLight dark:border-borderGrayDark rounded-md md:w-80 placeholder-gray-400/70 pl-11 focus:border-purpleLight focus:dark:border-borderDark focus:ring-2 focus:ring-bgLight focus:dark:ring-bgDark focus-visible:outline-none" />
+                                <input type="text" placeholder="Rechercher" value={tableConfig.searchTerm} onChange={(e) => {tableConfig.handleConfigChange("searchTerm",e.target.value);}} className="block w-full md:w-full py-1.5 pr-5 dark:bg-contentDark text-gray-700 dark:text-gray-300 border border-borderGrayLight dark:border-borderGrayDark rounded-md placeholder-gray-400/70 pl-11 focus:border-purpleLight focus:dark:border-borderDark focus:ring-2 focus:ring-bgLight focus:dark:ring-bgDark focus-visible:outline-none" />
                             </div>
                         </div>
 

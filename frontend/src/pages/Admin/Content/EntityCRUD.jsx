@@ -11,9 +11,7 @@ export const handleEntity = async (CRUDLabel, id, setErrors, setFormData) => {
   setFormData(entityData);
 };
 
-export const handleCreate = async (CRUDLabel, formData, setErrors, setSuccessMessage, fetchData) => {
-  console.log(formData);
-  
+export const handleCreate = async (CRUDLabel, formData, setErrors, setSuccessMessage, fetchData) => {  
   const data = await createEntity(CRUDLabel, formData);
   if (data.errors) {
     setErrors(data.errors);
