@@ -5,7 +5,7 @@ import defaultImg from "@/assets/default/image.png";
 import { getEntity } from "@/service/EntitesService";
 
 const DetailProduit = () => {
-    const { id } = useParams();
+  const { id } = useParams();
   const [produit, setProduit] = useState([]);
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
 

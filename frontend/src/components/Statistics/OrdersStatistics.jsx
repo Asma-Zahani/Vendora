@@ -31,11 +31,11 @@ const OrdersStatistics = () => {
     { id: "#322", client: "Sophie M.", type: "Livraison" },
     { id: "#323", client: "Karim B.", type: "Retrait Drive" },
     { id: "#324", client: "Nadia K.", type: "Livraison" },
-    { id: "#320", client: "Asma Zh", type: "Livraison" },
-    { id: "#321", client: "Mohamed Ali", type: "Retrait Drive" },
-    { id: "#322", client: "Sophie M.", type: "Livraison" },
-    { id: "#323", client: "Karim B.", type: "Retrait Drive" },
-    { id: "#324", client: "Nadia K.", type: "Livraison" },
+    { id: "#325", client: "Asma Zh", type: "Livraison" },
+    { id: "#326", client: "Mohamed Ali", type: "Retrait Drive" },
+    { id: "#327", client: "Sophie M.", type: "Livraison" },
+    { id: "#328", client: "Karim B.", type: "Retrait Drive" },
+    { id: "#329", client: "Nadia K.", type: "Livraison" },
   ];
 
   return (
