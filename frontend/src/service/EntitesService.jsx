@@ -87,5 +87,5 @@ const deleteEntity = async (label, _id) => {
 
   return await response.json();
 };
-  
+
 export { getEntities, getAuthenticatedEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity };

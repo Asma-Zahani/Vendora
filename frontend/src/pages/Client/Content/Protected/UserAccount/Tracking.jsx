@@ -76,6 +76,6 @@ const Tracking = () => {
             </div>
         </div>
     );
-};
+}; 
 
 export default Tracking;
