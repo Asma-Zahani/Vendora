@@ -29,16 +29,6 @@ const Tracking = () => {
             console.error("Erreur lors de la récupération du categorie:", error);
             alert('Une erreur est survenue lors de la récupération du categorie');
         }
-        // try {
-        //     const data = await getCommandeById(orderId);
-        //     if (data) {
-        //         setCommande(data);
-        //     } else {
-        //         setError("Commande non trouvée.");
-        //     }
-        // } catch (err) {
-        //     setError("Une erreur est survenue lors de la récupération de la commande.");
-        // }
     };
 
     const getStatusIcon = (status) => {

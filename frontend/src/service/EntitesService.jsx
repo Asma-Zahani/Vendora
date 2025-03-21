@@ -26,7 +26,7 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
   return await response.json();
 };
 
-const getRecentsEntities = async (label) => {
+const getAuthenticatedEntities = async (label) => {
   const response = await fetch(`/api/${label}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,4 +88,4 @@ const deleteEntity = async (label, _id) => {
   return await response.json();
 };
   
-export { getEntities, getRecentsEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity };
+export { getEntities, getAuthenticatedEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity };

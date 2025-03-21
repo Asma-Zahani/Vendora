@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { PackageX } from "lucide-react";
-import { getCommandes } from "@/service/UsersService";
+import { getAuthenticatedEntities } from "@/service/EntitesService";
 
 const OrderHistory = () => {
 
     const [commandes, setCommandes] = useState([]);
 
-    useEffect(() => { (async () => setCommandes(await getCommandes()))()}, [commandes]);
-    
+    useEffect(() => {
+        const fetchData = async () => {
+          try {  
+            setCommandes(await getAuthenticatedEntities("commande/user"));
+          } catch (error) {
+            console.error("Erreur lors de la récupération des données :", error);
+          }
+        };
+        fetchData();
+    }, []);
+
     return (
         <div className="col-span-2 w-full py-2 space-y-5">
             <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
