@@ -26,6 +26,10 @@ class ProduitController extends Controller implements HasMiddleware
     {
         $query = Produit::with('couleurs', 'sousCategorie.categorie');
 
+        if (!$request->hasAny(['search', 'filtre', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json($query->get());
+        }
+
         if ($request->has('filtre')) {
             $filtres = $request->input('filtre');
     
