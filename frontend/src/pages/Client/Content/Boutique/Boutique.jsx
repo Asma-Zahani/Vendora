@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext, useCallback, useMemo } from "react";
 import { addToPanier } from "@/service/PanierService";
 import { addToWishlist } from "@/service/WishlistService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
@@ -32,20 +32,24 @@ const Shop = () => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [maxPrice, setMaxPrice] = useState(1000);
 
-  const filters = {};
-
-  if (selectedBrands && selectedBrands.length > 0) {
-    filters.marque_id = selectedBrands;
-  }
-  if (selectedColors && selectedColors.length > 0) {
-    filters["couleurs.couleur_id"] = selectedColors;
-  }
-  if (selectedCategories && selectedCategories.length > 0) {
-    filters["sousCategorie.categorie_id"] = selectedCategories;
-  }
-  if (maxPrice > 0) {
-    filters.maxPrice = maxPrice;
-  }
+  const filters = useMemo(() => {
+    const newFilters = {};
+  
+    if (selectedBrands && selectedBrands.length > 0) {
+      newFilters.marque_id = selectedBrands;
+    }
+    if (selectedColors && selectedColors.length > 0) {
+      newFilters["couleurs.couleur_id"] = selectedColors;
+    }
+    if (selectedCategories && selectedCategories.length > 0) {
+      newFilters["sousCategorie.categorie_id"] = selectedCategories;
+    }
+    if (maxPrice > 0) {
+      newFilters.maxPrice = maxPrice;
+    }
+  
+    return newFilters;
+  }, [selectedBrands, selectedColors, selectedCategories, maxPrice]);
 
   useEffect(() => {
     const fetchData = async () => {
