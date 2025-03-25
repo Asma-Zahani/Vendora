@@ -5,7 +5,7 @@ import Card from '@/components/Products/Card';
 import { addToPanier } from "@/service/PanierService";
 import { addToWishlist } from "@/service/WishlistService";
 import { Link } from "react-router";
-import { getEntities, getRecentsEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 
 const RecentsProduits = () => {
   const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
@@ -18,7 +18,7 @@ const RecentsProduits = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setProduits(await getRecentsEntities("recentProduits"));
+      setProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, []);
