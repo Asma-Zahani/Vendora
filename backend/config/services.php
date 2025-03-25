@@ -35,4 +35,5 @@ return [
         ],
     ],
 
+    'cloudinary_logo' => env('CLOUDINARY_LOGO_URL'),
 ];

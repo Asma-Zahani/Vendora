@@ -40,11 +40,14 @@ class PasswordResetEmail extends Mailable
      */
     public function content(): Content
     {
+        // $pathToImage = public_path('logo.png');
+        $pathToImage = config('services.cloudinary_logo');
         $url = URL::to('http://localhost:5173/reset-password?'. http_build_query(['token' => $this->token]));
         return new Content(
             view: 'emails.password-reset',
             with: [
                 'url' => $url,
+                'pathToImage' => $pathToImage
             ]
         );
     }

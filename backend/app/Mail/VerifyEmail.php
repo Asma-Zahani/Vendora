@@ -41,10 +41,14 @@ class VerifyEmail extends Mailable
      */
     public function content(): Content
     {
+        // $pathToImage = public_path('logo.png');
+        $pathToImage = config('services.cloudinary_logo');
+
         return new Content(
             view: 'emails.verify-email',
             with: [
                 'verificationUrl' => $this->verificationUrl,
+                'pathToImage' => $pathToImage
             ]
         );
     }
