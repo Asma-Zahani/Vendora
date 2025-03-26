@@ -74,3 +74,4 @@ Route::get('/statusDrives', [EnumsController::class, 'getStatusDrives']);
 Route::get('/statusProduits', [EnumsController::class, 'getStatusProduits']);
 
 require __DIR__.'/auth.php';
+require __DIR__.'/recommendation.php';
