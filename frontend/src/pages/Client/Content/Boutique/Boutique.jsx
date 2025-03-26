@@ -106,7 +106,7 @@ const Shop = () => {
       : parseInt(quantiteAjoutee);
 
     setFormData({
-      client_id: user?.id,
+      client_id: user.data?.id,
       produit_id: produit_id,
       quantite: quantiteTotale,
     });
@@ -118,7 +118,7 @@ const Shop = () => {
     try {
       const produit = produits.data.find(item => item.produit_id === produit_id);
       
-      const wishlistItem = { client_id: user?.id, produit_id };
+      const wishlistItem = { client_id: user.data?.id, produit_id };
       await addToWishlist(wishlistItem);
       setWishlist(prevWishlist => [...prevWishlist, produit]);
       console.log("Liste de souhaits mise à jour avec succès");
@@ -128,6 +128,9 @@ const Shop = () => {
   };
 
   useEffect(() => {
+    //console.log("Utilisateur courant:", user);
+    //console.log("Client ID envoyé:", user?.id);
+
     if (panierAjoute && formData) {
       const timeout = setTimeout(async () => {
         try {
