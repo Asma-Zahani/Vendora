@@ -116,7 +116,7 @@ const Shop = () => {
 
   const ajouterAuListeSouhait = async (produit_id) => {
     try {
-      const produit = produits.find(item => item.produit_id === produit_id);
+      const produit = produits.data.find(item => item.produit_id === produit_id);
       
       const wishlistItem = { client_id: user?.id, produit_id };
       await addToWishlist(wishlistItem);
@@ -142,7 +142,7 @@ const Shop = () => {
                   : item
               );
             } else {
-              const produit = produits.find(item => item.produit_id === formData.produit_id);
+              const produit = produits.data.find(item => item.produit_id === formData.produit_id);
               return produit ? [...prevProduits, { ...produit, pivot: { quantite: formData.quantite } }] : prevProduits;
             }
           });
