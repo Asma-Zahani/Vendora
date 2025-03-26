@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import { Package } from "lucide-react";
 import EntityManager from "../EntityManager";
-import { getEtatCommandes } from "@/service/EnumsService";
 import { getEntities } from "@/service/EntitesService";
 
 const CommandeLivraison = () => {
@@ -13,7 +12,7 @@ const CommandeLivraison = () => {
     const fetchData = async () => {
       try {  
         setClients(await getEntities("users"));
-        setEtatCommandeOptions(await getEtatCommandes());
+        setEtatCommandeOptions(await getEntities("etatCommandes"));
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }

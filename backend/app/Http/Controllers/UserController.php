@@ -135,6 +135,8 @@ class UserController extends Controller implements HasMiddleware
             PanierProduit::where('client_id', $client->id)
                         ->where('produit_id', $produit->produit_id)
                         ->update(['quantite' => $validatedData['quantite']]);
+        
+            return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
         } else {
             PanierProduit::create([
                 'client_id' => $client->id,
@@ -173,15 +175,10 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Supprime un produit du panier.
      */
-    public function supprimerDuPanier(Request $request)
+    public function supprimerDuPanier($user_id, $produit_id)
     {
-        $validatedData = $request->validate([
-            'client_id' => 'required|exists:users,id',
-            'produit_id' => 'required|exists:produits,produit_id',
-        ]);
-
-        $client = User::findOrFail($validatedData['client_id']);
-        $produit = Produit::findOrFail($validatedData['produit_id']);
+        $client = User::findOrFail($user_id);
+        $produit = Produit::findOrFail($produit_id);
 
         $panierProduit = PanierProduit::where('client_id', $client->id)
                                       ->where('produit_id', $produit->produit_id)
@@ -200,18 +197,11 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Supprime un produit de la liste de souhaits.
      */
-    public function supprimerDeListeSouhaits(Request $request)
+    public function supprimerDeListeSouhaits($user_id, $produit_id)
     {
-        // Validation des données
-        $validatedData = $request->validate([
-            'client_id' => 'required|exists:users,id',
-            'produit_id' => 'required|exists:produits,produit_id',
-        ]);
-
-        // Récupérer le client et le produit
-        $client = User::findOrFail($validatedData['client_id']);
-        $produit = Produit::findOrFail($validatedData['produit_id']);
-
+        $client = User::findOrFail($user_id);
+        $produit = Produit::findOrFail($produit_id);
+        
         // Trouver et supprimer le produit de la liste de souhaits
         $wishlistItem = ListeDeSouhait::where('client_id', $client->id)
                                       ->where('produit_id', $produit->produit_id)

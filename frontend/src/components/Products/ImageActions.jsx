@@ -108,10 +108,10 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
           }
         </div>
         }
-        {!effacerDeListeSouhait && wishlist && 
-          <Heart size={20} fill={`${wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
+        {!effacerDeListeSouhait && 
+          <Heart size={20} fill={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`}
             onClick={() => {
-              const isProductInWishlist = wishlist.some(item => item.produit_id === produit.produit_id);
+              const isProductInWishlist = wishlist && wishlist.some(item => item.produit_id === produit.produit_id);
 
               if (!isProductInWishlist) {
                 ajouterAuListeSouhait(produit.produit_id);
@@ -120,7 +120,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
                 navigate("/wishlist");
               }
             }}
-            className={`absolute left-4 top-4 ${wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : 'text-white hover:text-customDark'}`}
+            className={`absolute left-4 top-4 ${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : 'text-white hover:text-customDark'}`}
             onMouseEnter={() => setIsHeartHovered(true)}
             onMouseLeave={() => setIsHeartHovered(false)}
           />
@@ -128,7 +128,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
         
         {isHeartHovered && (
           <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 mt-1 rounded-md shadow-lg">
-            {wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
+            {wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
           </div>
         )}

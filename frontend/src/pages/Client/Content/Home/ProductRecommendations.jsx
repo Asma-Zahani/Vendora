@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getRecentsEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 import Card from '@/components/Products/Card';
 import { useContext } from "react";
 import { UserContext } from '@/utils/UserContext';
+import usePanierWishlist from "../Protected/usePanierWishlist";
 
 const ProductRecommendations = () => {
-  const { user, wishlist } = useContext(UserContext);
-  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
+  const [produits, setProduits] = useState([]);
   
   useEffect(() => {
     const fetchData = async () => {
-      setRecommendedProducts(await getRecentsEntities("recentProduits"));
+      setProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, []);
   
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(user, panier, setPanier,produits, wishlist, setWishlist);
+
   return (
     <div>
-      {user && recommendedProducts.length > 0 && (
+      {user && produits.length > 0 && (
         <>
           <div className="px-8 py-12">
             <div className="flex flex-col items-center text-center mb-5">
@@ -31,8 +34,8 @@ const ProductRecommendations = () => {
             </div>
 
             <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-              {recommendedProducts.map((produit, index) => {
-                return <Card key={index} wishlist={wishlist} produit={produit} />;
+              {produits.map((produit, index) => {
+                return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
               })}
             </div>
 

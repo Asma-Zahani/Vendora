@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext, useCallback, useMemo } from "react";
-import { addToPanier } from "@/service/PanierService";
-import { addToWishlist } from "@/service/WishlistService";
 import FilteredProducts from '@/components/Products/FilteredProducts';
 import UserContext from '@/utils/UserContext';
 import { getEntities } from "@/service/EntitesService";
+import usePanierWishlist from "../Protected/usePanierWishlist";
 
 const Shop = () => {
   const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
@@ -23,9 +22,6 @@ const Shop = () => {
   
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortBy, setSortBy] = useState("");
-
-  const [formData, setFormData] = useState(null);
-  const [panierAjoute, setPanierAjoute] = useState(false);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -57,8 +53,6 @@ const Shop = () => {
     };
     fetchData();
   }, [currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters]);
-
-  // console.log(produits);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -95,70 +89,8 @@ const Shop = () => {
     setSortOrder(prevOrder => (prevOrder === columnOrder ? prevOrder : columnOrder));
     setCurrentPage(1);
   }, [sortBy]);  
-
-  const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
-    const produitExistant = panier?.find(item => item.produit_id === produit_id);
-    
-    const quantiteTotale = produitExistant 
-      ? (produitExistant.pivot?.quantite 
-          ? parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) 
-          : parseInt(produitExistant.quantite) + parseInt(quantiteAjoutee)) 
-      : parseInt(quantiteAjoutee);
-
-    setFormData({
-      client_id: user.data?.id,
-      produit_id: produit_id,
-      quantite: quantiteTotale,
-    });
-
-    setPanierAjoute(true);
-  };
-
-  const ajouterAuListeSouhait = async (produit_id) => {
-    try {
-      const produit = produits.data.find(item => item.produit_id === produit_id);
-      
-      const wishlistItem = { client_id: user.data?.id, produit_id };
-      await addToWishlist(wishlistItem);
-      setWishlist(prevWishlist => [...prevWishlist, produit]);
-      console.log("Liste de souhaits mise à jour avec succès");
-    } catch (error) {
-      console.error("Erreur lors de l'ajout à la liste de souhaits:", error);
-    }
-  };
-
-  useEffect(() => {
-    //console.log("Utilisateur courant:", user);
-    //console.log("Client ID envoyé:", user?.id);
-
-    if (panierAjoute && formData) {
-      const timeout = setTimeout(async () => {
-        try {
-          await addToPanier(formData);
-          setPanier(prevProduits => {
-            const produitExistant = prevProduits.find(item => item.produit_id === formData.produit_id);
-          
-            if (produitExistant) {
-              return prevProduits.map(item =>
-                item.produit_id === formData.produit_id 
-                  ? { ...item, pivot: { ...item.pivot, quantite: formData.quantite } } 
-                  : item
-              );
-            } else {
-              const produit = produits.data.find(item => item.produit_id === formData.produit_id);
-              return produit ? [...prevProduits, { ...produit, pivot: { quantite: formData.quantite } }] : prevProduits;
-            }
-          });
-          console.log("Panier mis à jour");
-        } catch (error) {
-          console.error("Erreur lors de la mise à jour du panier:", error);
-        }
-        setPanierAjoute(false);
-      }, 1000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [panierAjoute, formData]);
+  
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(user, panier, setPanier, produits.data, wishlist, setWishlist);
 
   const filtres = { categories, marques, couleurs };
   const gridInfo = { isGrid, gridCols, handleConfigGridChange };

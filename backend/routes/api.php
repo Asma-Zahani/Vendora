@@ -37,8 +37,8 @@ Route::get('livreurs', [UserController::class, 'livreurs']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('panier', [UserController::class, 'ajouterAuPanier']);
     Route::post('souhait', [UserController::class, 'ajouterAListeDeSouhaits']);
-    Route::delete('panier', [UserController::class, 'supprimerDuPanier']);
-    Route::delete('souhait', [UserController::class, 'supprimerDeListeSouhaits']);
+    Route::delete('panier/{user_id}/{produit_id}', [UserController::class, 'supprimerDuPanier']);
+    Route::delete('souhait/{user_id}/{produit_id}', [UserController::class, 'supprimerDeListeSouhaits']);
 });
 
 Route::apiResource('codePromotions', CodePromotionController::class); //tester

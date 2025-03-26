@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import { Store } from "lucide-react";
 import EntityManager from "../EntityManager";
-import { getStatusDrives } from "@/service/EnumsService";
+import { getEntities } from "@/service/EntitesService";
 
 const Drives = () => {
   const [statusOptions, setStatusOptions] = useState([]);
   useEffect(() => {
       const fetchData = async () => {
         try {
-          setStatusOptions(await getStatusDrives());
+          setStatusOptions(await getEntities("statusDrives"));
         } catch (error) {
           console.error("Erreur lors de la récupération des données :", error);
         }
