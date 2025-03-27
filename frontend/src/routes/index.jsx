@@ -1,17 +1,19 @@
 import PageNotFound from "@/pages/PageNotFound";
 import AdminInterface from "@/pages/Admin/AdminInterface";
+import LivreurInterface from "@/pages/Livreur/LivreurInterface";
 import UserInterface from "@/pages/Client/UserInterface";
 import Login from "@/pages/Authentification/Login";
 import Register from "@/pages/Authentification/Register";
 import ForgetPassword from "@/pages/Authentification/ForgetPassword";
 import ResetPassword from "@/pages/Authentification/ResetPassword";
 import Shop from "@/pages/Client/Content/Boutique/Boutique";
-import Dashboard from "@/pages/Admin/Content/Dashboard/Dashboard";
+import { Dashboard as AdminDashboard }  from "@/pages/Admin/Content/Dashboard/Dashboard";
+import { Dashboard as LivreurDashboard }  from "@/pages/Livreur/Content/Dashboard/Dashboard";
 import Produits from "@/pages/Admin/Content/Gestion des produits/Produits";
 import Categories from "@/pages/Admin/Content/Gestion des produits/Categories";
 import SousCategories from "@/pages/Admin/Content/Gestion des produits/SousCategories";
 import Marques from "../pages/Admin/Content/Gestion des produits/Marques";
-import { ProtectedAdminRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
+import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "../pages/Admin/Content/Gestion des utilisateurs/Clients";
 import Livreurs from "../pages/Admin/Content/Gestion des utilisateurs/Livreurs";
 import CommandeLivraison from "../pages/Admin/Content/Gestion des commandes/CommandeLivraison";
@@ -75,13 +77,26 @@ const routes = [
   },
   {
     path: "",
+    element: <ProtectedLivreurRoutes />,
+    children: [
+      {
+        path: "",
+        element: <LivreurInterface />,
+        children: [
+          { path: "dash", element: <LivreurDashboard /> },
+        ]
+      }
+    ]
+  },
+  {
+    path: "",
     element: <ProtectedAdminRoutes />,
     children: [
       {
         path: "",
         element: <AdminInterface />,
         children: [
-          { path: "dashboard", element: <Dashboard /> },
+          { path: "dashboard", element: <AdminDashboard /> },
           { path: "produits", element: <Produits /> },
           { path: "categories", element: <Categories /> },
           { path: "sousCategories", element: <SousCategories /> },
