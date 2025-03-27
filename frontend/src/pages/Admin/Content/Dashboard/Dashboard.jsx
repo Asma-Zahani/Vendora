@@ -4,7 +4,7 @@ import SalesStatistics from "@/components/Statistics/SalesStatistics";
 import UsersStatistics from "@/components/Statistics/UsersStatistics";
 import OrdersStatistics from "@/components/Statistics/OrdersStatistics";
 
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <>
       <Header title="Tableau de bord" icon={Home} parent="Tableau de bord" />
@@ -16,5 +16,3 @@ const Dashboard = () => {
     </>
   );
 };
-
-export default Dashboard;
