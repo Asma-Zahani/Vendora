@@ -1,44 +1,30 @@
 import { useContext , useState, useRef } from "react";
-import { Search, ShoppingCart, Settings, User, LogIn, User2, Menu, Heart } from 'lucide-react';
-import ProfileMale from "@/assets/default/user_male.png";
-import ProfileFemale from "@/assets/default/user_female.png";
+import { Search, ShoppingCart, User2, Menu, Heart } from 'lucide-react';
 import logo from "@/assets/logo/logo.svg";
 import DarkMode from "@/utils/DarkMode";
 import { UserContext } from "@/utils/UserContext";
 import { Link } from "react-router";
-import { handleLogout } from "@/service/AuthService";
+import UserAction from "@/components/Header/UserAction";
 
 const Header = () => {
-  const { user, panier, wishlist, setUser, setToken } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const menuRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(false);
-
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
-
+  
   return (
     <header
       className="w-full fixed left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none transition-all">
       <div className="mx-0 lg:mx-10 px-4 py-2 md:py-4 lg:py-4">
         <div className="flex items-center w-full">
           <div className="flex items-center justify-between px-4 py-2 relative">
-            <button
-              ref={menuRef}
-              onClick={toggleDropdown}
-              type="button"
-              className="relative flex justify-center items-center ml-0 lg:ml-5 p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1"
-            >
+            <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center ml-0 lg:ml-5 p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
               <Menu className="w-5 h-5" />
             </button>
-
             <Link to="/" className="order-1 lg:order-none">
               <img src={logo} alt="Logo" className="h-8" />
             </Link>
-
             {showDropdown && (
-              <div
-                className="absolute bg-contentLight dark:bg-contentDark shadow-md rounded w-48 mt-2 z-50"
+              <div className="absolute bg-contentLight dark:bg-contentDark shadow-md rounded w-48 mt-2 z-50"
                 style={{
                   top: menuRef.current ? menuRef.current.offsetTop + 40 : "auto",
                   left: menuRef.current ? menuRef.current.offsetLeft : "auto",
@@ -46,12 +32,12 @@ const Header = () => {
               >
                 <ul className="flex flex-col">
                   <li>
-                    <Link onClick={toggleDropdown} to="/shop" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <Link onClick={() => {setShowDropdown(!showDropdown)}} to="/shop" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
                       Page Boutique
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={toggleDropdown} to="/contact" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <Link onClick={() => {setShowDropdown(!showDropdown)}} to="/contact" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
                       Contactez-nous
                     </Link>
                   </li>
@@ -79,9 +65,9 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-                {user && panier &&
+                {user && user.produits && user.produits.length > 0 &&
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {panier.reduce((total) => total + 1, 0)} 
+                    {user.produits.reduce((total) => total + 1, 0)} 
                   </span>
                 }
               </Link>
@@ -90,9 +76,9 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
-                {user && wishlist &&
+                {user && user.wishlist && user.wishlist.length > 0 &&
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {wishlist.reduce((total) => total + 1, 0)} 
+                    {user.wishlist.reduce((total) => total + 1, 0)} 
                   </span>
                 }
               </Link>
@@ -102,35 +88,9 @@ const Header = () => {
               <DarkMode />
             </div>
 
-            {user && 
-              <div className="relative group flex items-center dark:border-borderDark pl-4 -my-3">
-                <button type="button" className="inline-block p-0 transition-all duration-200 ease-linear rounded-full">
-                  <div className="bg-bgDark rounded-full w-[29px] h-[29px] md:w-[39px] md:h-[39px] lg:w-[39px] lg:h-[39px]">
-                    {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
-                  </div>
-                </button>
-                <div className="lg:flex hidden flex-col items-start justify-center pl-2">
-                  <span className="text-md">{user.prenom + ' ' + user.nom}</span>
-                </div>
-                <ul className="absolute hidden group-hover:flex flex-col bg-contentLight dark:bg-contentDark shadow-md p-2 rounded w-40 z-80 top-[60px] right-[-20px]">
-                  <Link to={"updateProfile"} className="flex items-center py-3 px-4 leading-4 cursor-pointer border-b dark:border-borderDark">
-                    <User size={15} className="mr-2" /> Account
-                  </Link>
-                  <li className="flex items-center py-3 px-4 leading-4 cursor-pointer border-b dark:border-borderDark">
-                    <Settings size={15} className="mr-2" /> Settings
-                  </li>
-                  <li className="flex items-center py-3 px-4 leading-4 cursor-pointer">
-                    <form onSubmit={(e) => {e.preventDefault();handleLogout(setUser, setToken);}} className="w-full">
-                      <button className="flex items-center w-full">
-                        <LogIn size={15} className="mr-2" /> Log Out
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              </div>
-            }
-            
-            {!user && 
+            {user ?
+              <UserAction home={true} />
+              :
               <div className="relative flex items-center dark:border-borderDark transition-all duration-300 hover:scale-110">
                 <div className="relative flex items-center">
                   <Link to="/login" className="leading-4 text-sm flex items-center justify-center">
