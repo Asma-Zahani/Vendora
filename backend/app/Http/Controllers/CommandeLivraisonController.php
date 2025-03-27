@@ -18,7 +18,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except:['index','show'])
+            new Middleware('auth:sanctum', except:['index'])
         ];
     }
 
@@ -125,12 +125,16 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $commandeLivraison = CommandeLivraison::where('commande_id', $id)->with('commande')
             ->firstOrFail();
-    
-        return response()->json($commandeLivraison);
+
+        if ($request->user()->id == $commandeLivraison->commande->client_id) {
+            return response()->json($commandeLivraison);
+        }
+
+        return response()->json();
     }
 
     /**
