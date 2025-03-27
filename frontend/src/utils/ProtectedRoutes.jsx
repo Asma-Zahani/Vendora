@@ -43,12 +43,21 @@ export const ProtectedClientRoutes = () => {
 
 export const ProtectedLivreurRoutes = () => {
     const { user } = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
 
-    if (!user) {
-        return <LoadingSpinner />;
+    useEffect(() => {
+        if (user) {
+            setLoading(false);
+        } else {
+            setLoading(true);
+        }
+    }, [user]);
+
+    if (loading && localStorage.getItem('token')) {
+        return <LoadingSpinner />; 
     }
 
-    return user && user.role === "livreur" | "admin" ? <Outlet /> : <Navigate to="/login" />;
+    return user && (user.role === "admin" || user.role === "livreur") ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedAuthRoutes = () => {
