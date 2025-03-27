@@ -66,12 +66,18 @@ const Tracking = () => {
                     </button>
                 </div>
                 {error && <p className="text-red-500">{error}</p>}
-                {commande && (
-                    <div className="mt-4 p-4 border rounded-lg bg-gray-100 dark:bg-gray-800">
-                        <h2 className="text-lg font-semibold">Commande #{commande.id}</h2>
-                        <p className="mt-2">Date : {commande.date}</p>
-                        <p className="mt-2 flex items-center gap-2">Statut : {getStatusIcon(commande.status)} {commande.status}</p>
-                    </div>
+                {!error && commande && ( 
+                    Object.keys(commande).length > 0 ? (
+                        <div className="mt-4 p-4 border rounded-lg bg-gray-100 dark:bg-gray-800">
+                            <h2 className="text-lg font-semibold">Commande #{commande.commande_id}</h2>
+                            <p className="mt-2">Date : {commande.dateLivraison}</p>
+                            <p className="mt-2 flex items-center gap-2">Statut : {getStatusIcon(commande.status)} {commande.status}</p>
+                        </div>
+                    ) : (
+                        <div className="mt-4 p-4 border rounded-lg bg-gray-100 dark:bg-gray-800">
+                            commande not found
+                        </div>
+                    )
                 )}
             </div>
         </div>

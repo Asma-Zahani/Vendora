@@ -44,12 +44,13 @@ const UpdateProfile = () => {
         setErrors({});
 
         const data = await updateProfile(user.id,formData);
-
+        console.log(data);
+        
         if (data.errors) {
             setErrors(data.errors);
         } else if (data.message) {            
             setSuccessMessage(data.message);
-            setFormData({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, emploi: user.emploi, typeLogement: user.typeLogement, statusLogement: user.statusLogement });
+            setFormData(data.data);
         }
     };
 
