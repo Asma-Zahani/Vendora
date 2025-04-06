@@ -18,7 +18,6 @@ class Produit extends Model
         'marque_id',
         'sous_categorie_id',
         'promotion_id',
-        'fournisseur_id',
         'couleur_id',
         'nom',
         'status',
