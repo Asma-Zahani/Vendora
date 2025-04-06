@@ -68,6 +68,11 @@ class Produit extends Model
         ->withPivot('quantite');
     }
 
+    public function interactions()
+    {
+        return $this->hasMany(Interaction::class, 'produit_id', 'produit_id');
+    }
+
     public function getPrixApresPromoAttribute()
     {
         $reduction = $this->promotion ? $this->promotion->reduction : 0;

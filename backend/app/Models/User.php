@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(Commande::class, 'client_id');
     }
 
+    public function interactions()
+    {
+        return $this->hasMany(Interaction::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
