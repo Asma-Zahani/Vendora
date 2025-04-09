@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Link } from "react-router";
 import { useState } from "react";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "@/components/Modals/DeleteModal";
-import { CircleX, Minus, Plus, ShoppingCart } from "lucide-react";
+import { Edit2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 
 const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit }) => {
     const navigate = useNavigate();
@@ -12,6 +13,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
 
     const [selectedItem, setSelectedItem] = useState(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isDeleteHovered, setIsDeleteHovered] = useState(false);
+    const [isEditHovered, setIsEditHovered] = useState(false);
 
     const getTotalPrices = () => {
         if (!produits) return { original: 0, discounted: 0 };
@@ -62,14 +65,14 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
     
         const checkoutData = {
             produits: produits,
-            total: getTotalPrices().discounted,
-            PromoId: codePromotion ? codePromotion.code_promotion_id : null,
-            codePromo: codePromotion ? codePromotion.code : null,
+            original: getTotalPrices().original,
+            discounted: getTotalPrices().discounted,
+            remise: codePromotion ? codePromotion.reduction : null,
         };
     
         navigate("/checkout", { state: checkoutData });
     };
-
+    
     return (
         <section className="mx-6 py-6">
             <div className="flex flex-col">
@@ -83,10 +86,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                         <thead>
                                             <tr className="bg-contentLight dark:bg-contentDark">
                                                 <th className="border border-gray-200 dark:border-borderDark px-4 py-6">Produit</th>
-                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Nom</th>
                                                 <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Prix</th>
                                                 <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Quantité</th>
-                                                <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Action</th>
                                                 <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Total</th>
                                             </tr>
                                         </thead>
@@ -94,9 +95,34 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                             {produits.map((produit, index) => (
                                                 <tr key={index} className="text-center">
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-16 h-16 object-cover mx-auto" />
+                                                        <div className="flex items-center justify-center space-x-4">
+                                                            <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-20 h-25 object-cover" />
+                                                            <div className="flex flex-col text-start text-sm text-gray-700 dark:text-gray-300">
+                                                                <span className="font-bold text-lg">{produit.nom}</span>
+                                                                <span>Couleur : <span className="font-semibold">cyan</span></span>
+                                                                <div className="flex gap-2 mt-2">
+                                                                    <button onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
+                                                                            <Edit2 size={17}/> 
+                                                                    </button>
+                                                                    <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(produit)}} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                            <Trash2 size={17}/> 
+                                                                    </button>
+                                                                    {/* {isEditHovered && (
+                                                                        <div className="absolute -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
+                                                                            Modifier ce produit
+                                                                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
+                                                                        </div>
+                                                                    )}
+                                                                    {isDeleteHovered && (
+                                                                        <div className="absolute -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
+                                                                            Effacer ce produit
+                                                                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
+                                                                        </div>
+                                                                    )} */}
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{produit.nom}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${produit.prix}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <div className="flex justify-center items-center gap-3">
@@ -109,18 +135,13 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="border border-gray-300 dark:border-borderDark  px-4 py-2">
-                                                        <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(produit);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none">
-                                                            <CircleX size={20} />
-                                                        </button>
-                                                    </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         ${(produit.prix * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}
                                                     </td>
                                                 </tr>
                                             ))}
                                             <tr className="text-center">
-                                                <td colSpan="4" className="py-2 px-4 border border-borderGrayLight dark:border-borderDark text-start">
+                                                <td colSpan="2" className="py-2 px-4 text-start">
                                                     <div className="flex items-center gap-3">
                                                         <div className="flex flex-row">
                                                             <input type="text" placeholder="Entrez le coupon" value={promoCode} 
@@ -134,16 +155,32 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold text-xl">Prix Total: </td>
-                                                <td className="border border-borderGrayLight dark:border-borderDark py-2 font-semibold">
-                                                    {codePromotion ? (
-                                                        <>
-                                                            <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
-                                                            <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
-                                                        </>
-                                                    ) : (
-                                                        <span>${getTotalPrices().original}</span>
-                                                    )}
+                                                {/* <td colSpan="2" className="py-2 px-4 text-start">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="flex flex-col">
+                                                            <p>Coupon: </p>
+                                                            <p>Le code promo sera appliqué lors du passage à la caisse</p>
+                                                            <input type="text" placeholder="Entrez le coupon" value={promoCode} 
+                                                                className="py-1.5 px-4 rounded-lg dark:bg-contentDark border border-borderGrayLight dark:border-borderDark placeholder-gray-500 focus-visible:outline-0" onChange={(e) => setPromoCode(e.target.value)} />
+                                                        </div>
+                                                        {codePromotionError && (
+                                                            <p className="text-red-600 text-sm mt-1">{codePromotionError}</p>
+                                                        )}
+                                                    </div>
+                                                </td> */}
+                                                <td colSpan="2" className="py-2">
+                                                    <div className="flex justify-center gap-3 items-center font-semibold">
+                                                        <p className="text-xl">Sous-Total:</p>
+                                                        {codePromotion ? (
+                                                            <>
+                                                                <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
+                                                                <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
+                                                            </>
+                                                        ) : (
+                                                            <span>${getTotalPrices().original}</span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-sm text-gray-500">Les taxes et la livraison seront calculées à l’étape de paiement.</p>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
+use App\Models\CodePromotion;
 use App\Models\Commande;
 use App\Models\CommandeProduit;
 use App\Models\CommandeRetraitDrive;
+use App\Models\FactureCommande;
 use App\Models\PanierProduit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -106,14 +108,26 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
 
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
+        $remise = 0;
+        if (!empty($validatedData['code_promotion_id'])) {
+            $codePromo = CodePromotion::find($validatedData['code_promotion_id']);
+            if ($codePromo && $codePromo->reduction) {
+                // On suppose que la réduction est un pourcentage
+                $remise = ($validatedData['total'] * $codePromo->reduction) / 100;
+            }
+        }
+
+        FactureCommande::create([
+            'totalTTC' => $validatedData['total'],
+            'remise' => $remise,
+            'commande_id' => $commande->commande_id
+        ]);
+
         return response()->json([
+            'message' => 'Commande retraitDrive ajouter avec succès',
             'commande' => $commande,
             'retraiDrive' => $commandeRetraitDrive,
             'produits' => $commande->produits,
-        ], 201);
-        return response()->json([
-            'message' => 'Période horaire ajouter avec succès',
-            'data' => $periode
         ], 201);
     }
 

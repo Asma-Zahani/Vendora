@@ -1,15 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
-import Dropdown from "@/components/Forms/Dropdown";
-import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
 import ConfirmModal from "@/components/Modals/ConfirmModal";
 import { useNavigate } from "react-router-dom";
-import { regions, villes } from '@/service/UserInfos';
-import { getEntities, updateEntity, createEntity } from "@/service/EntitesService";
+import { updateEntity, createEntity } from "@/service/EntitesService";
 
 const Paiement = () => {
     const { user, setUser, setPanier } = useContext(UserContext);

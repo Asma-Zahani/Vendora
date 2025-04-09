@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { CgClose } from "react-icons/cg";
 
-const ViewModal = ({ onClose, label, viewData }) => {
+const FactureModal = ({ onClose, label, viewData }) => {
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className={`fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity`} aria-hidden="true"></div>
@@ -37,4 +37,4 @@ const ViewModal = ({ onClose, label, viewData }) => {
   );
 };
 
-export default ViewModal;
+export default FactureModal;

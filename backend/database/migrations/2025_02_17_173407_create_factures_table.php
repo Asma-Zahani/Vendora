@@ -16,7 +16,7 @@ return new class extends Migration
             $table->decimal('tva', 5, 2)->default(19.00);
             $table->decimal('totalHT', 10, 2);
             $table->decimal('totalTTC', 10, 2);
-            $table->foreignId('commande_id')->nullable()->constrained('commandes', 'commande_id')->onDelete('cascade');
+            $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
             $table->decimal('remise', 8, 2)->nullable(); 
             $table->timestamps();
         });

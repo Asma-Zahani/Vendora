@@ -7,27 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class FactureCommande extends Model
 {
-    
     use HasFactory;
 
     protected $primaryKey = 'facture_id';
-    protected $table = 'factures'; 
+    protected $table = 'factures';
 
     protected $fillable = [
         'totalHT',
         'totalTTC',
         'remise',
-        'commande_id'
+        'commande_id',
+        'tva'
     ];
 
     protected static function booted()
     {
-        static::creating(function ($detail) {
-            $detail->tva = 19.00;
+        static::creating(function ($facture) {
+            $facture->tva = 19.00;
+            if ($facture->totalTTC && !$facture->totalHT) {
+                $facture->totalHT = $facture->totalTTC / (1 + $facture->tva / 100);
+            }
         });
 
-        static::updating(function ($detail) {
-            $detail->tva = 19.00;
+        static::updating(function ($facture) {
+            $facture->tva = 19.00;
+
+            if ($facture->totalTTC && !$facture->totalHT) {
+                $facture->totalHT = $facture->totalTTC / (1 + $facture->tva / 100);
+            }
         });
     }
 

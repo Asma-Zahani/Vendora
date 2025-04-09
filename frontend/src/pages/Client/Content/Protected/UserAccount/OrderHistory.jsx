@@ -1,40 +1,20 @@
+
 import { useEffect, useState } from "react";
 import { PackageX } from "lucide-react";
 import { getAuthenticatedEntities } from "@/service/EntitesService";
-import FacturePDF from "../FacturePDF";
-import axios from "axios";
-import Modal from "@/components/Modals/Modal";
+import FactureModal from "@/components/Modals/FactureModal";
 
 const OrderHistory = () => {
     const [commandes, setCommandes] = useState([]);
-    const [factures, setFactures] = useState([]); // Nouveau state pour stocker toutes les factures
-    const [selectedFacture, setSelectedFacture] = useState(null); // Facture sélectionnée
+    const [isFactureOpen, setIsFactureOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                setCommandes(await getAuthenticatedEntities("commande/user"));
-                
-                // Charger toutes les factures avec un appel axios
-                const response = await axios.get("http://127.0.0.1:8000/api/factureCommandes");
-                
-                // Vérifiez la réponse dans la console
-                console.log("Factures récupérées:", response.data);
-                
-                setFactures(response.data); // Enregistrer les factures
-            } catch (error) {
-                console.error("Erreur lors de la récupération des données :", error);
-            }
+            setCommandes(await getAuthenticatedEntities("commande/user"));   
         };
         fetchData();
-    }, []);  // Cette dépendance est vide, donc l'effet se déclenche une seule fois lors du chargement du composant
-
-    const handleVoirFacture = (commandeId) => {
-        // Trouver la facture correspondante à la commande sélectionnée
-        const facture = factures.find(facture => facture.commande_id === commandeId);
-        console.log(facture);
-        setSelectedFacture(facture); // Mettre à jour l'état avec la facture sélectionnée
-    };
+    }, []);
+    console.log(commandes);
 
     return (
         <div className="col-span-2 w-full py-2 space-y-5">
@@ -52,7 +32,6 @@ const OrderHistory = () => {
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Status</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Point de Vente</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Date Retrait</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,17 +39,14 @@ const OrderHistory = () => {
                                         <tr key={index} className="text-center">
                                             {commande.commande_retrait_drive ? (
                                                 <>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">#{commande.commande_id}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
+                                                        <button className="hover:text-purpleLight" onClick={() => setIsFactureOpen(true)}>#{commande.commande_id}</button>
+                                                    </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.etatCommande}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.commande_retrait_drive.drive.nom}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.commande_retrait_drive.dateRetrait ? (commande.commande_retrait_drive.dateRetrait).slice(0, 10) : "Non Valide"}</td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <button
-                                                            onClick={() => handleVoirFacture(commande.commande_id)}
-                                                            className="text-blue-500 hover:text-blue-700">Voir Facture</button>
-                                                    </td>
                                                 </>
                                             ) : null}
                                         </tr>
@@ -95,12 +71,6 @@ const OrderHistory = () => {
                 </div>
             </div>
 
-            {/* Afficher la facture sélectionnée */}
-            <Modal isOpen={selectedFacture !== null} onClose={() => setSelectedFacture(null)}>
-  {selectedFacture && <FacturePDF facture={selectedFacture} />}
-</Modal>
-
-
             <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                 {commandes?.some(item => item.commande_livraison) && <h1 className="text-lg font-semibold mb-4">Historique des commandes de Livraison</h1>}
                 <div className="grid grid-cols-1 gap-4 rounded-lg">
@@ -114,7 +84,6 @@ const OrderHistory = () => {
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Total</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Status</th>
                                         <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Date Livraison</th>
-                                        <th className="border border-gray-200 dark:border-borderDark px-4 py-2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -122,16 +91,13 @@ const OrderHistory = () => {
                                         <tr key={index} className="text-center">
                                             {commande.commande_livraison ? (
                                                 <>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">#{commande.commande_id}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
+                                                        <button className="hover:text-purpleLight" onClick={() => setIsFactureOpen(true)}>#{commande.commande_id}</button>
+                                                    </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.etatCommande}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2"> {commande.commande_livraison.dateLivraison ? (commande.commande_livraison.dateLivraison).slice(0,10) :  "Non Valide"}</td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <button
-                                                            onClick={() => handleVoirFacture(commande.commande_id)}
-                                                            className="text-blue-500 hover:text-blue-700">Voir Facture</button>
-                                                    </td>
                                                 </>
                                             ) : null}
                                         </tr>
@@ -156,10 +122,7 @@ const OrderHistory = () => {
                 </div>
             </div>
             
-            {/* Afficher la facture sélectionnée */}
-            <Modal isOpen={selectedFacture !== null} onClose={() => setSelectedFacture(null)}>
-  {selectedFacture && <FacturePDF facture={selectedFacture} />}
-</Modal>
+            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={"Facture commandes"}/> }
         </div>
     );
 }; 
