@@ -10,7 +10,7 @@ const Recapitulatif = ({checkoutData}) => {
                     <div key={index} className="flex items-center justify-between">
                         <div className="flex items-center">
                             <div className="relative">
-                                <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-15 h-15 object-cover" />
+                                <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-15 h-15 object-cover rounded-md" />
                                 <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] min-h-[20px] text-xs font-bold text-white bg-[#666666] rounded-full transition-transform duration-300 transform rotate-[360deg]">
                                     {produit.pivot?.quantite ?? produit.quantite}
                                 </span>
@@ -29,10 +29,10 @@ const Recapitulatif = ({checkoutData}) => {
             })}
         </div>
         <p className="text-sm font-normal flex justify-between">
-            Sous-total · {checkoutData.produits?.length} produits <p>${checkoutData.original}</p>
+            Sous-total · {checkoutData.produits?.length} produits <span>${checkoutData.original}</span>
         </p>
         {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
-            Remise <p>{checkoutData.remise}%</p>
+            Remise <span>{checkoutData.remise}%</span>
         </p>}
         <p className="text-lg font-semibold flex justify-between">
             Total <strong>${checkoutData.discounted}</strong>
