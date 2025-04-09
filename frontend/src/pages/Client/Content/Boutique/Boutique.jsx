@@ -49,7 +49,8 @@ const Shop = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setProduits(await getEntities("produits", currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters));         
+      setProduits(await getEntities("produits", currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters));    
+      console.log("produits", produits);     
     };
     fetchData();
   }, [currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, filters]);

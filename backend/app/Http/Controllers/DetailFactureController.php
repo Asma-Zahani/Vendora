@@ -46,11 +46,12 @@ class DetailFactureController extends Controller implements HasMiddleware
     {
         $validatedData = $request->validate([
             'facture_id' => 'required|exists:factures,facture_id',
+            'produit_id' => 'required|exists:produits,produit_id',
             'quantite' => 'required|integer|min:1',
             'prix_unitaire' => 'required|numeric|min:0',
             'totalLigneHT' => 'required|numeric|min:0',
             'totalLigneTTC' => 'required|numeric|min:0',
-            'tvaLigne' => 'required|numeric|min:0',
+            'tvaLigne' => 'const:19.00',
         ]);
         
         $detailFacture = DetailFacture::create($validatedData);
@@ -70,13 +71,12 @@ class DetailFactureController extends Controller implements HasMiddleware
     public function update(Request $request, $id)
     {
         $detailFacture = DetailFacture::findOrFail($id);
-
         $validatedData = $request->validate([
             'quantite' => 'required|integer|min:1',
             'prix_unitaire' => 'required|numeric|min:0',
             'totalLigneHT' => 'required|numeric|min:0',
             'totalLigneTTC' => 'required|numeric|min:0',
-            'tvaLigne' => 'required|numeric|min:0',
+            'tvaLigne' => 'const:19.00',
         ]);
         
         $detailFacture->update($validatedData);
@@ -86,6 +86,33 @@ class DetailFactureController extends Controller implements HasMiddleware
             'data' => $detailFacture
         ], 200);
     }
+
+    // public function generatePDF($factureId)
+    // {
+    //     // Récupérer la facture et ses détails
+    //     $facture = Facture::with('details')->findOrFail($factureId);
+
+    //     // Créer une instance de Dompdf
+    //     $options = new Options();
+    //     $options->set('isHtml5ParserEnabled', true);
+    //     $options->set('isPhpEnabled', true);  // Si tu veux utiliser du PHP dans le PDF
+    //     $dompdf = new Dompdf($options);
+
+    //     // Créer un contenu HTML pour la facture
+    //     $html = view('facture.pdf', compact('facture'))->render(); // Créer une vue pour la facture PDF
+
+    //     // Charger le HTML dans Dompdf
+    //     $dompdf->loadHtml($html);
+
+    //     // (Optionnel) Définir la taille du papier
+    //     $dompdf->setPaper('A4', 'portrait');
+
+    //     // Rendre le PDF
+    //     $dompdf->render();
+
+    //     // Retourner le PDF en tant que réponse HTTP
+    //     return $dompdf->stream("facture-{$facture->facture_id}.pdf");
+    // }
 
     public function destroy($id)
     {

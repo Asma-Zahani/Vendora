@@ -47,7 +47,7 @@ class FactureCommandeController extends Controller implements HasMiddleware
     {
         $validatedData = $request->validate([
             'commande_id' => 'required|exists:commandes,commande_id',
-            'tva' => 'required|numeric|min:0|max:100',
+            'tva' => 'const:19.00',
             'totalHT' => 'required|numeric|min:0',
             'totalTTC' => 'required|numeric|min:0',
             'remise' => 'required|numeric|min:0'
@@ -62,9 +62,15 @@ class FactureCommandeController extends Controller implements HasMiddleware
     }
 
     public function show($id)
-    {    
-        return response()->json(FactureCommande::where('facture_id', $id)->firstOrFail());
-    }    
+{
+    $facture = FactureCommande::find($id);
+    if ($facture) {
+        return response()->json($facture);
+    } else {
+        return response()->json(['message' => 'Facture non trouvée'], 404);
+    }
+}
+    
 
     public function update(Request $request, $id)
     {
@@ -73,7 +79,7 @@ class FactureCommandeController extends Controller implements HasMiddleware
         
         $validatedData = $request->validate([
             'commande_id' => 'required|exists:commandes,commande_id',
-            'tva' => 'required|numeric|min:0|max:100',
+            'tva' => 'const:19.00',
             'totalHT' => 'required|numeric|min:0',
             'totalTTC' => 'required|numeric|min:0',
             'remise' => 'required|numeric|min:0'
@@ -87,7 +93,8 @@ class FactureCommandeController extends Controller implements HasMiddleware
         ], 200);
     }
 
-    public function destroy($id)
+
+public function destroy($id)
     {
         $factureCommande = FactureCommande::where('facture_id', $id)
             ->firstOrFail();

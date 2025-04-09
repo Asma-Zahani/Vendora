@@ -33,6 +33,8 @@ import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHis
 import Offres from "../pages/Client/Content/Protected/UserAccount/Offres";
 import DetailProduit from "../pages/Client/Content/Boutique/DetailProduit";
 import Tracking from "../pages/Client/Content/Protected/UserAccount/Tracking";
+import Laivraison from "../pages/Client/Content/Protected/Laivraison";
+import Paiement from "../pages/Client/Content/Protected/Paiement";
 
 const routes = [
   {
@@ -56,6 +58,8 @@ const routes = [
           { path: "cart", element: <Cart /> },
           { path: "wishlist", element: <Wishlist /> },
           { path: "checkout", element: <Checkout /> },
+          { path: "laivraison", element: <Laivraison /> },
+          {path:"paiement" , element: <Paiement /> },
           {
             path: "", 
             element: <Account />,

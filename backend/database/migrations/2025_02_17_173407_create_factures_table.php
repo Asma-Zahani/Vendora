@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id('facture_id');
-            $table->decimal('tva', 5, 2);
+            $table->decimal('tva', 5, 2)->default(19.00);
             $table->decimal('totalHT', 10, 2);
             $table->decimal('totalTTC', 10, 2);
             $table->foreignId('commande_id')->nullable()->constrained('commandes', 'commande_id')->onDelete('cascade');

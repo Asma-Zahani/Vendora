@@ -14,12 +14,22 @@ class FactureCommande extends Model
     protected $table = 'factures'; 
 
     protected $fillable = [
-        'tva',
         'totalHT',
         'totalTTC',
         'remise',
         'commande_id'
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($detail) {
+            $detail->tva = 19.00;
+        });
+
+        static::updating(function ($detail) {
+            $detail->tva = 19.00;
+        });
+    }
 
     public function totalApresRemise()
     {

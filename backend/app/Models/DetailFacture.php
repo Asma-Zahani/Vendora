@@ -14,12 +14,24 @@ class DetailFacture extends Model
     protected $primaryKey = 'detail_facture_id';
 
     protected $fillable = [
+        'facture_id',
+        'produit_id',
         'quantite',
         'prix_unitaire',
         'totalLigneHT',
-        'tvaLigne',
         'totalLigneTTC',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($detail) {
+            $detail->tvaLigne = 19.00;
+        });
+
+        static::updating(function ($detail) {
+            $detail->tvaLigne = 19.00;
+        });
+    }
 
     public function factureCommande()
     {
