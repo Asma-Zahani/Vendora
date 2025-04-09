@@ -15,25 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CouleurSeeder::class,
             ProduitSeeder::class,
-            //CodePromotionSeeder::class,
             DriveSeeder::class,
             ClientSeeder::class,
-            //JourFerieSeeder::class,
-            //PanierSeeder::class,
             CommandeLivraisonSeeder::class,
             CommandeRetraitDriveSeeder::class,
-            //DetailFactureSeeder::class,
-            //FactureCommandeSeeder::class,
-            //FactureFournisseurSeeder::class,
-            //HoraireSeeder::class,
-            //CategorieSeeder::class,
-            //MarqueSeeder::class,
-            //PeriodeHoraireSeeder::class,
-            //PromotionSeeder::class,
-            //SousCategorieSeeder::class,
-            //FournisseurSeeder::class,
-            //LivreurSeeder::class,
-            //AdminSeeder::class
+            InteractionSeeder::class
         ]);
     }
 }

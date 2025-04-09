@@ -18,7 +18,6 @@ class Produit extends Model
         'marque_id',
         'sous_categorie_id',
         'promotion_id',
-        'fournisseur_id',
         'couleur_id',
         'nom',
         'status',
@@ -66,6 +65,11 @@ class Produit extends Model
     public function couleurs(){
         return $this->belongsToMany(Couleur::class, 'produit_couleur', 'produit_id', 'couleur_id')
         ->withPivot('quantite');
+    }
+
+    public function interactions()
+    {
+        return $this->hasMany(Interaction::class, 'produit_id', 'produit_id');
     }
 
     public function getPrixApresPromoAttribute()

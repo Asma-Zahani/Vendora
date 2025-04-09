@@ -5,7 +5,6 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\DetailFacture;
 use App\Models\FactureCommande;
-use App\Models\FactureFournisseur;
 
 class DetailFactureFactory extends Factory
 {
@@ -19,13 +18,8 @@ class DetailFactureFactory extends Factory
         $tva = $totalHT * 0.2; // TVA de 20%
         $totalTTC = $totalHT + $tva;
 
-        // Sélection aléatoire du type de facture
-        $factureType = $this->faker->randomElement(['commande', 'fournisseur']);
-
         return [
-            'facture_id' => $factureType === 'commande'
-                ? FactureCommande::factory()
-                : FactureFournisseur::factory(),
+            'facture_id' => FactureCommande::factory(),
             'quantite' => $quantite,
             'prix_unitaire' => $prixUnitaire,
             'totalLigneHT' => $totalHT,

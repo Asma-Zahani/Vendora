@@ -18,6 +18,7 @@ use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
 use App\Http\Controllers\DriveController;
 use App\Http\Controllers\EnumsController;
+use App\Http\Controllers\InteractionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,8 @@ Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::clas
 Route::apiResource('couleurs', CouleurController::class);
 
 Route::apiResource('drives', DriveController::class);
+
+Route::apiResource('interactions', InteractionController::class); 
 
 Route::get('/etatCommandes', [EnumsController::class, 'getEtatCommandes']);
 Route::get('/statusDrives', [EnumsController::class, 'getStatusDrives']);
