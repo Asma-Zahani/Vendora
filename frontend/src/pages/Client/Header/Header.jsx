@@ -65,22 +65,18 @@ const Header = () => {
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-                {user && user.produits && user.produits.length > 0 &&
-                  <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {user.produits.reduce((total) => total + 1, 0)} 
-                  </span>
-                }
+                <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                  {user ? user?.produits?.reduce((total) => total + 1, 0) : 0} 
+                </span>
               </Link>
             </div>
 
             <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
-                {user && user.wishlist && user.wishlist.length > 0 &&
-                  <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                    {user.wishlist.reduce((total) => total + 1, 0)} 
-                  </span>
-                }
+                <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                  {user ? user?.wishlist?.reduce((total) => total + 1, 0) : 0} 
+                </span>
               </Link>
             </div>
 
