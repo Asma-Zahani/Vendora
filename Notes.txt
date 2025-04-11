@@ -9,8 +9,6 @@ https://admin.pixelstrap.net/zono/template/ribbons.html
 
 admin ynjeem y3ady commande ??
 
-facturee w detailfacture
-
 client id is required be3d passage d'une commande
 
 session expire
