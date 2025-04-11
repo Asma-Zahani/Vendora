@@ -4,74 +4,18 @@ from tensorflow.keras.layers import Flatten # type: ignore
 from data.prepare_data import prepare_data
 
 class Recommender:
-
     def __init__(self, model_path, encoders):
         self.model = load_model(model_path)
         self.category_encoder, self.gender_encoder, self.scaler = encoders
         _, self.user_df, self.product_df = prepare_data()
-
-    # def recommend_for_user(self, user_id, n=5):
-    #     """Recommande des produits pour un utilisateur spécifique"""
-    #     try:
-    #         print(self.user_df)
-    #         if user_id not in self.user_df['user_id'].values:
-    #             print(f"Utilisateur {user_id} non trouvé.")
-    #             return []
-
-    #         user_data = self.user_df[self.user_df['user_id'] == user_id].iloc[0]
-    #         user_age = user_data['age']
-    #         user_gender = user_data['genre']
-            
-    #         # Préparation des données produits
-    #         product_ids = self.product_df['product_id'].values
-            
-    #         # Création des inputs
-    #         n_products = len(product_ids)
-    #         user_codes = np.full(n_products, user_id, dtype=np.int32)
-    #         ages = np.full(n_products, self.scaler.transform([[user_age]])[0, 0], dtype=np.float32)
-    #         gender_code = self.gender_encoder.transform([user_gender])[0]
-    #         genders = np.full(n_products, gender_code, dtype=np.int32)
-    #         prices = self.scaler.transform(self.product_df[['price']]).astype(np.float32).reshape(-1)
-    #         categories = self.category_encoder.transform(self.product_df['category'])
-            
-    #         # Prédiction
-    #         predictions = self.model.predict(
-    #             {
-    #                 'user_input': user_codes,
-    #                 'product_input': product_ids,
-    #                 'age_input': ages,
-    #                 'gender_input': genders,
-    #                 'price_input': prices,
-    #                 'category_input': categories
-    #             },
-    #             verbose=0
-    #         ).flatten()
-            
-    #         # Sélection des meilleures prédictions
-    #         top_indices = np.argsort(predictions)[-n:][::-1]
-    #         recommended = product_ids[top_indices]
-            
-    #         print(f"\nRecommandations pour {user_id}:")
-    #         for i, prod_id in enumerate(recommended, 1):
-    #             prod_info = self.product_df[self.product_df['product_id'] == prod_id].iloc[0]
-    #             print(f"{i}. {prod_id} ({prod_info['category']}, {prod_info['price']:.2f}€)")
-                
-    #         return recommended
-            
-    #     except Exception as e:
-    #         print(f"Erreur lors de la recommandation : {str(e)}")
-    #         return []
     
     def recommend_for_user(self, user_id, n=5):
         """Recommande des produits pour un utilisateur spécifique"""
         try:
-            # Conversion et validation de l'ID utilisateur
-            user_id = int(user_id)
             if user_id not in self.user_df['user_id'].values:
                 print(f"Utilisateur {user_id} non trouvé.")
                 return []
 
-            # Récupération des données utilisateur
             user_data = self.user_df[self.user_df['user_id'] == user_id].iloc[0]
             user_age = user_data['age']
             user_gender = user_data['genre']
@@ -109,13 +53,15 @@ class Recommender:
             # Sélection des meilleures prédictions
             top_indices = np.argsort(predictions)[-min(n, len(predictions)):][::-1]
             recommended = valid_product_ids[top_indices]
+
+            recommended_products = self.product_df[self.product_df["product_id"].isin(recommended)]
             
             print(f"\nRecommandations pour {user_id}:")
             for i, prod_id in enumerate(recommended, 1):
                 prod_info = self.product_df[self.product_df['product_id'] == prod_id].iloc[0]
                 print(f"{i}. {prod_id} ({prod_info['category']}, {prod_info['price']:.2f}€)")
                 
-            return recommended
+            return recommended_products
             
         except Exception as e:
             print(f"Erreur lors de la recommandation : {str(e)}")
@@ -143,10 +89,12 @@ class Recommender:
             
             # 4. Sélection (exclure le produit lui-même)
             similar_indices = np.argsort(similarities)[-n-1:-1][::-1]
-            similar_products = self.product_df['product_id'].iloc[similar_indices].values
+            similar_ids = self.product_df['product_id'].iloc[similar_indices].values
             
+            similar_products = self.product_df[self.product_df["product_id"].isin(similar_ids)]
+
             print(f"\nProduits similaires à {product_id}:")
-            for i, prod_id in enumerate(similar_products, 1):
+            for i, prod_id in enumerate(similar_ids, 1):
                 prod_info = self.product_df[self.product_df['product_id'] == prod_id].iloc[0]
                 print(f"{i}. {prod_id} ({prod_info['category']}, {prod_info['price']:.2f}€)")
                 

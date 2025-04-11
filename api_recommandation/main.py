@@ -1,24 +1,39 @@
-from flask import Flask
-import pandas as pd
-import requests
+from flask import Flask, request, jsonify
 from model.train import train_model
-from data.prepare_data import prepare_data
 from services.recommender import Recommender
 
 app = Flask(__name__)
 
-def main():
-    encoders = train_model()
+# Entraînement ou chargement des encodeurs
+encoders = train_model()
+
+# Initialisation du moteur de recommandation
+recommender = Recommender(
+    model_path="model/ecommerce_recommender.keras",
+    encoders=encoders
+)
+
+@app.route("/recommend/user", methods=["POST"])
+def recommend_for_user():
+    data = request.get_json()
+    user_id = data.get("user_id")
     
-    recommender = Recommender(
-        model_path="model/ecommerce_recommender.keras",
-        encoders=encoders
-    )
+    if user_id is None:
+        return jsonify({"error": "user_id est requis"}), 400
     
-    # Exemple d'utilisation
-    recommender.recommend_for_user(20)
-    # recommender.similar_products(11)
+    recommended_produits = recommender.recommend_for_user(user_id)
+    return jsonify(recommended_produits.to_dict(orient="records"))
+
+@app.route("/recommend/produit", methods=["POST"])
+def recommend_similar_products():
+    data = request.get_json()
+    produit_id = data.get("produit_id")
+    
+    if produit_id is None:
+        return jsonify({"error": "produit_id est requis"}), 400
+
+    recommended_produits = recommender.similar_products(produit_id)
+    return jsonify(recommended_produits.to_dict(orient="records"))
 
 if __name__ == "__main__":
-    main()
-    # app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
