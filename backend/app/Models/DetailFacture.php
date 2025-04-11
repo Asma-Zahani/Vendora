@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailFacture extends Model
 {
-
     use HasFactory;
 
     protected $table = 'detail_factures';
@@ -17,24 +16,35 @@ class DetailFacture extends Model
         'facture_id',
         'produit_id',
         'quantite',
-        'prix_unitaire',
-        'totalLigneHT',
+        'prixUnitaireTTC',
         'totalLigneTTC',
+        'totalLigneHT',
+        'tvaLigne',
+        'remise',
     ];
 
     protected static function booted()
     {
         static::creating(function ($detail) {
-            $detail->tvaLigne = 19.00;
+            $detail->calculMontants();
         });
 
         static::updating(function ($detail) {
-            $detail->tvaLigne = 19.00;
+            $detail->calculMontants();
         });
     }
 
     public function factureCommande()
     {
         return $this->belongsTo(FactureCommande::class, 'facture_id');
+    }
+
+    public function calculMontants()
+    {
+        $tva = $this->factureCommande?->tva;
+
+        $this->totalLigneTTC = $this->prixUnitaireTTC * $this->quantite;
+        $this->totalLigneHT = $this->totalLigneTTC / (1 + $tva / 100);
+        $this->tvaLigne = $this->totalLigneTTC - $this->totalLigneHT;
     }
 }

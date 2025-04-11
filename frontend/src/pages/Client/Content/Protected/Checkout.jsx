@@ -54,13 +54,15 @@ const Checkout = () => {
 
     const navigate = useNavigate();
 
+    console.log(checkoutData);
+    
     const passerCommande = async () => {
         try {      
             const updatedUser = await updateEntity("users", user.id, formData);
             if (deliveryMethod === "drive") {                
                 createEntity("commandeRetraitDrives",{
                     client_id: user.id,
-                    total: checkoutData.total,
+                    total: checkoutData.discounted,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                     drive_id: formData.drive_id,
                     produits: checkoutData.produits.map(produit => ({
@@ -72,7 +74,7 @@ const Checkout = () => {
             else {
                 createEntity("commandeLivraisons",{
                     client_id: user.id,
-                    total: checkoutData.total,
+                    total: checkoutData.discounted,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,

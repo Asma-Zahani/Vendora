@@ -19,7 +19,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
     const getTotalPrices = () => {
         if (!produits) return { original: 0, discounted: 0 };
     
-        let originalTotal = produits.reduce((sum, produit) => sum + produit.prix * (produit.pivot?.quantite ?? produit.quantite), 0);
+        let originalTotal = produits.reduce((sum, produit) => sum + produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite), 0);
         let discountedTotal = originalTotal;
     
         if (codePromotion) {
@@ -122,8 +122,11 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </td>                                                    
+                                                    <td className="border border-borderGrayLight dark:border-borderDark text-sm px-4 py-2 text-gray-700 dark:text-gray-300">
+                                                        {produit.promotion && <span className="line-through">${produit.prix}</span> }
+                                                        <span className={`${produit.promotion ? "text-red-500" : ""} ml-1`}>${produit.prix_apres_promo}</span>
                                                     </td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${produit.prix}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <div className="flex justify-center items-center gap-3">
                                                             <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark">
@@ -136,7 +139,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         </div>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        ${(produit.prix * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}
+                                                        ${(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -155,19 +158,6 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         )}
                                                     </div>
                                                 </td>
-                                                {/* <td colSpan="2" className="py-2 px-4 text-start">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="flex flex-col">
-                                                            <p>Coupon: </p>
-                                                            <p>Le code promo sera appliqué lors du passage à la caisse</p>
-                                                            <input type="text" placeholder="Entrez le coupon" value={promoCode} 
-                                                                className="py-1.5 px-4 rounded-lg dark:bg-contentDark border border-borderGrayLight dark:border-borderDark placeholder-gray-500 focus-visible:outline-0" onChange={(e) => setPromoCode(e.target.value)} />
-                                                        </div>
-                                                        {codePromotionError && (
-                                                            <p className="text-red-600 text-sm mt-1">{codePromotionError}</p>
-                                                        )}
-                                                    </div>
-                                                </td> */}
                                                 <td colSpan="2" className="py-2">
                                                     <div className="flex justify-center gap-3 items-center font-semibold">
                                                         <p className="text-xl">Sous-Total:</p>

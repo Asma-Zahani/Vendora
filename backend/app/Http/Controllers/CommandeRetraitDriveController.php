@@ -7,8 +7,10 @@ use App\Models\CodePromotion;
 use App\Models\Commande;
 use App\Models\CommandeProduit;
 use App\Models\CommandeRetraitDrive;
+use App\Models\DetailFacture;
 use App\Models\FactureCommande;
 use App\Models\PanierProduit;
+use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -84,6 +86,7 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
         ]);
+        $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
         $commande = Commande::create([
             'client_id' => $validatedData['client_id'],
@@ -98,30 +101,33 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'dateRetrait' => $validatedData['dateRetrait'] ?? null,
         ]);
 
-        foreach ($validatedData['produits'] as $produit) {
-            CommandeProduit::create([
-                'commande_id' => $commande->commande_id,
-                'produit_id' => $produit['produit_id'],
-                'quantite' => $produit['quantite'],
-            ]);
-        }
-
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
         $remise = 0;
         if (!empty($validatedData['code_promotion_id'])) {
             $codePromo = CodePromotion::find($validatedData['code_promotion_id']);
             if ($codePromo && $codePromo->reduction) {
-                // On suppose que la réduction est un pourcentage
                 $remise = ($validatedData['total'] * $codePromo->reduction) / 100;
             }
         }
 
-        FactureCommande::create([
+        $facture = FactureCommande::create([
             'totalTTC' => $validatedData['total'],
             'remise' => $remise,
             'commande_id' => $commande->commande_id
         ]);
+
+        foreach ($validatedData['produits'] as $index => $item) {
+            $produit = $produits[$index];
+        
+            DetailFacture::create([
+                'facture_id' => $facture->facture_id,
+                'produit_id' => $produit->produit_id,
+                'quantite' => $item['quantite'],
+                'prixUnitaireTTC' => $produit->prix_apres_promo,
+                'remise' => $produit->promotion?->reduction ?? 0
+            ]);
+        }
 
         return response()->json([
             'message' => 'Commande retraitDrive ajouter avec succès',

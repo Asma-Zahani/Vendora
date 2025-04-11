@@ -22,7 +22,7 @@ const Recapitulatif = ({checkoutData}) => {
                         </div>
                         
                         <div>                              
-                            <strong>${produit.prix * (produit.pivot?.quantite ?? produit.quantite)}</strong>
+                            <strong>${produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)}</strong>
                         </div>
                     </div>
                 );

@@ -7,8 +7,10 @@ use App\Models\CodePromotion;
 use App\Models\Commande;
 use App\Models\CommandeLivraison;
 use App\Models\CommandeProduit;
+use App\Models\DetailFacture;
 use App\Models\FactureCommande;
 use App\Models\PanierProduit;
+use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -86,8 +88,8 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
         ]);
+        $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
-        // Création de la commande
         $commande = Commande::create([
             'client_id' => $validatedData['client_id'],
             'code_promotion_id' => $validatedData['code_promotion_id'] ?? null,
@@ -95,21 +97,11 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'etatCommande' => $validatedData['etatCommande'] ?? EtatCommandeEnum::EnAttente->value,
         ]);
 
-        // Création de la livraison associée (si applicable)
         $commandeLivraison = CommandeLivraison::create([
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $validatedData['dateLivraison'] ?? null,
             'livreur_id' => $validatedData['livreur_id'] ?? null,
         ]);
-
-        // Ajout des produits à la commande
-        foreach ($validatedData['produits'] as $produit) {
-            CommandeProduit::create([
-                'commande_id' => $commande->commande_id,
-                'produit_id' => $produit['produit_id'],
-                'quantite' => $produit['quantite'],
-            ]);
-        }
 
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
@@ -117,16 +109,27 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         if (!empty($validatedData['code_promotion_id'])) {
             $codePromo = CodePromotion::find($validatedData['code_promotion_id']);
             if ($codePromo && $codePromo->reduction) {
-                // On suppose que la réduction est un pourcentage
                 $remise = ($validatedData['total'] * $codePromo->reduction) / 100;
             }
         }
 
-        FactureCommande::create([
+        $facture = FactureCommande::create([
             'totalTTC' => $validatedData['total'],
             'remise' => $remise,
             'commande_id' => $commande->commande_id
         ]);
+
+        foreach ($validatedData['produits'] as $index => $item) {
+            $produit = $produits[$index];
+        
+            DetailFacture::create([
+                'facture_id' => $facture->facture_id,
+                'produit_id' => $produit->produit_id,
+                'quantite' => $item['quantite'],
+                'prixUnitaireTTC' => $produit->prix_apres_promo,
+                'remise' => $produit->promotion?->reduction ?? 0
+            ]);
+        }
 
         return response()->json([
             'message' => 'Commande livraison ajouter avec succès',
