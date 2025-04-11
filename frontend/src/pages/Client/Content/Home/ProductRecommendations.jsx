@@ -7,7 +7,7 @@ import { UserContext } from '@/utils/UserContext';
 import usePanierWishlist from "../Protected/usePanierWishlist";
 
 const ProductRecommendations = () => {
-  const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
+  const { user, wishlist} = useContext(UserContext);
   const [produits, setProduits] = useState([]);
   
   useEffect(() => {
@@ -17,7 +17,7 @@ const ProductRecommendations = () => {
     fetchData();
   }, []);
   
-  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(user, panier, setPanier,produits, wishlist, setWishlist);
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
   return (
     <div>

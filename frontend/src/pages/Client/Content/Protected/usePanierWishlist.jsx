@@ -3,8 +3,10 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import { createEntity, deleteEntity } from "@/service/EntitesService";
+import UserContext from '@/utils/UserContext';
  
-const usePanierWishlist = (user, panier, setPanier, produits, wishlist, setWishlist) => {
+const usePanierWishlist = (produits) => {
+    const { user, panier, setPanier, setWishlist } = useContext(UserContext);
     const navigate = useNavigate();
 
     const { setSuccessMessage } = useContext(SuccessMessageContext);
@@ -59,6 +61,8 @@ const usePanierWishlist = (user, panier, setPanier, produits, wishlist, setWishl
     useEffect(() => {
         if (panierAjoute && formData) {
         const timeout = setTimeout(async () => {
+            console.log(formData);
+            
             const data = await createEntity("panier", formData);
             if (data.message) {
                 setSuccessMessage(data.message);

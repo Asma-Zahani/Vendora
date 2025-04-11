@@ -6,7 +6,7 @@ import { getEntities } from "@/service/EntitesService";
 import usePanierWishlist from "../Protected/usePanierWishlist";
 
 const Shop = () => {
-  const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
+  const { wishlist } = useContext(UserContext);
 
   const [gridCols, setGridCols] = useState(3);
   const [isGrid, setIsGrid] = useState(true);
@@ -90,7 +90,7 @@ const Shop = () => {
     setCurrentPage(1);
   }, [sortBy]);  
   
-  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(user, panier, setPanier, produits.data, wishlist, setWishlist);
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits.data);
 
   const filtres = { categories, marques, couleurs };
   const gridInfo = { isGrid, gridCols, handleConfigGridChange };

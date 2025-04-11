@@ -5,10 +5,10 @@ import { HeartOff } from "lucide-react";
 import usePanierWishlist from "./usePanierWishlist";
 
 const Wishlist = () => {
-    const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
+    const { wishlist } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
     useEffect(() => {setProduits(wishlist)}, [wishlist]);
-    const { ajouterAuPanier, supprimerDeListeSouhait } = usePanierWishlist(user, panier, setPanier, produits, wishlist, setWishlist);
+    const { ajouterAuPanier, supprimerDeListeSouhait } = usePanierWishlist(produits);
 
     return (
       <section className="mx-6 py-6">

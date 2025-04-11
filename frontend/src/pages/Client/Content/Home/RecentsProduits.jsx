@@ -6,7 +6,7 @@ import { getEntities } from "@/service/EntitesService";
 import usePanierWishlist from "../Protected/usePanierWishlist";
 
 const RecentsProduits = () => {
-  const { user, panier, wishlist, setPanier, setWishlist } = useContext(UserContext);
+  const { wishlist} = useContext(UserContext);
   const [produits, setProduits] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const RecentsProduits = () => {
     fetchData();
   }, []);
 
-  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(user, panier, setPanier, produits, wishlist, setWishlist);
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
   return (
     <div className="px-8 py-12">

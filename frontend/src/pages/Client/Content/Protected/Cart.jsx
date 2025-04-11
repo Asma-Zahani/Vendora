@@ -5,7 +5,7 @@ import { getEntityBy } from "@/service/EntitesService";
 import usePanierWishlist from "./usePanierWishlist";
 
 const Cart = () => {
-    const { user, panier, setPanier } = useContext(UserContext);
+    const { panier } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
     const [codePromotion, setCodePromotion] = useState(null);
     const [codePromotionError, setCodePromotionError] = useState(null);
@@ -25,7 +25,7 @@ const Cart = () => {
         }
     };  
 
-    const { modifierQuantitePanier, supprimerDePanier } = usePanierWishlist(user, panier, setPanier, produits);
+    const { modifierQuantitePanier, supprimerDePanier } = usePanierWishlist(produits);
     
     return (
         <CartTable 
