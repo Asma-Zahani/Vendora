@@ -26,8 +26,6 @@ const UpdatePassword = () => {
         setErrors({}); setSuccessMessage("");
 
         const data = await updatePassword(user.id,formData);
-
-        console.log(data);
         
         if (data.errors) {
             setErrors(data.errors);

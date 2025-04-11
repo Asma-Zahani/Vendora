@@ -14,7 +14,6 @@ const OrderHistory = () => {
         };
         fetchData();
     }, []);
-    console.log(commandes);
 
     return (
         <div className="col-span-2 w-full py-2 space-y-5">

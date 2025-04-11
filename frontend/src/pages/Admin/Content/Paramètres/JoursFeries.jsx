@@ -122,7 +122,6 @@ const JoursFeries = () => {
   };
 
   const handleDeleteEvent = async () => {
-    console.log(formData);
     handleDelete("joursFeries", formData.jour_ferie_id, setSuccessMessage);
     
     setEvents((prevEvents) =>

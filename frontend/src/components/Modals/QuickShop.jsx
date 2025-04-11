@@ -37,9 +37,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
     }
   };
 
-  const handleAddToCart = () => {
-    console.log(maxQuantity);
-    
+  const handleAddToCart = () => {    
     if (quantity <= maxQuantity) {
       ajouterAuPanier(produit.produit_id, quantity, selectedColor.id);
     } else {

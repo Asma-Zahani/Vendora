@@ -44,7 +44,6 @@ const UpdateProfile = () => {
         setErrors({});
 
         const data = await updateProfile(user.id,formData);
-        console.log(data);
         
         if (data.errors) {
             setErrors(data.errors);
