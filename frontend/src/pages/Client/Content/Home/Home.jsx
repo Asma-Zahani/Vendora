@@ -1,7 +1,7 @@
 import Hero from "./Hero";
 import Features from "./Features";
 import RecentsProduits from "./RecentsProduits";
-import ProductRecommendations from './ProductRecommendations';
+// import ProductRecommendations from './ProductRecommendations';
 
 const Home = () => {
 
@@ -10,7 +10,7 @@ const Home = () => {
       <Hero />
       <Features />
       <RecentsProduits />
-      <ProductRecommendations />
+      {/* <ProductRecommendations /> */}
     </div>
   );
 };
