@@ -4,10 +4,14 @@ import Card from '@/components/Products/Card';
 import { Link } from "react-router";
 import { getEntities } from "@/service/EntitesService";
 import usePanierWishlist from "../Protected/usePanierWishlist";
+import { useMediaQuery } from "react-responsive";
 
 const RecentsProduits = () => {
   const { wishlist} = useContext(UserContext);
   const [produits, setProduits] = useState([]);
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+
+  const produitsAffiches = isMd ? produits.slice(0, 9) : produits;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +36,7 @@ const RecentsProduits = () => {
           </div>
           <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {
-              produits.map((produit, index) => {
+              produitsAffiches.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
               })
             }
