@@ -33,7 +33,7 @@ const ProductRecommendations = () => {
               <p className="italic text-gray-500">Vos dernières consultations</p>
             </div>
 
-            <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+            <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {produits.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
               })}

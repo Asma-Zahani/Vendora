@@ -43,7 +43,7 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
         </div>
         {gridInfo.isGrid && (
           <div className="hidden md:hidden lg:flex gap-2">
-            {[3, 4, 6].map((cols) => (
+            {[3, 4, 5].map((cols) => (
               <div key={cols} className="flex gap-0.5" onClick={() => gridInfo.handleConfigGridChange("gridCols",cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
                   <button
