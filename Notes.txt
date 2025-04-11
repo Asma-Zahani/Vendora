@@ -7,8 +7,6 @@ dashboard
 https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
 
-admin ynjeem y3ady commande ?? 
-
-client id is required be3d passage d'une commande
+admin ynjeem y3ady commande ??
 
 session expire
