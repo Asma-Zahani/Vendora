@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import UserAction from "@/components/Header/UserAction";
 
 const Header = () => {
-  const { user } = useContext(UserContext);
+  const { user, wishlist, panier } = useContext(UserContext);
   const menuRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(false);
   
@@ -66,7 +66,7 @@ const Header = () => {
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                  {user ? user?.produits?.reduce((total) => total + 1, 0) : 0} 
+                  {user ? panier?.reduce((total) => total + 1, 0) : 0} 
                 </span>
               </Link>
             </div>
@@ -75,7 +75,7 @@ const Header = () => {
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                  {user ? user?.wishlist?.reduce((total) => total + 1, 0) : 0} 
+                  {user ? wishlist?.reduce((total) => total + 1, 0) : 0} 
                 </span>
               </Link>
             </div>
