@@ -53,8 +53,6 @@ const Checkout = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const navigate = useNavigate();
-
-    console.log(checkoutData);
     
     const passerCommande = async () => {
         try {      
