@@ -80,7 +80,7 @@ const Checkout = () => {
                     }))
                 });
             }
-            setUser(() => ({ ...updatedUser }));
+            setUser(() => ({ ...updatedUser.data }));
             setPanier([]);
             navigate("/orderHistory");
         } catch (error) {
