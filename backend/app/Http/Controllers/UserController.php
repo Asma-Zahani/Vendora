@@ -122,6 +122,7 @@ class UserController extends Controller implements HasMiddleware
             'client_id' => 'required|exists:users,id',
             'produit_id' => 'required|exists:produits,produit_id',
             'quantite' => 'required|integer|min:1',
+            'couleur' => 'nullable|string|max:50',
         ]);
 
         $client = User::findOrFail($validatedData['client_id']);
@@ -142,6 +143,7 @@ class UserController extends Controller implements HasMiddleware
                 'client_id' => $client->id,
                 'produit_id' => $produit->produit_id,
                 'quantite' => $validatedData['quantite'],
+                'couleur' => $validatedData['couleur'] ?? null
             ]);
         }        
 

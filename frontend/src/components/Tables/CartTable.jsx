@@ -95,15 +95,17 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                             {produits.map((produit, index) => (
                                                 <tr key={index} className="text-center">
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <div className="flex items-center justify-center space-x-4">
+                                                        <div className="flex items-center justify-start pl-2 space-x-4">
                                                             <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-20 h-25 object-cover" />
                                                             <div className="flex flex-col text-start text-sm text-gray-700 dark:text-gray-300">
                                                                 <span className="font-bold text-lg">{produit.nom}</span>
-                                                                <span>Couleur : <span className="font-semibold">cyan</span></span>
+                                                                {produit.pivot?.couleur && <span>Couleur : <span className="font-semibold">{produit.pivot?.couleur}</span></span>}
                                                                 <div className="flex gap-2 mt-2">
-                                                                    <button onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
-                                                                            <Edit2 size={17}/> 
-                                                                    </button>
+                                                                    {produit.pivot?.couleur && 
+                                                                        <button onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
+                                                                                <Edit2 size={17}/> 
+                                                                        </button>
+                                                                    }
                                                                     <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(produit)}} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                                             <Trash2 size={17}/> 
                                                                     </button>

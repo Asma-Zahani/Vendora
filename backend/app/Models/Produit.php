@@ -51,7 +51,7 @@ class Produit extends Model
     public function clientsDansPanier()
     {
         return $this->belongsToMany(User::class, 'panier_produits', 'produit_id', 'client_id')
-                    ->withPivot('quantite'); 
+                    ->withPivot(['quantite', 'couleur']); 
     }
 
     /**

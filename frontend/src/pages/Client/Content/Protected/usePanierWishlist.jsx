@@ -14,13 +14,13 @@ const usePanierWishlist = (produits) => {
     const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
     const [panierAjoute, setPanierAjoute] = useState(false);
 
-    const ajouterAuPanier = (produit_id, quantiteAjoutee) => {
+    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur) => {
         if (!user) { navigate("/login"); return};
         const produitExistant = panier?.find(item => item.produit_id === produit_id); 
         const quantiteTotale = produitExistant ? (produitExistant.pivot?.quantite ? 
             parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) : 
             parseInt(produitExistant.quantite) + parseInt(quantiteAjoutee)) : parseInt(quantiteAjoutee);
-        setFormData({client_id: user?.id, produit_id: produit_id, quantite: quantiteTotale});
+        setFormData({client_id: user?.id, produit_id: produit_id, quantite: quantiteTotale, couleur: couleur});
         setPanierAjoute(true);
     };
 
