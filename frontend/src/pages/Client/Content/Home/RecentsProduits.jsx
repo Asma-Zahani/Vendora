@@ -43,7 +43,7 @@ const RecentsProduits = () => {
           </div>
 
           <div className="flex justify-center">
-            <Link to={"/shop"} className="mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md">
+            <Link to={"/shop"} className="mt-8 border-2 text-purpleLight text-lg py-2 px-6 rounded-lg">
               Voir tous les produits
             </Link>
           </div>
