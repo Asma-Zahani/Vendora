@@ -9,7 +9,7 @@ def generate_users(output_file="data/users.csv", n_users=1000):
         return start + timedelta(days=random.randint(0, (end - start).days))
     
     def random_gender():
-        return random.choices(['M', 'F'], weights=[48, 52])[0]
+        return random.choices(['Male', 'Femelle'], weights=[48, 52])[0]
     
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
