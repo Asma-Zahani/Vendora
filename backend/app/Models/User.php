@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Enums\RoleEnum;
 use App\Models\Commande;
 use App\Models\Produit;
-use App\Models\RoleUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,11 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => RoleEnum::class,
     ];
-
-    public function roles()
-    {
-        return $this->hasMany(RoleUser::class, 'user_id');
-    }
 
     public function produits()
     {

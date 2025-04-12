@@ -3,10 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\RoleEnum;
-use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LivreurFactory extends Factory
