@@ -90,19 +90,13 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
 
           {/* Sélection de la quantité */}
           <div className="flex items-center justify-center mt-4 bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 w-fit gap-4 mx-auto">
-            <button 
-              onClick={handleDecrease} 
-              className="w-8 h-8 flex items-center justify-center rounded-full dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-600 transition"
-            >
+            <button onClick={handleDecrease} className="w-8 h-8 flex items-center justify-center rounded-full dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-600 transition">
               <Minus size={18} />
             </button>
             
             <span className="text-lg font-semibold">{quantity}</span>
             
-            <button 
-              onClick={handleIncrease} 
-              className="w-8 h-8 flex items-center justify-center rounded-full dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-600 transition"
-            >
+            <button onClick={handleIncrease} className="w-8 h-8 flex items-center justify-center rounded-full dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-600 transition">
               <Plus size={18} />
             </button>
           </div>
@@ -110,10 +104,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
 
           {/* Bouton "Add to Cart" */}
           <div className="mt-auto flex justify-end gap-3 pt-4">
-            <button
-              onClick={handleAddToCart}
-              className="bg-purpleLight text-white py-2 px-6 rounded-md flex items-center gap-2"
-            >
+            <button onClick={() => {handleAddToCart(); onClose()}} className="bg-purpleLight text-white py-2 px-6 rounded-md flex items-center gap-2">
               <ShoppingCart size={17} />
               Add to Cart
             </button>
