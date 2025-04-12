@@ -1,7 +1,3 @@
-problem de quantite (quantité fel produit)
-
-footer
-paiement
 dashboard
 
 https://admin.pixelstrap.net/zono/template/tour.html
