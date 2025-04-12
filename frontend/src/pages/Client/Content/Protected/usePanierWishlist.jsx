@@ -17,10 +17,24 @@ const usePanierWishlist = (produits) => {
     const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur) => {
         if (!user) { navigate("/login"); return};
         const produitExistant = panier?.find(item => item.produit_id === produit_id); 
-        const quantiteTotale = produitExistant ? (produitExistant.pivot?.quantite ? 
-            parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) : 
-            parseInt(produitExistant.quantite) + parseInt(quantiteAjoutee)) : parseInt(quantiteAjoutee);
-        setFormData({client_id: user?.id, produit_id: produit_id, quantite: quantiteTotale, couleur: couleur});
+
+        let quantiteTotale = parseInt(quantiteAjoutee);
+        let nouvelleCouleur = couleur;
+
+        if (produitExistant) {
+            const couleurExistante = produitExistant.couleur;
+    
+            if (couleurExistante === couleur) {
+                const quantiteActuelle = produitExistant.pivot?.quantite
+                    ? parseInt(produitExistant.pivot.quantite)
+                    : parseInt(produitExistant.quantite);
+                quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
+            } else {
+                quantiteTotale = parseInt(quantiteAjoutee);
+                nouvelleCouleur = couleur;
+            }
+        }
+        setFormData({client_id: user?.id, produit_id: produit_id, quantite: quantiteTotale, couleur: nouvelleCouleur});
         setPanierAjoute(true);
     };
 
@@ -61,20 +75,22 @@ const usePanierWishlist = (produits) => {
     useEffect(() => {
         if (panierAjoute && formData) {
         const timeout = setTimeout(async () => {
-            console.log(formData);
-            
             const data = await createEntity("panier", formData);
+            
             if (data.message) {
                 setSuccessMessage(data.message);
                 setPanier((prevProduits) => {
                     const produitExistant = prevProduits.find(item => item.produit_id === formData.produit_id);
                 
+                    console.log(formData);
+                    
                     if (produitExistant) {
                     return prevProduits.map(item =>
                         item.produit_id === formData.produit_id ? 
                         { ...item, pivot: {
                             ...item.pivot,
                             quantite: formData.quantite,
+                            couleur: formData.couleur ? formData.couleur : produitExistant.pivot.couleur,
                         }} : item
                     );
                     } else {

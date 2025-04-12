@@ -6,8 +6,9 @@ import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import { Edit2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import QuickShop from "@/components/Modals/QuickShop";
 
-const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit }) => {
+const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit, ajouterAuPanier }) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
 
@@ -15,6 +16,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isDeleteHovered, setIsDeleteHovered] = useState(false);
     const [isEditHovered, setIsEditHovered] = useState(false);
+    const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
+    const [selectedProduit, setSelectedProduit] = useState(null); 
 
     const getTotalPrices = () => {
         if (!produits) return { original: 0, discounted: 0 };
@@ -102,7 +105,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 {produit.pivot?.couleur && <span>Couleur : <span className="font-semibold">{produit.pivot?.couleur}</span></span>}
                                                                 <div className="flex gap-2 mt-2">
                                                                     {produit.pivot?.couleur && 
-                                                                        <button onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
+                                                                        <button onClick={() => {setIsShopModalOpen(true); setSelectedProduit(produit)}} onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
                                                                                 <Edit2 size={17}/> 
                                                                         </button>
                                                                     }
@@ -211,6 +214,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                     supprimerProduit(selectedItem.produit_id)
                     setIsDeleteOpen(false);
             }}/> }
+            {isShopModalOpen && <QuickShop produit={selectedProduit} onClose={() => setIsShopModalOpen(false)} ajouterAuPanier={ajouterAuPanier} />}  
         </section>
     );
 };

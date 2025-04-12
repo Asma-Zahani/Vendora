@@ -25,7 +25,7 @@ const Cart = () => {
         }
     };  
 
-    const { modifierQuantitePanier, supprimerDePanier } = usePanierWishlist(produits);
+    const { ajouterAuPanier, modifierQuantitePanier, supprimerDePanier } = usePanierWishlist(produits);
     
     return (
         <CartTable 
@@ -35,6 +35,7 @@ const Cart = () => {
             handleCodePromotion={handleCodePromotion} 
             codePromotionError={codePromotionError}
             supprimerProduit={supprimerDePanier}
+            ajouterAuPanier={ajouterAuPanier}
         />
     );
 };

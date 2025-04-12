@@ -133,12 +133,24 @@ class UserController extends Controller implements HasMiddleware
                                       ->first();
 
         if ($panierProduit) {
-            PanierProduit::where('client_id', $client->id)
-                        ->where('produit_id', $produit->produit_id)
-                        ->update(['quantite' => $validatedData['quantite']]);
-        
-            return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
-        } else {
+            if (empty($validatedData['couleur']) || $panierProduit->couleur === $validatedData['couleur']) {
+                PanierProduit::where('client_id', $client->id)
+                            ->where('produit_id', $produit->produit_id)
+                            ->update(['quantite' => $validatedData['quantite']]);
+            
+                return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
+            } else {
+                PanierProduit::where('client_id', $client->id)
+                            ->where('produit_id', $produit->produit_id)
+                            ->update([
+                                'quantite' => $validatedData['quantite'],
+                                'couleur' => $validatedData['couleur'],
+                            ]);
+            
+                return response()->json(['message' => 'Couleur mise à jour avec succès'], 200);                
+            }
+        } 
+        else {
             PanierProduit::create([
                 'client_id' => $client->id,
                 'produit_id' => $produit->produit_id,
