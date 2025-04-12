@@ -5,25 +5,25 @@ def build_model(n_users, n_products, n_categories, embedding_size=32):
     """Construit l'architecture du modèle hybride"""
     # Définition des couches d'entrée
     user_input = Input(shape=(1,), name='user_input')
-    product_input = Input(shape=(1,), name='product_input')
+    produit_input = Input(shape=(1,), name='produit_input')
     age_input = Input(shape=(1,), name='age_input')
-    gender_input = Input(shape=(1,), name='gender_input')
-    price_input = Input(shape=(1,), name='price_input')
-    category_input = Input(shape=(1,), name='category_input')
+    genre_input = Input(shape=(1,), name='genre_input')
+    prix_input = Input(shape=(1,), name='prix_input')
+    categorie_input = Input(shape=(1,), name='categorie_input')
 
     # Couches d'embedding
     user_embedding = Embedding(n_users, embedding_size, name='user_embedding')(user_input)
-    product_embedding = Embedding(n_products, embedding_size, name='product_embedding')(product_input)
-    category_embedding = Embedding(n_categories, embedding_size//2, name='category_embedding')(category_input)
+    produit_embedding = Embedding(n_products, embedding_size, name='produit_embedding')(produit_input)
+    categorie_embedding = Embedding(n_categories, embedding_size//2, name='categorie_embedding')(categorie_input)
 
     # Représentations vectorielles
     user_vec = Flatten()(user_embedding)
-    product_vec = Flatten()(product_embedding)
-    category_vec = Flatten()(category_embedding)
-    gender_vec = Dense(8, activation='relu')(gender_input)
+    produit_vec = Flatten()(produit_embedding)
+    categorie_vec = Flatten()(categorie_embedding)
+    genre_vec = Dense(8, activation='relu')(genre_input)
 
     # Concaténation et couches denses
-    concat = Concatenate()([user_vec, product_vec, category_vec, age_input, gender_vec, price_input])
+    concat = Concatenate()([user_vec, produit_vec, categorie_vec, age_input, genre_vec, prix_input])
     dense = Dense(128, activation='relu')(concat)
     dense = Dropout(0.2)(dense)
     dense = Dense(64, activation='relu')(dense)
@@ -31,6 +31,6 @@ def build_model(n_users, n_products, n_categories, embedding_size=32):
     output = Dense(1, activation='sigmoid')(dense)
 
     return Model(
-        inputs=[user_input, product_input, age_input, gender_input, price_input, category_input],
+        inputs=[user_input, produit_input, age_input, genre_input, prix_input, categorie_input],
         outputs=output
     )

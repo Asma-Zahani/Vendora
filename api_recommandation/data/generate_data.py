@@ -25,12 +25,12 @@ def generate_users(output_file="data/users.csv", n_users=1000):
     
     print(f"{n_users} utilisateurs générés dans {output_file}")
 
-def generate_products(output_file="data/products.csv", n_products=500):
+def generate_products(output_file="data/produits.csv", n_products=500):
     categories = ['Electronique', 'Livre', 'Vetement', 'Alimentation', 'Cosmetique']
     
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['product_id', 'category', 'price'])
+        writer.writerow(['produit_id', 'categorie', 'prix'])
         
         for i in range(1, n_products + 1):
             writer.writerow([
@@ -49,7 +49,7 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
     
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['user_id', 'product_id', 'purchased', 'clicks', 'add_to_cart'])
+        writer.writerow(['user_id', 'produit_id', 'purchased', 'clicks', 'add_to_cart'])
         
         for _ in range(n_interactions):
             # user_id = f"user_{random.randint(1, n_users)}"

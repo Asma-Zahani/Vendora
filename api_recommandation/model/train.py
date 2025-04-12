@@ -10,27 +10,19 @@ from pathlib import Path
 import os
 
 def train_model():
-    # Préparation des données
     df, _, _ = prepare_data()
     
-    # Encodage des autres caractéristiques (sauf user_id et product_id)
-    category_encoder = LabelEncoder()
-    gender_encoder = LabelEncoder()
+    categorie_encoder = LabelEncoder()
+    genre_encoder = LabelEncoder()
     scaler = MinMaxScaler()
     
     # Encodage catégoriel (si nécessaire)
-    df['category_code'] = category_encoder.fit_transform(df['category'])
-    df['gender_code'] = gender_encoder.fit_transform(df['genre'])
-
-    # Conversion des user_id et product_id en numériques (si ce sont des strings)
-    if not np.issubdtype(df['user_id'].dtype, np.number):
-        df['user_id'] = df['user_id'].str.extract('(\\d+)').astype(int)  # "user_1" → 1
-    if not np.issubdtype(df['product_id'].dtype, np.number):
-        df['product_id'] = df['product_id'].str.extract('(\\d+)').astype(int)  # "prod_42" → 42
+    df['categorie_code'] = categorie_encoder.fit_transform(df['categorie'])
+    df['genre_code'] = genre_encoder.fit_transform(df['genre'])
 
     # Normalisation des IDs pour qu'ils commencent à 0 (requis pour les embeddings)
     df['user_id'] = df['user_id'] - df['user_id'].min()  # Ex: 1 → 0, 2 → 1, etc.
-    df['product_id'] = df['product_id'] - df['product_id'].min()
+    df['produit_id'] = df['produit_id'] - df['produit_id'].min()
 
     # Score d'interaction composite
     df['interaction_score'] = (
@@ -41,7 +33,7 @@ def train_model():
 
     # Normalisation des autres caractéristiques
     df['age_norm'] = scaler.fit_transform(df[['age']])
-    df['price_norm'] = scaler.fit_transform(df[['price']])
+    df['prix_norm'] = scaler.fit_transform(df[['prix']])
 
     # Séparation en train/test
     train, test = train_test_split(df, test_size=0.2, random_state=42)
@@ -52,8 +44,8 @@ def train_model():
     if not Path(model_path).exists():
         model = build_model(
             n_users=df['user_id'].nunique(),
-            n_products=df['product_id'].nunique(),
-            n_categories=df['category_code'].nunique()
+            n_products=df['produit_id'].nunique(),
+            n_categories=df['categorie_code'].nunique()
         )
 
         # Compilation et entraînement (identique)
@@ -68,11 +60,11 @@ def train_model():
         model.fit(
         x=[
             train['user_id'],
-            train['product_id'],
+            train['produit_id'],
             train['age_norm'],
-            train['gender_code'],
-            train['price_norm'],
-            train['category_code']
+            train['genre_code'],
+            train['prix_norm'],
+            train['categorie_code']
         ],
         y=train['purchased'],
         batch_size=64,
@@ -80,11 +72,11 @@ def train_model():
         validation_data=(
             [
                 test['user_id'],
-                test['product_id'],
+                test['produit_id'],
                 test['age_norm'],
-                test['gender_code'],
-                test['price_norm'],
-                test['category_code']
+                test['genre_code'],
+                test['prix_norm'],
+                test['categorie_code']
             ],
             test['purchased']
         ),
@@ -94,4 +86,4 @@ def train_model():
 
         model.save("model/ecommerce_recommender.keras")
 
-    return (category_encoder, gender_encoder, scaler)
+    return (categorie_encoder, genre_encoder, scaler)
