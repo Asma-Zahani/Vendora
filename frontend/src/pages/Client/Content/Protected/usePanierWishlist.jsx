@@ -81,8 +81,6 @@ const usePanierWishlist = (produits) => {
                 setSuccessMessage(data.message);
                 setPanier((prevProduits) => {
                     const produitExistant = prevProduits.find(item => item.produit_id === formData.produit_id);
-                
-                    console.log(formData);
                     
                     if (produitExistant) {
                     return prevProduits.map(item =>
