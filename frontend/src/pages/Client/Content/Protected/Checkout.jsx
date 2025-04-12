@@ -54,6 +54,8 @@ const Checkout = () => {
 
     const navigate = useNavigate();
     
+    console.log(checkoutData);
+    
     const passerCommande = async () => {
         try {      
             const updatedUser = await updateEntity("users", user.id, formData);
@@ -65,7 +67,8 @@ const Checkout = () => {
                     drive_id: formData.drive_id,
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
-                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite
+                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite,
+                        couleur: produit.pivot?.couleur
                     }))
                 });
             }
@@ -76,7 +79,8 @@ const Checkout = () => {
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
-                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite
+                        quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite,
+                        couleur: produit.pivot?.couleur
                     }))
                 });
             }

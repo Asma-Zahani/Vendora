@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('detail_factures', function (Blueprint $table) {
             $table->id('detail_facture_id');
             $table->integer('quantite');
+            $table->string('couleur')->nullable();
             $table->decimal('prixUnitaireTTC', 10, 2);
             $table->decimal('totalLigneTTC', 10, 2);
             $table->decimal('totalLigneHT', 10, 2);

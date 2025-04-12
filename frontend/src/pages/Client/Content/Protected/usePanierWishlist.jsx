@@ -94,7 +94,7 @@ const usePanierWishlist = (produits) => {
                     } else {
                     const produit = produits.find(item => item.produit_id === formData.produit_id);
                     if (produit) {
-                        return [...prevProduits, { ...produit, pivot: { quantite: formData.quantite } }];
+                        return [...prevProduits, { ...produit, pivot: { quantite: formData.quantite, couleur: formData.couleur } }];
                     }
                     return prevProduits;
                     }

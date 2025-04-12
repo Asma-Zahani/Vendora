@@ -16,6 +16,7 @@ class DetailFacture extends Model
         'facture_id',
         'produit_id',
         'quantite',
+        'couleur',
         'prixUnitaireTTC',
         'totalLigneTTC',
         'totalLigneHT',

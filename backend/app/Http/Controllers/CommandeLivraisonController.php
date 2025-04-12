@@ -87,6 +87,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'produits' => 'required|array',  // Valide que c'est un tableau de produits
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
+            'produits.*.couleur' => 'nullable|string|max:50',
         ]);
         $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
@@ -126,6 +127,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
                 'facture_id' => $facture->facture_id,
                 'produit_id' => $produit->produit_id,
                 'quantite' => $item['quantite'],
+                'couleur' => $item['couleur'] ?? null,
                 'prixUnitaireTTC' => $produit->prix_apres_promo,
                 'remise' => $produit->promotion?->reduction ?? 0
             ]);
