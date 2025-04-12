@@ -8,21 +8,13 @@ const Cart = () => {
     const { panier } = useContext(UserContext);
     const [produits, setProduits] = useState(null);
     const [codePromotion, setCodePromotion] = useState(null);
-    const [codePromotionError, setCodePromotionError] = useState(null);
 
     useEffect(() => {
         setProduits(panier);
     }, [panier]);
 
     const handleCodePromotion = async (code) => {
-        try {
-            setCodePromotion(await getEntityBy("codePromotions", "code", code));
-            setCodePromotionError(null);
-        } catch (error) {
-            console.error("Erreur lors de la récupération du code promotion:", error);
-            setCodePromotionError(error.message);
-            setCodePromotion(null);
-        }
+        setCodePromotion(await getEntityBy("codePromotions", "code", code));
     };  
 
     const { ajouterAuPanier, modifierQuantitePanier, supprimerDePanier } = usePanierWishlist(produits);
@@ -33,7 +25,6 @@ const Cart = () => {
             modifierQuantitePanier={modifierQuantitePanier}
             codePromotion={codePromotion} 
             handleCodePromotion={handleCodePromotion} 
-            codePromotionError={codePromotionError}
             supprimerProduit={supprimerDePanier}
             ajouterAuPanier={ajouterAuPanier}
         />

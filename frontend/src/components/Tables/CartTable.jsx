@@ -4,16 +4,13 @@ import { Link } from "react-router";
 import { useState } from "react";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
-import DeleteModal from "@/components/Modals/DeleteModal";
 import { Edit2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, codePromotionError, supprimerProduit, ajouterAuPanier }) => {
+const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, supprimerProduit, ajouterAuPanier }) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
-
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    
     const [isDeleteHovered, setIsDeleteHovered] = useState(false);
     const [isEditHovered, setIsEditHovered] = useState(false);
     const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
@@ -109,7 +106,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                                 <Edit2 size={17}/> 
                                                                         </button>
                                                                     }
-                                                                    <button onClick={() => {setIsDeleteOpen(true); setSelectedItem(produit)}} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                    <button onClick={() => {supprimerProduit(produit.produit_id)}} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                                             <Trash2 size={17}/> 
                                                                     </button>
                                                                     {/* {isEditHovered && (
@@ -158,15 +155,15 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 Appliquer
                                                             </button>
                                                         </div>
-                                                        {codePromotionError && (
-                                                            <p className="text-red-600 text-sm mt-1">{codePromotionError}</p>
+                                                        {codePromotion?.message && (
+                                                            <p className="text-red-600 text-sm mt-1">{codePromotion?.message}</p>
                                                         )}
                                                     </div>
                                                 </td>
                                                 <td colSpan="2" className="py-2">
-                                                    <div className="flex justify-center gap-3 items-center font-semibold">
+                                                    <div className="flex gap-3 justify-end items-center font-semibold mr-4">
                                                         <p className="text-xl">Sous-Total:</p>
-                                                        {codePromotion ? (
+                                                        {codePromotion && !codePromotion.message ? (
                                                             <>
                                                                 <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
                                                                 <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
@@ -175,7 +172,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                             <span>${getTotalPrices().original}</span>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-gray-500">Les taxes et la livraison seront calculées à l’étape de paiement.</p>
+                                                    <p className="flex justify-end text-sm text-gray-500 mr-4">Les taxes et la livraison seront calculées à l’étape de paiement.</p>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -208,12 +205,6 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                     </div>
                 </div>
             </div>
-            {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
-                message="Êtes-vous sûr de vouloir supprimer ce produit ?"
-                onConfirm={() => { 
-                    supprimerProduit(selectedItem.produit_id)
-                    setIsDeleteOpen(false);
-            }}/> }
             {isShopModalOpen && <QuickShop produit={selectedProduit} onClose={() => setIsShopModalOpen(false)} ajouterAuPanier={ajouterAuPanier} />}  
         </section>
     );
