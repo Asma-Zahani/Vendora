@@ -21,7 +21,10 @@ class ProduitFactory extends Factory
             'sous_categorie_id' => SousCategorie::factory(),
             'promotion_id' => Promotion::factory(),
             'nom' => $this->faker->word(),
-            'status' => $this->faker->randomElement(StatusProduitEnum::values()),
+            'status' => $this->faker->randomElement(array_merge(
+                array_fill(0, 5, StatusProduitEnum::Disponible),
+                StatusProduitEnum::values()
+            )),
             'description' => $this->faker->sentence(),
             'prix' => $this->faker->randomFloat(2, 10, 1000),
             'image' => $this->faker->imageUrl(),
