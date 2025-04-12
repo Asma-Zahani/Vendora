@@ -51,13 +51,14 @@ return new class extends Migration
         });
 
         DB::table('users')->insert([
-            'nom' => "Doe",
-            'prenom' => "John",
+            'nom' => "Zh",
+            'prenom' => "Asma",
             'email' => "admin@gmail.com",
             'telephone' => "12345678",
-            'genre' => 'male',
+            'genre' => 'Femelle',
             'date_naissance' => "2002-02-02",
             'password' => Hash::make("admin"),
+            'adresse' => "Skanes Eddis",
             'role' => RoleEnum::ADMIN->value,
             'email_verified_at' => now(),
         ]);

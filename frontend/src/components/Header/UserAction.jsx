@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Settings, ChevronDown, User, LogIn } from 'lucide-react';
 import ProfileMale from "@/assets/default/user_male.png";
-import ProfileFemale from "@/assets/default/user_female.png";
+import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { handleLogout } from "@/service/AuthService";
 import { UserContext } from '@/utils/UserContext';
 import { useContext } from 'react';
@@ -13,7 +13,7 @@ const UserAction = ({ home }) => {
         <div className="relative group flex items-center dark:border-borderDark pl-4 -my-4">
             <button type="button" className="inline-block p-0 transition-all duration-200 ease-linear rounded-full">
                 <div className="bg-bgDark rounded-full w-[29px] h-[29px] md:w-[39px] md:h-[39px] lg:w-[39px] lg:h-[39px]">
-                    {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
+                    {user.genre === "Male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemelle} alt="" className="w-full h-full rounded-full" />}
                 </div>
             </button>
             {home ?

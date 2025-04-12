@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
 import ProfileMale from "@/assets/default/user_male.png";
-import ProfileFemale from "@/assets/default/user_female.png";
+import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
 import { handleLogout } from "@/service/AuthService";
@@ -21,7 +21,7 @@ const Account = () => {
                                 <div className="flex gap-3">
                                     <button type="button" className="transition-all duration-200 ease-linear rounded-full">
                                         <div className="bg-bgDark rounded-full w-16 h-16">
-                                            {user.genre === "male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemale} alt="" className="w-full h-full rounded-full" />}
+                                            {user.genre === "Male" ? <img src={ProfileMale} alt="" className="w-full h-full rounded-full" /> : <img src={ProfileFemelle} alt="" className="w-full h-full rounded-full" />}
                                         </div>
                                     </button>
                                     <div className="flex items-center">

@@ -18,7 +18,7 @@ const Livreurs = () => {
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "email" },
     { label: "Date de naissance", key: "date_naissance", type: "date" },
-    { label: "Genre", key: "genre", type: "radio", options: ["Male", "Femalle"]}
+    { label: "Genre", key: "genre", type: "radio", options: ["Male", "Femelle"]}
   ];
 
   return (
