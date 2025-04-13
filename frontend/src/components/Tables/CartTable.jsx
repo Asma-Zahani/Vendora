@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Link } from "react-router";
 import { useState } from "react";
@@ -11,8 +10,6 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
     
-    const [isDeleteHovered, setIsDeleteHovered] = useState(false);
-    const [isEditHovered, setIsEditHovered] = useState(false);
     const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
     const [selectedProduit, setSelectedProduit] = useState(null); 
 
@@ -102,25 +99,13 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 {produit.pivot?.couleur && <span>Couleur : <span className="font-semibold">{produit.pivot?.couleur}</span></span>}
                                                                 <div className="flex gap-2 mt-2">
                                                                     {produit.pivot?.couleur && 
-                                                                        <button onClick={() => {setIsShopModalOpen(true); setSelectedProduit(produit)}} onMouseEnter={() => setIsEditHovered(true)} onMouseLeave={() => setIsEditHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
+                                                                        <button onClick={() => {setIsShopModalOpen(true); setSelectedProduit(produit)}} className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
                                                                                 <Edit2 size={17}/> 
                                                                         </button>
                                                                     }
-                                                                    <button onClick={() => {supprimerProduit(produit.produit_id)}} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)}  className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                    <button onClick={() => {supprimerProduit(produit.produit_id)}} className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                                             <Trash2 size={17}/> 
                                                                     </button>
-                                                                    {/* {isEditHovered && (
-                                                                        <div className="absolute -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
-                                                                            Modifier ce produit
-                                                                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
-                                                                        </div>
-                                                                    )}
-                                                                    {isDeleteHovered && (
-                                                                        <div className="absolute -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 rounded-md shadow-lg">
-                                                                            Effacer ce produit
-                                                                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
-                                                                        </div>
-                                                                    )} */}
                                                                 </div>
                                                             </div>
                                                         </div>
