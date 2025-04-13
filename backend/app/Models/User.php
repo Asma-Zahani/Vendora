@@ -62,7 +62,7 @@ class User extends Authenticatable
 
     public function preferences()
     {
-        return $this->hasOne(UserPreferences::class, 'user_id');
+        return $this->hasOne(UserPreference::class, 'user_id');
     }
 
     public function interactions()

@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
-    return $request->user()->load('produits.couleurs', 'wishlist.couleurs');
+    return $request->user()->load('produits.couleurs', 'wishlist.couleurs', 'preferences');
 })->middleware('auth:sanctum');
 
 Route::get('commande/user', function (Request $request) {
