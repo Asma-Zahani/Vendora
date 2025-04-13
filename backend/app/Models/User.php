@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Commande::class, 'client_id');
     }
 
+    public function preferences()
+    {
+        return $this->hasOne(UserPreferences::class, 'user_id');
+    }
+
     public function interactions()
     {
         return $this->hasMany(Interaction::class);
