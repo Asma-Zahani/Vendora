@@ -7,7 +7,7 @@ import PreferencesModal from "@/components/Modals/PreferencesModal";
 // import ProductRecommendations from './ProductRecommendations';
 
 const Home = () => {
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const showPreferencesModal = user && !user.preferences;
   
   return (

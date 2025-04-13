@@ -45,7 +45,11 @@ class UserPreferencesController extends Controller implements HasMiddleware
             ]
         );
 
-        return response()->json($preference, 201);
+        return response()->json([
+            'message' => 'Préférence ajouter avec succès',
+            'data' => $preference
+        ], 200);
+
     }
 
     /**
