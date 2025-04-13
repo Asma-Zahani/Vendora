@@ -16,13 +16,13 @@ class UserPreference extends Model
 
     protected $fillable = [
         'user_id',
-        'preferred_category_ids',
-        'preferred_brand_ids',
+        'preferred_categorie_ids',
+        'preferred_marque_ids',
     ];
 
     protected $casts = [
-        'preferred_category_ids' => 'array',
-        'preferred_brand_ids' => 'array',
+        'preferred_categorie_ids' => 'array',
+        'preferred_marque_ids' => 'array',
     ];
     
     public function user()

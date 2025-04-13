@@ -31,8 +31,8 @@ class UserPreferencesController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'preferred_category_ids' => 'nullable|array',
-            'preferred_brand_ids' => 'nullable|array',
+            'preferred_categorie_ids' => 'nullable|array',
+            'preferred_marque_ids' => 'nullable|array',
         ]);
 
         $user = Auth::user();
@@ -40,8 +40,8 @@ class UserPreferencesController extends Controller implements HasMiddleware
         $preference = UserPreference::updateOrCreate(
             ['user_id' => $user->id],
             [
-                'preferred_category_ids' => $validated['preferred_category_ids'] ?? [],
-                'preferred_brand_ids' => $validated['preferred_brand_ids'] ?? [],
+                'preferred_categorie_ids' => $validated['preferred_categorie_ids'] ?? [],
+                'preferred_marque_ids' => $validated['preferred_marque_ids'] ?? [],
             ]
         );
 
@@ -66,13 +66,13 @@ class UserPreferencesController extends Controller implements HasMiddleware
     public function update(Request $request, UserPreference $userPreference)
     {
         $validated = $request->validate([
-            'preferred_category_ids' => 'nullable|array',
-            'preferred_brand_ids' => 'nullable|array',
+            'preferred_categorie_ids' => 'nullable|array',
+            'preferred_marque_ids' => 'nullable|array',
         ]);
 
         $userPreference->update([
-            'preferred_category_ids' => $validated['preferred_category_ids'] ?? [],
-            'preferred_brand_ids' => $validated['preferred_brand_ids'] ?? [],
+            'preferred_categorie_ids' => $validated['preferred_categorie_ids'] ?? [],
+            'preferred_marque_ids' => $validated['preferred_marque_ids'] ?? [],
         ]);
 
         return response()->json($userPreference);

@@ -47,8 +47,8 @@ const PreferencesModal = () => {
 
   const onSubmit = async () => {
     const data = await createEntity("userPreferences",{
-      preferred_category_ids: selectedCategories,
-      preferred_brand_ids: selectedMarques
+      preferred_categorie_ids: selectedCategories,
+      preferred_marque_ids: selectedMarques
     });
     if (data.message) {
       setSuccessMessage(data.message);

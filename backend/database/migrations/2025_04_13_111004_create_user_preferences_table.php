@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('user_preferences', function (Blueprint $table) {
             $table->id('preference_id');
             $table->foreignId('user_id')->unique()->constrained('users', 'id')->onDelete('cascade');
-            $table->json('preferred_category_ids')->nullable();
-            $table->json('preferred_brand_ids')->nullable();
+            $table->json('preferred_categorie_ids')->nullable();
+            $table->json('preferred_marque_ids')->nullable();
         });
     }
 
