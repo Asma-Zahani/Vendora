@@ -6,7 +6,7 @@ import ProfileFemelle from "@/assets/default/user_femelle.png";
 const PreferencesModal = () => {
   const { user } = useContext(UserContext);
   return (
-    <div className="fixed z-50 inset-0 flex items-center justify-center">
+    <div className="fixed z-105 inset-0 flex items-center justify-center">
       <div className="fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity" aria-hidden="true"></div>
 
       <div className="relative w-full max-w-lg p-6" data-aos="fade-down" data-aos-duration="500" data-aos-once="true">
