@@ -72,6 +72,37 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
     
     print(f"{n_interactions} interactions générées dans {output_file}")
 
+import csv
+import random
+
+def generate_preferences(output_file="data/preferences.csv", n_preferences=1000):
+    """ Génère un fichier CSV de préférences utilisateur avec des catégories et des marques """
+    n_users = 1000
+    n_categories = 20
+    n_marques = 30
+
+    with open(output_file, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['user_id', 'preferred_categorie_ids', 'preferred_marque_ids'])
+
+        for _ in range(n_preferences):
+            user_id = random.randint(1, n_users)
+            
+            categorie_ids = random.sample(range(1, n_categories + 1), random.randint(5, 8))
+            marque_ids = random.sample(range(1, n_marques + 1), random.randint(5, 8))
+
+            categorie_ids_str = ",".join(map(str, categorie_ids))
+            marque_ids_str = ",".join(map(str, marque_ids))
+
+            writer.writerow([
+                user_id,
+                categorie_ids_str,
+                marque_ids_str
+            ])
+
+    print(f"{n_preferences} préférences générées dans {output_file}")
+
 generate_users()
 generate_products()
 generate_interactions()
+generate_preferences()

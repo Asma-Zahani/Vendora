@@ -10,7 +10,7 @@ from pathlib import Path
 import os
 
 def train_model():
-    df, _, _ = prepare_data()
+    df, _, _, _ = prepare_data()
     
     categorie_encoder = LabelEncoder()
     genre_encoder = LabelEncoder()

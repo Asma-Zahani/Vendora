@@ -13,7 +13,8 @@ data_folder = os.path.join(data_dir, 'data')
 required_files = [
     os.path.join(data_folder, 'interactions.csv'),
     os.path.join(data_folder, 'users.csv'),
-    os.path.join(data_folder, 'produits.csv')
+    os.path.join(data_folder, 'produits.csv'),
+    os.path.join(data_folder, 'preferences.csv')
 ]
 
 if not all(Path(file).exists() for file in required_files):

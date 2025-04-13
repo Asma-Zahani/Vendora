@@ -7,7 +7,7 @@ class Recommender:
     def __init__(self, model_path, encoders):
         self.model = load_model(model_path)
         self.categorie_encoder, self.genre_encoder, self.scaler = encoders
-        _, self.user_df, self.produit_df = prepare_data()
+        _, self.user_df, self.produit_df, _ = prepare_data()
     
     def recommend_for_user(self, user_id, n=5):
         """Recommande des produits pour un utilisateur spécifique"""
