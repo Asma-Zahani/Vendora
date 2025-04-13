@@ -3,7 +3,7 @@ import UserContext from '@/utils/UserContext';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 
-const PreferencesModel = () => {
+const PreferencesModal = () => {
   const { user } = useContext(UserContext);
   return (
     <div className="fixed z-50 inset-0 flex items-center justify-center">
@@ -43,7 +43,4 @@ const PreferencesModel = () => {
   );
 };
 
-export default PreferencesModel;
-
-// scolarite.projetintegration@gmail.com
-// 
+export default PreferencesModal;
