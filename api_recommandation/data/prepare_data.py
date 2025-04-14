@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 import os
 from sklearn.preprocessing import MultiLabelBinarizer
+import ast
 
 def prepare_data():
     """Version corrigée avec gestion des chemins relatifs"""
@@ -37,9 +38,12 @@ def prepare_preferences(preferences_df):
     mlb_categorie = MultiLabelBinarizer()
     mlb_marque = MultiLabelBinarizer()
     
+    preferences_df['preferred_categorie_ids'] = preferences_df['preferred_categorie_ids'].apply(ast.literal_eval)
+    preferences_df['preferred_marque_ids'] = preferences_df['preferred_marque_ids'].apply(ast.literal_eval)
+    
     # Transformation des listes en vecteurs binaires
-    categorie_binarized = mlb_categorie.fit_transform(preferences_df['preferred_categorie_ids'].apply(lambda x: list(map(int, x.split(',')))))
-    marque_binarized = mlb_marque.fit_transform(preferences_df['preferred_marque_ids'].apply(lambda x: list(map(int, x.split(',')))))
+    categorie_binarized = mlb_categorie.fit_transform(preferences_df['preferred_categorie_ids'])
+    marque_binarized = mlb_marque.fit_transform(preferences_df['preferred_marque_ids'])
 
     # Création de nouvelles colonnes binaires pour les catégories et les marques
     categorie_columns = [f'categorie_{i}' for i in range(categorie_binarized.shape[1])]

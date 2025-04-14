@@ -91,13 +91,10 @@ def generate_preferences(output_file="data/preferences.csv", n_preferences=1000)
             categorie_ids = random.sample(range(1, n_categories + 1), random.randint(5, 8))
             marque_ids = random.sample(range(1, n_marques + 1), random.randint(5, 8))
 
-            categorie_ids_str = ",".join(map(str, categorie_ids))
-            marque_ids_str = ",".join(map(str, marque_ids))
-
             writer.writerow([
                 user_id,
-                categorie_ids_str,
-                marque_ids_str
+                categorie_ids,
+                marque_ids
             ])
 
     print(f"{n_preferences} préférences générées dans {output_file}")

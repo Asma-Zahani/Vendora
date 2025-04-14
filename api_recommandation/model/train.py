@@ -4,14 +4,17 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.optimizers import Adam # type: ignore
 from tensorflow.keras.callbacks import EarlyStopping # type: ignore
 from .model_utils import build_model
-from data.prepare_data import prepare_data
+from data.prepare_data import prepare_data, prepare_preferences
 import tensorflow as tf
 from pathlib import Path
 import os
 
 def train_model():
-    df, _, _, _ = prepare_data()
-    
+    df, _, _, preferences_df = prepare_data()
+    preferences_df, categorie_columns, marque_columns = prepare_preferences(preferences_df)
+
+    print(preferences_df)
+
     categorie_encoder = LabelEncoder()
     genre_encoder = LabelEncoder()
     scaler = MinMaxScaler()
