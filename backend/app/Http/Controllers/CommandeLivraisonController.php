@@ -88,6 +88,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
             'produits.*.couleur' => 'nullable|string|max:50',
+            'transaction_id' => 'nullable|string|max:255',
         ]);
         $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
@@ -96,6 +97,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'code_promotion_id' => $validatedData['code_promotion_id'] ?? null,
             'total' => $validatedData['total'],
             'etatCommande' => $validatedData['etatCommande'] ?? EtatCommandeEnum::EnAttente->value,
+            'transaction_id' =>$validatedData['transaction_id'] ?? null,
         ]);
 
         $commandeLivraison = CommandeLivraison::create([

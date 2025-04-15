@@ -2,6 +2,7 @@
 import { CgClose } from "react-icons/cg";
 
 const FactureModal = ({ onClose, label, viewData }) => {
+  console.log(viewData);
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className={`fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity`} aria-hidden="true"></div>
@@ -20,16 +21,26 @@ const FactureModal = ({ onClose, label, viewData }) => {
             </button>
           </div>
           <div className="p-4 md:p-5 space-y-4 max-h-[80vh] scrollbar overflow-y-auto">
-            {viewData && Object.entries(viewData).map(([key, value]) => (
-              <div key={key}>
-                <h4 className="font-semibold text-gray-700 dark:text-gray-200">
-                  {key.replace(/_/g, ' ')}:
-                </h4>
-                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 break-words whitespace-pre-wrap">
-                  {typeof value === "string" ? value : JSON.stringify(value, null, 2)}
-                </p>
-              </div>
-            ))}
+          {viewData && (
+    <div className="space-y-2 text-sm">
+        <div><strong>Commande N° :</strong> #{viewData.commande_id}</div>
+        <div><strong>Date :</strong> {viewData.created_at.slice(0, 10)}</div>
+        <div><strong>Total :</strong> ${viewData.total}</div>
+        <div><strong>Statut :</strong> {viewData.etatCommande}</div>
+        {viewData.commande_retrait_drive && (
+            <>
+                <div><strong>Méthode :</strong> Retrait Drive</div>
+                <div><strong>Point de Vente :</strong> {viewData.commande_retrait_drive.drive.nom}</div>
+            </>
+        )}
+        {viewData.commande_livraison && (
+            <>
+                <div><strong>Méthode :</strong> Livraison</div>
+            </>
+        )}
+    </div>
+)}
+
           </div>
         </div>
       </div>

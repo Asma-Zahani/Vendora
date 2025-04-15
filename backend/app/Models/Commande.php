@@ -19,7 +19,8 @@ class Commande extends Model
         'client_id',
         'code_promotion_id',
         'total',
-        'etatCommande'
+        'etatCommande',
+        'transaction_id',
     ];
 
     protected $casts = [
@@ -38,12 +39,6 @@ class Commande extends Model
         return $this->belongsTo(CodePromotion::class, 'code_promotion_id');
     }
 
-    // Relation avec les produits de la commande (table de jointure)
-    public function produits()
-    {
-        return $this->belongsToMany(Produit::class, 'commande_produits', 'commande_id', 'produit_id')
-                    ->withPivot('quantite'); 
-    }
 
     // Une commande peut avoir une facture associée
     public function facture()
