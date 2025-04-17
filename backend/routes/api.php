@@ -20,6 +20,7 @@ use App\Http\Controllers\DriveController;
 use App\Http\Controllers\EnumsController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\UserPreferencesController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,7 @@ Route::apiResource('detailFactures', DetailFactureController::class); //tester
 Route::apiResource('factureCommandes', FactureCommandeController::class); //tester
 
 Route::apiResource('produits', ProduitController::class);
+Route::delete('panier/{user_id}/{produit_id}/{couleur}', [ProduitController::class, 'destroy']);
 Route::get('/recentProduits', [ProduitController::class, 'latestProducts']);
 
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
@@ -78,5 +80,7 @@ Route::get('/etatCommandes', [EnumsController::class, 'getEtatCommandes']);
 Route::get('/statusDrives', [EnumsController::class, 'getStatusDrives']);
 Route::get('/statusProduits', [EnumsController::class, 'getStatusProduits']);
 
+Route::post('/create-payment-intent', [StripePaymentController::class, 'createPaymentIntent']);
+Route::post('/save-transaction-id', [StripePaymentController::class, 'saveTransactionId']);
 require __DIR__.'/auth.php';
 require __DIR__.'/recommendation.php';

@@ -6,7 +6,7 @@ import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import ViewModal from "@/components/Modals/ViewModal";
-import FactureModal from "@/components/Modals/ViewModal";
+import FactureModal from "@/components/Modals/Facture";
 import FormModal from "@/components/Modals/FormModal";
 import Checkbox from "@/components/ui/Checkbox";
 
@@ -31,6 +31,9 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
         if (selectedItems.includes(id)) { setSelectedItems(selectedItems.filter((itemId) => itemId !== id)) } 
         else { setSelectedItems([...selectedItems, id]) }   
     };
+
+    
+      
 
     return (
         <section className="mx-6 py-6">
@@ -295,7 +298,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     }
                     setIsSwitchOpen(false); 
             }}/> }
-            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label}/> }
+            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label} selectedItem={selectedItem}/> }
         </section>
     );
 }

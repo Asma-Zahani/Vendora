@@ -16,7 +16,10 @@ class CommandeLivraison extends Model
     protected $fillable = [
         'commande_id',
         'dateLivraison',
-        'livreur_id'
+        'livreur_id',
+        'adresse_livraison',
+        'region_livraison',
+        'ville_livraison',
     ];
 
     // Relation avec le livreur

@@ -15,36 +15,56 @@ const usePanierWishlist = (produits) => {
     const [panierAjoute, setPanierAjoute] = useState(false);
 
     const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur) => {
-        if (!user) { navigate("/login"); return};
-        const produitExistant = panier?.find(item => item.produit_id === produit_id); 
-
-        let quantiteTotale = parseInt(quantiteAjoutee);
-        let nouvelleCouleur = couleur;
-
-        if (produitExistant) {
-            const couleurExistante = produitExistant.couleur;
+        if (!user) { navigate("/login"); return; }
     
-            if (couleurExistante === couleur) {
-                const quantiteActuelle = produitExistant.pivot?.quantite
-                    ? parseInt(produitExistant.pivot.quantite)
-                    : parseInt(produitExistant.quantite);
-                quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
-            } else {
-                quantiteTotale = parseInt(quantiteAjoutee);
-                nouvelleCouleur = couleur;
+        // 🔍 On cherche si un produit avec le même ID ET la même couleur existe
+        const produitExistant = panier?.find(item => 
+            item.produit_id === produit_id && item.pivot?.couleur === couleur
+        );
+    
+        let quantiteTotale = parseInt(quantiteAjoutee);
+    
+        if (produitExistant) {
+            const quantiteActuelle = produitExistant.pivot?.quantite
+                ? parseInt(produitExistant.pivot.quantite)
+                : parseInt(produitExistant.quantite);
+            quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
+        }
+    
+        // 🛒 Ajout avec la bonne couleur
+        setFormData({
+            client_id: user?.id,
+            produit_id,
+            quantite: quantiteTotale,
+            couleur
+        });
+    
+        setPanierAjoute(true);
+    };
+    
+
+    const modifierQuantitePanier = async (produit_id, couleur, nouvelleQuantite) => {
+        const produitExistant = produits.find(
+            item => item.produit_id === produit_id && item.pivot?.couleur === couleur
+        );
+    
+        if (produitExistant) {
+            const data = {
+                client_id: user?.id,
+                produit_id: produit_id,
+                quantite: nouvelleQuantite,
+                couleur: couleur
+            };
+    
+            try {
+                await createEntity('panier', data); // <- ici on appelle ton endpoint
+                setPanierAjoute(true);
+            } catch (error) {
+                console.error("Erreur lors de la modification du panier :", error.response?.data || error.message);
             }
         }
-        setFormData({client_id: user?.id, produit_id: produit_id, quantite: quantiteTotale, couleur: nouvelleCouleur});
-        setPanierAjoute(true);
     };
-
-    const modifierQuantitePanier = (produit_id, nouvelleQuantite) => {
-        const produitExistant = produits.find(item => item.produit_id === produit_id);
-        if (produitExistant) {
-            setFormData({client_id: user?.id, produit_id: produit_id, quantite: nouvelleQuantite});
-        }
-        setPanierAjoute(true);
-    };
+    
 
     const supprimerDePanier = async (produit_id) => {
         const data = await deleteEntity("panier", user?.id+"/"+produit_id);
@@ -80,25 +100,45 @@ const usePanierWishlist = (produits) => {
             if (data.message) {
                 setSuccessMessage(data.message);
                 setPanier((prevProduits) => {
-                    const produitExistant = prevProduits.find(item => item.produit_id === formData.produit_id);
-                    
-                    if (produitExistant) {
-                    return prevProduits.map(item =>
-                        item.produit_id === formData.produit_id ? 
-                        { ...item, pivot: {
-                            ...item.pivot,
-                            quantite: formData.quantite,
-                            couleur: formData.couleur ? formData.couleur : produitExistant.pivot.couleur,
-                        }} : item
+                    // On cherche un produit avec le même ID ET la même couleur
+                    const produitExistant = prevProduits.find(item =>
+                        item.produit_id === formData.produit_id &&
+                        item.pivot?.couleur === formData.couleur
                     );
+                
+                    if (produitExistant) {
+                        // Si le produit avec même couleur existe, on met à jour sa quantité
+                        return prevProduits.map(item =>
+                            item.produit_id === formData.produit_id && item.pivot?.couleur === formData.couleur
+                                ? {
+                                    ...item,
+                                    pivot: {
+                                        ...item.pivot,
+                                        quantite: formData.quantite,
+                                        couleur: formData.couleur
+                                    }
+                                }
+                                : item
+                        );
                     } else {
-                    const produit = produits.find(item => item.produit_id === formData.produit_id);
-                    if (produit) {
-                        return [...prevProduits, { ...produit, pivot: { quantite: formData.quantite, couleur: formData.couleur } }];
-                    }
-                    return prevProduits;
+                        // Sinon, on ajoute le nouveau produit avec la couleur spécifique
+                        const produit = produits.find(item => item.produit_id === formData.produit_id);
+                        if (produit) {
+                            return [
+                                ...prevProduits,
+                                {
+                                    ...produit,
+                                    pivot: {
+                                        quantite: formData.quantite,
+                                        couleur: formData.couleur
+                                    }
+                                }
+                            ];
+                        }
+                        return prevProduits;
                     }
                 });
+                
             }
             setPanierAjoute(false);
         }, 1000);

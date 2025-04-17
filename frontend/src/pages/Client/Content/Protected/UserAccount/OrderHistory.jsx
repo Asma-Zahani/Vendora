@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { PackageX } from "lucide-react";
 import { getAuthenticatedEntities } from "@/service/EntitesService";
@@ -6,7 +5,9 @@ import FactureModal from "@/components/Modals/FactureModal";
 
 const OrderHistory = () => {
     const [commandes, setCommandes] = useState([]);
+    const [selectedCommande, setSelectedCommande] = useState(null);
     const [isFactureOpen, setIsFactureOpen] = useState(false);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,7 +40,12 @@ const OrderHistory = () => {
                                             {commande.commande_retrait_drive ? (
                                                 <>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <button className="hover:text-purpleLight" onClick={() => setIsFactureOpen(true)}>#{commande.commande_id}</button>
+                                                    <button className="hover:text-purpleLight" onClick={() => {
+                                                        setSelectedCommande(commande);
+                                                        setIsFactureOpen(true);
+                                                    }}>
+                                                        #{commande.commande_id}
+                                                    </button>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
@@ -91,7 +97,12 @@ const OrderHistory = () => {
                                             {commande.commande_livraison ? (
                                                 <>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        <button className="hover:text-purpleLight" onClick={() => setIsFactureOpen(true)}>#{commande.commande_id}</button>
+                                                    <button className="hover:text-purpleLight" onClick={() => {
+                                                        setSelectedCommande(commande);
+                                                        setIsFactureOpen(true);
+                                                    }}>
+                                                        #{commande.commande_id}
+                                                    </button>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
@@ -121,7 +132,16 @@ const OrderHistory = () => {
                 </div>
             </div>
             
-            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={"Facture commandes"}/> }
+            {isFactureOpen && selectedCommande && (
+    <FactureModal
+        onClose={() => {
+            setIsFactureOpen(false);
+            setSelectedCommande(null);
+        }}
+        label={"Facture commande"}
+        viewData={selectedCommande}
+    />
+)}
         </div>
     );
 }; 
