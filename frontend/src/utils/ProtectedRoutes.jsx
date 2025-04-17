@@ -44,7 +44,7 @@ export const ProtectedClientRoutes = () => {
 export const ProtectedLivreurRoutes = () => {
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         if (user) {
             setLoading(false);
@@ -66,6 +66,9 @@ export const ProtectedAuthRoutes = () => {
     if (user) {
         if (user.role === "admin") {
             return <Navigate to="/dashboard" />;
+        }
+        if (user.role === "livreur") {
+            return <Navigate to="/livreur/dashboard" />;
         }
         return <Navigate to="/" />;
     }

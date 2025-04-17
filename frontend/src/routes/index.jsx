@@ -33,6 +33,9 @@ import OrderHistory from "../pages/Client/Content/Protected/UserAccount/OrderHis
 import Offres from "../pages/Client/Content/Protected/UserAccount/Offres";
 import DetailProduit from "../pages/Client/Content/Boutique/DetailProduit";
 import Tracking from "../pages/Client/Content/Protected/UserAccount/Tracking";
+import AdressesLivraison from "@/pages/Livreur/Content/Clients/AdressesLivraison";
+import CommandesEnCours from "@/pages/Livreur/Content/Commandes/CommandesEnCours";
+import HistoriqueCommandes from "@/pages/Livreur/Content/Commandes/HistoriqueCommandes";
 
 const routes = [
   {
@@ -76,14 +79,18 @@ const routes = [
     element: <PageNotFound />
   },
   {
-    path: "",
+    path: "livreur",
     element: <ProtectedLivreurRoutes />,
     children: [
       {
         path: "",
         element: <LivreurInterface />,
         children: [
-          { path: "dash", element: <LivreurDashboard /> },
+          { path: "dashboard", element: <LivreurDashboard /> },
+          { path: "commandes/en-cours", element: <CommandesEnCours /> },
+          { path: "commandes/historique", element: <HistoriqueCommandes /> },
+          { path: "clients", element: <Clients /> },
+          { path: "adresses", element: <AdressesLivraison /> },
         ]
       }
     ]
