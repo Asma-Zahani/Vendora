@@ -63,6 +63,7 @@ Route::apiResource('detailFactures', DetailFactureController::class); //tester
 Route::apiResource('factureCommandes', FactureCommandeController::class); //tester
 
 Route::apiResource('produits', ProduitController::class);
+Route::delete('panier/{user_id}/{produit_id}/{couleur}', [ProduitController::class, 'destroy']);
 Route::get('/recentProduits', [ProduitController::class, 'latestProducts']);
 
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);

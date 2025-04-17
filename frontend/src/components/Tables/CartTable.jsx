@@ -51,7 +51,12 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         }
 
         
-        modifierQuantitePanier(produit.produit_id, produit.pivot.quantite)
+        modifierQuantitePanier({
+            produit_id: produit.produit_id,
+            quantite: produit.pivot.quantite,
+            couleur: produit.pivot?.couleur
+        });
+        
     };
 
     const handleCheckout = () => {

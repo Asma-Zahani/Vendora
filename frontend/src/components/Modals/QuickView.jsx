@@ -36,7 +36,7 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
 
   const handleAddToCart = () => {
     if (quantity <= maxQuantity) {
-      ajouterAuPanier(produit.produit_id, quantity, selectedColor.id);
+      ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom);
     } else {
       alert("La quantité demandée dépasse le stock disponible !");
     }
