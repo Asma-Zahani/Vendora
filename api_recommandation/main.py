@@ -1,31 +1,17 @@
 from flask import Flask, request, jsonify
 from model.train import train_model
 from services.recommender import Recommender
-import os
 from pathlib import Path
 import subprocess
 
 app = Flask(__name__)
 
-data_dir = os.path.dirname(os.path.abspath(__file__))
-data_folder = os.path.join(data_dir, 'data')
-
-required_files = [
-    os.path.join(data_folder, 'interactions.csv'),
-    os.path.join(data_folder, 'users.csv'),
-    os.path.join(data_folder, 'produits.csv'),
-    os.path.join(data_folder, 'preferences.csv')
-]
-
-if not all(Path(file).exists() for file in required_files):
-    generate_script = os.path.join(data_folder, 'generate_data.py')
-    subprocess.run(['python', generate_script])
-
-encoders = train_model()
+if not all(Path(file).exists() for file in ["data/interactions.csv","data/users.csv","data/produits.csv","data/preferences.csv"]):
+    subprocess.run(['python', "data/generate_data.py"])
 
 recommender = Recommender(
     model_path="model/ecommerce_recommender.keras",
-    encoders=encoders
+    encoders=train_model()
 )
 
 @app.route("/recommend/user", methods=["POST"])

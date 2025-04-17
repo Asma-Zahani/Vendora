@@ -1,55 +1,60 @@
 import pandas as pd
 from datetime import datetime
-import os
-from sklearn.preprocessing import MultiLabelBinarizer
-import ast
+from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder, MinMaxScaler
+from ast import literal_eval
 
-def prepare_data():
-    """Version corrigée avec gestion des chemins relatifs"""
-    try:
-        data_dir = os.path.dirname(os.path.abspath(__file__))
+def load_data():
+    users = pd.read_csv('data/users.csv', parse_dates=['date_naissance'])
+    produits = pd.read_csv('data/produits.csv')
+    interactions = pd.read_csv('data/interactions.csv')
+    preferences = pd.read_csv('data/preferences.csv')
+    
+    preferences['preferred_categorie_ids'] = preferences['preferred_categorie_ids'].apply(literal_eval)
+    preferences['preferred_marque_ids'] = preferences['preferred_marque_ids'].apply(literal_eval)
+    
+    def calculate_age(birth_date):
+        today = datetime.now()
+        return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
         
-        users_path = os.path.join(data_dir, 'users.csv')
-        produits_path = os.path.join(data_dir, 'produits.csv')
-        interactions_path = os.path.join(data_dir, 'interactions.csv')
-        preferences_path = os.path.join(data_dir, 'preferences.csv')
-        
-        user_df = pd.read_csv(users_path, parse_dates=['date_naissance'], encoding='latin1')
-        produit_df = pd.read_csv(produits_path, encoding='latin1')
-        interactions_df = pd.read_csv(interactions_path, encoding='latin1')
-        preferences_df = pd.read_csv(preferences_path, encoding='latin1')
+    users['age'] = users['date_naissance'].apply(calculate_age)
+    
+    return users, produits, interactions, preferences
 
-        def calculate_age(birth_date):
-            today = datetime.now()
-            return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        
-        user_df['age'] = user_df['date_naissance'].apply(calculate_age)
-        
-        df = interactions_df.merge(user_df, on='user_id').merge(produit_df, on='produit_id')
+def preprocess_data(users, produits, interactions, preferences):
+    data = interactions.merge(users, on='user_id').merge(produits, on='produit_id')
+    
+    # Encodage du genre
+    genre_encoder = LabelEncoder()
+    data['genre_code'] = genre_encoder.fit_transform(data['genre'])
+    
+    # Normalisation des IDs
+    data['user_id_norm'] = data['user_id'] - data['user_id'].min()
+    data['produit_id_norm'] = data['produit_id'] - data['produit_id'].min()
+    
+    # Score composite
+    data['interaction_score'] = (data['achat'] * 10 + data['ajout_panier'] * 3 + data['favori'] * 2 + data['vue_produit'] * 0.5)
+    
+    # Normalisation des features
+    scaler_age = MinMaxScaler()
+    data['age_norm'] = scaler_age.fit_transform(data[['age']])
 
-        return df, user_df, produit_df, preferences_df
-        
-    except Exception as e:
-        print(f"\nERREUR CRITIQUE\n{'-'*50}")
-        raise
-
-def prepare_preferences(preferences_df):
-    # Utilisation de MultiLabelBinarizer pour gérer plusieurs catégories ou marques
-    mlb_categorie = MultiLabelBinarizer()
+    scaler_prix = MinMaxScaler()
+    data['prix_norm'] = scaler_prix.fit_transform(data[['prix']])
+    
+    # Préparation des préférences
+    mlb_cat = MultiLabelBinarizer()
     mlb_marque = MultiLabelBinarizer()
-    
-    preferences_df['preferred_categorie_ids'] = preferences_df['preferred_categorie_ids'].apply(ast.literal_eval)
-    preferences_df['preferred_marque_ids'] = preferences_df['preferred_marque_ids'].apply(ast.literal_eval)
-    
-    # Transformation des listes en vecteurs binaires
-    categorie_binarized = mlb_categorie.fit_transform(preferences_df['preferred_categorie_ids'])
-    marque_binarized = mlb_marque.fit_transform(preferences_df['preferred_marque_ids'])
+    cat_df = pd.DataFrame(
+        mlb_cat.fit_transform(preferences['preferred_categorie_ids']),
+        columns=[f'pref_cat_{i}' for i in mlb_cat.classes_]
+    )
+    marque_df = pd.DataFrame(
+        mlb_marque.fit_transform(preferences['preferred_marque_ids']),
+        columns=[f'pref_marque_{i}' for i in mlb_marque.classes_]
+    )
+    prefs_encoded = pd.concat([preferences[['user_id']], cat_df, marque_df], axis=1)
 
-    # Création de nouvelles colonnes binaires pour les catégories et les marques
-    categorie_columns = [f'categorie_{i}' for i in range(categorie_binarized.shape[1])]
-    marque_columns = [f'marque_{i}' for i in range(marque_binarized.shape[1])]
+    # Fusion des préférences avec les données principales
+    data = data.merge(prefs_encoded, on='user_id', how='left')
     
-    preferences_df[categorie_columns] = categorie_binarized
-    preferences_df[marque_columns] = marque_binarized
-
-    return preferences_df, categorie_columns, marque_columns
+    return data, (genre_encoder, scaler_age, scaler_prix, mlb_cat, mlb_marque)
