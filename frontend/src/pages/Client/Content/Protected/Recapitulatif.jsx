@@ -19,7 +19,7 @@ const Recapitulatif = ({checkoutData}) => {
                             </div>
                             <div className="flex flex-col text-start text-md ml-2">
                                 <p className="font-semibold">{produit.nom}</p>
-                                <span className="text-sm">cyan</span>
+                                <span className="text-sm">{produit.pivot?.couleur}</span>
                             </div>
                         </div>
                         

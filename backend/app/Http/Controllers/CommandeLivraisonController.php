@@ -34,6 +34,18 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
 
         $query = CommandeLivraison::query();
 
+        if ($request->has('filtre')) {
+            $filtres = $request->input('filtre');
+    
+            foreach ($filtres as $value) {
+                if (!empty($value) && $value !== 'Tous') {
+                    $query->whereHas('commande', function ($q) use ($value) {
+                        $q->whereIn('etatCommande', (array) $value);
+                    });
+                }
+            }
+        }
+        
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
             if (strpos($searchTerm, '#') === 0) {
@@ -157,11 +169,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         $commandeLivraison = CommandeLivraison::where('commande_id', $id)->with('commande')
             ->firstOrFail();
 
-        if ($request->user()->id == $commandeLivraison->commande->client_id) {
-            return response()->json($commandeLivraison);
-        }
-
-        return response()->json();
+        return response()->json($commandeLivraison);
     }
 
     /**
@@ -182,8 +190,8 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'dateLivraison' => 'nullable|date',
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
             'adresse_livraison' => 'nullable|string|max:255',
-    'region_livraison' => 'nullable|string|max:255',
-    'ville_livraison' => 'nullable|string|max:255',
+            'region_livraison' => 'nullable|string|max:255',
+            'ville_livraison' => 'nullable|string|max:255',
         ]);
 
         // Mise à jour des données de la commande
@@ -199,14 +207,10 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'dateLivraison' => $validatedData['dateLivraison'] ?? $commandeLivraison->dateLivraison,
             'livreur_id' => $validatedData['livreur_id'] ?? $commandeLivraison->livreur_id,
             'adresse_livraison' => $validatedData['adresse_livraison'] ?? $commandeLivraison->adresse_livraison,
-    'region_livraison' => $validatedData['region_livraison'] ?? $commandeLivraison->region_livraison,
-    'ville_livraison' => $validatedData['ville_livraison'] ?? $commandeLivraison->ville_livraison,
+            'region_livraison' => $validatedData['region_livraison'] ?? $commandeLivraison->region_livraison,
+            'ville_livraison' => $validatedData['ville_livraison'] ?? $commandeLivraison->ville_livraison,
         ]);
 
-        return response()->json([
-            'commande' => $commande,
-            'livraison' => $commandeLivraison,
-        ], 200);
         return response()->json([
             'message' => 'Commande livraison à jour avec succès',
             'commande' => $commande,

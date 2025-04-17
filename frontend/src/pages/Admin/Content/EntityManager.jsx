@@ -39,17 +39,16 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
     if (key === "searchTerm") setSearchTerm(value);
   }, []);
   
-  const flattenObject = (obj, prefix = "") => {
+  const flattenObject = (obj) => {
     return Object.keys(obj).reduce((acc, key) => {
-      const prefixedKey = prefix ? `${prefix}_${key}` : key; 
       if (typeof obj[key] === "object" && obj[key] !== null) {
-        Object.assign(acc, flattenObject(obj[key], prefixedKey));
+        Object.assign(acc, flattenObject(obj[key]));
       } else {
-        acc[prefixedKey] = obj[key];
+        acc[key] = obj[key];
       }
       return acc;
     }, {});
-  };
+  };  
 
   const formattedData = {
     ...entities,
@@ -59,7 +58,10 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
       const actions = {};
       actionList.map((action) => {
         if (["view", "edit", "switch", "facture"].includes(action)) {
-          actions[action] = () => handleEntity(CRUDLabel, item[identifiant], setErrors, setFormData);
+          actions[action] = () =>
+            handleEntity(CRUDLabel, item[identifiant], setErrors, (data) =>
+              setFormData(flattenObject(data))
+            );          
         }
         if (action === "delete") {
           actions[action] = () => handleDelete(CRUDLabel, item[identifiant], setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities));

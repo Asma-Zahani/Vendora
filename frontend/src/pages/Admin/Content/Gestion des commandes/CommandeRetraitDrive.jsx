@@ -5,6 +5,8 @@ import EntityManager from "../EntityManager";
 import { getEntities } from "@/service/EntitesService";
 
 const CommandeLivraison = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Tous");
+  const filtres = { field: "etatCommande", value: ['Tous', 'En attente', 'Retirée', 'Annulée'], selectedFilter, setSelectedFilter};
   const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
   const [clients, setClients] = useState([]);
 
@@ -24,9 +26,9 @@ const CommandeLivraison = () => {
 
   const columns = [
     { label: "Num°", key: "commande_id", type: "text", prefix: "#" },
-    { label: "Client", key: "commande_client_id", type: "id", options: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))},
-    { label: "Total", key: "commande_total", type: "enum" },
-    { label: "État Commande", key: "commande_etatCommande", type: "enum" },
+    { label: "Client", key: "client_id", type: "id", options: clients.map(client => ({ value: client.id, label: client.prenom + " " + client.nom }))},
+    { label: "Total", key: "total", type: "enum" },
+    { label: "État Commande", key: "etatCommande", type: "enum" },
     { label: "Actions", key: "actions", type: "actions" }
   ];
   
@@ -37,7 +39,7 @@ const CommandeLivraison = () => {
   return (
     <>
       <Header title="Commandes Retrait Drives" icon={Package} parent="Gestion des commandes" current="Commandes / Retrait Drives" />
-      <EntityManager notAdd={true} columns={columns} fields={fields} label="commandeRetraitDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
+      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeRetraitDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
     </>
   );
 };

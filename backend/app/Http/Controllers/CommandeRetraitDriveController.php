@@ -34,6 +34,18 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
 
         $query = CommandeRetraitDrive::query();
 
+        if ($request->has('filtre')) {
+            $filtres = $request->input('filtre');
+    
+            foreach ($filtres as $value) {
+                if (!empty($value) && $value !== 'Tous') {
+                    $query->whereHas('commande', function ($q) use ($value) {
+                        $q->whereIn('etatCommande', (array) $value);
+                    });
+                }
+            }
+        }
+
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
             if (strpos($searchTerm, '#') === 0) {
@@ -184,12 +196,9 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
         ]);
 
         return response()->json([
+            'message' => 'Commande Retrait Drive mise à jour avec succès',
             'commande' => $commande,
             'retraiDrive' => $commandeRetraitDrive,
-        ], 200);
-        return response()->json([
-            'message' => 'Promotion mise à jour avec succès',
-            'data' => $promotion
         ], 200);
     }
 

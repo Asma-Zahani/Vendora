@@ -199,183 +199,182 @@ const Checkout = () => {
       
     return (
         <Elements stripe={stripePromise}>
-        <section className="mx-6 py-6">
-            <div className="flex flex-col lg:flex-row gap-6">
-                <div className="inline-block min-w-full py-2 align-middle">
-                    <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
-                        <div className="flex flex-col lg:flex-row gap-6">
-                            {/* Formulaire de facturation */}
-                            <div className="flex-1/5 py-4 px-2">
-                                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
-                                <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
-                
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {step === 1 && (
-                                        <>
-                                            <div>
-                                                <Label label="Nom"/>
-                                                <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
-                                                {errors.nom && <p className="text-red-500 text-sm">{errors.nom}</p>}
-                                            </div>
-                                            <div>
-                                                <Label label="Prénom"/>
-                                                <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
-                                                {errors.prenom && <p className="text-red-500 text-sm">{errors.prenom}</p>}
-                                            </div>
-                                            <div>
-                                                <Label label="Téléphone"/>
-                                                <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" required />
-                                                {errors.telephone && <p className="text-red-500 text-sm">{errors.telephone}</p>}
-                                            </div>
-                                            <div>
-                                                <Label label="Email"/>
-                                                <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-                                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                                            </div>
-                                        </>
-                                    )}
-                                    {step === 2 && (
-                                        <>
-                                            <div className="col-span-2">
-                                                <Label label="Méthode de réception" />
-                                                <div className="flex justify-center space-x-6">
-                                                <label className="flex items-center cursor-pointer">
-                                                    <input type="radio" value="livraison" checked={deliveryMethod === "livraison"} onChange={() => setDeliveryMethod("livraison")} name="delivery" className="hidden" />
-                                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                    {deliveryMethod === "livraison" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
-                                                    </div>
-                                                    <span className="ml-2 text-gray-700 dark:text-grayDark">Livraison</span>
-                                                </label>
-                                                <label className="flex items-center cursor-pointer">
-                                                    <input type="radio" value="drive" checked={deliveryMethod === "drive"} onChange={() => setDeliveryMethod("drive")} name="delivery" className="hidden" />
-                                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                    {deliveryMethod === "drive" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
-                                                    </div>
-                                                    <span className="ml-2 text-gray-700 dark:text-grayDark">Retrait drive</span>
-                                                </label>
+            <section className="mx-6 py-6">
+                <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="inline-block min-w-full py-2 align-middle">
+                        <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
+                            <div className="flex flex-col lg:flex-row gap-6">
+                                {/* Formulaire de facturation */}
+                                <div className="flex-1/5 py-4 px-2">
+                                    <h4 className="text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
+                                    <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
+                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {step === 1 && (
+                                            <>
+                                                <div>
+                                                    <Label label="Nom"/>
+                                                    <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
+                                                    {errors.nom && <p className="text-red-500 text-sm">{errors.nom}</p>}
                                                 </div>
-                                            </div>
-                                            {deliveryMethod === "livraison" ? <>
+                                                <div>
+                                                    <Label label="Prénom"/>
+                                                    <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
+                                                    {errors.prenom && <p className="text-red-500 text-sm">{errors.prenom}</p>}
+                                                </div>
+                                                <div>
+                                                    <Label label="Téléphone"/>
+                                                    <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" required />
+                                                    {errors.telephone && <p className="text-red-500 text-sm">{errors.telephone}</p>}
+                                                </div>
+                                                <div>
+                                                    <Label label="Email"/>
+                                                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+                                                    {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                                                </div>
+                                            </>
+                                        )}
+                                        {step === 2 && (
+                                            <>
                                                 <div className="col-span-2">
-                                                    <Label label="Adresse"/>
-                                                    <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />
-                                                    {errors.adresse && <p className="text-red-500 text-sm">{errors.adresse}</p>}
+                                                    <Label label="Méthode de réception" />
+                                                    <div className="flex justify-center space-x-6">
+                                                    <label className="flex items-center cursor-pointer">
+                                                        <input type="radio" value="livraison" checked={deliveryMethod === "livraison"} onChange={() => setDeliveryMethod("livraison")} name="delivery" className="hidden" />
+                                                        <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
+                                                        {deliveryMethod === "livraison" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
+                                                        </div>
+                                                        <span className="ml-2 text-gray-700 dark:text-grayDark">Livraison</span>
+                                                    </label>
+                                                    <label className="flex items-center cursor-pointer">
+                                                        <input type="radio" value="drive" checked={deliveryMethod === "drive"} onChange={() => setDeliveryMethod("drive")} name="delivery" className="hidden" />
+                                                        <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
+                                                        {deliveryMethod === "drive" && ( <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div> )}
+                                                        </div>
+                                                        <span className="ml-2 text-gray-700 dark:text-grayDark">Retrait drive</span>
+                                                    </label>
+                                                    </div>
                                                 </div>
-                                                <Dropdown label="Région" name="region" options={regions} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen}
-                                                toggleOpen={() => {
-                                                    setIsRegionOpen(!isRegionOpen);
-                                                    setIsVilleOpen(false);
-                                                }} />
-                                                {errors.region && <p className="text-red-500 text-sm mt-1">{errors.region}</p>}
-                                                <Dropdown label="Ville" name="ville" options={villes[formData.region] || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
-                                                toggleOpen={() => {
-                                                    setIsVilleOpen(!isVilleOpen);
-                                                    setIsRegionOpen(false);
-                                                }} />
-                                                {errors.ville && <p className="text-red-500 text-sm mt-1">{errors.ville}</p>}
-                                                </> : <div className="col-span-2">
-                                                    <Drop label="Point de retrait" name="drive_id" options={drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))} selectedValue={formData.drive_id} 
-                                                    onSelect={(selected) => { 
-                                                        setFormData({ ...formData, drive_id: selected.value });
-                                                        setIsPointRetraitOpen(null);
-                                                    }}
-                                                    isOpen={isPointRetraitOpen}
-                                                    toggleOpen={() => {setIsPointRetraitOpen(!isPointRetraitOpen)}} />
-                                                    {errors.drive_id && <p className="text-red-500 text-sm mt-1">{errors.drive_id}</p>}
-                                            </div> }
-                                        </>
-                                    )}
-                                    {step === 3 && (
-                                        <>
-                                            <div className="col-span-2">
-                                                <Label label="Méthode de paiement" />
-                                                <div className="flex flex-col md:flex-row justify-center gap-6">
-                                                    
-                                                    {/* Paiement en espèce - uniquement visible si ce n'est PAS drive */}
-                                                    {deliveryMethod !== "drive" && (
+                                                {deliveryMethod === "livraison" ? <>
+                                                    <div className="col-span-2">
+                                                        <Label label="Adresse"/>
+                                                        <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />
+                                                        {errors.adresse && <p className="text-red-500 text-sm">{errors.adresse}</p>}
+                                                    </div>
+                                                    <Dropdown label="Région" name="region" options={regions} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen}
+                                                    toggleOpen={() => {
+                                                        setIsRegionOpen(!isRegionOpen);
+                                                        setIsVilleOpen(false);
+                                                    }} />
+                                                    {errors.region && <p className="text-red-500 text-sm mt-1">{errors.region}</p>}
+                                                    <Dropdown label="Ville" name="ville" options={villes[formData.region] || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
+                                                    toggleOpen={() => {
+                                                        setIsVilleOpen(!isVilleOpen);
+                                                        setIsRegionOpen(false);
+                                                    }} />
+                                                    {errors.ville && <p className="text-red-500 text-sm mt-1">{errors.ville}</p>}
+                                                    </> : <div className="col-span-2">
+                                                        <Drop label="Point de retrait" name="drive_id" options={drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))} selectedValue={formData.drive_id} 
+                                                        onSelect={(selected) => { 
+                                                            setFormData({ ...formData, drive_id: selected.value });
+                                                            setIsPointRetraitOpen(null);
+                                                        }}
+                                                        isOpen={isPointRetraitOpen}
+                                                        toggleOpen={() => {setIsPointRetraitOpen(!isPointRetraitOpen)}} />
+                                                        {errors.drive_id && <p className="text-red-500 text-sm mt-1">{errors.drive_id}</p>}
+                                                </div> }
+                                            </>
+                                        )}
+                                        {step === 3 && (
+                                            <>
+                                                <div className="col-span-2">
+                                                    <Label label="Méthode de paiement" />
+                                                    <div className="flex flex-col md:flex-row justify-center gap-6">
+                                                        
+                                                        {/* Paiement en espèce - uniquement visible si ce n'est PAS drive */}
+                                                        {deliveryMethod !== "drive" && (
+                                                            <label className="flex items-center cursor-pointer">
+                                                                <input type="radio" value="espece" checked={paymentMethod === "espece"} onChange={(e) => setPaymentMethod(e.target.value)} name="payment" className="hidden" />
+                                                                <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
+                                                                    {paymentMethod === "espece" && (
+                                                                        <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
+                                                                    )}
+                                                                </div>
+                                                                <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement en espèce</span>
+                                                            </label>
+                                                        )}
+
+
+
                                                         <label className="flex items-center cursor-pointer">
-                                                            <input type="radio" value="espece" checked={paymentMethod === "espece"} onChange={(e) => setPaymentMethod(e.target.value)} name="payment" className="hidden" />
+                                                            <input type="radio" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} name="payment" className="hidden" />
                                                             <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                                {paymentMethod === "espece" && (
+                                                                {paymentMethod === "carte" && (
                                                                     <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
                                                                 )}
                                                             </div>
-                                                            <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement en espèce</span>
+                                                            <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement par carte</span>
                                                         </label>
-                                                    )}
-
-
-
-                                                    <label className="flex items-center cursor-pointer">
-                                                        <input type="radio" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} name="payment" className="hidden" />
-                                                        <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                                            {paymentMethod === "carte" && (
-                                                                <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
-                                                            )}
-                                                        </div>
-                                                        <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement par carte</span>
-                                                    </label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            {paymentMethod === "carte" && (
-                                                <div  className="col-span-2 mt-6 p-6 border rounded bg-gray-100 shadow-sm">
-                                                    <p className="font-semibold text-sm mb-4">Les cartes acceptées incluent Mastercard et Visa.</p>
+                                                {paymentMethod === "carte" && (
+                                                    <div  className="col-span-2 mt-6 p-6 border rounded bg-gray-100 shadow-sm">
+                                                        <p className="font-semibold text-sm mb-4">Les cartes acceptées incluent Mastercard et Visa.</p>
 
-                                                    <Elements stripe={stripePromise}>
-                                        <StripeForm
-                                        ref={stripeFormRef}
-                                        amount={checkoutDataAvecFrais.totalAvecFrais}
-                                        user={user}
-                                        onSuccess={passerCommande}
-                                        setIsCardValid={setIsCardValid}
-                                        />
-                                    </Elements>
-                                                </div>
-                                            )}
+                                                        <Elements stripe={stripePromise}>
+                                            <StripeForm
+                                            ref={stripeFormRef}
+                                            amount={checkoutDataAvecFrais.totalAvecFrais}
+                                            user={user}
+                                            onSuccess={passerCommande}
+                                            setIsCardValid={setIsCardValid}
+                                            />
+                                        </Elements>
+                                                    </div>
+                                                )}
 
-                                            {paymentMethod === "espece" && (
-                                                <p className="text-sm mt-4">Frais de livraison applicables.</p>
-                                            )}
-                                        </>
-                                    )}
+                                                {paymentMethod === "espece" && (
+                                                    <p className="text-sm mt-4">Frais de livraison applicables.</p>
+                                                )}
+                                            </>
+                                        )}
 
+                                    </div>
+
+                                    <div className="flex justify-between mt-6">
+                                        {step > 1 && (
+                                            <button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">
+                                            Retour
+                                            </button>
+                                        )}
+                                        {step < 3 && (
+                                            <button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">
+                                            Suivant
+                                            </button>
+                                        )}
+                                        {step == 3 && (
+                                            <button onClick={() => {
+                                                if (validateStep()) {
+                                                handleOrderClick();
+                                                }
+                                            }} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto 
+                                                ${paymentMethod === "carte" && !isCardValid 
+                                                    ? 'bg-gray-400 cursor-not-allowed' 
+                                                    : 'bg-purpleLight text-white'}`}>
+                                            Passer la commande
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-
-                                <div className="flex justify-between mt-6">
-                                    {step > 1 && (
-                                        <button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">
-                                        Retour
-                                        </button>
-                                    )}
-                                    {step < 3 && (
-                                        <button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">
-                                        Suivant
-                                        </button>
-                                    )}
-                                    {step == 3 && (
-                                        <button onClick={() => {
-                                            if (validateStep()) {
-                                              handleOrderClick();
-                                            }
-                                          }} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto 
-                                            ${paymentMethod === "carte" && !isCardValid 
-                                                ? 'bg-gray-400 cursor-not-allowed' 
-                                                : 'bg-purpleLight text-white'}`}>
-                                        Passer la commande
-                                        </button>
-                                    )}
-                                </div>
+                                <Recapitulatif checkoutData={checkoutDataAvecFrais} />
                             </div>
-                            <Recapitulatif checkoutData={checkoutDataAvecFrais} />
                         </div>
                     </div>
                 </div>
-            </div>
-            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="test" onConfirm={() => {setIsOpen(false); passerCommande()}}/> }
-        </section>
+                {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="test" onConfirm={() => {setIsOpen(false); passerCommande()}}/> }
+            </section>
         </Elements>
-       
     );
 };
 

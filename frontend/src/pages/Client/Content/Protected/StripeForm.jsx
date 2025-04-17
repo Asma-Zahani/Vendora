@@ -1,4 +1,5 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+/* eslint-disable react/prop-types */
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -118,7 +119,7 @@ const StripeForm = ({ amount, onSuccess, user , setIsCardValid }, ref) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium">Date d'expiration</label>
+          <label className="block text-sm font-medium">Date d&apos;expiration</label>
           <CardExpiryElement  onChange={(event) => updateCardState('expiry', event.complete)} className="p-2 border rounded w-full" />
         </div>
         <div>
