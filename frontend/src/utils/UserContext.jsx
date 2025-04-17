@@ -26,8 +26,6 @@ export const UserProvider = ({ children }) => {
         };
     }
 
-    console.log(user);
-    
     useEffect(() => {if(token) {getUser()}}, [token])
     
     return (

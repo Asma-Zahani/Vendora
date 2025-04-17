@@ -79,14 +79,14 @@ const routes = [
     element: <PageNotFound />
   },
   {
-    path: "livreur",
+    path: "",
     element: <ProtectedLivreurRoutes />,
     children: [
       {
         path: "",
         element: <LivreurInterface />,
         children: [
-          { path: "dashboard", element: <LivreurDashboard /> },
+          { path: "LivreurDashboard", element: <LivreurDashboard /> },
           { path: "commandes/en-cours", element: <CommandesEnCours /> },
           { path: "commandes/historique", element: <HistoriqueCommandes /> },
           { path: "clients", element: <Clients /> },
