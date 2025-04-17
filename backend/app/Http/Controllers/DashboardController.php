@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commande;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use App\Models\User;
@@ -27,19 +28,98 @@ class DashboardController extends Controller implements HasMiddleware
     public function ageCount()
     {
         $now = Carbon::now();
+        return response()->json([
+            'Enfant' => User::whereDate('date_naissance', '>', $now->copy()->subYears(13))->count(),
+            'Jeune' => User::whereDate('date_naissance', '<=', $now->copy()->subYears(13))
+                        ->whereDate('date_naissance', '>', $now->copy()->subYears(25))
+                        ->count(),
+            'Adulte' => User::whereDate('date_naissance', '<=', $now->copy()->subYears(25))->count(),
+        ]);
+    }
 
-        $enfant = User::whereDate('date_naissance', '>', $now->copy()->subYears(13))->count();
+    public function listAnnee()
+    {
+        return response()->json(
+            Commande::selectRaw('YEAR(created_at) as annee')
+                ->distinct()
+                ->orderBy('annee', 'desc')
+                ->pluck('annee')
+        );
+    }
 
-        $jeune = User::whereDate('date_naissance', '<=', $now->copy()->subYears(13))
-                    ->whereDate('date_naissance', '>', $now->copy()->subYears(25))
-                    ->count();
+    public function statistiquesVentes($annee)
+    {
+        $commandes = Commande::selectRaw('MONTH(created_at) as mois, COUNT(*) as nombre, SUM(total) as total')
+            ->whereYear('created_at', $annee)
+            ->where(function ($query) {
+                $query->whereIn('etatCommande', ['Livrée', 'Retirée'])
+                    ->orWhereNotNull('transaction_id');
+            })
+            ->groupByRaw('MONTH(created_at)')
+            ->orderByRaw('MONTH(created_at)')
+            ->get();
 
-        $adulte = User::whereDate('date_naissance', '<=', $now->copy()->subYears(25))->count();
+        $commandesAnneePrecedente = Commande::selectRaw('SUM(total) as total')
+            ->whereYear('created_at', $annee - 1)
+            ->where(function ($query) {
+                $query->whereIn('etatCommande', ['Livrée', 'Retirée'])
+                    ->orWhereNotNull('transaction_id');
+            })
+            ->get();
+
+        $totalDesVentes = $commandes->sum('total');
+        $totalDesVentesAnneePrecedente = $commandesAnneePrecedente->sum('total');
+
+        $evolutionPourcentage = $totalDesVentesAnneePrecedente > 0
+            ? round((($totalDesVentes - $totalDesVentesAnneePrecedente) / $totalDesVentesAnneePrecedente) * 100, 2)
+            : 0;
+
+        $nombreCommandes = $commandes->sum('nombre');
+        $revenuParCommande = $nombreCommandes > 0 ? round($totalDesVentes / $nombreCommandes, 2) : 0;
+
+        $ventesParMois = array_fill(1, 12, 0);
+        foreach ($commandes as $commande) {
+            $ventesParMois[$commande->mois] = (float) $commande->total;
+        }
 
         return response()->json([
-            'Enfant' => $enfant,
-            'Jeune' => $jeune,
-            'Adulte' => $adulte,
+            'totalDesVentes' => round($totalDesVentes, 2),
+            'evolutionPourcentage' => $evolutionPourcentage,
+            'nombreCommandes' => $nombreCommandes,
+            'revenuParCommande' => $revenuParCommande,
+            'ventesParMois' => array_values($ventesParMois),
         ]);
+    }
+
+    public function statistiquesCommandes($annee)
+    {
+        $statuts = ['Retirée', 'Livrée', 'Annulée'];
+        $resultat = [];
+    
+        foreach ($statuts as $statut) {
+            $commandes = Commande::selectRaw('MONTH(created_at) as mois, COUNT(*) as total')
+                ->whereYear('created_at', $annee)
+                ->where('etatCommande', $statut)
+                ->groupByRaw('MONTH(created_at)')
+                ->pluck('total', 'mois')
+                ->toArray();
+    
+            $data = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $data[] = $commandes[$i] ?? 0;
+            }
+    
+            $resultat[] = [
+                'label' => $statut,
+                'data' => $data,
+            ];
+        }
+    
+        return response()->json($resultat);
+    }   
+
+    public function commandesEnAttente()
+    {
+        return response()->json(Commande::with('client', 'commandeLivraison', 'commandeRetraitDrive')->where('etatCommande', 'En attente')->get());
     }
 }

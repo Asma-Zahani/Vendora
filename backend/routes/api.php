@@ -87,6 +87,10 @@ Route::post('/save-transaction-id', [StripePaymentController::class, 'saveTransa
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/genreCount', [DashboardController::class, 'genreCount']);
     Route::get('/ageCount', [DashboardController::class, 'ageCount']);
+    Route::get('/listAnnee', [DashboardController::class, 'listAnnee']);
+    Route::get('/statistiquesVentes/{annee}', [DashboardController::class, 'statistiquesVentes']);
+    Route::get('/statistiquesCommandes/{annee}', [DashboardController::class, 'statistiquesCommandes']);
+    Route::get('/commandesEnAttente', [DashboardController::class, 'commandesEnAttente']);
 });
 
 require __DIR__.'/auth.php';

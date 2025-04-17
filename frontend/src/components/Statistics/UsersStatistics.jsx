@@ -1,26 +1,9 @@
+/* eslint-disable react/prop-types */
 import DoughnutChart from "@/components/Charts/DoughnutChart";
 import PieChart from "@/components/Charts/PieChart";
-import { getAuthenticatedEntities } from "@/service/EntitesService";
-import { useEffect, useState } from "react";
 
-const UsersStatistics = () => {
-  const [genreCount, setGenreCount] = useState([]);
-  const [ageCount, setAgeCount] = useState([]);
+const UsersStatistics = ({genreCount, ageCount}) => {
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setGenreCount(await getAuthenticatedEntities("genreCount"));
-        setAgeCount(await getAuthenticatedEntities("ageCount"));
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  console.log(genreCount);
-  
   const dataGenre = {
     labels: ['Male', 'Femelle'],
     datasets: [
