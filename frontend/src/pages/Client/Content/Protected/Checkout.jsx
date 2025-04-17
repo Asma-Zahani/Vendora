@@ -158,6 +158,9 @@ const Checkout = () => {
                     total: checkoutData.discounted,
                     transaction_id: transactionId, 
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
+                    adresse_livraison: formData.adresse,
+                    region_livraison: formData.region,
+                    ville_livraison: formData.ville,
                     produits: checkoutData.produits.map(produit => ({
                         produit_id: produit.produit_id,
                         quantite: produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite,

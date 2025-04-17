@@ -89,6 +89,9 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'produits.*.quantite' => 'required|integer|min:1',
             'produits.*.couleur' => 'nullable|string|max:50',
             'transaction_id' => 'nullable|string|max:255',
+            'adresse_livraison' => 'nullable|string|max:255',
+            'region_livraison' => 'nullable|string|max:255',
+            'ville_livraison' => 'nullable|string|max:255',
         ]);
         $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
@@ -104,6 +107,9 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $validatedData['dateLivraison'] ?? null,
             'livreur_id' => $validatedData['livreur_id'] ?? null,
+            'adresse_livraison' => $validatedData['adresse_livraison'] ?? null,
+            'region_livraison' => $validatedData['region_livraison'] ?? null,
+            'ville_livraison' => $validatedData['ville_livraison'] ?? null,
         ]);
 
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
@@ -175,6 +181,9 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
+            'adresse_livraison' => 'nullable|string|max:255',
+    'region_livraison' => 'nullable|string|max:255',
+    'ville_livraison' => 'nullable|string|max:255',
         ]);
 
         // Mise à jour des données de la commande
@@ -189,6 +198,9 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         $commandeLivraison->update([
             'dateLivraison' => $validatedData['dateLivraison'] ?? $commandeLivraison->dateLivraison,
             'livreur_id' => $validatedData['livreur_id'] ?? $commandeLivraison->livreur_id,
+            'adresse_livraison' => $validatedData['adresse_livraison'] ?? $commandeLivraison->adresse_livraison,
+    'region_livraison' => $validatedData['region_livraison'] ?? $commandeLivraison->region_livraison,
+    'ville_livraison' => $validatedData['ville_livraison'] ?? $commandeLivraison->ville_livraison,
         ]);
 
         return response()->json([

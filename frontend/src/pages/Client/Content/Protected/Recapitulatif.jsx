@@ -1,3 +1,5 @@
+
+
 /* eslint-disable react/prop-types */
 import img from "@/assets/default/image.png";
 
@@ -17,7 +19,7 @@ const Recapitulatif = ({checkoutData}) => {
                             </div>
                             <div className="flex flex-col text-start text-md ml-2">
                                 <p className="font-semibold">{produit.nom}</p>
-                                <span className="text-sm">{produit.pivot?.couleur}</span>
+                                <span className="text-sm">cyan</span>
                             </div>
                         </div>
                         
@@ -34,8 +36,14 @@ const Recapitulatif = ({checkoutData}) => {
         {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
             Remise <span>{checkoutData.remise}%</span>
         </p>}
+
+        {checkoutData.fraisLivraison > 0 && (
+        <p className="text-sm font-normal flex justify-between">
+            Frais de livraison <span>${checkoutData.fraisLivraison}</span>
+        </p>
+        )}
         <p className="text-lg font-semibold flex justify-between">
-            Total <strong>${checkoutData.discounted}</strong>
+            Total <strong>${checkoutData.totalAvecFrais}</strong>
         </p>
         {checkoutData.codePromo && <p><strong>Code Promo :</strong> {checkoutData.codePromo}</p>}
     </div>
