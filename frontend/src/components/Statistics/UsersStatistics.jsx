@@ -1,13 +1,32 @@
 import DoughnutChart from "@/components/Charts/DoughnutChart";
 import PieChart from "@/components/Charts/PieChart";
+import { getAuthenticatedEntities } from "@/service/EntitesService";
+import { useEffect, useState } from "react";
 
 const UsersStatistics = () => {
+  const [genreCount, setGenreCount] = useState([]);
+  const [ageCount, setAgeCount] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setGenreCount(await getAuthenticatedEntities("genreCount"));
+        setAgeCount(await getAuthenticatedEntities("ageCount"));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(genreCount);
+  
   const dataGenre = {
-    labels: ['Homme', 'Femme'],
+    labels: ['Male', 'Femelle'],
     datasets: [
       {
         label: 'Répartition par genre',
-        data: [55, 45], // Exemple : 55% hommes, 45% femmes
+        data: [genreCount.Male, genreCount.Femelle],
         backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
         borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
         borderWidth: 1,
@@ -20,7 +39,7 @@ const UsersStatistics = () => {
     datasets: [
       {
         label: 'Répartition par âge',
-        data: [30, 40, 20], // Exemple : 30% ont entre 18-25 ans, etc.
+        data: [ageCount.Enfant, ageCount.Jeune, ageCount.Adulte],
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(153, 102, 255, 0.2)',
@@ -89,7 +108,6 @@ const UsersStatistics = () => {
         </div>
       </div>
 
-      {/* Statistiques genres */}
       <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm w-full">
         <h1 className="text-xl font-semibold mb-4">Répartition par genre</h1>
         <div className="flex items-center justify-center">

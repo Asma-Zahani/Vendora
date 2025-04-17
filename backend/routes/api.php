@@ -16,6 +16,7 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
 use App\Http\Controllers\CouleurController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DriveController;
 use App\Http\Controllers\EnumsController;
 use App\Http\Controllers\InteractionController;
@@ -82,5 +83,10 @@ Route::get('/statusProduits', [EnumsController::class, 'getStatusProduits']);
 
 Route::post('/create-payment-intent', [StripePaymentController::class, 'createPaymentIntent']);
 Route::post('/save-transaction-id', [StripePaymentController::class, 'saveTransactionId']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/genreCount', [DashboardController::class, 'genreCount']);
+    Route::get('/ageCount', [DashboardController::class, 'ageCount']);
+});
+
 require __DIR__.'/auth.php';
-require __DIR__.'/recommendation.php';
