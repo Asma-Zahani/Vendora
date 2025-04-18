@@ -33,8 +33,6 @@ export const Dashboard = () => {
     fetchData();
   }, []);
   
-  console.log(users);
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
