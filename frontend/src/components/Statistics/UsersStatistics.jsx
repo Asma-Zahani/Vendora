@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import DoughnutChart from "@/components/Charts/DoughnutChart";
 import PieChart from "@/components/Charts/PieChart";
+import { Link } from 'react-router';
 
-const UsersStatistics = ({genreCount, ageCount}) => {
+const UsersStatistics = ({genreCount, ageCount, users}) => {
 
   const dataGenre = {
     labels: ['Male', 'Femelle'],
@@ -86,8 +87,30 @@ const UsersStatistics = ({genreCount, ageCount}) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Bloc commandes récentes */}
       <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm w-full sm:col-span-2">
-        <div className="flex items-center justify-center h-100">
-          <div className="flex flex-col max-w-lg">Users</div>
+        <div className="h-100">
+          <h1 className="text-xl font-semibold mb-4">Users</h1>
+          <div className="max-h-[350px] overflow-y-auto scrollbar relative">
+            {users?.length > 0 &&
+              <table className="min-w-full">
+                <thead className="sticky top-0 bg-customLight dark:bg-customDark z-10 border-b border-contentLight dark:border-borderDark shadow-xs dark:shadow-borderDark">
+                  <tr>
+                    <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">User</th>
+                    <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Email</th>
+                    <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Téléphone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id} className="border-b border-contentLight dark:border-borderDark">
+                      <td className="py-4 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200"><Link to={user.role === "client" ? "/clients" : user.role === "livreurs" ? "/livreurs" : ""}>{user.prenom + " " + user.nom}</Link></td>
+                      <td className="py-4 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200">{user.email}</td>
+                      <td className="py-4 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200">{user.telephone}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            }
+          </div>
         </div>
       </div>
 

@@ -3,6 +3,14 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import AreaChart from "@/components/Charts/AreaChart";
 
 const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
+  const objectifTotalVentes = 10000;
+  const objectifNombreCommandes = 100;
+  const objectifRevenuParCommande = 200;
+
+  const pourcentageVentes = Math.min((statistiquesVentes.totalDesVentes / objectifTotalVentes) * 100, 100);
+  const pourcentageCommandes = Math.min((statistiquesVentes.nombreCommandes / objectifNombreCommandes) * 100, 100);
+  const pourcentageRevenu = Math.min((statistiquesVentes.revenuParCommande / objectifRevenuParCommande) * 100, 100);
+
   const salesChartData = {
     labels,
     datasets: [
@@ -68,7 +76,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
             <p className="text-3xl font-bold">${statistiquesVentes.totalDesVentes}</p>
             <p className="text-sm text-grayDark">Total des ventes</p>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-              <div className="h-2 rounded-full" style={{ width: "80%", backgroundColor: "rgba(54, 162, 235, 0.5)" }}></div>
+              <div className="h-2 rounded-full" style={{ width: `${pourcentageVentes}%`, backgroundColor: "rgba(54, 162, 235, 0.5)" }}></div>
             </div>
           </div>
 
@@ -76,7 +84,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
             <p className="text-3xl font-bold">{statistiquesVentes.nombreCommandes}</p>
             <p className="text-sm text-grayDark">Nombre de commandes</p>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-              <div className="h-2 rounded-full" style={{ width: "70%", backgroundColor: "rgba(75, 192, 192, 0.5)" }}></div>
+              <div className="h-2 rounded-full" style={{ width: `${pourcentageCommandes}%`, backgroundColor: "rgba(75, 192, 192, 0.5)" }}></div>
             </div>
           </div>
 
@@ -84,7 +92,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
             <p className="text-3xl font-bold">${statistiquesVentes.revenuParCommande}</p>
             <p className="text-sm text-grayDark">Revenu par commande</p>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-              <div className="h-2 rounded-full" style={{ width: "90%", backgroundColor: "rgba(255, 99, 132, 0.5)" }}></div>
+              <div className="h-2 rounded-full" style={{ width: `${pourcentageRevenu}%`, backgroundColor: "rgba(255, 99, 132, 0.5)" }}></div>
             </div>
           </div>
         </div>

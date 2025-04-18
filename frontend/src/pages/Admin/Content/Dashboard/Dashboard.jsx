@@ -14,6 +14,7 @@ export const Dashboard = () => {
   const [statistiquesVentes, setStatistiquesVentes] = useState([]);
   const [statistiquesCommandes, setStatistiquesCommandes] = useState([]);
   const [commandesEnAttente, setCommandesEnAttente] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
   const [isOpen, setIsOpen] = useState(false);
   const labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'];
@@ -24,12 +25,15 @@ export const Dashboard = () => {
         setAgeCount(await getAuthenticatedEntities("ageCount"));
         setListAnnee(await getAuthenticatedEntities("listAnnee"));
         setCommandesEnAttente(await getAuthenticatedEntities("commandesEnAttente"));
+        setUsers(await getAuthenticatedEntities("users"));
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
     };
     fetchData();
   }, []);
+  
+  console.log(users);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +73,7 @@ export const Dashboard = () => {
           
         <SalesStatistics labels={labels} selectedYear={selectedYear} statistiquesVentes={statistiquesVentes} />
         <OrdersStatistics labels={labels} statistiquesCommandes={{...statistiquesCommandes, commandesEnAttente}} />  
-        <UsersStatistics genreCount={genreCount} ageCount={ageCount} />        
+        <UsersStatistics genreCount={genreCount} ageCount={ageCount} users={users} />        
       </section>
     </>
   );
