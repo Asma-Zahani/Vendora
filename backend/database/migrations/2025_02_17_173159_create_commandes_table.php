@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('code_promotion_id')->nullable()->constrained('code_promotions', 'code_promotion_id')->onDelete('cascade');
             $table->decimal('total', 10, 2);
             $table->enum('etatCommande', EtatCommandeEnum::values())->default(EtatCommandeEnum::EnAttente->value);
-            $table->string('transaction_id')->nullable()->after('etatCommande');
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
         });
     }
