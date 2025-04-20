@@ -17,7 +17,10 @@ class Interaction extends Model
     protected $fillable = [
         'user_id',
         'produit_id',
-        'interaction_type',
+        'vue_produit',
+        'favori',
+        'ajout_panier',
+        'achat',
     ];
 
     public function user()

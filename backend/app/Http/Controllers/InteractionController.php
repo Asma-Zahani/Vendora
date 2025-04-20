@@ -31,7 +31,10 @@ class InteractionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'produit_id' => 'required|exists:produits,produit_id',
-            'interaction_type' => 'required|in:vue,achat,panier',
+            'vue_produit' => 'nullable|numeric|min:0',
+            'favori' => 'nullable|boolean',
+            'ajout_panier' => 'nullable|numeric|min:0',
+            'achat' => 'nullable|boolean',
         ]);
         
         $interaction = Interaction::create($validatedData);
@@ -60,7 +63,10 @@ class InteractionController extends Controller implements HasMiddleware
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'produit_id' => 'required|exists:produits,produit_id',
-            'interaction_type' => 'required|in:vue,achat,panier',
+            'vue_produit' => 'nullable|numeric|min:0',
+            'favori' => 'nullable|boolean',
+            'ajout_panier' => 'nullable|numeric|min:0',
+            'achat' => 'nullable|boolean',
         ]);
         
         $interaction->update($validatedData);

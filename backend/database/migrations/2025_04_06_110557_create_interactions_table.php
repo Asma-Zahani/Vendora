@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('interactions', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
-            $table->string('interaction_type');
-            $table->primary(['user_id', 'produit_id', 'interaction_type']);
+            $table->integer('vue_produit')->default(0);
+            $table->boolean('favori')->default(false);
+            $table->integer('ajout_panier')->default(0);
+            $table->boolean('achat')->default(false);
+            $table->primary(['user_id', 'produit_id']);
         });
     }
 

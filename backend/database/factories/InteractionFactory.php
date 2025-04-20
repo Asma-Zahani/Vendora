@@ -7,30 +7,21 @@ use App\Models\Produit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Interaction>
- */
 class InteractionFactory extends Factory
 {
     protected $model = Interaction::class;
 
     public function definition(): array
     {
-        // Choisir un type d'interaction au hasard
-        $type = $this->faker->randomElement(['achat', 'vue', 'panier']);
-
-        // On tente de générer une combinaison unique
         $produit = Produit::inRandomOrder()->first();
         $user = User::inRandomOrder()->first();
 
-        // Vérification que cette combinaison n'existe pas déjà
+        // S'assurer qu'on ne duplique pas une interaction déjà existante
         while (
             Interaction::where('user_id', $user->id)
                 ->where('produit_id', $produit->produit_id)
-                ->where('interaction_type', $type)
                 ->exists()
         ) {
-            $type = $this->faker->randomElement(['achat', 'vue', 'panier']);
             $produit = Produit::inRandomOrder()->first();
             $user = User::inRandomOrder()->first();
         }
@@ -38,7 +29,10 @@ class InteractionFactory extends Factory
         return [
             'user_id' => $user->id,
             'produit_id' => $produit->produit_id,
-            'interaction_type' => $type,
+            'vue_produit' => $this->faker->numberBetween(0, 20),
+            'favori' => $this->faker->boolean(50),
+            'ajout_panier' => $this->faker->numberBetween(0, 5),
+            'achat' => $this->faker->boolean(30),
         ];
     }
 }
