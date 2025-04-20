@@ -34,34 +34,30 @@ const usePanierWishlist = (produits) => {
         // 🛒 Ajout avec la bonne couleur
         setFormData({
             client_id: user?.id,
-            produit_id,
+            produit_id: produit_id,
             quantite: quantiteTotale,
-            couleur
+            couleur: couleur
         });
     
         setPanierAjoute(true);
     };
     
 
-    const modifierQuantitePanier = async (produit_id, couleur, nouvelleQuantite) => {
-        const produitExistant = produits.find(
-            item => item.produit_id === produit_id && item.pivot?.couleur === couleur
-        );
-    
+    const modifierQuantitePanier = async (produit_id, nouvelleQuantite, couleur) => {        
+        const produitExistant = produits.find(item => {
+            const sameId = item.produit_id == produit_id;            
+            const sameColor = couleur ? item.pivot?.couleur === couleur : true;            
+            return sameId && sameColor;
+        });        
         if (produitExistant) {
-            const data = {
+            setFormData({
                 client_id: user?.id,
                 produit_id: produit_id,
                 quantite: nouvelleQuantite,
                 couleur: couleur
-            };
-    
-            try {
-                await createEntity('panier', data); // <- ici on appelle ton endpoint
-                setPanierAjoute(true);
-            } catch (error) {
-                console.error("Erreur lors de la modification du panier :", error.response?.data || error.message);
-            }
+            });
+            
+            setPanierAjoute(true);
         }
     };
     

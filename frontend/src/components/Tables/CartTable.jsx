@@ -51,11 +51,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         }
 
         
-        modifierQuantitePanier({
-            produit_id: produit.produit_id,
-            quantite: produit.pivot.quantite,
-            couleur: produit.pivot?.couleur
-        });
+        modifierQuantitePanier(produit.produit_id, produit.pivot.quantite, produit.pivot?.couleur);
         
     };
 
@@ -121,12 +117,12 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <div className="flex justify-center items-center gap-3">
-                                                            <div className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark">
-                                                                <Minus size={16} onClick={() => handleQuantityChange(index, "decrement")} />
+                                                            <div onClick={() => handleQuantityChange(index, "decrement")} className="p-2 dark:bg-contentDark rounded-l-md border dark:border-r-0 border-gray-200 dark:border-borderDark">
+                                                                <Minus size={16} />
                                                             </div>
                                                             <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={produit.pivot?.quantite ? produit.pivot.quantite : produit.quantite} readOnly />
-                                                            <div className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark">
-                                                                <Plus size={16} onClick={() => handleQuantityChange(index, "increment")} />
+                                                            <div onClick={() => handleQuantityChange(index, "increment")} className="p-2 dark:bg-contentDark rounded-r-md border dark:border-l-0 border-gray-200 dark:border-borderDark">
+                                                                <Plus size={16} />
                                                             </div>
                                                         </div>
                                                     </td>
