@@ -57,7 +57,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
         { !list &&
         <div className="flex flex-col space-y-1 md:space-y-2">
           <div onClick={() => setIsViewModalOpen(true)} className={`hidden md:hidden lg:flex bg-contentLight hover:bg-contentDark dark:text-black py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300
-                ${produit.status === "Disponible" ? produit.couleurs && produit.couleurs.length > 0 ? "" : "relative left-7" : ""}`}
+                ${produit.status === "Disponible" ? produit.couleurs && produit.couleurs.length > 1 ? "" : "relative left-7" : ""}`}
               onMouseEnter={() => setIsViewHovered(true)} onMouseLeave={() => setIsViewHovered(false)} >
               {isViewHovered ? <span className="truncate"><Eye data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span>Vue rapide</span>}
           </div>
@@ -66,7 +66,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
             <Eye size={17}/>
             </div>
           </div>
-          {produit.status === "Disponible" ? produit.couleurs && produit.couleurs.length > 0 ? 
+          {produit.status === "Disponible" ? produit.couleurs && produit.couleurs.length > 1 ? 
             <>
               <div onClick={() => setIsShopModalOpen(true)} className="hidden md:hidden lg:flex bg-purpleLight py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300"
                 onMouseEnter={() => setIsShopHovered(true)} onMouseLeave={() => setIsShopHovered(false)} >
@@ -88,9 +88,9 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
                 <Plus size={16} />
               </button>
               <button onMouseEnter={() => setIsShopHovered(true)} onMouseLeave={() => setIsShopHovered(false)} className="hidden md:hidden lg:flex px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
-                {isShopHovered ? <span onClick={() => ajouterAuPanier(produit.produit_id, quantity)} className="truncate w-full block px-9"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="truncate w-full block">Ajouter Au panier</span>}
+                {isShopHovered ? <span onClick={() => ajouterAuPanier(produit.produit_id, quantity, produit.couleurs[0]?.nom)} className="truncate w-full block px-9"><ShoppingCart data-aos="fade-up" data-aos-duration="300" className="text-white" /></span> : <span className="truncate w-full block">Ajouter Au panier</span>}
               </button>
-              <button onClick={() => ajouterAuPanier(produit.produit_id, quantity)} className="flex md:flex lg:hidden px-3 sm:px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
+              <button onClick={() => ajouterAuPanier(produit.produit_id, quantity, produit.couleurs[0]?.nom)} className="flex md:flex lg:hidden px-3 sm:px-4 py-2 bg-purpleLight text-white rounded-r-full items-center space-x-2 truncate">
                 <ShoppingCart size={17} data-aos="fade-up" data-aos-duration="300" className="text-white" />
               </button>
             </div> : 

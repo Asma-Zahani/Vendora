@@ -103,7 +103,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 <span className="font-bold text-lg">{produit.nom}</span>
                                                                 {produit.pivot?.couleur && <span>Couleur : <span className="font-semibold">{produit.pivot?.couleur}</span></span>}
                                                                 <div className="flex gap-2 mt-2">
-                                                                    {produit.pivot?.couleur && 
+                                                                    {produit.pivot?.couleur && produit.couleurs.length > 1 && 
                                                                         <button onClick={() => {setIsShopModalOpen(true); setSelectedProduit(produit)}} className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
                                                                                 <Edit2 size={17}/> 
                                                                         </button>
