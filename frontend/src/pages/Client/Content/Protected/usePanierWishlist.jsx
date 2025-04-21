@@ -48,7 +48,7 @@ const usePanierWishlist = (produits) => {
             const sameId = item.produit_id == produit_id;            
             const sameColor = couleur ? item.pivot?.couleur === couleur : true;            
             return sameId && sameColor;
-        });        
+        });
         if (produitExistant) {
             setFormData({
                 client_id: user?.id,
@@ -56,7 +56,6 @@ const usePanierWishlist = (produits) => {
                 quantite: nouvelleQuantite,
                 couleur: couleur
             });
-            
             setPanierAjoute(true);
         }
     };
