@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Truck, MapPin, Clock } from "lucide-react";
 import Header from "@/pages/Admin/Content/Header";
 import { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ export const Dashboard = () => {
 
         {/* Liste des commandes du jour */}
         <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg">
-        <h2 className="text-xl font-bold mb-4 text-black dark:text-gray-600">📋 Commandes à livrer aujourd'hui</h2>            
+        <h2 className="text-xl font-bold mb-4 text-black dark:text-gray-600">📋 Commandes à livrer aujourd&apos;hui</h2>            
 
 
             {commandesDuJour.length > 0 ? (
@@ -70,7 +71,7 @@ export const Dashboard = () => {
                 ))}
                 </div>
             ) : (
-                <p className="text-gray-500 text-center text-lg">Aucune commande à livrer aujourd’hui.</p>
+                <p className="text-gray-500 text-center text-lg">Aucune commande à livrer aujourd&apos;hui.</p>
             )}
             </div>
       </section>
