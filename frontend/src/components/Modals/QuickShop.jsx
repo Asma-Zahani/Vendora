@@ -36,10 +36,13 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
       setQuantity(quantity - 1);
     }
   };
+  console.log(produit);
 
   const handleAddToCart = () => {    
-    if (quantity <= maxQuantity) {      
-      ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom, "modifier");
+    if (quantity <= maxQuantity) {
+      const ancienne_couleur = window.location.pathname === '/cart' ? produit.pivot?.couleur : null;
+      
+      ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom, ancienne_couleur);
     } else {
       alert("La quantité demandée dépasse le stock disponible !");
     }

@@ -14,7 +14,7 @@ const usePanierWishlist = (produits) => {
     const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
     const [panierAjoute, setPanierAjoute] = useState(false);
 
-    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur, modifier) => {
+    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur, ancienne_couleur) => {
         if (!user) { navigate("/login"); return; }
 
         const produitExistant = panier?.find(item => 
@@ -30,15 +30,12 @@ const usePanierWishlist = (produits) => {
             quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
         }
     
-        if (modifier) {
-            supprimerDePanier(produit_id);
-        }
-    
         setFormData({
             client_id: user?.id,
             produit_id: produit_id,
             quantite: quantiteTotale,
-            couleur: couleur
+            couleur: couleur,
+            ancienne_couleur: ancienne_couleur
         });
     
         setPanierAjoute(true);
@@ -69,9 +66,14 @@ const usePanierWishlist = (produits) => {
             produit_id,
             couleur,
         });
+
+        const produitExistant = panier?.find(item => 
+            item.produit_id === produit_id && item.pivot?.couleur === couleur
+        );
+        
         if (data.message) {
           setSuccessMessage(data.message);
-          setPanier((prevProduits) => prevProduits.filter(item => item.produit_id !== produit_id));
+          setPanier((prevProduits) => prevProduits.filter(item => item !== produitExistant));
         }
     };
 
@@ -95,58 +97,69 @@ const usePanierWishlist = (produits) => {
     
     useEffect(() => {
         if (panierAjoute && formData) {
-        const timeout = setTimeout(async () => {
-            const data = await createEntity("panier", formData);
-            
-            if (data.message) {
-                setSuccessMessage(data.message);
-                setPanier((prevProduits) => {
-                    // On cherche un produit avec le même ID ET la même couleur
-                    const produitExistant = prevProduits.find(item =>
-                        item.produit_id === formData.produit_id &&
-                        item.pivot?.couleur === formData.couleur
-                    );
+            const timeout = setTimeout(async () => {
+                console.log(formData);
                 
-                    if (produitExistant) {
-                        // Si le produit avec même couleur existe, on met à jour sa quantité
-                        return prevProduits.map(item =>
-                            item.produit_id === formData.produit_id && item.pivot?.couleur === formData.couleur
-                                ? {
-                                    ...item,
-                                    pivot: {
-                                        ...item.pivot,
-                                        quantite: formData.quantite,
-                                        couleur: formData.couleur
-                                    }
-                                }
-                                : item
-                        );
-                    } else {
-                        // Sinon, on ajoute le nouveau produit avec la couleur spécifique
-                        const produit = produits.find(item => item.produit_id === formData.produit_id);
-                        if (produit) {
-                            return [
-                                ...prevProduits,
-                                {
-                                    ...produit,
-                                    pivot: {
-                                        quantite: formData.quantite,
-                                        couleur: formData.couleur
-                                    }
-                                }
-                            ];
-                        }
-                        return prevProduits;
-                    }
-                });
+                const data = await createEntity("panier", formData);
                 
-            }
-            setPanierAjoute(false);
-        }, 1000);
+                if (data.message) {
+                    setSuccessMessage(data.message);
+                    setPanier((prevProduits) => {
+                        let updatedPanier = [...prevProduits];
     
-        return () => clearTimeout(timeout);
+                        // Étape 1 : Supprimer l'ancien produit si ancienne_couleur existe
+                        if (formData.ancienne_couleur) {
+                            updatedPanier = updatedPanier.filter(item =>
+                                !(item.produit_id === formData.produit_id && item.pivot?.couleur === formData.ancienne_couleur)
+                            );
+                        }
+    
+                        // Étape 2 : Vérifier si un produit avec la nouvelle couleur existe
+                        const produitExistant = updatedPanier.find(item =>
+                            item.produit_id === formData.produit_id &&
+                            item.pivot?.couleur === formData.couleur
+                        );
+    
+                        if (produitExistant) {
+                            // Mise à jour de la quantité
+                            return updatedPanier.map(item =>
+                                item.produit_id === formData.produit_id && item.pivot?.couleur === formData.couleur
+                                    ? {
+                                        ...item,
+                                        pivot: {
+                                            ...item.pivot,
+                                            quantite: formData.quantite,
+                                            couleur: formData.couleur
+                                        }
+                                    }
+                                    : item
+                            );
+                        } else {
+                            // Ajout d'un nouveau produit
+                            const produit = produits.find(item => item.produit_id === formData.produit_id);
+                            if (produit) {
+                                return [
+                                    ...updatedPanier,
+                                    {
+                                        ...produit,
+                                        pivot: {
+                                            quantite: formData.quantite,
+                                            couleur: formData.couleur
+                                        }
+                                    }
+                                ];
+                            }
+                            return updatedPanier;
+                        }
+                    });
+                }
+                setPanierAjoute(false);
+            }, 1000);
+    
+            return () => clearTimeout(timeout);
         }
     }, [panierAjoute, formData]);
+    
 
     return { ajouterAuPanier, ajouterAuListeSouhait, modifierQuantitePanier, supprimerDePanier, supprimerDeListeSouhait };
 };

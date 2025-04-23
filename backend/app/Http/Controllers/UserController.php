@@ -123,22 +123,23 @@ class UserController extends Controller implements HasMiddleware
             'produit_id' => 'required|exists:produits,produit_id',
             'quantite' => 'required|integer|min:1',
             'couleur' => 'nullable|string|max:50',
+            'ancienne_couleur' => 'nullable|string|max:50'
         ]);
 
         $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
-        $panierProduit = PanierProduit::where('client_id', $client->id)
-                                      ->where('produit_id', $produit->produit_id)
-                                      ->first();
-
-        if ($panierProduit) {
-            if (empty($validatedData['couleur']) || $panierProduit->couleur === $validatedData['couleur']) {
+        if ($validatedData['ancienne_couleur'] ?? null) {
+            $existingProduct = PanierProduit::where('client_id', $client->id)
+                                          ->where('produit_id', $produit->produit_id)
+                                          ->where('couleur', $validatedData['couleur'] ?? null)
+                                          ->first();
+        
+            if ($existingProduct) {
                 PanierProduit::where('client_id', $client->id)
                             ->where('produit_id', $produit->produit_id)
+                            ->where('couleur', $validatedData['couleur'] ?? null)
                             ->update(['quantite' => $validatedData['quantite']]);
-            
-                return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
             } else {
                 PanierProduit::create([
                     'client_id' => $client->id,
@@ -146,18 +147,34 @@ class UserController extends Controller implements HasMiddleware
                     'quantite' => $validatedData['quantite'],
                     'couleur' => $validatedData['couleur'] ?? null
                 ]);
-            
-                return response()->json(['message' => 'Couleur mise à jour avec succès'], 200);                
             }
-        } 
-        else {
-            PanierProduit::create([
-                'client_id' => $client->id,
-                'produit_id' => $produit->produit_id,
-                'quantite' => $validatedData['quantite'],
-                'couleur' => $validatedData['couleur'] ?? null
-            ]);
-        }        
+            PanierProduit::where('client_id', $client->id)
+                        ->where('produit_id', $produit->produit_id)
+                        ->where('couleur', $validatedData['ancienne_couleur'])
+                        ->delete();
+        
+            return response()->json(['message' => 'Couleur modifiée avec succès'], 200);
+        }
+
+        $panierProduit = PanierProduit::where('client_id', $client->id)
+                                    ->where('produit_id', $produit->produit_id)
+                                    ->where('couleur', $validatedData['couleur'] ?? null)
+                                    ->first();
+
+        if ($panierProduit) {
+            PanierProduit::where('client_id', $client->id)
+                        ->where('produit_id', $produit->produit_id)
+                        ->where('couleur', $validatedData['couleur'] ?? null)
+                        ->update(['quantite' => $validatedData['quantite']]);
+            return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
+        }
+
+        PanierProduit::create([
+            'client_id' => $client->id,
+            'produit_id' => $produit->produit_id,
+            'quantite' => $validatedData['quantite'],
+            'couleur' => $validatedData['couleur'] ?? null
+        ]);
 
         return response()->json(['message' => 'Produit ajouté au panier avec succès'], 200);
     }
@@ -199,18 +216,12 @@ class UserController extends Controller implements HasMiddleware
         $client = User::findOrFail($validatedData['client_id']);
         $produit = Produit::findOrFail($validatedData['produit_id']);
 
-        $panierProduit = PanierProduit::where('client_id', $client->id)
-                                      ->where('produit_id', $produit->produit_id)
-                                      ->first();
+        PanierProduit::where('client_id', $client->id)
+                    ->where('produit_id', $produit->produit_id)
+                    ->where('couleur', $validatedData['couleur'] ?? null)
+                    ->delete();
 
-        if ($panierProduit) {
-            PanierProduit::where('client_id', $client->id)
-                 ->where('produit_id', $produit->produit_id)
-                 ->delete();
-            return response()->json(['message' => 'Produit supprimé du panier avec succès'], 200);
-        } else {
-            return response()->json(['message' => 'Produit non trouvé dans le panier'], 404);
-        }
+        return response()->json(['message' => 'Produit supprimé du panier avec succès'], 200);
     }
 
     /**

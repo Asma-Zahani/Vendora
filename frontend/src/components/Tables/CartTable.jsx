@@ -104,7 +104,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                                 <Edit2 size={17}/> 
                                                                         </button>
                                                                     }
-                                                                    <button onClick={() => {supprimerProduit(produit.produit_id)}} className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
+                                                                    <button onClick={() => {supprimerProduit(produit.produit_id, produit.pivot?.couleur)}} className="text-gray-500 transition-colors duration-200 dark:text-gray-300 hover:text-red-500 focus:outline-none">
                                                                             <Trash2 size={17}/> 
                                                                     </button>
                                                                 </div>
