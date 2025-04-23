@@ -32,7 +32,7 @@ const Header = () => {
               >
                 <ul className="flex flex-col">
                   <li>
-                    <Link onClick={() => {setShowDropdown(!showDropdown)}} to="/shop" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <Link onClick={() => {setShowDropdown(!showDropdown)}} to="/boutique" className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
                       Page Boutique
                     </Link>
                   </li>

@@ -165,7 +165,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                     </table>
                                 </div>
                                 <div className="flex justify-between">
-                                    <Link to={"/shop"} className="border border-purpleLight hover:border-purpleLightHover py-2 px-4 rounded-lg text-purpleLight hover:text-purpleLightHover">Continuer vos achats</Link>
+                                    <Link to={"/boutique"} className="border border-purpleLight hover:border-purpleLightHover py-2 px-4 rounded-lg text-purpleLight hover:text-purpleLightHover">Continuer vos achats</Link>
                                     <button onClick={handleCheckout} className="bg-purpleLight hover:bg-purpleLightHover py-2 px-4 rounded-lg text-white">Passer à la caisse</button>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                         <p>Vous trouverez de nombreux produits intéressants sur notre page &quot;Boutique&quot;.</p>
                                     </div>
                                     <div className="flex items-center justify-center mt-4 gap-x-3">
-                                        <Link to={"/shop"} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
+                                        <Link to={"/boutique"} className="flex items-center px-4 py-2 text-sm text-white bg-purpleLight rounded-md gap-x-2">
                                             <span className="text-lg">Acheter maintenant</span>
                                         </Link>
                                     </div>

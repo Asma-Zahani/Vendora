@@ -37,6 +37,13 @@ import AdressesLivraison from "@/pages/Livreur/Content/Clients/AdressesLivraison
 import CommandesEnCours from "@/pages/Livreur/Content/Commandes/CommandesEnCours";
 import HistoriqueCommandes from "@/pages/Livreur/Content/Commandes/HistoriqueCommandes";
 import ClientsLivreur from "@/pages/Livreur/Content/Clients/Clients";
+import Mentions from "@/pages/Legal/Mentions";
+import Confidentialite from "@/pages/Legal/Confidentialite";
+import CGV from "@/pages/Legal/CGV";
+import CGU from "@/pages/Legal/CGU";
+import Protection from "@/pages/Legal/Protection";
+import Contact from "@/pages/Client/Content/Contact";
+
 const routes = [
   {
     path: "",
@@ -52,8 +59,14 @@ const routes = [
     path: "/",
     element: <UserInterface />,
     children: [ 
-      { path: "shop", element: <Shop /> },
-      { path: "shop/:id", element: <DetailProduit /> },
+      { path: "contact", element: <Contact /> },
+      { path: "mentions", element: <Mentions /> },
+      { path: "confidentialite", element: <Confidentialite /> },
+      { path: "cgv", element: <CGV /> },
+      { path: "cgu", element: <CGU /> },
+      { path: "protection", element: <Protection /> },
+      { path: "boutique", element: <Shop /> },
+      { path: "boutique/:id", element: <DetailProduit /> },
       { path: "", element: <ProtectedClientRoutes />, 
         children: [
           { path: "cart", element: <Cart /> },

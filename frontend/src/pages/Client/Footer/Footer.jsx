@@ -57,11 +57,11 @@ const Footer = () => {
                     </FooterSection>
 
                     <FooterSection title="Légal">
-                        <Link to="/mentions-legales" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Mentions légales</Link>
-                        <Link to="/politique-confidentialite" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Politique de confidentialité</Link>
+                        <Link to="/mentions" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Mentions légales</Link>
+                        <Link to="/confidentialite" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Politique de confidentialité</Link>
                         <Link to="/cgv" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Conditions générales de vente</Link>
                         <Link to="/cgu" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Conditions générales de l&apos;espace</Link>
-                        <Link to="/protection-donnees" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Protection des données</Link>
+                        <Link to="/protection" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:text-purpleLight">Protection des données</Link>
                     </FooterSection>
 
                     <FooterSection title="Liens utiles">
