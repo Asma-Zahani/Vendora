@@ -14,10 +14,9 @@ const usePanierWishlist = (produits) => {
     const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
     const [panierAjoute, setPanierAjoute] = useState(false);
 
-    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur) => {
+    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur, modifier) => {
         if (!user) { navigate("/login"); return; }
-    
-        // 🔍 On cherche si un produit avec le même ID ET la même couleur existe
+
         const produitExistant = panier?.find(item => 
             item.produit_id === produit_id && item.pivot?.couleur === couleur
         );
@@ -31,7 +30,10 @@ const usePanierWishlist = (produits) => {
             quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
         }
     
-        // 🛒 Ajout avec la bonne couleur
+        if (modifier) {
+            supprimerDePanier(produit_id);
+        }
+    
         setFormData({
             client_id: user?.id,
             produit_id: produit_id,
@@ -61,8 +63,12 @@ const usePanierWishlist = (produits) => {
     };
     
 
-    const supprimerDePanier = async (produit_id) => {
-        const data = await deleteEntity("panier", user?.id+"/"+produit_id);
+    const supprimerDePanier = async (produit_id, couleur) => {
+        const data = await deleteEntity("supprimerDuPanier", null, {
+            client_id: user?.id,
+            produit_id,
+            couleur,
+        });
         if (data.message) {
           setSuccessMessage(data.message);
           setPanier((prevProduits) => prevProduits.filter(item => item.produit_id !== produit_id));

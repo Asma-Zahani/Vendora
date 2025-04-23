@@ -77,12 +77,14 @@ const updateEntity = async (label, _id, formData) => {
   return await response.json();
 };
   
-const deleteEntity = async (label, _id) => {
-  const response = await fetch(`/api/${label}/${_id}`, {
+const deleteEntity = async (label, _id, formData) => {
+  const url = _id ? `/api/${label}/${_id}` : `/api/${label}`;
+  const response = await fetch(url, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
-    }
+    },
+    body: JSON.stringify(formData)
   });
 
   return await response.json();

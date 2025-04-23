@@ -39,7 +39,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
 
   const handleAddToCart = () => {    
     if (quantity <= maxQuantity) {      
-      ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom);
+      ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom, "modifier");
     } else {
       alert("La quantité demandée dépasse le stock disponible !");
     }

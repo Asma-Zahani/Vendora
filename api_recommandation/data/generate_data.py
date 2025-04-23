@@ -28,16 +28,20 @@ def generate_produits(output_file="data/produits.csv", n_produits=500):
     n_categories = 20
     n_marques = 20
 
+    # Listes fictives de catégories et marques (remplacez-les par vos vraies données)
+    categories = [f'Catégorie_{i}' for i in range(1, n_categories + 1)]
+    marques = [f'Marque_{i}' for i in range(1, n_marques + 1)]
+
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['produit_id', 'categorie_id', 'marque_id', 'prix'])
+        writer.writerow(['produit_id', 'categorie_name', 'marque_name', 'prix'])
         
         for i in range(1, n_produits + 1):
             writer.writerow([
                 i,
-                random.randint(1, n_categories),
-                random.randint(1, n_marques),
-                round(random.uniform(5, 500), 2)
+                random.choice(categories),  # Choisir un nom de catégorie aléatoire
+                random.choice(marques),  # Choisir un nom de marque aléatoire
+                round(random.uniform(5, 500), 2)  # Prix aléatoire entre 5 et 500
             ])
     
     print(f"{n_produits} produits générés dans {output_file}")
@@ -76,23 +80,30 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
     print(f"{n_interactions} interactions générées dans {output_file}")
 
 
+import csv
+import random
+
 def generate_preferences(output_file="data/preferences.csv", n_users=1000):
-    """ Génère un fichier CSV de préférences utilisateur avec des catégories et des marques """
+    """ Génère un fichier CSV de préférences utilisateur avec des catégories et des marques (par nom) """
     n_categories = 20
     n_marques = 20
 
+    # Listes fictives de catégories et marques (remplacez-les par vos vraies données)
+    categories = [f'Catégorie_{i}' for i in range(1, n_categories + 1)]
+    marques = [f'Marque_{i}' for i in range(1, n_marques + 1)]
+
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['user_id', 'preferred_categorie_ids', 'preferred_marque_ids'])
+        writer.writerow(['user_id', 'preferred_categorie_names', 'preferred_marque_names'])
 
         for i in range(1, n_users + 1):
-            categorie_ids = random.sample(range(1, n_categories + 1), random.randint(3, 5))
-            marque_ids = random.sample(range(1, n_marques + 1), random.randint(3, 5))
+            categorie_names = random.sample(categories, random.randint(3, 5))
+            marque_names = random.sample(marques, random.randint(3, 5))
 
             writer.writerow([
                 i,
-                categorie_ids,
-                marque_ids
+                ",".join(categorie_names),  # Convertir en chaîne séparée par des virgules
+                ",".join(marque_names)  # Convertir en chaîne séparée par des virgules
             ])
 
     print(f"{n_users} préférences générées dans {output_file}")

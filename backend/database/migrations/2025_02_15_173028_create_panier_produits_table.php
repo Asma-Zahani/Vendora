@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
             $table->integer('quantite')->default(1);
             $table->string('couleur')->nullable();
-            $table->primary(['client_id', 'produit_id']);
+            $table->primary(['client_id', 'produit_id', 'couleur']);
         });
     }
 

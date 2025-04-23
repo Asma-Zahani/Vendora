@@ -140,12 +140,12 @@ class UserController extends Controller implements HasMiddleware
             
                 return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
             } else {
-                PanierProduit::where('client_id', $client->id)
-                            ->where('produit_id', $produit->produit_id)
-                            ->update([
-                                'quantite' => $validatedData['quantite'],
-                                'couleur' => $validatedData['couleur'],
-                            ]);
+                PanierProduit::create([
+                    'client_id' => $client->id,
+                    'produit_id' => $produit->produit_id,
+                    'quantite' => $validatedData['quantite'],
+                    'couleur' => $validatedData['couleur'] ?? null
+                ]);
             
                 return response()->json(['message' => 'Couleur mise à jour avec succès'], 200);                
             }
@@ -189,10 +189,15 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Supprime un produit du panier.
      */
-    public function supprimerDuPanier($user_id, $produit_id)
+    public function supprimerDuPanier(Request $request)
     {
-        $client = User::findOrFail($user_id);
-        $produit = Produit::findOrFail($produit_id);
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'produit_id' => 'required|exists:produits,produit_id',
+            'couleur' => 'nullable|string|max:50',
+        ]);
+        $client = User::findOrFail($validatedData['client_id']);
+        $produit = Produit::findOrFail($validatedData['produit_id']);
 
         $panierProduit = PanierProduit::where('client_id', $client->id)
                                       ->where('produit_id', $produit->produit_id)
