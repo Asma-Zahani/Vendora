@@ -118,7 +118,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                             )}                                        
                                                             {column.type === "text" && (
                                                                 <h4 className="text-gray-700 dark:text-gray-200">
-                                                                    {column.prefix? column.prefix : ''}{item[column.key].length > 40 ? item[column.key].substring(0, 40) + '...' : item[column.key]}
+                                                                    {item[column.key]?.length > 40  ? item[column.key].substring(0, 40) + '...'  : item[column.key] ?? ""}
                                                                 </h4>
                                                             )}
                                                             {column.type === "nomComplete" && (

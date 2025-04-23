@@ -4,20 +4,20 @@ const menuItems = [
   {
     title: "Général",
     items: [
-      { label: "Tableau de bord", icon: <Home size={20} />, path: "LivreurDashboard" },
+      { label: "Tableau de bord", icon: <Home size={20} />, path: "DashboardLivreur" },
     ],
   },
   {
     title: "Commandes",
     items: [
-      { label: "À livrer", icon: <Package size={20} />, path: "/commandes/en-cours" },
-      { label: "Historique", icon: <Clock size={20} />, path: "/commandes/historique" },
+      { label: "À livrer", icon: <Package size={20} />, path: "/commandesEncours" },
+      { label: "Historique", icon: <Clock size={20} />, path: "/commandesHistorique" },
     ],
   },
   {
     title: "Clients",
     items: [
-      { label: "Détails clients", icon: <User size={20} />, path: "/clients" },
+      { label: "Détails clients", icon: <User size={20} />, path: "/clientsLivreur" },
       { label: "Adresse de livraison", icon: <MapPin size={20} />, path: "/adresses" },
     ],
   },

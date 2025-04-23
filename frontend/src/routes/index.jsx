@@ -8,7 +8,7 @@ import ForgetPassword from "@/pages/Authentification/ForgetPassword";
 import ResetPassword from "@/pages/Authentification/ResetPassword";
 import Shop from "@/pages/Client/Content/Boutique/Boutique";
 import { Dashboard as AdminDashboard }  from "@/pages/Admin/Content/Dashboard/Dashboard";
-import { Dashboard as LivreurDashboard }  from "@/pages/Livreur/Content/Dashboard/Dashboard";
+import { Dashboard as LivreurDashboard }  from "@/pages/Livreur/Content/Dashboard/DashboardLivreur";
 import Produits from "@/pages/Admin/Content/Gestion des produits/Produits";
 import Categories from "@/pages/Admin/Content/Gestion des produits/Categories";
 import SousCategories from "@/pages/Admin/Content/Gestion des produits/SousCategories";
@@ -36,7 +36,7 @@ import Tracking from "../pages/Client/Content/Protected/UserAccount/Tracking";
 import AdressesLivraison from "@/pages/Livreur/Content/Clients/AdressesLivraison";
 import CommandesEnCours from "@/pages/Livreur/Content/Commandes/CommandesEnCours";
 import HistoriqueCommandes from "@/pages/Livreur/Content/Commandes/HistoriqueCommandes";
-
+import ClientsLivreur from "@/pages/Livreur/Content/Clients/Clients";
 const routes = [
   {
     path: "",
@@ -86,10 +86,10 @@ const routes = [
         path: "",
         element: <LivreurInterface />,
         children: [
-          { path: "LivreurDashboard", element: <LivreurDashboard /> },
-          { path: "commandes/en-cours", element: <CommandesEnCours /> },
-          { path: "commandes/historique", element: <HistoriqueCommandes /> },
-          { path: "clients", element: <Clients /> },
+          { path: "DashboardLivreur", element: <LivreurDashboard /> },
+          { path: "commandesEncours", element: <CommandesEnCours /> },
+          { path: "commandesHistorique", element: <HistoriqueCommandes /> },
+          { path: "clientsLivreur", element: <ClientsLivreur /> },
           { path: "adresses", element: <AdressesLivraison /> },
         ]
       }

@@ -68,7 +68,7 @@ export const ProtectedAuthRoutes = () => {
             return <Navigate to="/dashboard" />;
         }
         if (user.role === "livreur") {
-            return <Navigate to="LivreurDashboard" />;
+            return <Navigate to="DashboardLivreur" />;
         }
         return <Navigate to="/" />;
     }

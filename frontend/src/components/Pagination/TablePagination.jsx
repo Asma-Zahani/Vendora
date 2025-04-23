@@ -38,11 +38,14 @@ const Pagination = ({ indexOfFirstItem, indexOfLastItem, currentPage, totalItems
 
     return (
         <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between border-contentLight dark:border-borderDark pt-3">
-            <span className="text-sm text-gray-700 dark:text-gray-400 hidden md:block lg:block">
-                Affichage de <span className="font-semibold text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span> {" "}
-                à <span className="font-semibold text-gray-900 dark:text-white">{indexOfLastItem}</span> sur {" "}
-                <span className="font-semibold text-gray-900 dark:text-white">{totalItems}</span> entrées
-            </span>
+            {!isNaN(indexOfFirstItem) && !isNaN(indexOfLastItem) && !isNaN(totalItems) && (
+  <span className="text-sm text-gray-700 dark:text-gray-400 hidden md:block lg:block">
+    Affichage de <span className="font-semibold text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span> {" "}
+    à <span className="font-semibold text-gray-900 dark:text-white">{indexOfLastItem}</span> sur {" "}
+    <span className="font-semibold text-gray-900 dark:text-white">{totalItems}</span> entrées
+  </span>
+)}
+
             {totalPages > 1 && 
                 <nav className="items-center justify-center">
                     <ul className="flex items-center -space-x-px h-8 text-sm">
