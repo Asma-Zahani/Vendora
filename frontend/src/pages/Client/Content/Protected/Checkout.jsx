@@ -5,6 +5,7 @@ import Input from "@/components/ui/Input";
 import Dropdown from "@/components/Forms/Dropdown";
 import { default as Drop } from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import ConfirmModal from "@/components/Modals/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { regions, villes } from '@/service/UserInfos';
@@ -18,6 +19,7 @@ const stripePromise = loadStripe("pk_test_51RDmsOI30GkvvwdVKatq2qxS8kRXvNyo7npbG
 
 const Checkout = () => {
     const { user, setUser, setPanier } = useContext(UserContext);
+    const { setSuccessMessage } = useContext(SuccessMessageContext);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({ ...user, drive_id: '' });
     const [paymentMethod, setPaymentMethod] = useState("espece");
@@ -98,11 +100,15 @@ const Checkout = () => {
                 }))
             };
             if (deliveryMethod === "drive") {
-                await createEntity("commandeRetraitDrives", { ...orderData, drive_id: formData.drive_id });
+                const data = await createEntity("commandeRetraitDrives", { ...orderData, drive_id: formData.drive_id });
+                if (data.message) {
+                    setSuccessMessage(data.message);
+                }
             } else {
                 const data = await createEntity("commandeLivraisons", orderData);
-                console.log(data);
-                
+                if (data.message) {
+                    setSuccessMessage(data.message);
+                }
             }
             setUser(updatedUser.data);
             setPanier([]);
