@@ -97,9 +97,7 @@ const usePanierWishlist = (produits) => {
     
     useEffect(() => {
         if (panierAjoute && formData) {
-            const timeout = setTimeout(async () => {
-                console.log(formData);
-                
+            const timeout = setTimeout(async () => {                
                 const data = await createEntity("panier", formData);
                 
                 if (data.message) {
