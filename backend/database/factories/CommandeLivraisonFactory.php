@@ -21,9 +21,9 @@ class CommandeLivraisonFactory extends Factory
         $dateLivraison = $this->faker->optional()->dateTimeBetween('now', '+1 month');
 
         return [
-            'commande_id' => $commande->commande_id, // Associer la livraison à une commande existante
+            'commande_id' => $commande->commande_id,
             'dateLivraison' => $dateLivraison ? $dateLivraison->format('Y-m-d') : null,
-            'livreur_id' => rand(0, 1) ? LivreurFactory::new()->create()->id : null,
+            'livreur_id' => rand(0, 1) ? $this->faker->numberBetween(2, 10) : null,
         ];        
     }
 }

@@ -12,6 +12,6 @@ class LivreurSeeder extends Seeder
      */
     public function run(): void
     {
-        LivreurFactory::new()->count(5)->create();
+        LivreurFactory::new()->count(10)->create();
     }
 }

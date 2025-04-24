@@ -13,6 +13,6 @@ class CodePromotionSeeder extends Seeder
      */
     public function run(): void
     {
-        CodePromotion::factory(20)->create();
+        CodePromotion::factory(10)->create();
     }
 }

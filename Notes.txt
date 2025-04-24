@@ -6,3 +6,5 @@ https://admin.pixelstrap.net/zono/template/ribbons.html
 admin ynjeem y3ady commande ??
 
 session expire
+
+paiement par carte (effectue plusieurs fois )
