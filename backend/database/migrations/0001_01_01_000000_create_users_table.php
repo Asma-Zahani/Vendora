@@ -59,6 +59,8 @@ return new class extends Migration
             'date_naissance' => "2002-02-02",
             'password' => Hash::make("admin"),
             'adresse' => "Skanes Eddis",
+            'region' => "Monastir",
+            'ville' => "Monastir Ville",
             'role' => RoleEnum::ADMIN->value,
             'email_verified_at' => now(),
         ]);
