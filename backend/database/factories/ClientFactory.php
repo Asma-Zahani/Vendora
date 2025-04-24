@@ -6,6 +6,7 @@ use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use App\Models\UserPreference;
 
 class ClientFactory extends Factory
 {

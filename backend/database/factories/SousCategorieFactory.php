@@ -13,7 +13,7 @@ class SousCategorieFactory extends Factory
     public function definition()
     {
         return [
-            'categorie_id' => Categorie::factory(), // Utilise une catégorie existante ou crée une nouvelle avec la factory Categorie
+            'categorie_id' => Categorie::inRandomOrder()->first()->categorie_id, // Utilise une catégorie existante ou crée une nouvelle avec la factory Categorie
             'titre' => $this->faker->word() . ' Sous-Categorie', // Nom aléatoire de la sous-catégorie
             'image' => $this->faker->imageUrl(640, 480, 'products'), // URL d'image aléatoire
         ];

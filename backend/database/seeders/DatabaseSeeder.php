@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CouleurSeeder::class,
+            CategorieSeeder::class,
+            SousCategorieSeeder::class,
+            MarqueSeeder::class,
+            PromotionSeeder::class,
             ProduitSeeder::class,
             DriveSeeder::class,
             ClientSeeder::class,

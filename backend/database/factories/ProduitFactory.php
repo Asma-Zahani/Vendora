@@ -17,9 +17,9 @@ class ProduitFactory extends Factory
     public function definition()
     {
         return [
-            'marque_id' => Marque::factory(),
-            'sous_categorie_id' => SousCategorie::factory(),
-            'promotion_id' => Promotion::factory(),
+            'marque_id' => Marque::inRandomOrder()->first()->marque_id,
+            'sous_categorie_id' => SousCategorie::inRandomOrder()->first()->sous_categorie_id,
+            'promotion_id' => Promotion::inRandomOrder()->first()->promotion_id,
             'nom' => $this->faker->word(),
             'status' => $this->faker->randomElement(array_merge(
                 array_fill(0, 5, StatusProduitEnum::Disponible),
