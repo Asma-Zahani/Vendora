@@ -130,17 +130,18 @@ const Checkout = () => {
 
 
     const passerCommande = async () => {
-        try {      
+        try {
             let transactionId = null;
-
+    
             if (paymentMethod === "carte" && stripeFormRef.current) {
-              transactionId = await stripeFormRef.current.submitPayment();
-              console.log("transactionId:", transactionId); // Pour vérifier
+                transactionId = await stripeFormRef.current.submitPayment();
+                console.log("transactionId:", transactionId); // Pour vérifier
             }
-            
+    
             const updatedUser = await updateEntity("users", user.id, formData);
-            if (deliveryMethod === "drive") {                
-                createEntity("commandeRetraitDrives",{
+            
+            if (deliveryMethod === "drive") {
+                createEntity("commandeRetraitDrives", {
                     client_id: user.id,
                     total: checkoutData.discounted,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
@@ -151,12 +152,11 @@ const Checkout = () => {
                         couleur: produit.pivot?.couleur
                     }))
                 });
-            }
-            else {
-                createEntity("commandeLivraisons",{
+            } else {
+                createEntity("commandeLivraisons", {
                     client_id: user.id,
                     total: checkoutData.discounted,
-                    transaction_id: transactionId, 
+                    transaction_id: transactionId,
                     ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                     adresse_livraison: formData.adresse,
                     region_livraison: formData.region,
@@ -168,15 +168,25 @@ const Checkout = () => {
                     }))
                 });
             }
+
+            let promoUpdate = Promise.resolve(); // Attente pour mise à jour promo
+            console.log("checkoutData:", checkoutData);
+
+            if (checkoutData.PromoId) {
+                promoUpdate = createEntity(`codePromotions/${checkoutData.PromoId}/utiliser`, {});
+            }
+            // Attendre que la mise à jour du code promo soit terminée avant de continuer
+            await promoUpdate;
+    
             setUser(() => ({ ...updatedUser.data }));
             setPanier([]);
             navigate("/orderHistory");
         } catch (error) {
-          console.error("Erreur de modification:", error);
-          alert("Une erreur est survenue lors de la modification du client");
+            console.error("Erreur de modification:", error);
+            alert("Une erreur est survenue lors de la modification du client");
         }
     };
-
+    
    
     
     useEffect(() => {

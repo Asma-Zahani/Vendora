@@ -64,20 +64,38 @@ class CodePromotionController extends Controller implements HasMiddleware
     }
 
     public function show($id)
-    {
-        return response()->json(CodePromotion::findOrFail($id));
+{
+    $codePromo = CodePromotion::find($id);
+
+    if (!$codePromo) {
+        return response()->json(['message' => 'Code promotion non trouvé'], 404);
     }
+
+    return response()->json($codePromo);
+}
+
 
     public function getPromoByName($code)
     {
+        // Chercher le code promo dans la base de données
         $codePromotion = CodePromotion::where('code', $code)->first();
 
+        // Vérifier si le code promo existe
         if (!$codePromotion) {
-            return response()->json(['message' => 'Code promotion non trouvé'], 404);
+            // Si non trouvé, renvoyer une réponse avec promoFound = false
+            return response()->json([
+                'promoFound' => false,
+                'message' => "Code promotion '$code' non trouvé."
+            ], 200); // Utilisez 200 pour éviter l'erreur 404
         }
 
-        return response()->json($codePromotion);
+        // Si trouvé, renvoyer les détails de la promotion
+        return response()->json([
+            'promoFound' => true,
+            'promotion' => $codePromotion
+        ], 200); // Code 200 pour indiquer que la requête a réussi
     }
+
 
     public function update(Request $request, $id)
     {
@@ -124,6 +142,9 @@ class CodePromotionController extends Controller implements HasMiddleware
         $codePromotion->nbUtilisation += 1;
         $codePromotion->save();
 
-        return response()->json(['message' => 'Code promotionnel utilisé avec succès !']);
-    }
+        return response()->json([
+            'message' => 'Code promotionnel utilisé avec succès !',
+            'data' => $codePromotion
+        ]);
+            }
 }

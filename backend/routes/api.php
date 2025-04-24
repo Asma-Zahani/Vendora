@@ -46,8 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('souhait/{user_id}/{produit_id}', [UserController::class, 'supprimerDeListeSouhaits']);
 });
 
-Route::apiResource('codePromotions', CodePromotionController::class); //tester
+Route::apiResource('codePromotions', CodePromotionController::class);
 Route::get('codePromotions/code/{code}', [CodePromotionController::class, 'getPromoByName']);
+Route::post('codePromotions/{codePromotionId}/utiliser', [CodePromotionController::class, 'utiliserCodePromotionnel']);
+
 
 Route::apiResource('categories', CategorieController::class); //tester
 Route::apiResource('PeriodesHoraires', PeriodeHoraireController::class); //tester
