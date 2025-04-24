@@ -7,10 +7,12 @@ use App\Models\CodePromotion;
 use App\Models\Commande;
 use App\Models\CommandeProduit;
 use App\Models\CommandeRetraitDrive;
+use App\Models\Couleur;
 use App\Models\DetailFacture;
 use App\Models\FactureCommande;
 use App\Models\PanierProduit;
 use App\Models\Produit;
+use App\Models\ProduitCouleur;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -147,6 +149,16 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
                 'prixUnitaireTTC' => $produit->prix_apres_promo,
                 'remise' => $produit->promotion?->reduction ?? 0
             ]);
+
+            if ($item['couleur'] ?? null) {
+                $couleur = Couleur::where('nom', $item['couleur'])->first();
+
+                ProduitCouleur::where('produit_id', $produit->produit_id)
+                            ->where('couleur_id', $couleur->couleur_id)
+                            ->decrement('quantite', $item['quantite']);
+            } else {
+                $produit->decrement('quantite', $item['quantite']);
+            }
         }
 
         return response()->json([

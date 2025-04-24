@@ -100,7 +100,9 @@ const Checkout = () => {
             if (deliveryMethod === "drive") {
                 await createEntity("commandeRetraitDrives", { ...orderData, drive_id: formData.drive_id });
             } else {
-                await createEntity("commandeLivraisons", orderData);
+                const data = await createEntity("commandeLivraisons", orderData);
+                console.log(data);
+                
             }
             setUser(updatedUser.data);
             setPanier([]);
