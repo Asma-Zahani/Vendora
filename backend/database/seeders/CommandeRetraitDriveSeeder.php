@@ -13,6 +13,6 @@ class CommandeRetraitDriveSeeder extends Seeder
      */
     public function run(): void
     {
-        CommandeRetraitDrive::factory(5)->create();
+        CommandeRetraitDrive::factory(20)->create();
     }
 }
