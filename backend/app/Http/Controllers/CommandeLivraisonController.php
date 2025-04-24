@@ -124,6 +124,8 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'ville_livraison' => $validatedData['ville_livraison'] ?? null,
         ]);
 
+        CodePromotion::where('code_promotion_id', $validatedData['code_promotion_id'])->increment('nbUtilisation');
+
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
         $remise = 0;

@@ -167,17 +167,7 @@ const Checkout = () => {
                         couleur: produit.pivot?.couleur
                     }))
                 });
-            }
-
-            let promoUpdate = Promise.resolve(); // Attente pour mise à jour promo
-            console.log("checkoutData:", checkoutData);
-
-            if (checkoutData.PromoId) {
-                promoUpdate = createEntity(`codePromotions/${checkoutData.PromoId}/utiliser`, {});
-            }
-            // Attendre que la mise à jour du code promo soit terminée avant de continuer
-            await promoUpdate;
-    
+            }  
             setUser(() => ({ ...updatedUser.data }));
             setPanier([]);
             navigate("/orderHistory");

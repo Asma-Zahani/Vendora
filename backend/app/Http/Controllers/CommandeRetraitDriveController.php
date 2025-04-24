@@ -114,6 +114,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             'dateRetrait' => $validatedData['dateRetrait'] ?? null,
         ]);
 
+        CodePromotion::where('code_promotion_id', $validatedData['code_promotion_id'])->increment('nbUtilisation');
+
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
         $remise = 0;
