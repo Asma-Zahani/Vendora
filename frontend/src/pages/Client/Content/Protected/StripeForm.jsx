@@ -2,10 +2,10 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
-import axios from 'axios';
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCreditCard } from 'react-icons/fa';
+import { createEntity } from "@/service/EntitesService";
 
-const StripeForm = ({ amount, onSuccess, user, setIsCardValid }, ref) => {
+const StripeForm = ({ amount, user, setIsCardValid }, ref) => {
   const stripe = useStripe();
   const elements = useElements();
   const [cardBrand, setCardBrand] = useState('unknown');
@@ -32,25 +32,30 @@ const StripeForm = ({ amount, onSuccess, user, setIsCardValid }, ref) => {
         card: cardElement
       });
 
-      if (error) return console.error('[Payment Method Error]', error.message);
+      if (error) {
+        console.error('[Payment Method Error]', error.message);
+        return null;
+      }
 
-      const { data } = await axios.post('http://localhost:8000/api/create-payment-intent', {
+      const paymentIntentData = await createEntity("create-payment-intent", {
         amount: amount * 100,
-        user_id: user.id,
+        user_id: user.id
       });
 
-      const result = await stripe.confirmCardPayment(data.clientSecret, {
-        payment_method: paymentMethod.id,
+      const result = await stripe.confirmCardPayment(paymentIntentData.clientSecret, {
+        payment_method: paymentMethod.id
       });
 
-      if (result.error) return console.error('[Stripe Payment Error]', result.error.message);
+      if (result.error) {
+        console.error('[Stripe Payment Error]', result.error.message);
+        return null;
+      }
 
       if (result.paymentIntent.status === 'succeeded') {
-        await axios.post('http://localhost:8000/api/save-transaction-id', {
+        await createEntity("save-transaction-id", {
           transaction_id: result.paymentIntent.id,
-          user_id: user.id,
+          user_id: user.id
         });
-        onSuccess();
         return result.paymentIntent.id;
       }
 
@@ -72,7 +77,7 @@ const StripeForm = ({ amount, onSuccess, user, setIsCardValid }, ref) => {
             setCardBrand(e.brand || 'unknown');
             updateCardState('number', e.complete);
           }}
-          className="p-2 pr-10 border rounded w-full"
+          className="p-2 pr-10 border border-borderGrayLight dark:border-borderDark rounded w-full"
         />
         <div className="absolute right-3 top-6">{brandIcons[cardBrand] || brandIcons.unknown}</div>
       </div>
@@ -82,14 +87,14 @@ const StripeForm = ({ amount, onSuccess, user, setIsCardValid }, ref) => {
           <label className="block text-sm font-medium">Date d&apos;expiration</label>
           <CardExpiryElement
             onChange={(e) => updateCardState('expiry', e.complete)}
-            className="p-2 border rounded w-full"
+            className="p-2 border border-borderGrayLight dark:border-borderDark rounded w-full"
           />
         </div>
         <div>
           <label className="block text-sm font-medium">CVC</label>
           <CardCvcElement
             onChange={(e) => updateCardState('cvc', e.complete)}
-            className="p-2 border rounded w-full"
+            className="p-2 border border-borderGrayLight dark:border-borderDark rounded w-full"
           />
         </div>
       </div>

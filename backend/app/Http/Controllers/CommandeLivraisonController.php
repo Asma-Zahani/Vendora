@@ -101,9 +101,6 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'produits.*.quantite' => 'required|integer|min:1',
             'produits.*.couleur' => 'nullable|string|max:50',
             'transaction_id' => 'nullable|string|max:255',
-            'adresse_livraison' => 'nullable|string|max:255',
-            'region_livraison' => 'nullable|string|max:255',
-            'ville_livraison' => 'nullable|string|max:255',
         ]);
         $produits = Produit::whereIn('produit_id', collect($validatedData['produits'])->pluck('produit_id'))->get();
 
@@ -118,10 +115,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         $commandeLivraison = CommandeLivraison::create([
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $validatedData['dateLivraison'] ?? null,
-            'livreur_id' => $validatedData['livreur_id'] ?? null,
-            'adresse_livraison' => $validatedData['adresse_livraison'] ?? null,
-            'region_livraison' => $validatedData['region_livraison'] ?? null,
-            'ville_livraison' => $validatedData['ville_livraison'] ?? null,
+            'livreur_id' => $validatedData['livreur_id'] ?? null
         ]);
 
         if ($validatedData['code_promotion_id'] ?? null) {
