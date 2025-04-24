@@ -49,11 +49,11 @@ class CommandeRetraitDriveFactory extends Factory
 
         $drive = Drive::inRandomOrder()->first();
         $dateRetrait = $this->faker->optional()->dateTimeBetween('now', '+1 month');
-        $commandeLivraison = CommandeRetraitDrive::create([
+        $commandeRetraitDrive = [
             'commande_id' => $commande->commande_id,
             'drive_id' => $drive ? $drive->drive_id : null,
             'dateRetrait' => $dateRetrait ? $dateRetrait->format('Y-m-d') : null,
-        ]);
+        ];
 
         $facture = FactureCommande::create([
             'totalTTC' => $total,
@@ -72,6 +72,6 @@ class CommandeRetraitDriveFactory extends Factory
             ]);
         }
 
-        return $commandeLivraison->toArray();
+        return $commandeRetraitDrive;
     }
 }

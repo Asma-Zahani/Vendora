@@ -44,11 +44,11 @@ class CommandeLivraisonFactory extends Factory
         ]);
 
         $dateLivraison = $this->faker->optional()->dateTimeBetween('now', '+1 month');
-        $commandeLivraison = CommandeLivraison::create([
+        $commandeLivraison = [
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $dateLivraison ? $dateLivraison->format('Y-m-d') : null,
             'livreur_id' => rand(0, 1) ? $this->faker->numberBetween(2, 10) : null,
-        ]);
+        ];
 
         $facture = FactureCommande::create([
             'totalTTC' => $total,
@@ -67,6 +67,6 @@ class CommandeLivraisonFactory extends Factory
             ]);
         }
 
-        return $commandeLivraison->toArray();
+        return $commandeLivraison;
     }
 }
