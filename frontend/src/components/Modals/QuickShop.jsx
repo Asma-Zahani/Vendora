@@ -78,7 +78,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier }) => {
                           onClick={() => handleColorSelect(couleur)}
                           className={`w-8 h-8 rounded-full border ${
                             selectedColor?.couleur_id === couleur.couleur_id ? "border-purpleLight" : "border-gray-300"
-                          } ${couleur.pivot?.quantite === 0 ? "opacity-50 cursor-not-allowed" : ""}`}  
+                          } ${couleur.pivot?.quantite === 0 ? "opacity-50 grayscale cursor-not-allowed" : ""}`}  
                           style={{ backgroundColor: couleur.code_hex }}
                           disabled={couleur.pivot?.quantite === 0} 
                         />
