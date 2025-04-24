@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import img from "@/assets/default/image.png";
 import { useNavigate } from "react-router-dom";
 import { Edit2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import QuickShop from "@/components/Modals/QuickShop";
 
-const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, supprimerProduit, ajouterAuPanier, Error }) => {
+const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCodePromotion, supprimerProduit, ajouterAuPanier }) => {
     const navigate = useNavigate();
     const [promoCode, setPromoCode] = useState("");
-    const [promoError, setPromoError] = useState("");
     
     const [isShopModalOpen, setIsShopModalOpen] = useState(false); 
     const [selectedProduit, setSelectedProduit] = useState(null); 
@@ -21,7 +20,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         let discountedTotal = originalTotal;
     
         // Vérifier si le code promo existe et si le nombre maximal d'utilisations est atteint
-        if (codePromotion && codePromotion.nbUtilisation < codePromotion.nbUtilisationMax && codePromotion.dateExpiration >= new Date().toISOString().split('T')[0]) {
+        if (codePromotion) {
             const discount = (originalTotal * codePromotion.reduction) / 100;
             discountedTotal = originalTotal - discount;
         }
@@ -30,27 +29,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
             original: originalTotal.toFixed(2),
             discounted: discountedTotal.toFixed(2),
         };
-    };
-    
-
-    useEffect(() => {
-        if (!codePromotion) {
-            setPromoError("");  
-            return;
-        }
-    
-        if (codePromotion.nbUtilisation >= codePromotion.nbUtilisationMax) {
-            setPromoError("Ce code promo a atteint le nombre maximal d'utilisations.");
-        } else {
-            if (codePromotion.dateExpiration < new Date().toISOString().split('T')[0]) {
-                setPromoError("Ce code promo a expiré.");
-            }
-            else{
-            setPromoError(""); 
-            }
-        }
-    }, [codePromotion]);
-    
+    };    
 
     const handleQuantityChange = (index, action) => {
         const updatedProduits = [...produits];
@@ -87,7 +66,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
             produits: produits,
             original: getTotalPrices().original,
             discounted: getTotalPrices().discounted,
-            remise: (codePromotion && codePromotion.nbUtilisation < codePromotion.nbUtilisationMax) ? codePromotion.reduction : null,
+            remise: codePromotion ? codePromotion.reduction : null,
             PromoId: codePromotion ? codePromotion.code_promotion_id : null,
         };
         
@@ -165,23 +144,15 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                                 Appliquer
                                                             </button>
                                                         </div>
-                                                        {promoError && (
-                                                            <span className="text-red-500 text-sm ml-2">
-                                                        {promoError}
-                                                            </span>
-                                                            )}
-
-                                                        {Error && (
-                                                            <span className="text-red-500 text-sm ml-2">
-                                                        {Error}
-                                                            </span>
-                                                        )}    
+                                                        {codePromotion?.message && (
+                                                             <p className="text-red-600 text-sm mt-1">{codePromotion?.message}</p>
+                                                         )} 
                                                     </div>
                                                 </td>
                                                 <td colSpan="2" className="py-2">
                                                     <div className="flex gap-3 justify-end items-center font-semibold mr-4">
                                                         <p className="text-xl">Sous-Total:</p>
-                                                        {codePromotion && codePromotion.nbUtilisation < codePromotion.nbUtilisationMax && codePromotion.dateExpiration >= new Date().toISOString().split('T')[0] ? (
+                                                        {codePromotion && !codePromotion.message ? (
                                                             <>
                                                                 <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
                                                                 <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>

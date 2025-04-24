@@ -8,6 +8,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class CodePromotionController extends Controller implements HasMiddleware
 {
@@ -64,36 +65,27 @@ class CodePromotionController extends Controller implements HasMiddleware
     }
 
     public function show($id)
-{
-    $codePromo = CodePromotion::find($id);
-
-    if (!$codePromo) {
-        return response()->json(['message' => 'Code promotion non trouvé'], 404);
+    {
+        return response()->json(CodePromotion::findOrFail($id));
     }
-
-    return response()->json($codePromo);
-}
-
 
     public function getPromoByName($code)
     {
-        // Chercher le code promo dans la base de données
         $codePromotion = CodePromotion::where('code', $code)->first();
 
-        // Vérifier si le code promo existe
         if (!$codePromotion) {
-            // Si non trouvé, renvoyer une réponse avec promoFound = false
-            return response()->json([
-                'promoFound' => false,
-                'message' => "Code promotion '$code' non trouvé."
-            ], 200); // Utilisez 200 pour éviter l'erreur 404
+            return response()->json(['message' => 'Code promotion non trouvé'], 404);
         }
 
-        // Si trouvé, renvoyer les détails de la promotion
-        return response()->json([
-            'promoFound' => true,
-            'promotion' => $codePromotion
-        ], 200); // Code 200 pour indiquer que la requête a réussi
+        if (Carbon::parse($codePromotion->dateExpiration)->lt(Carbon::now())) {
+            return response()->json(['message' => 'Code promotion expiré'], 410);
+        }
+
+        if ($codePromotion->nbUtilisation >= $codePromotion->nbUtilisationMax) {
+            return response()->json(['message' => 'Code promotion déjà utilisé au maximum'], 409);
+        }
+        
+        return response()->json($codePromotion);
     }
 
 
@@ -129,22 +121,4 @@ class CodePromotionController extends Controller implements HasMiddleware
             'message' => 'Code Promotion supprimée avec succès'
         ], 200);    
     }
-
-    public function utiliserCodePromotionnel($codePromotionId)
-    {
-        $codePromotion = CodePromotion::findOrFail($codePromotionId);
-
-        if ($codePromotion->nbUtilisation >= $codePromotion->nbUtilisationMax) {
-            return response()->json(['message' => 'Le code promotionnel a atteint sa limite d\'utilisation.'], 400);
-        }
-
-        // Incrémenter nbUtilisation
-        $codePromotion->nbUtilisation += 1;
-        $codePromotion->save();
-
-        return response()->json([
-            'message' => 'Code promotionnel utilisé avec succès !',
-            'data' => $codePromotion
-        ]);
-            }
 }
