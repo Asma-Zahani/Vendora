@@ -36,21 +36,31 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
         const produit = updatedProduits[index];
         
         if (action === "increment") {
-            if (produit.pivot && produit.pivot.quantite) {
-                produit.pivot.quantite += 1;
-            } else if (produit.quantite) {
-                produit.quantite += 1;
+            let maxQuantite = 0;
+        
+            if (produit.pivot && produit.pivot.couleur) {
+                const couleur = produit.couleurs.find(c => c.nom === produit.pivot.couleur);
+        
+                if (couleur && couleur.pivot && couleur.pivot.quantite !== undefined) {
+                    maxQuantite = couleur.pivot.quantite;
+        
+                    if (produit.pivot.quantite < maxQuantite) {
+                        produit.pivot.quantite += 1;
+                    }
+                }
             } else {
-                produit.quantite = 1;
+                maxQuantite = produit.quantite ?? 0;
+        
+                if (produit.pivot.quantite < maxQuantite) {
+                    produit.pivot.quantite += 1;
+                }
             }
+                 
         } else if (action === "decrement" && (produit.pivot?.quantite > 1 || produit.quantite > 1)) {
             if (produit.pivot && produit.pivot.quantite > 1) {
                 produit.pivot.quantite -= 1;
-            } else if (produit.quantite > 1) {
-                produit.quantite -= 1;
             }
         }
-
         
         modifierQuantitePanier(produit.produit_id, produit.pivot.quantite, produit.pivot?.couleur);
         
