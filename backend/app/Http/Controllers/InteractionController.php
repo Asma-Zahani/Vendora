@@ -36,8 +36,36 @@ class InteractionController extends Controller implements HasMiddleware
             'ajout_panier' => 'nullable|numeric|min:0',
             'achat' => 'nullable|boolean',
         ]);
-        
-        $interaction = Interaction::create($validatedData);
+
+        $interaction = Interaction::where('user_id', $validatedData['user_id'])
+                                ->where('produit_id', $validatedData['produit_id'])
+                                ->first();
+
+        if ($interaction) {
+            if ($validatedData["vue_produit"] ?? null) {
+                Interaction::where('user_id', $validatedData['user_id'])
+                        ->where('produit_id', $validatedData['produit_id'])
+                        ->increment('vue_produit');
+            } else if ($validatedData["ajout_panier"] ?? null) {
+                Interaction::where('user_id', $validatedData['user_id'])
+                        ->where('produit_id', $validatedData['produit_id'])
+                        ->increment('ajout_panier');
+            } else {
+                $interaction->update([
+                    'favori' => $validatedData['favori'] ?? 0,
+                    'achat' => $validatedData['achat'] ?? 0,
+                ]);
+            }
+        } else {
+            $interaction = Interaction::create([
+                'user_id' => $validatedData['user_id'],
+                'produit_id' => $validatedData['produit_id'],
+                'vue_produit' => $validatedData['vue_produit'] ?? 0,
+                'favori' => $validatedData['favori'] ?? 0,
+                'ajout_panier' => $validatedData['ajout_panier'] ?? 0,
+                'achat' => $validatedData['achat'] ?? 0,
+            ]);
+        }
 
         return response()->json([
             'message' => 'Interaction ajouter avec succès',

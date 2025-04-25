@@ -14,7 +14,7 @@ const usePanierWishlist = (produits) => {
     const [formData, setFormData] = useState({ client_id: '', produit_id: '', quantite: '' });
     const [panierAjoute, setPanierAjoute] = useState(false);
 
-    const ajouterAuPanier = (produit_id, quantiteAjoutee, couleur, ancienne_couleur) => {
+    const ajouterAuPanier = async (produit_id, quantiteAjoutee, couleur, ancienne_couleur) => {
         if (!user) { navigate("/login"); return; }
 
         const produitExistant = panier?.find(item => 
@@ -38,6 +38,7 @@ const usePanierWishlist = (produits) => {
             ancienne_couleur: ancienne_couleur
         });
     
+        await createEntity("interactions", { user_id: user?.id, produit_id: formData.produit_id, ajout_panier: 1 });
         setPanierAjoute(true);
     };
     
@@ -80,6 +81,7 @@ const usePanierWishlist = (produits) => {
     const ajouterAuListeSouhait = async (produit_id) => {
         if (!user) { navigate("/login"); return;};
         const data = await createEntity("souhait", { client_id: user?.id, produit_id });
+        await createEntity("interactions", { user_id: user?.id, produit_id, favori: true });
         if (data.message) {
             const produit = produits.find(item => item.produit_id === produit_id);
             setSuccessMessage(data.message);
@@ -89,6 +91,7 @@ const usePanierWishlist = (produits) => {
 
     const supprimerDeListeSouhait = async (produit_id) => {
         const data = await deleteEntity("souhait", user?.id+"/"+produit_id);
+        await createEntity("interactions", { user_id: user?.id, produit_id, favori: false });
         if (data.message) {
           setSuccessMessage(data.message);
           setWishlist((prevWishlist) => prevWishlist.filter(item => item.produit_id !== produit_id));
