@@ -22,7 +22,7 @@ import CodePromotions from "@/pages/Admin/Content/Promotions et Offres/CodePromo
 import Promotions from "@/pages/Admin/Content/Promotions et Offres/Promotions";
 import Drives from "@/pages/Admin/Content/Parametres/Drives";
 import Horaires from "@/pages/Admin/Content/Parametres/Horaires";
-import JoursFeries from "@/pages/Admin/Content/Parametres/joursFeries";
+import JoursFeries from "@/pages/Admin/Content/Parametres/JoursFeries";
 import Cart from "@/pages/Client/Content/Protected/Cart";
 import Wishlist from "@/pages/Client/Content/Protected/Wishlist";
 import Checkout from "@/pages/Client/Content/Protected/Checkout";
