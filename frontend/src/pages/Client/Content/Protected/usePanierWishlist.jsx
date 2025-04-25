@@ -38,7 +38,7 @@ const usePanierWishlist = (produits) => {
             ancienne_couleur: ancienne_couleur
         });
     
-        await createEntity("interactions", { user_id: user?.id, produit_id: formData.produit_id, ajout_panier: 1 });
+        await createEntity("interactions", { user_id: user?.id, produit_id, ajout_panier: 1 });
         setPanierAjoute(true);
     };
     

@@ -50,20 +50,23 @@ class InteractionController extends Controller implements HasMiddleware
                 Interaction::where('user_id', $validatedData['user_id'])
                         ->where('produit_id', $validatedData['produit_id'])
                         ->increment('ajout_panier');
-            } else {
-                $interaction->update([
-                    'favori' => $validatedData['favori'] ?? 0,
-                    'achat' => $validatedData['achat'] ?? 0,
-                ]);
+            } else if ($validatedData["favori"] ?? null) {
+                Interaction::where('user_id', $validatedData['user_id'])
+                        ->where('produit_id', $validatedData['produit_id'])
+                        ->update(['favori' => $validatedData['favori']]);
+            } else if ($validatedData["achat"] ?? null) {
+                Interaction::where('user_id', $validatedData['user_id'])
+                        ->where('produit_id', $validatedData['produit_id'])
+                        ->update(['achat' => $validatedData['achat']]);
             }
         } else {
             $interaction = Interaction::create([
                 'user_id' => $validatedData['user_id'],
                 'produit_id' => $validatedData['produit_id'],
-                'vue_produit' => $validatedData['vue_produit'] ?? 0,
-                'favori' => $validatedData['favori'] ?? 0,
-                'ajout_panier' => $validatedData['ajout_panier'] ?? 0,
-                'achat' => $validatedData['achat'] ?? 0,
+                'vue_produit' => isset($validatedData['vue_produit']) ? 1 : 0,
+                'favori' => isset($validatedData['favori']) ? true : false,
+                'ajout_panier' => isset($validatedData['ajout_panier']) ? 1 : 0,
+                'achat' => isset($validatedData['achat']) ? true : false
             ]);
         }
 

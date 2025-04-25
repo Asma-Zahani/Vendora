@@ -12,15 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('panier_produits', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('client_id')->constrained('users', 'id')->onDelete('cascade');
             $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade');
             $table->integer('quantite')->default(1);
             $table->string('couleur')->nullable();
             
-            $table->primary(['client_id', 'produit_id']);
-
-            $table->unique(['client_id', 'produit_id']); // Pour les produits sans couleur
-            $table->unique(['client_id', 'produit_id', 'couleur'])->whereNotNull('couleur');
+            $table->unique(['client_id', 'produit_id', 'couleur']);
         });
     }
 

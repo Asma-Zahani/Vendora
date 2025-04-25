@@ -84,6 +84,16 @@ const Checkout = () => {
         }));
     };
 
+    const createInteractions = async () => {
+        for (const produit of checkoutData.produits) {
+          await createEntity("interactions", {
+            user_id: user?.id,
+            produit_id: produit.produit_id,
+            achat: true
+          });
+        }
+    };
+
     const passerCommande = async () => {
         try {
             const transactionId = paymentMethod === "carte" && stripeFormRef.current ? await stripeFormRef.current.submitPayment() : null;
@@ -110,6 +120,7 @@ const Checkout = () => {
                     setSuccessMessage(data.message);
                 }
             }
+            await createInteractions();
             setUser(updatedUser.data);
             setPanier([]);
             navigate("/orderHistory");

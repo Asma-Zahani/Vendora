@@ -1,10 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
-import { getEntity } from "@/service/EntitesService";
+import { getEntity, createEntity } from "@/service/EntitesService";
+import UserContext from '@/utils/UserContext';
 
 const DetailProduit = () => {
+  const { user } = useContext(UserContext);
   const { id } = useParams();
   const [produit, setProduit] = useState([]);
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
@@ -15,11 +16,22 @@ const DetailProduit = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setProduit(await getEntity("produits", id));
+      const produitData = await getEntity("produits", id);
+      setProduit(produitData);
+      setImageSrc(`/produits/${produitData.image}`);
     }; 
     fetchData();
-  }, []);
+  }, [id]);
   
+  useEffect(() => {
+    if (user) {
+      const createInteraction = async () => {
+        await createEntity("interactions", { user_id: user?.id, produit_id: id, vue_produit: 1 });
+      };
+      createInteraction();
+    }
+  }, [id, user]);
+
   return (
     <section className="mx-6 py-6">
         <div className="flex gap-3">

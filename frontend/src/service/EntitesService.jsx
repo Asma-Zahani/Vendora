@@ -54,7 +54,7 @@ const getEntityBy = async (label, by, _id) => {
 };
   
 const createEntity = async (label, formData) => {
-  const response = await fetch(`api/${label}`, {
+  const response = await fetch(`/api/${label}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
