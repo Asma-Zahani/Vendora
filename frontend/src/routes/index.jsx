@@ -20,9 +20,9 @@ import CommandeLivraison from "../pages/Admin/Content/Gestion des commandes/Comm
 import CommandeRetraitDrive from "../pages/Admin/Content/Gestion des commandes/CommandeRetraitDrive";
 import CodePromotions from "../pages/Admin/Content/Promotions et Offres/CodePromotions";
 import Promotions from "../pages/Admin/Content/Promotions et Offres/Promotions";
-import Drives from "../pages/Admin/Content/Paramètres/Drives";
-import Horaires from "../pages/Admin/Content/Paramètres/Horaires";
-import JoursFeries from "../pages/Admin/Content/Paramètres/joursFeries";
+import Drives from "../pages/Admin/Content/Parametres/Drives";
+import Horaires from "../pages/Admin/Content/Parametres/Horaires";
+import JoursFeries from "../pages/Admin/Content/Parametres/joursFeries";
 import Cart from "../pages/Client/Content/Protected/Cart";
 import Wishlist from "../pages/Client/Content/Protected/Wishlist";
 import Checkout from "../pages/Client/Content/Protected/Checkout";
