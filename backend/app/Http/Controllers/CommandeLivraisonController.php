@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EtatCommandeEnum;
+use App\Enums\StatusProduitEnum;
 use App\Models\CodePromotion;
 use App\Models\Commande;
 use App\Models\CommandeLivraison;
@@ -154,13 +155,26 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
 
             if ($item['couleur'] ?? null) {
                 $couleur = Couleur::where('nom', $item['couleur'])->first();
-
+            
                 ProduitCouleur::where('produit_id', $produit->produit_id)
-                            ->where('couleur_id', $couleur->couleur_id)
-                            ->decrement('quantite', $item['quantite']);
+                              ->where('couleur_id', $couleur->couleur_id)
+                              ->decrement('quantite', $item['quantite']);
+            
+                $reste = ProduitCouleur::where('produit_id', $produit->produit_id)
+                                       ->where('quantite', '>', 0)
+                                       ->exists();
+            
+                if (! $reste) {
+                    $produit->update(['status' => StatusProduitEnum::RuptureDeStock->value]);
+                }
+            
             } else {
                 $produit->decrement('quantite', $item['quantite']);
-            }
+            
+                if ($produit->quantite <= 0) {
+                    $produit->update(['status' => StatusProduitEnum::RuptureDeStock->value]);
+                }
+            }            
         }
 
         return response()->json([
