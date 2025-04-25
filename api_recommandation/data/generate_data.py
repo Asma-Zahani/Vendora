@@ -78,11 +78,7 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
             writer.writerow([user_id, product_id, vue_produit, favori, ajout_panier, achat])
 
     print(f"{n_interactions} interactions générées dans {output_file}")
-
-
-import csv
-import random
-
+ 
 def generate_preferences(output_file="data/preferences.csv", n_users=1000):
     """ Génère un fichier CSV de préférences utilisateur avec des catégories et des marques (par nom) """
     n_categories = 20
@@ -102,8 +98,8 @@ def generate_preferences(output_file="data/preferences.csv", n_users=1000):
 
             writer.writerow([
                 i,
-                ",".join(categorie_names),  # Convertir en chaîne séparée par des virgules
-                ",".join(marque_names)  # Convertir en chaîne séparée par des virgules
+                str(categorie_names),  # Format : ["Catégorie_1", "Catégorie_2"]
+                str(marque_names)      # Format : ["Marque_1", "Marque_2"]
             ])
 
     print(f"{n_users} préférences générées dans {output_file}")
