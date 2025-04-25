@@ -21,7 +21,6 @@ export const Dashboard = () => {
   
         const enCours = await getAuthenticatedEntities("livraisonsEnCours");
         setLivraisonsEnCours(Array.isArray(enCours) ? enCours.length : 0);
-        console.log(enCours);
   
         const annulees = await getAuthenticatedEntities("livraisonsAnnulees");
         setLivraisonsAnnulees(Array.isArray(annulees) ? annulees.length : 0);

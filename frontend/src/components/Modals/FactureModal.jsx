@@ -2,7 +2,6 @@
 import { CgClose } from "react-icons/cg";
 
 const FactureModal = ({ onClose, label, viewData }) => {
-  console.log(viewData);
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className={`fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity`} aria-hidden="true"></div>

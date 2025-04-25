@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { getEntities } from "@/service/EntitesService";
 import logo from "@/assets/logo/logo.svg";
@@ -5,7 +7,7 @@ import img from "@/assets/default/image.png";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
-const FactureModal = ({ isOpen, onClose, label, selectedItem }) => {
+const FactureModal = ({ isOpen, onClose, selectedItem }) => {
   const [facture, setFacture] = useState(null);
   const [details, setDetails] = useState([]);
   const [produits, setProduits] = useState([]);
@@ -115,12 +117,7 @@ const FactureModal = ({ isOpen, onClose, label, selectedItem }) => {
     };
 
     fetchDriveInfo();
-  }, [selectedItem]);
-  console.log(driveInfo);
-  
-  
-
-  
+  }, [selectedItem]); 
 
   return (
     <>
