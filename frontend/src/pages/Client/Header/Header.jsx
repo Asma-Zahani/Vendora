@@ -17,7 +17,7 @@ const Header = () => {
       <div className="mx-0 lg:mx-10 px-4 py-2 md:py-4 lg:py-4">
         <div className="flex items-center w-full">
           <div className="flex items-center justify-between px-4 py-2 relative">
-            <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center ml-0 lg:ml-5 p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
+            <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center -ml-2 lg:ml-5 p-0 sm:p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
               <Menu className="w-5 h-5" />
             </button>
             <Link to="/" className="order-1 lg:order-none">
