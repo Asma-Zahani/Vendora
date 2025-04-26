@@ -1,65 +1,28 @@
-import { useState, useEffect } from "react";
-import Img1 from "@/assets/home/hero.jpeg";
-import Img2 from "@/assets/home/hero2.jpeg";
+import Image from "@/assets/home/Online shopping.svg";
+import { Link } from "react-router";
 
 const Hero = () => {
-  const images = [
-    { src: Img1,
-      title: "Lolo Drive - Achetez et Récupérez en Magasin",
-      text: "Sélectionnez un point de vente près de chez vous, achetez en ligne et récupérez vos produits en magasin.",
-      button: "Trouver un Point de Vente"
-    },
-    { src: Img2, 
-      title: "FaZZa - Votre E-Commerce",
-      text: "Explorez notre large sélection de produits et recevez vos achats directement chez vous avec notre service de livraison rapide." ,
-      button: "Explorer FaZZa"
-    }
-  ];
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [images.length]);
-
-  const handleIndicatorClick = (index) => {
-    if (index !== currentImage) {
-      setCurrentImage(index);
-    }
-  };
-
   return (
     <div className="relative bg-customLight dark:bg-customDark m-0">
-      <div className="relative w-full h-[620px] overflow-hidden">
-        <div className="absolute z-20 w-full h-full flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(-${currentImage * 100}%)` }} >
-          {images.map((image, index) => (
-            <div key={index} className="w-full h-full flex-shrink-0 relative">
-              <div className="w-full h-full bg-cover bg-center"style={{ backgroundImage: `url(${image.src})`, filter: "blur(5px)" }}></div>
-              <div className="absolute top-0 left-0 w-full h-[620px] bg-opacity-50 dark:bg-opacity-80 z-10 "></div>
-              <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-center text-violet-950 z-20">
-                <div className="max-w-[400px] lg:max-w-[620px] mx-auto">
-                  <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                    {image.title}
-                  </h1>
-                  <p className="mt-4 text-sm text-violet-950">
-                    {image.text}
-                  </p>
-                  <button className="bg-purpleLight text-white text-[14px] py-2 px-6 mt-4 rounded-md hover:bg-opacity-90 transition duration-150" type="submit">
-                    {image.button}
-                  </button>
+      <div className="container px-6 py-16 mx-auto">
+        <div className="items-center lg:flex">
+            <div className="w-full lg:w-1/2">
+                <div className="lg:max-w-lg">
+                    <h1 className="text-3xl font-semibold text-gray-800 dark:text-white lg:text-4xl">
+                      Meilleur endroit pour choisir <br /> vos <span className="text-purpleLight">vêtements</span></h1>
+                    
+                    <p className="mt-3 text-gray-600 dark:text-gray-400">Découvrez une large sélection de vêtements tendance, qualité et confort au meilleur prix. Trouvez ce que vous aimez en quelques clics !</p>
+                    <Link to={"/boutique"}>
+                      <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform bg-purpleLight rounded-lg lg:w-auto hover:bg-purpleLightHover focus:outline-none focus:bg-purpleLightHover">
+                        Achetez Maintenant
+                      </button>
+                    </Link>
                 </div>
-              </div>
             </div>
-          ))}
-        </div>
 
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-          {images.map((_, index) => (
-            <button key={index} onClick={() => handleIndicatorClick(index)} aria-label={`Slide ${index + 1}`}
-            className={`w-3 h-3 rounded-full focus:outline-none transition-colors duration-300 ${ index === currentImage ? "bg-purpleLight dark:bg-purpleLight" : "bg-bgLight dark:bg-purpleDark" }`}></button>
-          ))}
+            <div className="flex items-center justify-center w-full mt-6 lg:mt-0 lg:w-1/2">
+                <img className="w-full h-full lg:max-w-3xl" src={Image} alt="Catalogue-pana.svg" />
+            </div>
         </div>
       </div>
     </div>
