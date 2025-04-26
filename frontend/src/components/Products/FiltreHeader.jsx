@@ -23,7 +23,7 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
   };
 
   return (
-    <div className="mt-4 flex items-center justify-between">
+    <div className="mt-8 flex items-center justify-between">
       <div className="flex gap-3">
         <div
           onClick={() => gridInfo.handleConfigGridChange("isGrid",true)}
