@@ -23,7 +23,7 @@ const RecentsProduits = () => {
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
   return (
-    <div className="px-8 py-12">
+    <div className="px-4 sm:px-8 py-4 sm:py-12">
       {produits.length > 0 && 
         <>
           <div className="flex flex-col items-center text-center mb-5">
@@ -34,7 +34,7 @@ const RecentsProduits = () => {
             </div>
             <p className="italic font-greatvibes text-gray-500">Nouveautés cette semaine</p>
           </div>
-          <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-10 sm:mx-20 gap-2 sm:gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {
               produitsAffiches.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
