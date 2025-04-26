@@ -23,22 +23,12 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
   };
 
   return (
-    <div className="mt-8 flex items-center justify-between">
-      <div className="flex gap-3">
-        <div
-          onClick={() => gridInfo.handleConfigGridChange("isGrid",true)}
-          className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
-            gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""
-          }`}
-        >
+    <div className="mt-8 flex items-center justify-end sm:justify-between">
+      <div className="hidden md:hidden lg:flex gap-3">
+        <div onClick={() => gridInfo.handleConfigGridChange("isGrid",true)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
           <Grid size={17} />
         </div>
-        <div
-          onClick={() => gridInfo.handleConfigGridChange("isGrid",false)}
-          className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${
-            !gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""
-          }`}
-        >
+        <div onClick={() => gridInfo.handleConfigGridChange("isGrid",false)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`} >
           <List size={17} />
         </div>
         {gridInfo.isGrid && (
@@ -46,12 +36,7 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
             {[3, 4, 5].map((cols) => (
               <div key={cols} className="flex gap-0.5" onClick={() => gridInfo.handleConfigGridChange("gridCols",cols)}>
                 {Array.from({ length: cols }).map((_, index) => (
-                  <button
-                    key={index}
-                    className={`my-2 w-1 rounded-md ${
-                      gridInfo.gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"
-                    }`}
-                  ></button>
+                  <button key={index} className={`my-2 w-1 rounded-md ${gridInfo.gridCols === cols ? "bg-purpleLight" : "bg-black dark:bg-white"}`}></button>
                 ))}
               </div>
             ))}
@@ -67,13 +52,7 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
               <span className="font-semibold text-gray-900 dark:text-white">{totalItems}</span> entrées
           </span>
         }
-        <Dropdown
-          options={sortOptions}
-          selectedValue={selectedSort}
-          onSelect={handleSortChange}
-          isOpen={isDropdownOpen}
-          toggleOpen={() => setIsDropdownOpen(!isDropdownOpen)}
-        />
+        <Dropdown options={sortOptions} selectedValue={selectedSort} onSelect={handleSortChange} isOpen={isDropdownOpen} toggleOpen={() => setIsDropdownOpen(!isDropdownOpen)}/>
       </div>
     </div>
   );

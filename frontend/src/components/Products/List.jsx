@@ -5,7 +5,7 @@ const List = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListeSouhait,
 
   return (
     <div className="flex items-center gap-6 p-4 border-b bg-customLight dark:bg-customDark">
-      <div className="relative w-52 h-52 bg-gray-100 dark:bg-gray-700 flex items-center justify-center rounded-lg overflow-hidden group">
+      <div className="relative w-52 h-52 flex items-center justify-center rounded-lg overflow-hidden group">
         <ImageActions list={list} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} effacerDeListeSouhait={effacerDeListeSouhait} />
       </div>
       <div className="flex flex-col text-gray-800 dark:text-white">
