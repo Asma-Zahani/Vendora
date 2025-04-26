@@ -5,8 +5,8 @@ const Card = ({ wishlist, produit, ajouterAuPanier, ajouterAuListeSouhait, effac
 
   return (
     <>
-    <div className="bg-customLight dark:bg-customDark flex flex-col items-center">
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden group">
+    <div className="bg-customLight dark:bg-customDark rounded-xl shadow-md flex flex-col items-center">
+      <div className="relative w-full h-full rounded-t-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden group">
         <ImageActions wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} effacerDeListeSouhait={effacerDeListeSouhait} />
       </div>
       <div className="w-full p-4 text-left">
