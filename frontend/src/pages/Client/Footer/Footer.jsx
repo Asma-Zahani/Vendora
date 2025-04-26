@@ -28,7 +28,7 @@ const Footer = () => {
                                     <div className="block mt-4 text-sm text-gray-600 dark:text-gray-400">
                                         <div className="flex items-center gap-1">
                                             <Mail size={17} />
-                                            contact@company.com
+                                            fazza.shop.contact@gmail.com
                                         </div>
                                     </div>
                                     <div className="block mt-2 text-sm text-gray-600 dark:text-gray-400">

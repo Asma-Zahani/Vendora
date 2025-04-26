@@ -160,7 +160,7 @@ const FactureModal = ({ isOpen, onClose, selectedItem }) => {
               </address>
             </div>
             <div className="text-right text-sm text-gray-600 dark:text-gray-300">
-              <p><strong>Email:</strong> KDMarché@contact.com</p>
+              <p><strong>Email:</strong> fazza.shop.contact@gmail.com</p>
               <p><strong>Website:</strong> www.KDMarché.com</p>
               <p><strong>Téléphone:</strong> (216) 55 555 555</p>
             </div>
