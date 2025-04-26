@@ -1,13 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import ThemeContext from '@/utils/ThemeContext';
 import { getEntities } from "@/service/EntitesService";
 import logo from "@/assets/logo/logo.svg";
 import img from "@/assets/default/image.png";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Link } from "react-router";
+import LightBgLogo from "@/assets/logo/bg-logo-light.png";
+import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
 
 const FactureModal = ({ isOpen, onClose, selectedItem }) => {
+  const { theme } = useContext(ThemeContext);
+
   const [facture, setFacture] = useState(null);
   const [details, setDetails] = useState([]);
   const [produits, setProduits] = useState([]);
@@ -143,7 +149,10 @@ const FactureModal = ({ isOpen, onClose, selectedItem }) => {
           {/* Header */}
           <div className="flex justify-between items-start mb-6 border-b pb-6">
             <div>
-              <img src={logo} alt="Logo" className="h-10 mb-2" />
+              <Link to="/" className="relative"> 
+                <img src={logo} alt="Logo" className="h-20 mb-2 relative z-10" />
+                <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"></div>
+              </Link>
               <address className="not-italic text-sm text-gray-600 dark:text-gray-300">
                 <p>1982 Harvest Lane</p>
                 <p>New York, NY 12210</p>
