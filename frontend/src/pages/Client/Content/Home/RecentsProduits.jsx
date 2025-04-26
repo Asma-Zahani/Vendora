@@ -32,7 +32,7 @@ const RecentsProduits = () => {
               <h1 className="text-md sm:text-2xl font-semibold uppercase">Produits récents</h1>
               <div className="border-t-2 w-10 sm:w-20 ml-5"></div> 
             </div>
-            <p className="italic text-gray-500">Nouveautés cette semaine</p>
+            <p className="italic font-greatvibes text-gray-500">Nouveautés cette semaine</p>
           </div>
           <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {
