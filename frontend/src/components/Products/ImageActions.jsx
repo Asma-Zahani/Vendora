@@ -47,7 +47,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
 
   return (
     <>
-      <img src={imageSrc} alt={produit.nom} onError={handleImageError} className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110 rounded-t-xl"/>
+      <img src={imageSrc} alt={produit.nom} onError={handleImageError} className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110"/>
       <div className="absolute right-2 top-2">
         {produit.status === 'Rupture de stock' && (
           <div className="flex bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded-full items-center justify-center shadow-md">
@@ -69,7 +69,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
           </div>
         )}
       </div>
-      <div onClick={() => navigate(`/boutique/${produit.produit_id}`)} className="absolute top-0 left-0 sm:top-0 sm:left-0 right-0 bottom-0 rounded-t-xl bg-customDark/25 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div onClick={() => navigate(`/boutique/${produit.produit_id}`)} className="absolute top-0 left-0 sm:top-0 sm:left-0 right-0 bottom-0 bg-customDark/25 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         { !list &&
         <div className="flex flex-col space-y-1 md:space-y-2">
           <div onClick={(e) => {e.stopPropagation(); setIsViewModalOpen(true)}} className={`hidden md:hidden lg:flex bg-contentLight hover:bg-contentDark dark:text-black py-2 rounded-full items-center justify-center w-36 cursor-pointer transition-all duration-300 ${produit.status === "Disponible" ? produit.couleurs && produit.couleurs.length > 1 ? "" : "relative left-7" : ""}`}
