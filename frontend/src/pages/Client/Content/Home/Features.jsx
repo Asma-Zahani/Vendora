@@ -26,9 +26,9 @@ const Features = () => {
 
       return (
         <div className="py-12 mx-6 flex justify-center">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center"> 
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 text-center"> 
             {features.map((feature, index) => (
-              <div key={index} className="flex flex-col md:flex-row items-center text-center space-y-3 md:space-y-0 md:space-x-4 lg:border-r-2 dark:border-borderDark last:border-none">
+              <div key={index} className="flex flex-row items-center text-center space-y-3 md:space-y-0 md:space-x-4 lg:border-r-2 dark:border-borderDark last:border-none">
                 <div className="flex justify-center items-center text-3xl mb-4 md:mb-0 text-purpleLight">
                   {feature.icon}
                 </div>
