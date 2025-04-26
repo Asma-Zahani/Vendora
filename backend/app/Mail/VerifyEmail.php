@@ -41,7 +41,7 @@ class VerifyEmail extends Mailable
      */
     public function content(): Content
     {
-        // $pathToImage = public_path('logo.png');
+        // $pathToImage = public_path('logo.svg');
         $pathToImage = config('services.cloudinary_logo');
 
         return new Content(
