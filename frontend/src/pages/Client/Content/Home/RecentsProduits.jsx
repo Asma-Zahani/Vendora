@@ -34,7 +34,7 @@ const RecentsProduits = () => {
             </div>
             <p className="italic text-gray-500">Nouveautés cette semaine</p>
           </div>
-          <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-10 gap-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
             {
               produitsAffiches.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
