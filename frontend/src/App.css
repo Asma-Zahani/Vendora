@@ -164,9 +164,29 @@ html {
 .fc-prev-button .fc-button .fc-button-primary {
     background-color: #121313;
 }
+
 .oklch-color-fix * {
     --tw-bg-opacity: 1 !important;
     --tw-text-opacity: 1 !important;
     color: black !important;
     background-color: white !important;
-  }
+}
+
+/* Style pour les champs input avec auto-complétion */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #E6E6FA inset !important;
+    -webkit-text-fill-color: #665292FF !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover, 
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #6652921a inset !important;
+    -webkit-text-fill-color: #665292FF !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
