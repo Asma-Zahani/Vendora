@@ -48,7 +48,7 @@ const Header = () => {
 
           <div className="flex gap-3 ms-auto pr-0 lg:pr-2 md:pr-5">
 
-            <div className="inline-flex relative items-center sm:pl-0.5 -mr-2">
+            <div className="inline-flex relative items-center sm:pl-0.5 -mr-4 sm:-mr-2">
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -57,7 +57,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark sm:pl-0.5 -mr-2">
+            <div className="inline-flex relative items-center sm:border-l-2 dark:border-borderDark sm:pl-0.5 -mr-4 sm:-mr-2">
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -66,14 +66,14 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="relative flex items-center border-l-2 border-r-2 dark:border-borderDark sm:pl-1 -mr-2">
+            <div className="relative flex items-center sm:border-l-2 sm:border-r-2 dark:border-borderDark sm:pl-1 -mr-4 sm:-mr-2">
               <DarkMode />
             </div>
 
             {user ?
               <UserAction home={true} />
               :
-              <div className="relative flex items-center dark:border-borderDark transition-all duration-300 hover:scale-110">
+              <div className="relative flex items-center transition-all duration-300 hover:scale-110 -mr-4 sm:mr-0">
                 <div className="relative flex items-center">
                   <Link to="/login" className="leading-4 text-sm flex items-center justify-center">
                     <div type="button" className="w-10 h-10 rounded-full p-2">
