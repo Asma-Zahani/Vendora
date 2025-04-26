@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        target: 'https://projetpfe-production.up.railway.app',
         changeOrigin: true,
         headers: {
           Accept: 'application/json',
