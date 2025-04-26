@@ -5,13 +5,13 @@ const Card = ({ wishlist, produit, ajouterAuPanier, ajouterAuListeSouhait, effac
 
   return (
     <>
-    <div className="bg-customLight dark:bg-customDark flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden group">
         <ImageActions wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} effacerDeListeSouhait={effacerDeListeSouhait} />
       </div>
-      <div className="w-full p-4 text-left">
-        <h2 className="text-lg font-semibold">{produit.nom}</h2>
-        <div className="flex mt-2 gap-3 text-md font-semibold">
+      <div className="w-full px-1 pt-2 mb-4 text-left">
+        <h2 className="text-md sm:text-lg">{produit.nom}</h2>
+        <div className="flex gap-3 text-sm font-semibold">
           <span className="text-purpleLight">${produit.prix_apres_promo}</span>
           {produit.promotion_id ? 
             <span className="text-gray-300">
