@@ -1,7 +1,12 @@
-import Image from "@/assets/home/Online shopping.svg";
+import LightImage from "@/assets/home/Online shopping 1.svg";
+import DarkImage from "@/assets/home/Online shopping 2.svg";
 import { Link } from "react-router";
+import { useContext } from "react";
+import ThemeContext from '@/utils/ThemeContext';
 
 const Hero = () => {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div className="relative bg-customLight dark:bg-customDark m-0">
       <div className="container px-6 py-20 mx-auto">
@@ -21,7 +26,7 @@ const Hero = () => {
             </div>
 
             <div className="flex items-center justify-center w-full mt-6 lg:mt-0 lg:w-1/2">
-                <img className="w-full h-full lg:max-w-3xl" src={Image} alt="Catalogue-pana.svg" />
+              <img className="w-full h-full lg:max-w-3xl" src={theme === "light" ? LightImage : DarkImage} alt="Catalogue-pana.svg" />
             </div>
         </div>
       </div>
