@@ -13,9 +13,9 @@ const Footer = () => {
                     <div className="lg:col-span-2">
                         <FooterSection hidden={true} title="Get in touch">
                             <Link to="/" className="order-1 lg:order-none">
-                                <img src={logo} alt="Logo" className="w-auto h-9" />
+                                <img src={logo} alt="Logo" className="w-auto h-20" />
                             </Link>
-                            <p className="lg:max-w-sm mt-4 ml-2 text-sm text-gray-600 dark:text-gray-400">
+                            <p className="lg:max-w-sm mt-2 ml-2 text-sm text-gray-600 dark:text-gray-400">
                                 Rejoins notre communauté et reste informé des dernières offres, nouveautés et promotions exclusives sur notre boutique.
                             </p>
                             <div className="ml-6">

@@ -14,14 +14,14 @@ const Header = () => {
   return (
     <header
       className="w-full fixed left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none transition-all">
-      <div className="mx-0 lg:mx-10 px-4 py-2 md:py-4 lg:py-4">
+      <div className="mx-0 lg:mx-10 px-4">
         <div className="flex items-center w-full">
           <div className="flex items-center justify-between px-4 py-2 relative">
-            <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center -ml-2 lg:ml-5 p-0 sm:p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
+            <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center -ml-2 mr-2 lg:ml-5 p-0 sm:p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
               <Menu className="w-5 h-5" />
             </button>
             <Link to="/" className="order-1 lg:order-none">
-              <img src={logo} alt="Logo" className="h-8" />
+              <img src={logo} alt="Logo" className="h-14 sm:h-20" />
             </Link>
             {showDropdown && (
               <div className="absolute bg-contentLight dark:bg-contentDark shadow-md rounded w-48 mt-2 z-50"

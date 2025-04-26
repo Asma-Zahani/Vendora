@@ -22,9 +22,9 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
 
   return (
     <div className={`h-full shadow-xl shadow-slate-300/50 dark:shadow-gray-800/50  ${ isHover ? "hidden" : "block" }`} onMouseLeave={toggleSidebarHover} >
-      <div className="flex items-center justify-between px-5 py-4 mt-2">
+      <div className="flex items-center justify-between lg:justify-center px-5 mt-4">
         <Link to="/">
-          <img src={logo} alt="Logo" className="h-8" />
+          <img src={logo} alt="Logo" className="h-20" />
         </Link>
         {isDrawer && (
           <button onClick={onClose} className="p-2 rounded-md">
@@ -32,7 +32,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
           </button>
         )}
       </div>
-      <div className="scrollbar pt-7 overflow-y-auto h-full">
+      <div className="scrollbar pt-2 overflow-y-auto h-full">
         <ul className="space-y-4 px-5 pb-20">
           {menuItems.map((menu, menuIndex) => (
             <li key={menuIndex}>
