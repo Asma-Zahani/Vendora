@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo/logo.svg";
 import menuItems from "@/pages/Admin/SideBar/menuItems"
 import { ChevronRight, ChevronDown, X } from "lucide-react";
+import BgLogo from "@/assets/logo/bg-logo.png";
 
 // eslint-disable-next-line react/prop-types
 const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
@@ -22,9 +23,11 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
 
   return (
     <div className={`h-full shadow-xl shadow-slate-300/50 dark:shadow-gray-800/50  ${ isHover ? "hidden" : "block" }`} onMouseLeave={toggleSidebarHover} >
-      <div className="flex items-center justify-between lg:justify-center px-5 mt-4">
-        <Link to="/">
-          <img src={logo} alt="Logo" className="h-20" />
+      <div className="flex items-center justify-between lg:justify-center px-5 mt-4">        
+        <Link to="/" className="relative"> 
+          <img src={logo} alt="Logo" className="h-20 relative z-10" />
+          <div style={{ backgroundImage: `url(${BgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
+          ></div>
         </Link>
         {isDrawer && (
           <button onClick={onClose} className="p-2 rounded-md">

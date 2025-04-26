@@ -5,6 +5,7 @@ import DarkMode from "@/utils/DarkMode";
 import { UserContext } from "@/utils/UserContext";
 import { Link } from "react-router";
 import UserAction from "@/components/Header/UserAction";
+import BgLogo from "@/assets/logo/bg-logo.png";
 
 const Header = () => {
   const { user, wishlist, panier } = useContext(UserContext);
@@ -20,9 +21,12 @@ const Header = () => {
             <button ref={menuRef} onClick={() => {setShowDropdown(!showDropdown)}} type="button" className="relative flex justify-center items-center -ml-2 mr-2 lg:ml-5 p-0 sm:p-2 transition-all h-[37.5px] duration-75 ease-linear rounded-md order-none lg:order-1">
               <Menu className="w-5 h-5" />
             </button>
-            <Link to="/" className="order-1 lg:order-none">
-              <img src={logo} alt="Logo" className="h-14 sm:h-20" />
+            <Link to="/" className="order-1 lg:order-none relative">
+              <img src={logo} alt="Logo" className="h-14 sm:h-20 relative z-10" />
+              <div style={{ backgroundImage: `url(${BgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
+              ></div>
             </Link>
+
             {showDropdown && (
               <div className="absolute bg-contentLight dark:bg-contentDark shadow-md rounded w-48 mt-2 z-50"
                 style={{

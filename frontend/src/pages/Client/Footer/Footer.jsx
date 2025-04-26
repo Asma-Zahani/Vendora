@@ -2,6 +2,7 @@ import logo from "@/assets/logo/logo.svg";
 import { Facebook, Instagram, Linkedin, Mail, Phone } from "lucide-react";
 import { Link } from "react-router";
 import FooterSection from "./FooterSection";
+import BgLogo from "@/assets/logo/bg-logo.png";
 
 const Footer = () => {
   return (
@@ -12,8 +13,9 @@ const Footer = () => {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
                     <div className="lg:col-span-2">
                         <FooterSection hidden={true} title="Get in touch">
-                            <Link to="/" className="order-1 lg:order-none">
-                                <img src={logo} alt="Logo" className="w-auto h-20" />
+                            <Link to="/" className="relative order-1 lg:order-none"> 
+                                <img src={logo} alt="Logo" className="w-auto h-20 relative z-10" />
+                                <div style={{ backgroundImage: `url(${BgLogo})` }} className="absolute w-40 inset-0 bg-cover bg-center z-0"></div>
                             </Link>
                             <p className="lg:max-w-sm mt-2 ml-2 text-sm text-gray-600 dark:text-gray-400">
                                 Rejoins notre communauté et reste informé des dernières offres, nouveautés et promotions exclusives sur notre boutique.
