@@ -28,13 +28,13 @@ const RecentsProduits = () => {
         <>
           <div className="flex flex-col items-center text-center mb-5">
             <div className="flex items-center w-full justify-center">
-              <div className="border-t-2 w-20 mr-5"></div> 
-              <h1 className="text-2xl font-semibold uppercase">Produits récents</h1>
-              <div className="border-t-2 w-20 ml-5"></div> 
+              <div className="border-t-2 w-10 sm:w-20 mr-5"></div> 
+              <h1 className="text-md sm:text-2xl font-semibold uppercase">Produits récents</h1>
+              <div className="border-t-2 w-10 sm:w-20 ml-5"></div> 
             </div>
             <p className="italic text-gray-500">Nouveautés cette semaine</p>
           </div>
-          <div className="mt-10 gap-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-10 gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {
               produitsAffiches.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
