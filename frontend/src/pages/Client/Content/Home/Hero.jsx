@@ -10,9 +10,9 @@ const Hero = () => {
       button: "Trouver un Point de Vente"
     },
     { src: Img2, 
-      title: "KD Marche - Votre E-Commerce",
+      title: "FaZZa - Votre E-Commerce",
       text: "Explorez notre large sélection de produits et recevez vos achats directement chez vous avec notre service de livraison rapide." ,
-      button: "Explorer KD Marche"
+      button: "Explorer FaZZa"
     }
   ];
   const [currentImage, setCurrentImage] = useState(0);

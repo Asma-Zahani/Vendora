@@ -81,7 +81,7 @@ const Footer = () => {
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-borderDark" />
         <div className="text-sm flex flex-col sm:flex-row items-center justify-center sm:justify-between">
           <div className="flex items-center">
-            Copyright {new Date().getFullYear()} © KD Marche™.
+            Copyright {new Date().getFullYear()} © FaZZa™.
           </div>
           <div>Fabriqué à la main & fait avec ❤️</div>
         </div>
