@@ -2,8 +2,7 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
-import Dropdown from "@/components/Forms/Dropdown";
-import { default as Drop } from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/Dropdown";
 import UserContext from '@/utils/UserContext';
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import ConfirmModal from "@/components/Modals/ConfirmModal";
@@ -77,11 +76,13 @@ const Checkout = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value,
-            ...(name === "region" && { ville: "" })
-        }));
+        setFormData({ ...formData, [name]: value });
+        if (name === 'region') {
+            setFormData((prev) => ({ ...prev, ville: "" }));
+            setIsRegionOpen(false);
+        } else if (name === 'ville') {
+            setIsVilleOpen(false);
+        }
     };
 
     const createInteractions = async () => {
@@ -184,12 +185,12 @@ const Checkout = () => {
                             <Label label="Adresse"/>
                             <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required error={errors.adresse} />
                         </div>
-                        <Dropdown label="Région" name="region" options={regions} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen}
+                        <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}
                         toggleOpen={() => {
                             setIsRegionOpen(!isRegionOpen);
                             setIsVilleOpen(false);
                         }} />
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region] || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen}
+                        <Dropdown label="Ville" name="ville" options={villes[formData.region]?.map(ville => ({ value: ville, label: ville })) || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen} target={true}
                         toggleOpen={() => {
                             setIsVilleOpen(!isVilleOpen);
                             setIsRegionOpen(false);
@@ -197,7 +198,7 @@ const Checkout = () => {
                     </>
                 ) : (
                     <div className="col-span-2">
-                        <Drop label="Point de retrait" name="drive_id" options={drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))} selectedValue={formData.drive_id} 
+                        <Dropdown label="Point de retrait" name="drive_id" options={drives.map(drive => ({ value: drive.drive_id, label: drive.nom }))} selectedValue={formData.drive_id} 
                         onSelect={(selected) => { 
                             setFormData({ ...formData, drive_id: selected.value });
                             setIsPointRetraitOpen(null);

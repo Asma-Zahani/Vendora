@@ -173,11 +173,6 @@ const Register = () => {
               </label>
             </div>
           </div>
-          {/*  */}
-          {/*  */}
-          {/*  */}
-          {/*  */}
-          {/*  */}
           <Dropdown label="Emploi" name="emploi" options={emplois.map(emploi => ({ value: emploi, label: emploi }))} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen} target={true}
             toggleOpen={() => {
               setIsEmploiOpen(!isEmploiOpen);
