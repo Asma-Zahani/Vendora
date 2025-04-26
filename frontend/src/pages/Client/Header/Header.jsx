@@ -1,5 +1,5 @@
 import { useContext , useState, useRef } from "react";
-import { Search, ShoppingCart, User2, Menu, Heart } from 'lucide-react';
+import { ShoppingCart, User2, Menu, Heart } from 'lucide-react';
 import logo from "@/assets/logo/logo.svg";
 import DarkMode from "@/utils/DarkMode";
 import { UserContext } from "@/utils/UserContext";
@@ -45,24 +45,10 @@ const Header = () => {
               </div>
             )}
           </div>
-          
-          <div className="relative w-990:inline-flex hidden">
-            <input type="text" className="py-3 p-6 dark:bg-contentDark bg-contentLight placeholder:text-black text-sm dark:placeholder:text-white rounded focus-visible:outline-0 min-w-[400px]" 
-              placeholder="Type to Search .." autoComplete="off" 
-            />
-            <button type="button" className="transition-all duration-300 hover:scale-110 absolute right-3.5 top-2.5" >
-              <Search className="inline-block size-5 transition-transform duration-300 transform rotate-[360deg]" />
-            </button>
-          </div>
 
           <div className="flex gap-3 ms-auto pr-0 lg:pr-2 md:pr-5">
-            <div className="w-990:hidden relative flex items-center -mr-2">
-              <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
-                <Search className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-              </button>
-            </div>
 
-            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 w-990:border-none -mr-2">
+            <div className="inline-flex relative items-center sm:pl-0.5 -mr-2">
               <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -71,7 +57,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark pl-0.5 -mr-2">
+            <div className="inline-flex relative items-center border-l-2 dark:border-borderDark sm:pl-0.5 -mr-2">
               <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                 <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
                 <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -80,7 +66,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="relative flex items-center border-l-2 border-r-2 dark:border-borderDark pl-1 -mr-2">
+            <div className="relative flex items-center border-l-2 border-r-2 dark:border-borderDark sm:pl-1 -mr-2">
               <DarkMode />
             </div>
 
@@ -93,7 +79,7 @@ const Header = () => {
                     <div type="button" className="w-10 h-10 rounded-full p-2">
                       <User2 className="inline-block w-5 h-5 stroke-1" />
                     </div>
-                    Connexion
+                    <p className="hidden sm:block">Connexion</p>
                   </Link>
                 </div>
               </div>
