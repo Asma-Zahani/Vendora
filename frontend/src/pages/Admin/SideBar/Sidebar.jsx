@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import ThemeContext from '@/utils/ThemeContext';
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo/logo.svg";
 import menuItems from "@/pages/Admin/SideBar/menuItems"
 import { ChevronRight, ChevronDown, X } from "lucide-react";
-import BgLogo from "@/assets/logo/bg-logo.png";
+import LightBgLogo from "@/assets/logo/bg-logo-light.png";
+import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
 
 // eslint-disable-next-line react/prop-types
 const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
+  const { theme } = useContext(ThemeContext);
+
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
 
@@ -26,7 +30,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
       <div className="flex items-center justify-between lg:justify-center px-5 mt-4">        
         <Link to="/" className="relative"> 
           <img src={logo} alt="Logo" className="h-20 relative z-10" />
-          <div style={{ backgroundImage: `url(${BgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
+          <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
           ></div>
         </Link>
         {isDrawer && (

@@ -1,13 +1,16 @@
 import { useContext , useState, useRef } from "react";
+import ThemeContext from '@/utils/ThemeContext';
 import { ShoppingCart, User2, Menu, Heart } from 'lucide-react';
 import logo from "@/assets/logo/logo.svg";
 import DarkMode from "@/utils/DarkMode";
 import { UserContext } from "@/utils/UserContext";
 import { Link } from "react-router";
 import UserAction from "@/components/Header/UserAction";
-import BgLogo from "@/assets/logo/bg-logo.png";
+import LightBgLogo from "@/assets/logo/bg-logo-light.png";
+import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
 
 const Header = () => {
+  const { theme } = useContext(ThemeContext);
   const { user, wishlist, panier } = useContext(UserContext);
   const menuRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -23,7 +26,7 @@ const Header = () => {
             </button>
             <Link to="/" className="order-1 lg:order-none relative">
               <img src={logo} alt="Logo" className="h-14 sm:h-20 relative z-10" />
-              <div style={{ backgroundImage: `url(${BgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
+              <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
               ></div>
             </Link>
 
