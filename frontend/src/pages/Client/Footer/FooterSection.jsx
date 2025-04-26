@@ -6,7 +6,7 @@ const FooterSection = ({ title, children, hidden }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <div className="mx-2 sm:-mx-4">
       <button className="flex items-center justify-between w-full lg:cursor-default" onClick={() => setOpen(!open)}>
         <h3 className={`text-left font-bold ${hidden && "lg:hidden"}`}>{title}</h3>
         <span className="lg:hidden">

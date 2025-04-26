@@ -6,7 +6,7 @@ import FooterSection from "./FooterSection";
 const Footer = () => {
   return (
     <footer className="relative bg-customLight dark:bg-customDark">
-        <hr className="my-4 border-t border-gray-300/50 backdrop-blur-sm sm:mx-auto dark:border-borderDark" />
+        <hr className="mt-4 border-t border-gray-300/50 backdrop-blur-sm sm:mx-auto dark:border-borderDark" />
         <div className="container py-6 mx-auto">
             <div className="lg:flex-1">
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
