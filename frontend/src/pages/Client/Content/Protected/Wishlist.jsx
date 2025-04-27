@@ -14,7 +14,7 @@ const Wishlist = () => {
       <section className="mx-6 py-6">
         <div className="flex flex-col">
             <div className="inline-block min-w-full py-2">
-                <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
+                <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg px-4 sm:px-6 py-6 shadow-sm">
                     {produits?.length > 0 && <h1 className="text-2xl font-semibold mb-4">Liste de souhait</h1>}
                     {produits?.length > 0 ? (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-lg">

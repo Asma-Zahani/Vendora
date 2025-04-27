@@ -49,7 +49,7 @@ const UpdatePassword = () => {
                             </div>
                             {errors.current_password && <p className="text-sm text-red-500">{errors.current_password}</p>}
                         </div>
-                        <div className="mb-4">
+                        <div className="col-span-2 sm:col-span-1">
                             <Label label="Nouveau mot de passe"/>
                             <div className="relative">
                                 <Input type={inputType1} name="new_password" value={formData.new_password} onChange={handleChange} placeholder="*********" required />
@@ -63,7 +63,7 @@ const UpdatePassword = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 col-span-2 sm:col-span-1">
                             <Label label="Confirmer le mot de passe"/>
                             <div className="relative">
                                 <Input type={inputType2} name="new_password_confirmation" value={formData.new_password_confirmation} onChange={handleChange} placeholder="*********" required />

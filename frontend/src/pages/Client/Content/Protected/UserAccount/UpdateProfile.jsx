@@ -60,21 +60,21 @@ const UpdateProfile = () => {
                 
                 <form  onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
-                        <div>
+                        <div className="col-span-2 sm:col-span-1">
                             <Label label="Nom"/>
                             <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
                         </div>
                         {errors.current_password && <p className="text-sm text-red-500">{errors.current_password}</p>}
-                        <div>
+                        <div className="col-span-2 sm:col-span-1">
                             <Label label="Prénom"/>
                             <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
                         </div>
-                        <div>
+                        <div className="col-span-2 sm:col-span-1">
                             <Label label="Téléphone"/>
                             <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" required />
                             {errors.telephone && <p className="text-sm text-red-500">{errors.telephone}</p>}
                         </div>
-                        <div>
+                        <div className="col-span-2 sm:col-span-1">
                             <Label label="Email"/>
                             <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
                         </div>
@@ -83,36 +83,46 @@ const UpdateProfile = () => {
                             <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />
                         </div>
                         <div className="col-span-2 grid grid-cols-2 gap-6">
-                            <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}
-                            toggleOpen={() => {
-                                setIsRegionOpen(!isRegionOpen);
-                                setIsVilleOpen(false);
-                            }} />
-                            <Dropdown label="Ville" name="ville" options={villes[formData.region]?.map(ville => ({ value: ville, label: ville })) || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen} target={true}
-                            toggleOpen={() => {
-                                setIsVilleOpen(!isVilleOpen);
-                                setIsRegionOpen(false);
-                            }} />
+                            <div className="col-span-2 sm:col-span-1 -mb-4 sm:mb-0">
+                                <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}
+                                toggleOpen={() => {
+                                    setIsRegionOpen(!isRegionOpen);
+                                    setIsVilleOpen(false);
+                                }} />
+                            </div>
+                            <div className="col-span-2 sm:col-span-1 -mb-4 sm:mb-0">
+                                <Dropdown label="Ville" name="ville" options={villes[formData.region]?.map(ville => ({ value: ville, label: ville })) || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen} target={true}
+                                toggleOpen={() => {
+                                    setIsVilleOpen(!isVilleOpen);
+                                    setIsRegionOpen(false);
+                                }} />
+                            </div>
                         </div>
                         <div className="col-span-2 grid grid-cols-3 gap-6">
-                            <Dropdown label="Emploi" name="emploi" options={emplois.map(emploi => ({ value: emploi, label: emploi }))} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen} target={true}
-                                toggleOpen={() => {
-                                setIsEmploiOpen(!isEmploiOpen);
-                                setIsHousingTypeOpen(false);
-                                setIsOccupancyStatusOpen(false);
-                            }} />
-                            <Dropdown label="Type de logement" name="typeLogement" options={housingTypes.map(housingType => ({ value: housingType, label: housingType }))} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen} target={true}
-                                toggleOpen={() => {
-                                setIsHousingTypeOpen(!isHousingTypeOpen);
-                                setIsEmploiOpen(false);
-                                setIsOccupancyStatusOpen(false);
-                            }} />
-                            <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses.map(occupancyStatus => ({ value: occupancyStatus, label: occupancyStatus }))} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen} target={true}
-                                toggleOpen={() => {
-                                setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
-                                setIsEmploiOpen(false);
-                                setIsHousingTypeOpen(false);
-                            }} />
+                            <div className="col-span-3 sm:col-span-1 -mb-4 sm:mb-0">
+                                <Dropdown label="Emploi" name="emploi" options={emplois.map(emploi => ({ value: emploi, label: emploi }))} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen} target={true}
+                                    toggleOpen={() => {
+                                    setIsEmploiOpen(!isEmploiOpen);
+                                    setIsHousingTypeOpen(false);
+                                    setIsOccupancyStatusOpen(false);
+                                }} />
+                            </div>
+                            <div className="col-span-3 sm:col-span-1 -mb-4 sm:mb-0">
+                                <Dropdown label="Type de logement" name="typeLogement" options={housingTypes.map(housingType => ({ value: housingType, label: housingType }))} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen} target={true}
+                                    toggleOpen={() => {
+                                    setIsHousingTypeOpen(!isHousingTypeOpen);
+                                    setIsEmploiOpen(false);
+                                    setIsOccupancyStatusOpen(false);
+                                }} />
+                            </div>
+                            <div className="col-span-3 sm:col-span-1">
+                                <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses.map(occupancyStatus => ({ value: occupancyStatus, label: occupancyStatus }))} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen} target={true}
+                                    toggleOpen={() => {
+                                    setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
+                                    setIsEmploiOpen(false);
+                                    setIsHousingTypeOpen(false);
+                                }} />
+                            </div>
                         </div>
                     </div>
                     <div className="border-t pt-5 border-contentLight dark:border-borderDark -mx-6 flex">
