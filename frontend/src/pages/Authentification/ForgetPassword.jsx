@@ -50,7 +50,7 @@ const ForgetPassword = () => {
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <h4 className="text-2xl font-semibold mb-2 dark:text-white">Vous avez oublié votre mot de passe ?</h4>
+        <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Vous avez oublié votre mot de passe ?</h4>
         <p className="text-sm text-gray-600 dark:text-grayDark mb-2">Entrez votre email</p>
         <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
         {errors.email && <p className="error">{errors.email}</p>}

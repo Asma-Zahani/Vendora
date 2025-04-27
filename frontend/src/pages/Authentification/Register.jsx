@@ -106,8 +106,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <h4 className="text-2xl font-semibold mb-2 dark:text-white">Créez votre compte</h4>
-        <p className="text-sm text-gray-600 mb-6 dark:text-grayDark">Entrez vos informations personnelles pour créer un compte</p>
+        <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Créez votre compte</h4>
+        <p className="text-sm sm:text-sm text-gray-600 mb-6 dark:text-grayDark">Entrez vos informations personnelles pour créer un compte</p>
         {step === 1 && ( <>
           <div className="mb-4">
               <Label label="Nom"/>

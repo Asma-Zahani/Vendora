@@ -63,7 +63,7 @@ const Login = () => {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Connectez-vous à votre compte</h4>
+                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Connectez-vous à votre compte</h4>
                 <p className="text-sm text-gray-600 dark:text-grayDark mb-6">Entrez votre email et votre mot de passe pour vous connecter</p>
                 <div className="mb-4">
                     <Label label="Email Address"/>
@@ -83,7 +83,7 @@ const Login = () => {
                     </div>
                     {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                 </div>
-                <div className="flex justify-between mb-6">
+                <div className="sm:flex sm:justify-between mb-6">
                     <label className="flex items-center cursor-pointer text-sm text-gray-700 dark:text-white">
                         <input type="checkbox" checked={isChecked} onChange={() => {setIsChecked(!isChecked)}} className="hidden"/>
                         <span className={`appearance-none w-4 h-4 mr-2 rounded-sm ${isChecked ? 'bg-purpleLight' : 'bg-contentLight dark:bg-contentDark'} flex items-center justify-center`}>

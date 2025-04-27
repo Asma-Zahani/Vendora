@@ -64,7 +64,7 @@ const ResetPassword = () => {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Réinitialiser votre mot de passe</h4>
+                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Réinitialiser votre mot de passe</h4>
                 <div className="mb-4">
                     <Label label="Nouveau mot de passe"/>
                     <div className="relative">
