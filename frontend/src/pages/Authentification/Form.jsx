@@ -5,9 +5,9 @@ import { Link } from "react-router";
 
 const FormContainer = ({children}) => {
     return (
-        <div className="relative flex sm:items-center justify-center min-h-screen" style={{ backgroundImage: `url(${Bg})` }}>
+        <div className="relative flex items-center justify-center min-h-screen" style={{ backgroundImage: `url(${Bg})` }}>
             <div className="absolute w-full h-full dark:bg-customDark dark:bg-opacity-80"></div>
-            <div className="relative w-[450px] m-10">
+            <div className="relative w-[450px] mx-10">
                 <Link to="/" className="block mb-2 text-left">
                     <img className="h-24" src={logo} />
                 </Link>
