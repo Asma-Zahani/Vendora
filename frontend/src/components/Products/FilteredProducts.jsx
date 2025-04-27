@@ -36,7 +36,7 @@ const FilteredProducts = ({ wishlist, data, gridInfo, filtres, ajouterAuPanier, 
         <div className="mx-0 lg:mx-20">
             <FiltreHeader gridInfo={gridInfo} indexOfFirstItem={data.from - 1} indexOfLastItem={data.to} totalItems={data.total} onSortChange={setSortOption}/>
             <Filtre filtres={filtres} selectedFiltres={selectedFiltres} productConfig={productConfig}/>
-            <div className={`mt-10 gap-2 sm:gap-6 ${gridInfo.isGrid ? `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "flex flex-col gap-4"}`}>
+            <div className={`mt-10 gap-2 sm:gap-6 ${gridInfo.isGrid ? `grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "flex flex-col gap-4"}`}>
 
                 {data.data?.length > 0 ? (
                     data.data?.map((produit, index) => (
