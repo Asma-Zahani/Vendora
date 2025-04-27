@@ -1,5 +1,3 @@
-dashboard
-
 https://admin.pixelstrap.net/zono/template/tour.html
 https://admin.pixelstrap.net/zono/template/ribbons.html
 
@@ -7,4 +5,8 @@ admin ynjeem y3ady commande ??
 
 session expire
 
-paiement par carte (effectue plusieurs fois )
+produits (dashboard)
+commandes (dashboard)
+modal facture (dashboard)
+boutique (client)
+detail produit (client)
