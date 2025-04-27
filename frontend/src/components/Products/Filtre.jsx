@@ -127,7 +127,7 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
                   <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Prix</h4>
                   
                   <input id="minmax-range" type="range" min="0" max="1000" value={selectedFiltres.maxPrice} onChange={(e) => selectedFiltres.setMaxPrice(parseFloat(e.target.value))}  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 range-slider"></input>
-                  <p className="mt-1 text-sm text-gray-600">Prix maximum: {selectedFiltres.maxPrice}€</p>
+                  <p className="mt-1 text-sm text-gray-600">Prix maximum: {selectedFiltres.maxPrice} DT</p>
                 </div>
               </div>
             )}

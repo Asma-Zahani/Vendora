@@ -125,8 +125,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         </div>
                                                     </td>                                                    
                                                     <td className="border border-borderGrayLight dark:border-borderDark text-sm px-4 py-2 text-gray-700 dark:text-gray-300">
-                                                        {produit.promotion && <span className="line-through">${produit.prix}</span> }
-                                                        <span className={`${produit.promotion ? "text-red-500" : ""} ml-1`}>${produit.prix_apres_promo}</span>
+                                                        {produit.promotion && <span className="line-through">{produit.prix} DT</span> }
+                                                        <span className={`${produit.promotion ? "text-red-500" : ""} ml-1`}>{produit.prix_apres_promo} DT</span>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
                                                         <div className="flex justify-center items-center gap-3">
@@ -140,7 +140,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         </div>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">
-                                                        ${(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}
+                                                        {(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)} DT
                                                     </td>
                                                 </tr>
                                             ))}
@@ -164,11 +164,11 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
                                                         <p className="text-xl">Sous-Total:</p>
                                                         {codePromotion && !codePromotion.message ? (
                                                             <>
-                                                                <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
-                                                                <span className="text-gray-500 text-sm line-through ml-2">${getTotalPrices().original}</span>
+                                                                <span className="text-green-600 text-lg font-bold">{getTotalPrices().discounted} DT</span>
+                                                                <span className="text-gray-500 text-sm line-through ml-2">{getTotalPrices().original}  DT</span>
                                                             </>
                                                         ) : (
-                                                            <span>${getTotalPrices().original}</span>
+                                                            <span>{getTotalPrices().original} DT</span>
                                                         )}
                                                     </div>
                                                     <p className="flex justify-end text-sm text-gray-500 mr-4">Les taxes et la livraison seront calculées à l’étape de paiement.</p>
@@ -207,8 +207,8 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
 
                                         <div className="flex justify-between mt-4">
                                             <div>
-                                            {produit.promotion && <span className="line-through text-sm">${produit.prix}</span>}
-                                            <span className={`ml-2 ${produit.promotion ? "text-red-500" : ""}`}>${produit.prix_apres_promo}</span>
+                                            {produit.promotion && <span className="line-through text-sm">{produit.prix} DT</span>}
+                                            <span className={`ml-2 ${produit.promotion ? "text-red-500" : ""}`}>{produit.prix_apres_promo} DT</span>
                                             </div>
 
                                             <div className="flex justify-center items-center gap-3">
@@ -224,7 +224,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
 
                                         <div className="flex justify-between mt-2 font-semibold">
                                             <span>Total:</span>
-                                            <span>${(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)}</span>
+                                            <span>{(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)} DT</span>
                                         </div>
                                         
                                         </div>
@@ -248,15 +248,15 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
 
                                                 {codePromotion && !codePromotion.message ? (
                                                 <>
-                                                    <span className="text-green-600 text-lg font-bold">${getTotalPrices().discounted}</span>
-                                                    <span className="text-gray-500 text-sm line-through ml-1">${getTotalPrices().original}</span>
+                                                    <span className="text-green-600 text-lg font-bold">{getTotalPrices().discounted} DT</span>
+                                                    <span className="text-gray-500 text-sm line-through ml-1">{getTotalPrices().original} DT</span>
                                                 </>
                                                 ) : (
-                                                <span className="text-lg">${getTotalPrices().original}</span>
+                                                <span className="text-lg">{getTotalPrices().original} DT</span>
                                                 )}
                                             </div>
 
-                                            <p className="text-sm text-gray-500 mt-1">Les taxes et la livraison seront calculées à l’étape de paiement.</p>
+                                            <p className="text-sm text-gray-500 mt-1">Les taxes et la livraison seront calculées à l&apos;étape de paiement.</p>
                                         </div>
                                     </div>
                                 </div>

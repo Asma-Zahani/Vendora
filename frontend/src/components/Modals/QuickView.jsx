@@ -73,8 +73,8 @@ const QuickView = ({ produit, onClose , ajouterAuPanier, wishlist, ajouterAuList
                 <p className="text-3xl font-semibold">{produit.nom}</p>
 
                 <div className="flex items-center space-x-2 mt-2">
-                  <span className="text-lg font-bold text-purpleLight">${produit.prix_apres_promo}</span>
-                  {produit.promotion_id && <span className="text-gray-400 line-through">${produit.prix}</span>}
+                  <span className="text-lg font-bold text-purpleLight">{produit.prix_apres_promo} DT</span>
+                  {produit.promotion_id && <span className="text-gray-400 line-through">{produit.prix} DT</span>}
                 </div>
 
                 <div className="mt-4">

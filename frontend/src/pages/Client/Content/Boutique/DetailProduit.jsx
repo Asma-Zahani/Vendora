@@ -48,7 +48,7 @@ const DetailProduit = () => {
             <div className="w-2/3 py-2">
                 <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                     <p>{produit.nom}</p>
-                    <p>{produit.prix}</p>
+                    <p>{produit.prix} DT</p>
                     <p>{produit.description}</p>
                 </div>
             </div>

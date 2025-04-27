@@ -12,10 +12,10 @@ const Card = ({ wishlist, produit, ajouterAuPanier, ajouterAuListeSouhait, effac
       <div className="w-full px-1 pt-2 mb-4 text-left">
         <h2 className="text-md sm:text-lg">{produit.nom}</h2>
         <div className="flex gap-3 text-sm font-semibold">
-          <span className="text-purpleLight">${produit.prix_apres_promo}</span>
+          <span className="text-purpleLight">{produit.prix_apres_promo} DT</span>
           {produit.promotion_id ? 
             <span className="text-gray-300">
-              <del>${produit.prix}</del>
+              <del>{produit.prix} DT</del>
             </span> : ''}
         </div>
       </div>

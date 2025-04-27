@@ -44,10 +44,10 @@ const List = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListeSouhait,
         <div className="flex flex-col text-gray-800 dark:text-white">
           <h2 className="text-md sm:text-lg">{produit.nom}</h2>
           <div className="flex gap-3 text-sm font-semibold">
-            <span className="text-purpleLight">${produit.prix_apres_promo}</span>
+            <span className="text-purpleLight">{produit.prix_apres_promo} DT</span>
             {produit.promotion_id ? 
               <span className="text-gray-300">
-                <del>${produit.prix}</del>
+                <del>{produit.prix} DT</del>
               </span> : ''}
           </div>
           <p className="text-sm max-w-3xl mt-2 text-gray-600 dark:text-gray-300">{produit.description}</p>

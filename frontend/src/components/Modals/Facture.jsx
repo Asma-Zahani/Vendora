@@ -231,8 +231,8 @@ const FactureModal = ({ isOpen, onClose, selectedItem }) => {
                     </td>
                     <td className="px-4 py-3">{detail.quantite}</td>
                     <td className="px-4 py-3">{detail.couleur}</td>
-                    <td className="px-4 py-3">{detail.prixUnitaireTTC} €</td>
-                    <td className="px-4 py-3">{detail.totalLigneTTC} €</td>
+                    <td className="px-4 py-3">{detail.prixUnitaireTTC} DT</td>
+                    <td className="px-4 py-3">{detail.totalLigneTTC} DT</td>
                   </tr>
                 );
               })}

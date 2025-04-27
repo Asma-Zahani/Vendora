@@ -24,14 +24,14 @@ const Recapitulatif = ({checkoutData}) => {
                         </div>
                         
                         <div>                              
-                            <strong>${produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)}</strong>
+                            <strong>{produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)} DT</strong>
                         </div>
                     </div>
                 );
             })}
         </div>
         <p className="text-sm font-normal flex justify-between">
-            Sous-total · {checkoutData.produits?.length} produits <span>${checkoutData.original}</span>
+            Sous-total · {checkoutData.produits?.length} produits <span>{checkoutData.original} DT</span>
         </p>
         {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
             Remise <span>{checkoutData.remise}%</span>
@@ -39,11 +39,11 @@ const Recapitulatif = ({checkoutData}) => {
 
         {checkoutData.fraisLivraison > 0 && (
         <p className="text-sm font-normal flex justify-between">
-            Frais de livraison <span>${checkoutData.fraisLivraison}</span>
+            Frais de livraison <span>{checkoutData.fraisLivraison} DT</span>
         </p>
         )}
         <p className="text-lg font-semibold flex justify-between">
-            Total <strong>${checkoutData.totalAvecFrais}</strong>
+            Total <strong>{checkoutData.totalAvecFrais} DT</strong>
         </p>
         {checkoutData.codePromo && <p><strong>Code Promo :</strong> {checkoutData.codePromo}</p>}
     </div>
