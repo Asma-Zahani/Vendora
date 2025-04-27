@@ -50,21 +50,21 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
       <img src={imageSrc} alt={produit.nom} onError={handleImageError} className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110"/>
       <div className="absolute right-2 top-2">
         {produit.status === 'Rupture de stock' && (
-          <div className="flex bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded-full items-center justify-center shadow-md">
+          <div className="flex bg-red-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
             Rupture de stock
           </div>
         )}
       </div>
       <div className="absolute right-2 top-2">
         {produit.status === 'En arrivage' && (
-          <div className="flex bg-yellow-600 text-white text-sm font-semibold py-1 px-3 rounded-full items-center justify-center shadow-md">
+          <div className="flex bg-yellow-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
             En arrivage
           </div>
         )}
       </div>
       <div className="absolute right-2 top-2">
         {produit.status === 'Hors vente' && (
-          <div className="flex bg-gray-600 text-white text-sm font-semibold py-1 px-3 rounded-full items-center justify-center shadow-md">
+          <div className="flex bg-gray-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
             Hors vente
           </div>
         )}
