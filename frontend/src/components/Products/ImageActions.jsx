@@ -165,7 +165,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
         )}
 
       </div>
-      {isViewModalOpen && <QuickView produit={produit} onClose={() => setIsViewModalOpen(false)} ajouterAuPanier={ajouterAuPanier}/>}
+      {isViewModalOpen && <QuickView produit={produit} onClose={() => setIsViewModalOpen(false)} ajouterAuPanier={ajouterAuPanier} wishlist={wishlist} ajouterAuListeSouhait={ajouterAuListeSouhait} />}
       {isShopModalOpen && <QuickShop produit={produit} onClose={() => setIsShopModalOpen(false)} ajouterAuPanier={ajouterAuPanier} />}
     </>
   );

@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
-import { Minus, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Heart, Minus, Plus } from "lucide-react";
 import defaultImg from "@/assets/default/image.png";
 
-const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
+const QuickView = ({ produit, onClose , ajouterAuPanier, wishlist, ajouterAuListeSouhait}) => {
   const [imageSrc, setImageSrc] = useState(`/produits/${produit.image}`);
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
 
   const handleImageError = () => {
     setImageSrc(defaultImg);
@@ -58,27 +60,15 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
       <div className="fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity" aria-hidden="true"></div>
       <div className="relative p-4 w-full max-w-4xl max-h-full" data-aos="fade-down" data-aos-duration="500" data-aos-once="true">
         <div className="relative bg-customLight dark:bg-customDark rounded-md shadow-md p-5 flex flex-col">
-          
-          <button
-            onClick={onClose}
-            type="button"
-            className="absolute top-3 right-3 text-gray-500 dark:text-gray-200 hover:bg-bgLight hover:dark:bg-bgDark hover:text-purpleLight dark:hover:text-purpleLight rounded-md w-8 h-8 inline-flex justify-center items-center"
-          >
+          <button onClick={onClose} type="button" className="absolute top-3 right-3 text-gray-500 dark:text-gray-200 hover:bg-bgLight hover:dark:bg-bgDark hover:text-purpleLight dark:hover:text-purpleLight rounded-md w-8 h-8 inline-flex justify-center items-center">
             <CgClose size={20} />
           </button>
-
-          <div className="flex space-x-8 p-4 flex-1 overflow-y-auto">
-            
-            <div className="w-1/2">
-              <img
-                src={imageSrc}
-                alt={produit.nom}
-                onError={handleImageError}
-                className="w-full h-auto rounded-md"
-              />
+          <div className="block sm:flex space-x-8 p-4 flex-1 overflow-y-auto">
+            <div className="sm:w-1/2">
+              <img src={imageSrc} alt={produit.nom} onError={handleImageError} className="w-full h-auto rounded-md"/>
             </div>
 
-            <div className="w-1/2 flex flex-col">
+            <div className="sm:w-1/2 flex flex-col">
               <div className="flex flex-col justify-center mt-4">
                 <p className="text-3xl font-semibold">{produit.nom}</p>
 
@@ -94,10 +84,9 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
                 {isAvailable ? (
                   <>
                     <div className="mt-4">
-                      {/* Si le produit a des couleurs, afficher la section "Select Color" */}
                       {produit.couleurs?.length > 0 && (
                         <>
-                          <h4 className="font-medium">Select Color:</h4>
+                          <p className="font-semibold">couleur : {selectedColor?.nom}</p>
                           <div className="flex space-x-2 mt-2">
                             {produit.couleurs.map((couleur) => (
                               <button
@@ -115,26 +104,29 @@ const QuickView = ({ produit, onClose , ajouterAuPanier}) => {
                       )}
                     </div>
 
+                    <div className="flex items-center gap-3 mt-4">
+                        <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
+                            <Minus size={16} />
+                        </div>
+                        <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
+                        <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
+                            <Plus size={16} />
+                        </div>
 
-                    <div className="flex items-center mt-4 border border-black rounded-full px-4 py-2 w-fit gap-4 bg-white">
-                      <button 
-                        onClick={handleDecrease} 
-                        className="w-8 h-8 flex items-center justify-center rounded-full text-gray-700 dark:text-gray-200 hover:text-purpleLight transition"
-                      >
-                        <Minus size={22} weight="bold" />  
-                      </button>
-                      
-                      <span className="text-lg font-semibold">{quantity}</span>
-                      
-                      <button 
-                        onClick={handleIncrease} 
-                        className="w-8 h-8 flex items-center justify-center rounded-full text-gray-700 dark:text-gray-200 hover:text-purpleLight transition"
-                      >
-                        <Plus size={22} weight="bold" />  
-                      </button>
+                        <div className="p-2 rounded-md border border-gray-200 dark:border-borderDark"
+                          onClick={() => {
+                            const isProductInWishlist = wishlist && wishlist.some(item => item.produit_id === produit.produit_id);
+              
+                            if (!isProductInWishlist) {
+                              ajouterAuListeSouhait(produit.produit_id);
+                            }
+                            else {
+                              navigate("/wishlist");
+                            }
+                          }}>
+                            <Heart size={16} fill={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`} className={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : ''}`}/>
+                        </div>
                     </div>
-
-
 
                     <div className="mt-auto flex justify-end gap-3 pt-4">
                       <button onClick={onClose} className="border border-purpleLight text-purpleLight py-2 px-6 rounded-md">
