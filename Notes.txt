@@ -7,6 +7,7 @@ session expire
 
 produits (dashboard)
 commandes (dashboard)
+ktiba fou9 b3athha (dashboard)
 modal facture (dashboard)
 boutique (client)
 detail produit (client)

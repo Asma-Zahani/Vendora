@@ -23,8 +23,8 @@ const FiltreHeader = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastIte
   };
 
   return (
-    <div className="mt-8 flex items-center justify-end sm:justify-between">
-      <div className="hidden md:hidden lg:flex gap-3">
+    <div className="mt-8 flex items-center justify-between">
+      <div className="flex gap-3">
         <div onClick={() => gridInfo.handleConfigGridChange("isGrid",true)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
           <Grid size={17} />
         </div>
