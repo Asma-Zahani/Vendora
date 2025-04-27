@@ -86,19 +86,19 @@ const Register = () => {
             <div className={`w-10 h-10 flex items-center justify-center rounded-full ${
                 step >= 1 ? 'bg-purpleLight text-white' : 'bg-gray-300 text-gray-700 dark:bg-grayDark dark:text-black'}`}> 1
             </div>
-            <div className={`h-1 w-16 ${step >= 2 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
+            <div className={`h-1 w-10 sm:w-16 ${step >= 2 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
           </div>
           <div className="flex items-center">
             <div className={`w-10 h-10 flex items-center justify-center rounded-full ${
                 step >= 2 ? 'bg-purpleLight text-white' : 'bg-gray-300 text-gray-700 dark:bg-grayDark dark:text-black'}`}> 2
             </div>
-            <div className={`h-1 w-16 ${step >= 3 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
+            <div className={`h-1 w-10 sm:w-16 ${step >= 3 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
           </div>
           <div className="flex items-center">
             <div className={`w-10 h-10 flex items-center justify-center rounded-full ${
                 step >= 3 ? 'bg-purpleLight text-white' : 'bg-gray-300 text-gray-700 dark:bg-grayDark dark:text-black'}`}> 3
             </div>
-            <div className={`h-1 w-16 ${step >= 4 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
+            <div className={`h-1 w-10 sm:w-16 ${step >= 4 ? 'bg-purpleLight' : 'bg-gray-300 dark:bg-grayDark'}`}></div>
           </div>
           <div>
             <div className={`w-10 h-10 flex items-center justify-center rounded-full ${
