@@ -58,7 +58,7 @@ const Header = () => {
                 </button>
               </div>
               {user ? <UserAction home={true} /> :
-                <div className="relative flex items-center transition-all duration-300 hover:scale-110 -mr-4 sm:mr-0">
+                <div className="relative hidden sm:flex items-center transition-all duration-300 hover:scale-110 -mr-4 sm:mr-0">
                   <div className="relative flex items-center">
                     <Link to="/login" className="leading-4 text-sm flex items-center justify-center">
                       <div type="button" className="w-10 h-10 rounded-full p-2">
@@ -69,7 +69,7 @@ const Header = () => {
                   </div>
                 </div>}
             </div>
-            <button onClick={() => {setShowDropdown(!showDropdown)}} className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-purpleLight rounded-lg md:hidden hover:bg-bgLight dark:hover:bg-bgDark" aria-expanded={showDropdown}>
+            <button onClick={() => {setShowDropdown(!showDropdown)}} className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-purpleLight rounded-lg sm:hidden hover:bg-bgLight dark:hover:bg-bgDark" aria-expanded={showDropdown}>
               <Menu className="w-5 h-5" />
             </button>
           </div>
