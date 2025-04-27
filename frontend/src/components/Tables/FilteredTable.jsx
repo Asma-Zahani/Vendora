@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { ArrowDownToLine, Plus, Search, ChevronDown, Trash2Icon, Database, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
-import FilterButtons from "@/components/Tables/FilterButtons";
 import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
@@ -79,7 +78,16 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                         </div>
                                     </div>}
                             </div>
-                            {filtres && <FilterButtons filtre={filtres.value} selectedFilter={filtres.selectedFilter} setSelectedFilter={filtres.setSelectedFilter} />}
+                            {filtres && 
+                                <div className="inline-flex rounded-md border border-borderGrayLight dark:border-borderGrayDark divide-x dark:divide-borderGrayDark w-full lg:w-auto">
+                                    {filtres.value.map((filter, index) => (
+                                        <button key={index} className={`px-5 py-2 text-xs font-medium lg:text-sm w-full lg:w-auto truncate ${filtres.selectedFilter === filter ? 
+                                            "bg-bgLight dark:bg-bgDark text-purpleLight" : "hover:bg-bgLight dark:hover:bg-bgDark"}`}
+                                                onClick={() => {filtres.setSelectedFilter(filter);}}> {filter.length > 10 ? filter.substring(0, 10) + '...' : filter}
+                                        </button>
+                                    ))}
+                                </div>
+                            }
                             <div className="relative flex items-center mt-4 lg:pl-4 lg:mt-0">
                                 <span className="absolute">
                                     <Search fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600 focus:dark:text-bgDark"/>
