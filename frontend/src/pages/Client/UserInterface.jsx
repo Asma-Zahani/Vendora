@@ -17,7 +17,7 @@ const UserInterface = () => {
       <div className="absolute top-0 left-0 w-full z-100">
         <Header />
       </div>
-      <div className="mt-20">
+      <div className="mt-15 sm:mt-20">
         <Outlet />
       </div>
       <div>
