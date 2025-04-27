@@ -1,10 +1,12 @@
-import { ChevronsLeft, ChevronsRight, Search, Bell, Menu } from 'lucide-react';
-import DarkMode from "@/utils/DarkMode";
+import { ChevronsLeft, ChevronsRight, Search, Bell, Menu, Moon, Sun } from 'lucide-react';
 import UserAction from "@/components/Header/UserAction";
+import { useContext } from 'react';
+import ThemeContext from '@/utils/ThemeContext';
 
 // eslint-disable-next-line react/prop-types
 const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
-
+  const { theme, setTheme } = useContext(ThemeContext);
+  
   return (
     <header className={`w-full fixed z-20 left-0 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none
       ${ isSidebarVisible ? "lg:ml-[16.25rem] lg:w-[calc(100%-16.25rem)]" : " lg:w-[calc(100%-5rem)] lg:ml-[5rem]" }
@@ -48,7 +50,13 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
             </div>
 
             <div className="relative flex items-center border-l border-r dark:border-borderDark pl-1 -mr-2">
-              <DarkMode />
+              <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
+                {theme === "light" ? (
+                  <Moon className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-0" />
+                ) : (
+                  <Sun className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
+                )}
+              </button>
             </div>
 
             <UserAction />
