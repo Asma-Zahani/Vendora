@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sidebar from "@/pages/Livreur/SideBar/Sidebar";
 import SidebarFixed from "@/pages/Livreur/SideBar/SidebarFixed";
 import Header from "@/pages/Livreur/Header/Header";
 import Footer from "@/pages/Livreur/Footer/Footer";
 import { Outlet } from "react-router";
-import { ChevronsUp } from "lucide-react";
 
 const LivreurInterface = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -22,13 +21,6 @@ const LivreurInterface = () => {
   const toggleDrawerOpen = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
-  const [isVisible, setIsVisible] = useState(false);
-  
-  useEffect(() => {
-    window.addEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
-    return () => window.removeEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
-  }, []);
   
   const sidebarClasses = "fixed h-full w-[16.25rem] z-[1050] bg-customLight dark:bg-customDark shadow-lg transform transition-transform";
 
@@ -56,11 +48,6 @@ const LivreurInterface = () => {
           </div>
           <Footer isSidebarVisible={isSidebarVisible}/>
         </div>
-        
-        {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
-          className="fixed bottom-8 right-8 bg-purpleLight/75 text-borderGrayLight p-2 rounded-full shadow-lg transition-all transform hover:scale-110 z-10">
-            <ChevronsUp size={23} />
-        </button>)}
       </div>
     </div>
   );
