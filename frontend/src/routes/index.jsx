@@ -43,6 +43,7 @@ import CGV from "@/pages/Legal/CGV";
 import CGU from "@/pages/Legal/CGU";
 import Protection from "@/pages/Legal/Protection";
 import Contact from "@/pages/Client/Content/Contact";
+import About from "@/pages/Client/Content/About";
 
 const routes = [
   {
@@ -60,6 +61,7 @@ const routes = [
     element: <UserInterface />,
     children: [ 
       { path: "contact", element: <Contact /> },
+      { path: "about", element: <About /> },
       { path: "mentions", element: <Mentions /> },
       { path: "confidentialite", element: <Confidentialite /> },
       { path: "cgv", element: <CGV /> },
