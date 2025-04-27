@@ -10,9 +10,10 @@ import BottomNavigation from "@/components/Header/BottomNavigation";
 
 const Footer = () => {
     const { theme } = useContext(ThemeContext);
+
     return (
         <>
-            <footer className="mb-16 relative bg-customLight dark:bg-customDark">
+            <footer className="relative bg-customLight dark:bg-customDark mb-16 sm:mb-0">
                 <hr className="mt-4 border-t border-gray-300/50 backdrop-blur-sm sm:mx-auto dark:border-borderDark" />
                 <div className="container py-6 mx-auto">
                     <div className="lg:flex-1">
@@ -86,16 +87,19 @@ const Footer = () => {
                         </div>
                     </div>
 
-                <hr className="my-4 sm:my-6 border-gray-200 sm:mx-auto dark:border-borderDark" />
-                <div className="text-sm flex flex-col sm:flex-row items-center justify-center sm:justify-between">
-                    <div className="flex items-center">
-                        Copyright {new Date().getFullYear()} © FaZZa™.
+                    <hr className="my-4 sm:my-6 border-gray-200 sm:mx-auto dark:border-borderDark" />
+                    <div className="text-sm flex flex-col sm:flex-row items-center justify-center sm:justify-between">
+                        <div className="flex items-center">
+                            Copyright {new Date().getFullYear()} © FaZZa™.
+                        </div>
+                        <div>Fabriqué à la main & fait avec ❤️</div>
                     </div>
-                    <div>Fabriqué à la main & fait avec ❤️</div>
                 </div>
-            </div>
             </footer>
-            <BottomNavigation />
+
+            <div className="fixed bottom-0 left-0 right-0 sm:hidden">
+                <BottomNavigation />
+            </div>
         </>
     );
 };
