@@ -4,23 +4,22 @@ import UserContext from './UserContext';
 import LoadingSpinner from './LoadingSpinner'
 
 export const ProtectedAdminRoutes = () => {
-    return <Outlet />;
-    // const { user } = useContext(UserContext);
-    // const [loading, setLoading] = useState(true);
+    const { user } = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     if (user) {
-    //         setLoading(false);
-    //     } else {
-    //         setLoading(true);
-    //     }
-    // }, [user]);
+    useEffect(() => {
+        if (user) {
+            setLoading(false);
+        } else {
+            setLoading(true);
+        }
+    }, [user]);
 
-    // if (loading && localStorage.getItem('token')) {
-    //     return <LoadingSpinner />; 
-    // }
+    if (loading && localStorage.getItem('token')) {
+        return <LoadingSpinner />; 
+    }
 
-    // return user && user.role === "admin" ? <Outlet /> : <Navigate to="/login" />;
+    return user && user.role === "admin" ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const ProtectedClientRoutes = () => {
