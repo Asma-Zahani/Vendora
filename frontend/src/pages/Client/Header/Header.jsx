@@ -32,7 +32,7 @@ const Header = () => {
           </Link>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <div className="flex gap-3 ms-auto pr-0 lg:pr-2 md:pr-5">
-              <div className="inline-flex relative items-center sm:pl-0.5 -mr-4 sm:-mr-2">
+              <div className="hidden sm:flex relative items-center sm:pl-0.5 -mr-4 sm:-mr-2">
                 <Link to="/cart" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                   <ShoppingCart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -40,7 +40,7 @@ const Header = () => {
                   </span>
                 </Link>
               </div>
-              <div className="inline-flex relative items-center sm:border-l-2 dark:border-borderDark sm:pl-0.5 -mr-4 sm:-mr-2">
+              <div className="hidden sm:flex relative items-center sm:border-l-2 dark:border-borderDark sm:pl-0.5 sm:-mr-2">
                 <Link to="/wishlist" className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110">
                   <Heart className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]"  />
                   <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full transition-transform duration-300 transform rotate-[360deg]">
@@ -48,7 +48,7 @@ const Header = () => {
                   </span>
                 </Link>
               </div>
-              <div className="relative flex items-center sm:border-l-2 sm:border-r-2 dark:border-borderDark sm:pl-1 -mr-4 sm:-mr-2">
+              <div className="relative hidden sm:flex items-center sm:border-l-2 sm:border-r-2 dark:border-borderDark sm:pl-1 sm:-mr-2">
                 <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="w-10 h-10 flex items-center justify-center rounded-full transition-all p-2 duration-300 hover:scale-110">
                   {theme === "light" ? (
                     <Moon className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-0" />
@@ -69,7 +69,7 @@ const Header = () => {
                   </div>
                 </div>}
             </div>
-            <button onClick={() => {setShowDropdown(!showDropdown)}} className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-expanded={showDropdown}>
+            <button onClick={() => {setShowDropdown(!showDropdown)}} className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-purpleLight rounded-lg md:hidden hover:bg-bgLight dark:hover:bg-bgDark" aria-expanded={showDropdown}>
               <Menu className="w-5 h-5" />
             </button>
           </div>
