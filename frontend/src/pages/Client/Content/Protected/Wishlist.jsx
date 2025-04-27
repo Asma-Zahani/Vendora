@@ -17,7 +17,7 @@ const Wishlist = () => {
                 <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                     {produits?.length > 0 && <h1 className="text-2xl font-semibold mb-4">Liste de souhait</h1>}
                     {produits?.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-lg">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-lg">
                             {produits.map((produit, index) => (
                                 <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} effacerDeListeSouhait={supprimerDeListeSouhait} />
                             ))}
