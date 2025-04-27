@@ -8,6 +8,19 @@ import Pagination from "@/components/Pagination/ProductPagination";
 
 const FilteredProducts = ({ wishlist, data, gridInfo, filtres, ajouterAuPanier, ajouterAuListeSouhait, productConfig, selectedFiltres }) => {
     const [sortOption, setSortOption] = useState("default");
+    const [isSmScreen, setIsSmScreen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmScreen(window.innerWidth <= 640);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         switch (sortOption) {
@@ -31,11 +44,16 @@ const FilteredProducts = ({ wishlist, data, gridInfo, filtres, ajouterAuPanier, 
         }
     }, [sortOption]);  
 
+    useEffect(() => {
+        if (isSmScreen) {
+            gridInfo.handleConfigGridChange("isGrid", true);
+        }
+    }, [isSmScreen, gridInfo.handleConfigGridChange]);
+
     return (
         <div className="mx-0 lg:mx-20">
             <Filtre gridInfo={gridInfo} indexOfFirstItem={data.from - 1} indexOfLastItem={data.to} totalItems={data.total} onSortChange={setSortOption} filtres={filtres} selectedFiltres={selectedFiltres} productConfig={productConfig}/>
-            <div className={`mt-10 gap-2 sm:gap-6 ${gridInfo.isGrid ? `grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "flex flex-col gap-4"}`}>
-
+            <div className={`mt-10 ${gridInfo.isGrid ? `gap-2 sm:gap-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${gridInfo.gridCols}` : "hidden sm:flex flex-col"}`}>
                 {data.data?.length > 0 ? (
                     data.data?.map((produit, index) => (
                         gridInfo.isGrid ? (

@@ -11,3 +11,5 @@ ktiba fou9 b3athha (dashboard)
 modal facture (dashboard)
 boutique (client)
 detail produit (client)
+
+quatité (ki yabda andek fel panier w taamel +)

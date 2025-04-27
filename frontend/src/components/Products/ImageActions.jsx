@@ -29,11 +29,9 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
       setQuantity(value);
     }
   };
-    
-  const maxQuantity = produit.quantite || produit.couleurs[0]?.pivot?.quantite;
 
   const handleIncrease = () => {
-    if (quantity < maxQuantity) {
+    if (quantity < produit.quantite || produit.couleurs[0]?.pivot?.quantite) {
       setQuantity(quantity + 1);
     }
   };
@@ -145,7 +143,7 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
         }
         
         {isHeartHovered && (
-          <div className="absolute left-11 top-[26px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 mt-1 rounded-md shadow-lg">
+          <div className="absolute left-11 top-[22px] -translate-y-1/2 bg-customLight dark:bg-customDark text-xs px-3 py-1 mr-2 mt-1 rounded-md shadow-lg">
             {wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'Parcourir la liste de souhaits' : 'Ajouter à la liste de souhaits'}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 border-4 border-transparent border-r-customLight dark:border-r-customDark"></div>
           </div>

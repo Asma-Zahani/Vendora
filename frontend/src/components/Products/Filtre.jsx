@@ -42,7 +42,7 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
           <div onClick={() => gridInfo.handleConfigGridChange("isGrid",true)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
             <Grid size={17} />
           </div>
-          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",false)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`} >
+          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",false)} className={`p-2 hidden sm:flex hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`} >
             <List size={17} />
           </div>
           {gridInfo.isGrid && (
