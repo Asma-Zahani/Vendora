@@ -32,13 +32,7 @@ const Header = ({ isSidebarVisible, toggleSidebar, toggleDrawerOpen }) => {
             </button>
           </div>
 
-          <div className="flex gap-3 ms-auto pr-0 lg:pr-2 md:pr-5">
-            <div className="lg:hidden relative flex items-center -mr-2">
-              <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
-                <Search className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />
-              </button>
-            </div>
-
+          <div className="flex gap-3 ms-auto">
             <div className="relative flex items-center border-l dark:border-borderDark pl-1 lg:border-none -mr-2">
               <button type="button" className="w-10 h-10 flex items-center justify-center rounded-full p-2 transition-all duration-300 hover:scale-110">
                 <Bell className="inline-block w-5 h-5 stroke-1 transition-transform duration-300 transform rotate-[360deg]" />

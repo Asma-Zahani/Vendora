@@ -11,7 +11,7 @@ const UserAction = ({ home }) => {
     const { user, setUser, setToken } = useContext(UserContext);
 
     return (
-        <div className="relative hidden sm:flex group items-center dark:border-borderDark pl-4 -my-4">
+        <div className={`relative ${home ? "hidden sm:flex" : "flex"} group items-center dark:border-borderDark pl-4 -my-4`}>
             <button type="button" className="inline-block p-0 transition-all duration-200 ease-linear rounded-full">
                 <div className="bg-bgDark rounded-full w-8 h-8 md:w-[39px] md:h-[39px] lg:w-[39px] lg:h-[39px]">
                     {user.genre === "Male"
