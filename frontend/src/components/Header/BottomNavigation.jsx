@@ -33,7 +33,7 @@ const BottomNavigation = () => {
                         <Link key={index} to={link.to} className={`relative inline-flex flex-col items-center justify-center px-5 group ${isActive(link.to) ? "text-purpleLight" : "hover:bg-gray-50 dark:hover:bg-bgDark"}`}>
                             {link.icon}
                             {user && link.badge > 0 && (
-                                <span className="absolute top-1 right-6 flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full">
+                                <span className="absolute top-1 right-[25%] flex items-center justify-center min-w-[16px] min-h-[16px] text-xs font-bold text-white bg-red-500 rounded-full">
                                     {link.badge}
                                 </span>
                             )}

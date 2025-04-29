@@ -12,7 +12,7 @@ const Account = () => {
 
     return (
         <div>
-            <section className="mx-6 py-6">
+            <section className="sm:mx-6 sm:py-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-6">
                     {/* Profil */}
                     <div className="col-span-1 w-full py-2">

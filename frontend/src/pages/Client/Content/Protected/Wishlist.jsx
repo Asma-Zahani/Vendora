@@ -11,7 +11,7 @@ const Wishlist = () => {
     const { ajouterAuPanier, supprimerDeListeSouhait } = usePanierWishlist(produits);
 
     return (
-      <section className="mx-6 py-6">
+      <section className="sm:mx-6 sm:py-6">
         <div className="flex flex-col">
             <div className="inline-block min-w-full py-2">
                 <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg px-4 sm:px-6 py-6 shadow-sm">

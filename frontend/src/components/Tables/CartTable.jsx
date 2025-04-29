@@ -85,7 +85,7 @@ const CartTable = ({ produits, modifierQuantitePanier, codePromotion, handleCode
     };
     
     return (
-        <section className="mx-6 py-6">
+        <section className="sm:mx-6 sm:py-6">
             <div className="flex flex-col">
                 <div className="inline-block min-w-full py-2 align-middle">
                     <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">

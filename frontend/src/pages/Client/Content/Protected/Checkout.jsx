@@ -9,10 +9,11 @@ import ConfirmModal from "@/components/Modals/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { regions, villes } from '@/service/UserInfos';
 import { getEntities, updateEntity, createEntity } from "@/service/EntitesService";
-import Recapitulatif from "./Recapitulatif"
 import { Elements } from "@stripe/react-stripe-js";
 import StripeForm from "./StripeForm";
 import { loadStripe } from "@stripe/stripe-js";
+import img from "@/assets/default/image.png";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const stripePromise = loadStripe("pk_test_51RDmsOI30GkvvwdVKatq2qxS8kRXvNyo7npbGfDG9nl4mvFYT4GyKOLPUMwNO9bHsQAiXHfaEQqXkLy5X3cZ20lP00GP1fVvNa");
 
@@ -30,11 +31,26 @@ const Checkout = () => {
     const [isPointRetraitOpen, setIsPointRetraitOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isCardValid, setIsCardValid] = useState(false);
+    const [show, setShow] = useState(false);
 
     const location = useLocation();
     const checkoutData = location.state;
     const stripeFormRef = useRef();
     const navigate = useNavigate();
+
+    const [isNotSmScreen, setIsNotSmScreen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsNotSmScreen(window.innerWidth >= 640);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         if (!checkoutData) navigate("/cart");
@@ -47,12 +63,9 @@ const Checkout = () => {
         fetchDrives();
     }, []);
 
-    const checkoutDataAvecFrais = {
-        ...checkoutData,
-        fraisLivraison: step === 3 && deliveryMethod === "livraison" ? 8 : 0,
-        totalAvecFrais: parseFloat(checkoutData.discounted) + (step === 3 && deliveryMethod === "livraison" ? 8 : 0)
-    };
-
+    const fraisLivraison = step === 3 && deliveryMethod === "livraison" ? 8 : 0;
+    const totalAvecFrais = parseFloat(checkoutData.discounted) + fraisLivraison;
+    
     const validateStep = () => {
         const newErrors = {};
         if (step === 1) {
@@ -217,35 +230,37 @@ const Checkout = () => {
         3: (
             <>
                 <div className="col-span-2">
-                    <Label label="Méthode de paiement" />
                     {deliveryMethod !== "drive" && (
-                        <div className="flex flex-col md:flex-row justify-center gap-6">
-                            <label className="flex items-center cursor-pointer">
-                                <input type="radio" value="espece" checked={paymentMethod === "espece"} onChange={() => setPaymentMethod("espece")} name="payment" className="hidden" />
-                                <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                    {paymentMethod === "espece" && (
-                                        <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
-                                    )}
-                                </div>
-                                <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement en espèce</span>
-                            </label>
-                            <label className="flex items-center cursor-pointer">
-                                <input type="radio" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} name="payment" className="hidden" />
-                                <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
-                                    {paymentMethod === "carte" && (
-                                        <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
-                                    )}
-                                </div>
-                                <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement par carte</span>
-                            </label>
-                        </div>
+                        <>                    
+                            <Label label="Méthode de paiement" />
+                            <div className="flex flex-col md:flex-row justify-center gap-6">
+                                <label className="flex items-center cursor-pointer">
+                                    <input type="radio" value="espece" checked={paymentMethod === "espece"} onChange={() => setPaymentMethod("espece")} name="payment" className="hidden" />
+                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
+                                        {paymentMethod === "espece" && (
+                                            <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
+                                        )}
+                                    </div>
+                                    <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement en espèce</span>
+                                </label>
+                                <label className="flex items-center cursor-pointer">
+                                    <input type="radio" value="carte" checked={paymentMethod === "carte"} onChange={() => setPaymentMethod("carte")} name="payment" className="hidden" />
+                                    <div className="w-4 h-4 border-2 border-gray-300 dark:border-purpleLight rounded-full flex items-center justify-center">
+                                        {paymentMethod === "carte" && (
+                                            <div className="w-2 h-2 bg-gray-300 dark:bg-purpleLight rounded-full"></div>
+                                        )}
+                                    </div>
+                                    <span className="ml-2 text-gray-700 dark:text-grayDark">Paiement par carte</span>
+                                </label>
+                            </div>
+                        </>
                     )}
                 </div>
                 {paymentMethod === "carte" && (
-                    <div className="col-span-2 p-6 border border-borderGrayLight dark:border-borderDark rounded">
+                    <div className="col-span-2 sm:p-6 sm:border border-borderGrayLight dark:border-borderDark rounded">
                         <p className="font-semibold text-sm mb-4">Les cartes acceptées incluent Mastercard et Visa.</p>
                         <Elements stripe={stripePromise}>
-                            <StripeForm ref={stripeFormRef} amount={checkoutDataAvecFrais.totalAvecFrais} user={user} onSuccess={passerCommande} setIsCardValid={setIsCardValid} />
+                            <StripeForm ref={stripeFormRef} amount={totalAvecFrais} user={user} onSuccess={passerCommande} setIsCardValid={setIsCardValid} />
                         </Elements>
                     </div>
                 )}
@@ -254,19 +269,26 @@ const Checkout = () => {
         )
     };
 
+    useEffect(() => {
+        if (isNotSmScreen) {
+            setShow(true);
+        } else {
+            setShow(false);
+        }
+    }, [isNotSmScreen]);
+
     return (
-        <section className="mx-6 py-6">
+        <section className="sm:mx-6 sm:py-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 <div className="inline-block min-w-full py-2 align-middle">
                     <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                         <div className="flex flex-col lg:flex-row gap-6">
                             <div className="flex-1/5 py-4 px-2">
-                                <h4 className="text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
+                                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
                                 <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {stepContent[step]}
                                 </div>
-                                {/* <div className="sm:flex sm:justify-between mt-6 space-y-4 sm:space-y-0" */}
                                 <div className="flex justify-between mt-6">
                                     {step > 1 && (<button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">Retour</button>)}
                                     {step < 3 && (<button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">Suivant</button>)}
@@ -274,7 +296,58 @@ const Checkout = () => {
                                             ${paymentMethod === "carte" && !isCardValid ? 'cursor-not-allowed opacity-50' : ''}`}> Passer la commande </button>)}
                                 </div>
                             </div>
-                            <Recapitulatif checkoutData={checkoutDataAvecFrais} />
+                            <div onClick={() => {setShow(!show)}} className="flex sm:hidden justify-between items-center space-x-2">
+                                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Résumé de la commande</h4>
+                                {show ? 
+                                    <div className="flex items-center justify-end text-sm gap-1">
+                                        Masquer <ChevronUp size={16} />
+                                    </div> :
+                                    <div className="flex items-center justify-end text-sm gap-1">
+                                        Afficher <ChevronDown size={16} />
+                                    </div>
+                                }
+                            </div>
+                            <div className="flex-1 -m-6 sm:m-0 px-4 sm:px-12 py-8 sm:bg-contentLight dark:bg-contentDark sm:border border-gray-300 dark:border-borderDark">
+                                <div className={`sm:border-b border-gray-300 dark:border-borderDark ${show ? "pb-4 mb-4" : ""} space-y-4`}>
+                                    {show && checkoutData.produits.map((produit, index) => {
+                                        return (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <div className="flex items-center">
+                                                    <div className="relative">
+                                                        <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-17 h-17 object-cover rounded-md border border-gray-300 dark:border-purpleLight" />
+                                                        <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] min-h-[20px] text-xs font-bold text-white bg-[#666666] rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                                                            {produit.pivot?.quantite ?? produit.quantite}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col text-start text-md ml-2">
+                                                        <p className="font-semibold">{produit.nom}</p>
+                                                        <span className="text-sm">{produit.pivot?.couleur}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div>                              
+                                                    <strong>{produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)} DT</strong>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <p className="text-sm font-normal flex justify-between">
+                                    Sous-total · {checkoutData.produits?.length} produits <span>{checkoutData.original} DT</span>
+                                </p>
+                                {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
+                                    Remise <span>{checkoutData.remise}%</span>
+                                </p>}
+
+                                {fraisLivraison > 0 && (
+                                <p className="text-sm font-normal flex justify-between">
+                                    Frais de livraison <span>{fraisLivraison} DT</span>
+                                </p>
+                                )}
+                                <p className="text-lg font-semibold flex justify-between">
+                                    Total <strong>{totalAvecFrais} DT</strong>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
