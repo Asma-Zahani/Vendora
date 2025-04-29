@@ -62,13 +62,13 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                         <div className="mt-6 lg:flex lg:items-center lg:justify-between">
                             <div className="mr-2">
                                 {data.total > 5 && 
-                                    <div className="mb-6 lg:mb-0 -mt-[60px] lg:mt-0">
+                                    <div className={`mb-6 lg:mb-0 ${entityConfig.handleCreate ? " -mt-[60px]" : " -mt-[20px]"} lg:mt-0`}>
                                         <button onClick={() => {setIsSelectedItemOpen(!isSelectedItemOpen)}} className="flex items-center px-3 py-2 gap-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight text-sm">
                                             <span>{tableConfig.selectedItemPerPage}</span><ChevronDown size={20} />
                                         </button>
                                         <div className="relative">
                                             {isSelectedItemOpen && (
-                                            <div className="absolute mt-1 z-50 bg-customLight dark:bg-contentDark border border-bgLight dark:border-bgDark rounded-lg shadow-lg w-full">
+                                            <div className={`absolute mt-1 z-50 bg-customLight dark:bg-contentDark border border-bgLight dark:border-bgDark rounded-lg shadow-lg ${tableConfig.selectedItemPerPage === 5 ? "w-15" : "w-17"}`}>
                                                 {[5, 10, 15, 20, 25].map((option, index) => (
                                                 <div key={index} className={`px-4 py-1 text-gray-700 hover:bg-bgLight hover:dark:bg-bgDark dark:hover:text-white cursor-pointer text-center
                                                     ${tableConfig.selectedItemPerPage === option ? "bg-bgLight dark:bg-bgDark dark:text-white" : "dark:text-grayDark" } ${index === 0 ? "rounded-t-md" : ""} ${index === 4 ? "rounded-b-md" : ""}`}
@@ -76,7 +76,8 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                 </div> ))}
                                             </div>)}
                                         </div>
-                                    </div>}
+                                    </div>
+                                }
                             </div>
                             {filtres && 
                                 <div className="inline-flex rounded-md border border-borderGrayLight dark:border-borderGrayDark divide-x dark:divide-borderGrayDark w-full lg:w-auto">
