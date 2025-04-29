@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import FooterSection from "./FooterSection";
 import LightBgLogo from "@/assets/logo/bg-logo-light.png";
 import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
+import Icon from "@/assets/logo/logo-ico.svg";
 import { useContext } from "react";
 import ThemeContext from '@/utils/ThemeContext';
 import BottomNavigation from "@/components/Header/BottomNavigation";
@@ -20,9 +21,10 @@ const Footer = () => {
                         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
                             <div className="lg:col-span-2">
                                 <FooterSection hidden={true} title="Get in touch">
-                                    <Link to="/" className="relative order-1 lg:order-none"> 
-                                        <img src={logo} alt="Logo" className="w-auto h-20 relative z-10" />
-                                        <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute w-40 inset-0 bg-cover bg-center z-0"></div>
+                                    <Link to="/" className="relative order-1 lg:order-none">
+                                        <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0"/>
+                                        <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 bg-cover bg-center rounded-md z-10"/>
+                                        <img src={logo} alt="Logo" className="relative w-auto h-20 z-20" />
                                     </Link>
                                     <p className="lg:max-w-sm mt-2 ml-2 text-sm text-gray-600 dark:text-gray-400">
                                         Rejoins notre communauté et reste informé des dernières offres, nouveautés et promotions exclusives sur notre boutique.

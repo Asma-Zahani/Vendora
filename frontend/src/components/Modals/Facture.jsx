@@ -10,6 +10,7 @@ import html2canvas from 'html2canvas';
 import { Link } from "react-router";
 import LightBgLogo from "@/assets/logo/bg-logo-light.png";
 import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
+import Icon from "@/assets/logo/logo-ico.svg";
 
 const FactureModal = ({ isOpen, onClose, selectedItem }) => {
   const { theme } = useContext(ThemeContext);
@@ -149,9 +150,10 @@ const FactureModal = ({ isOpen, onClose, selectedItem }) => {
           {/* Header */}
           <div className="flex justify-between items-start mb-6 border-b pb-6">
             <div>
-              <Link to="/" className="relative"> 
-                <img src={logo} alt="Logo" className="h-20 mb-2 relative z-10" />
-                <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"></div>
+              <Link to="/" className="relative flex justify-center items-center">
+                <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0"/>
+                <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 bg-cover bg-center rounded-md z-10"/>
+                <img src={logo} alt="Logo" className="relative h-20 z-20" />
               </Link>
               <address className="not-italic text-sm text-gray-600 dark:text-gray-300">
                 <p>1982 Harvest Lane</p>

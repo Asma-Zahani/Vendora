@@ -6,6 +6,7 @@ import menuItems from "@/pages/Admin/SideBar/menuItems"
 import { ChevronRight, ChevronDown, X } from "lucide-react";
 import LightBgLogo from "@/assets/logo/bg-logo-light.png";
 import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
+import Icon from "@/assets/logo/logo-ico.svg";
 
 // eslint-disable-next-line react/prop-types
 const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
@@ -28,10 +29,10 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
   return (
     <div className={`h-full shadow-xl shadow-slate-300/50 dark:shadow-gray-800/50  ${ isHover ? "hidden" : "block" }`} onMouseLeave={toggleSidebarHover} >
       <div className="flex items-center justify-between lg:justify-center px-5 mt-4">        
-        <Link to="/" className="relative"> 
-          <img src={logo} alt="Logo" className="h-20 relative z-10" />
-          <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute inset-0 bg-cover bg-center z-0"
-          ></div>
+        <Link to="/" className="relative flex justify-center items-center">
+          <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0"/>
+          <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 bg-cover bg-center rounded-md z-10"/>
+          <img src={logo} alt="Logo" className="relative h-20 z-20" />
         </Link>
         {isDrawer && (
           <button onClick={onClose} className="p-2 rounded-md">

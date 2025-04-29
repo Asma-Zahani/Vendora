@@ -140,19 +140,19 @@ const Checkout = () => {
     const stepContent = {
         1: (
             <>
-                <div className="mb-4">
+                <div className="sm:mb-4">
                     <Label label="Nom" />
                     <Input type="text" name="nom" value={formData.nom} onChange={handleChange} error={errors.nom} />
                 </div>
-                <div className="mb-4">
+                <div className="sm:mb-4">
                     <Label label="Prénom" />
                     <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} error={errors.prenom} />
                 </div>
-                <div className="mb-4">
+                <div className="sm:mb-4">
                     <Label label="Téléphone"/>
                     <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} error={errors.telephone} />
                 </div>
-                <div className="mb-4">
+                <div className="sm:mb-4">
                     <Label label="Email" />
                     <Input type="text" name="email" value={formData.email} onChange={handleChange} error={errors.email} />
                 </div>
@@ -185,16 +185,20 @@ const Checkout = () => {
                             <Label label="Adresse"/>
                             <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required error={errors.adresse} />
                         </div>
-                        <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}
-                        toggleOpen={() => {
-                            setIsRegionOpen(!isRegionOpen);
-                            setIsVilleOpen(false);
-                        }} />
-                        <Dropdown label="Ville" name="ville" options={villes[formData.region]?.map(ville => ({ value: ville, label: ville })) || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen} target={true}
-                        toggleOpen={() => {
-                            setIsVilleOpen(!isVilleOpen);
-                            setIsRegionOpen(false);
-                        }} />
+                        <div className="col-span-2 sm:col-span-1 -mb-4 sm:mb-0">
+                            <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}
+                            toggleOpen={() => {
+                                setIsRegionOpen(!isRegionOpen);
+                                setIsVilleOpen(false);
+                            }} />
+                        </div>
+                        <div className="col-span-2 sm:col-span-1 -mb-4 sm:mb-0">
+                            <Dropdown label="Ville" name="ville" options={villes[formData.region]?.map(ville => ({ value: ville, label: ville })) || []} selectedValue={formData.ville} onSelect={handleChange} isOpen={isVilleOpen} target={true}
+                            toggleOpen={() => {
+                                setIsVilleOpen(!isVilleOpen);
+                                setIsRegionOpen(false);
+                            }} />
+                        </div>
                     </>
                 ) : (
                     <div className="col-span-2">
@@ -262,6 +266,7 @@ const Checkout = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {stepContent[step]}
                                 </div>
+                                {/* <div className="sm:flex sm:justify-between mt-6 space-y-4 sm:space-y-0" */}
                                 <div className="flex justify-between mt-6">
                                     {step > 1 && (<button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">Retour</button>)}
                                     {step < 3 && (<button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">Suivant</button>)}
