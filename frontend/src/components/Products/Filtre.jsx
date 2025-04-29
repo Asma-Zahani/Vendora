@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import { ChevronDown, Grid, List, Search } from "lucide-react";
+import { Grid, List, Search } from "lucide-react";
 import { useState } from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import Checkbox from "@/components/ui/Checkbox";
+import Input from "@/components/ui/Input";
 
 const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, totalItems, filtres, selectedFiltres, productConfig }) => {
   const [selectedSort, setSelectedSort] = useState("default");
@@ -70,48 +71,36 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
         </div>
       </div>
       <div className="mt-6 relative z-50 sm:flex sm:items-center sm:space-x-3 sm:w-full">
-        <div className="relative flex items-center">
-          <div className="relative">
-            <div className="w-74 sm:w-64 flex items-center justify-between cursor-pointer border border-gray-300 dark:border-borderDark bg-customLight dark:bg-customDark rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition duration-200" onClick={() => setIsOpen(!isOpen)}>
-              <span className="text-gray-700 dark:text-gray-300 font-medium">Filtres</span>
-              <ChevronDown className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`} />
-            </div>
-            {isOpen && (
-              <div className="absolute bg-customLight dark:bg-customDark p-4 mt-1 shadow-lg rounded-lg w-74 sm:w-64 z-20 top-full left-0 border border-gray-200 dark:border-borderDark max-h-120 overflow-x-auto scrollbar">
-                <div className="mb-4">
-                  <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Catégorie</h4>
-                  <div className="space-y-2">
-                  {filtres.categories.length > 0 ? (
-                      filtres.categories.map((category) => (
-                        <label key={category.categorie_id} className="flex items-center space-x-2 cursor-pointer">
-                          <Checkbox checked={selectedFiltres.selectedCategories.includes(category.categorie_id)} onChange={() => toggleCategory(category.categorie_id)} />
-                          <span className="text-gray-700 dark:text-gray-300">{category.titre}</span>
-                        </label>
-                      ))
-                    ) : (
-                      <p className="text-gray-700 dark:text-gray-300">Aucune catégorie disponible.</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Marque</h4>
-                  <div className="space-y-2">
-                  {filtres.marques.length > 0 ? (
-                      filtres.marques.map((brand) => (
-                        <label key={brand.marque_id} className="flex items-center space-x-2 cursor-pointer">
-                          <Checkbox checked={selectedFiltres.selectedBrands.includes(brand.marque_id)} onChange={() => toggleBrand(brand.marque_id)} />
-                          <span className="text-gray-700 dark:text-gray-300">{brand.nom}</span>
-                        </label>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 text-sm">Aucune marque disponible</p>
-                    )}
-                  </div>
-                </div> 
-
-                <div className="mb-4">
-                  <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Couleurs</h4>
+        <div className="relative">
+          <Input value="Filtres" onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} required readOnly/>
+          {isOpen && (
+            <div className="absolute mt-1 p-4 z-[9999] w-full bg-customLight dark:bg-contentDark border border-gray-300 dark:border-borderDark rounded-md shadow-lg max-h-50 overflow-x-auto scrollbar">
+                <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Catégories</h4>
+                {filtres.categories.length > 0 ? 
+                  <div className="space-y-1">
+                    {filtres.categories.map((categorie) => (
+                      <label key={categorie.categorie_id} className="flex items-center space-x-2 cursor-pointer">
+                        <Checkbox checked={selectedFiltres.selectedCategories.includes(categorie.categorie_id)} onChange={() => toggleCategory(categorie.categorie_id)} />
+                        <span className="text-gray-700 dark:text-gray-300">{categorie.titre}</span>
+                      </label>
+                    ))}
+                  </div> : (
+                  <p className="text-gray-500 text-sm">Aucune catégorie disponible.</p>
+                )}
+                <h4 className="text-md font-semibold my-2 text-gray-800 dark:text-gray-200">Marques</h4>
+                {filtres.marques.length > 0 ?
+                  <div className="space-y-1">
+                    {filtres.marques.map((marque) => (
+                      <label key={marque.marque_id} className="flex items-center space-x-2 cursor-pointer">
+                        <Checkbox checked={selectedFiltres.selectedBrands.includes(marque.marque_id)} onChange={() => toggleBrand(marque.marque_id)} />
+                        <span className="text-gray-700 dark:text-gray-300">{marque.nom}</span>
+                      </label>
+                    ))}
+                  </div> : (
+                  <p className="text-gray-500 text-sm">Aucune marque disponible</p>
+                )}
+                <h4 className="text-md font-semibold my-2 text-gray-800 dark:text-gray-200">Couleurs</h4>
+                {filtres.marques.length > 0 ? (
                   <div className="flex gap-2 overflow-y-auto scrollbar flex-grow pr-2">
                     {filtres.couleurs.map((color) => {
                       return (
@@ -121,19 +110,15 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
                       );
                     })}
                   </div>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Prix</h4>
-                  
-                  <input id="minmax-range" type="range" min="0" max="1000" value={selectedFiltres.maxPrice} onChange={(e) => selectedFiltres.setMaxPrice(parseFloat(e.target.value))}  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 range-slider"></input>
-                  <p className="mt-1 text-sm text-gray-600">Prix maximum: {selectedFiltres.maxPrice} DT</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div> 
-
+                ) : (
+                  <p className="text-gray-500 text-sm">Aucune couleur disponible</p>
+                )}
+                {/* <h4 className="text-md font-semibold my-2 text-gray-800 dark:text-gray-200">Prix</h4>
+                <input id="minmax-range" type="range" min="0" max="1000" value={selectedFiltres.maxPrice} onChange={(e) => selectedFiltres.setMaxPrice(parseFloat(e.target.value))}  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 range-slider"></input>
+                <p className="mt-1 text-sm text-gray-600">Prix maximum: {selectedFiltres.maxPrice} DT</p> */}
+            </div>
+          )}  
+        </div>
         <div className="relative flex items-center flex-1 mt-4 sm:mt-0">
           <span className="absolute left-3">
             <Search className="w-5 h-5 text-gray-400 dark:text-borderDark" />

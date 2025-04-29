@@ -13,7 +13,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import StripeForm from "./StripeForm";
 import { loadStripe } from "@stripe/stripe-js";
 import img from "@/assets/default/image.png";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const stripePromise = loadStripe("pk_test_51RDmsOI30GkvvwdVKatq2qxS8kRXvNyo7npbGfDG9nl4mvFYT4GyKOLPUMwNO9bHsQAiXHfaEQqXkLy5X3cZ20lP00GP1fVvNa");
 
@@ -300,7 +300,8 @@ const Checkout = () => {
                                 <div onClick={() => {setShow(!show)}} className="flex mx-4 sm:hidden justify-between py-4">
                                     <div className="flex justify-start items-center gap-2">
                                         <h4 className="text-md font-semibold mb-1 dark:text-white">Résumé</h4>
-                                        {show ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                                        <ChevronDown size={12} className={`transition-transform ${show ? "rotate-180" : "rotate-0"}`}/>
+                                        
                                     </div>
                                     <p className="text-lg font-semibold flex justify-between">{totalAvecFrais} DT</p>
                                 </div>

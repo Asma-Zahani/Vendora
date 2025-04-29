@@ -8,6 +8,7 @@ import ViewModal from "@/components/Modals/ViewModal";
 import FactureModal from "@/components/Modals/Facture";
 import FormModal from "@/components/Modals/FormModal";
 import Checkbox from "@/components/ui/Checkbox";
+import Dropdown from "@/components/ui/Dropdown";
 
 const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
     const [selectedItem, setSelectedItem] = useState(null);
@@ -21,6 +22,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
     const [isFactureOpen, setIsFactureOpen] = useState(false);
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleSelectAll = () => {
         if (isAllSelected) { setSelectedItems([]) } 
@@ -61,7 +63,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
 
                         <div className="mt-6 lg:flex lg:items-center lg:justify-between">
                             <div className="mr-2">
-                                {data.total > 5 && 
+                                {data.total > 5 &&
                                     <div className={`mb-6 lg:mb-0 ${entityConfig.handleCreate ? " -mt-[60px]" : " -mt-[20px]"} lg:mt-0`}>
                                         <button onClick={() => {setIsSelectedItemOpen(!isSelectedItemOpen)}} className="flex items-center px-3 py-2 gap-2 rounded-md bg-bgLight dark:bg-bgDark text-purpleLight text-sm">
                                             <span>{tableConfig.selectedItemPerPage}</span><ChevronDown size={20} />
@@ -80,13 +82,22 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                 }
                             </div>
                             {filtres && 
-                                <div className="inline-flex rounded-md border border-borderGrayLight dark:border-borderGrayDark divide-x dark:divide-borderGrayDark w-full lg:w-auto">
-                                    {filtres.value.map((filter, index) => (
-                                        <button key={index} className={`px-5 py-2 text-xs font-medium lg:text-sm w-full lg:w-auto truncate ${filtres.selectedFilter === filter ? 
-                                            "bg-bgLight dark:bg-bgDark text-purpleLight" : "hover:bg-bgLight dark:hover:bg-bgDark"}`}
-                                                onClick={() => {filtres.setSelectedFilter(filter);}}> {filter.length > 10 ? filter.substring(0, 10) + '...' : filter}
-                                        </button>
-                                    ))}
+                                <div>
+                                    <div className="hidden sm:inline-flex rounded-md border border-borderGrayLight dark:border-borderGrayDark divide-x dark:divide-borderGrayDark w-full lg:w-auto">
+                                        {filtres.value.map((filter, index) => (
+                                            <button key={index} className={`px-5 py-2 text-xs font-medium lg:text-sm w-full lg:w-auto truncate ${filtres.selectedFilter === filter ? 
+                                                "bg-bgLight dark:bg-bgDark text-purpleLight" : "hover:bg-bgLight dark:hover:bg-bgDark"}`}
+                                                    onClick={() => {filtres.setSelectedFilter(filter);}}> {filter.length > 10 ? filter.substring(0, 10) + '...' : filter}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="sm:hidden relative">
+                                        <Dropdown options={filtres.value.map(filter => ({ value: filter, label: filter })) || []} selectedValue={filtres.selectedFilter} isOpen={isOpen} toggleOpen={() => setIsOpen(prev => !prev)}
+                                            onSelect={({ value }) => {
+                                                filtres.setSelectedFilter(value);
+                                                setIsOpen(false);
+                                            }}/>
+                                    </div>
                                 </div>
                             }
                             <div className="relative flex items-center mt-4 lg:pl-4 lg:mt-0">
@@ -98,7 +109,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                         </div>
 
                         {data.data?.length > 0 ? (
-                            <div className="mt-6 py-2 flex flex-col w-full max-w-sm w-500:max-w-full md:max-w-3xl w-990:max-w-[650px] lg:max-w-full max-h-[400px] overflow-y-auto">
+                            <div className="mt-6 py-2 flex flex-col w-full max-w-sm sm:max-w-[100%] max-h-[400px] overflow-y-auto">
                                 <div className="overflow-x-auto scrollbar">
                                     <table className="min-w-full">
                                         <thead className="sticky top-0 bg-customLight dark:bg-customDark z-10 border-b border-contentLight dark:border-borderDark shadow-xs dark:shadow-borderDark">
