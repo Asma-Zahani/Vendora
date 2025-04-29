@@ -53,7 +53,7 @@ return new class extends Migration
         DB::table('users')->insert([
             'nom' => "Zh",
             'prenom' => "Asma",
-            'email' => "fazza.shop.contact@gmail.com",
+            'email' => "vendora.shop.contact@gmail.com",
             'telephone' => "12345678",
             'genre' => 'Femelle',
             'date_naissance' => "2002-02-02",

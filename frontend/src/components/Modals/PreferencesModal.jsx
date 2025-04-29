@@ -80,7 +80,7 @@ const PreferencesModal = () => {
                 
                 <p className="text-xs mt-3">{user?.email}</p>
 
-                <h2 className="text-2xl font-semibold mt-2">Bienvenue sur FaZZa</h2>
+                <h2 className="text-2xl font-semibold mt-2">Bienvenue sur Vendora</h2>
                 <p className="text-2xl font-semibold my-2">{user?.prenom + ' ' + user?.nom} !</p>
 
                 <div className="flex justify-center">

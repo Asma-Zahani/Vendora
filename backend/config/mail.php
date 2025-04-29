@@ -109,7 +109,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'fazza.shop.contact@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'vendora.shop.contact@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 

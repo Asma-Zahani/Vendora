@@ -33,7 +33,7 @@ const Footer = () => {
                                         <div className="block mt-4 text-sm text-gray-600 dark:text-gray-400">
                                             <div className="flex items-center gap-1">
                                                 <Mail size={17} />
-                                                fazza.shop.contact@gmail.com
+                                                vendora.shop.contact@gmail.com
                                             </div>
                                         </div>
                                         <div className="block mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -92,7 +92,7 @@ const Footer = () => {
                     <hr className="my-4 sm:my-6 border-gray-200 sm:mx-auto dark:border-borderDark" />
                     <div className="text-sm flex flex-col sm:flex-row items-center justify-center sm:justify-between">
                         <div className="flex items-center">
-                            Copyright {new Date().getFullYear()} © FaZZa™.
+                            Copyright {new Date().getFullYear()} © Vendora™.
                         </div>
                         <div>Fabriqué à la main & fait avec ❤️</div>
                     </div>

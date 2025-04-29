@@ -21,11 +21,11 @@
 
         <p style="color: #555;">Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter.</p>
 
-        <p style="color: #555;">Cordialement, <br> L'équipe de FaZZa</p>
+        <p style="color: #555;">Cordialement, <br> L'équipe de Vendora</p>
 
         <!-- Footer -->
         <p style="margin-top: 20px; color: #999; font-size: 12px;">
-            © {{ date('Y') }} FaZZa™. Tous droits réservés.
+            © {{ date('Y') }} Vendora™. Tous droits réservés.
         </p>
     </div>
 </body>
