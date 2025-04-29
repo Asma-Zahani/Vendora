@@ -279,75 +279,75 @@ const Checkout = () => {
 
     return (
         <section className="sm:mx-6 sm:py-6">
-            <div className="flex flex-col lg:flex-row gap-6">
-                <div className="inline-block min-w-full py-2 align-middle">
-                    <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
-                        <div className="flex flex-col lg:flex-row gap-6">
-                            <div className="flex-1/5 py-4 px-2">
-                                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
-                                <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {stepContent[step]}
-                                </div>
-                                <div className="flex justify-between mt-6">
-                                    {step > 1 && (<button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">Retour</button>)}
-                                    {step < 3 && (<button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">Suivant</button>)}
-                                    {step == 3 && ( <button onClick={() => handleOrderClick()} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto bg-purpleLight text-white
-                                            ${paymentMethod === "carte" && !isCardValid ? 'cursor-not-allowed opacity-50' : ''}`}> Passer la commande </button>)}
-                                </div>
+            <div className="inline-block min-w-full py-2 align-middle">
+                <div className="bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark sm:rounded-lg p-6 shadow-sm">
+                    <div className="flex flex-col-reverse lg:flex-row gap-6">
+                        <div className="flex-1/5 py-4 px-2">
+                            <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Détails de facturation</h4>
+                            <p className="text-sm text-gray-600 dark:text-grayDark mb-10">Vérifiez vos informations avant de passer la commande.</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {stepContent[step]}
                             </div>
-                            <div onClick={() => {setShow(!show)}} className="flex sm:hidden justify-between items-center space-x-2">
-                                <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Résumé de la commande</h4>
-                                {show ? 
-                                    <div className="flex items-center justify-end text-sm gap-1">
-                                        Masquer <ChevronUp size={16} />
-                                    </div> :
-                                    <div className="flex items-center justify-end text-sm gap-1">
-                                        Afficher <ChevronDown size={16} />
+                            <div className="flex justify-between mt-6">
+                                {step > 1 && (<button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">Retour</button>)}
+                                {step < 3 && (<button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">Suivant</button>)}
+                                {step == 3 && ( <button onClick={() => handleOrderClick()} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto bg-purpleLight text-white
+                                        ${paymentMethod === "carte" && !isCardValid ? 'cursor-not-allowed opacity-50' : ''}`}> Passer la commande </button>)}
+                            </div>
+                        </div>
+                        <div className="flex-1 -m-6 sm:m-0 px-4 sm:px-12 bg-contentLight dark:bg-contentDark border-y sm:border border-gray-300 dark:border-borderDark">
+                            <div className="border-b border-gray-300 dark:border-borderDark -mx-4">
+                                <div onClick={() => {setShow(!show)}} className="flex mx-4 sm:hidden justify-between py-4">
+                                    <div className="flex justify-start items-center gap-2">
+                                        <h4 className="text-md font-semibold mb-1 dark:text-white">Résumé</h4>
+                                        {show ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                                     </div>
-                                }
-                            </div>
-                            <div className="flex-1 -m-6 sm:m-0 px-4 sm:px-12 py-8 sm:bg-contentLight dark:bg-contentDark sm:border border-gray-300 dark:border-borderDark">
-                                <div className={`sm:border-b border-gray-300 dark:border-borderDark ${show ? "pb-4 mb-4" : ""} space-y-4`}>
-                                    {show && checkoutData.produits.map((produit, index) => {
-                                        return (
-                                            <div key={index} className="flex items-center justify-between">
-                                                <div className="flex items-center">
-                                                    <div className="relative">
-                                                        <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-17 h-17 object-cover rounded-md border border-gray-300 dark:border-purpleLight" />
-                                                        <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] min-h-[20px] text-xs font-bold text-white bg-[#666666] rounded-full transition-transform duration-300 transform rotate-[360deg]">
-                                                            {produit.pivot?.quantite ?? produit.quantite}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex flex-col text-start text-md ml-2">
-                                                        <p className="font-semibold">{produit.nom}</p>
-                                                        <span className="text-sm">{produit.pivot?.couleur}</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div>                              
-                                                    <strong>{produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)} DT</strong>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                    <p className="text-lg font-semibold flex justify-between">{totalAvecFrais} DT</p>
                                 </div>
-                                <p className="text-sm font-normal flex justify-between">
-                                    Sous-total · {checkoutData.produits?.length} produits <span>{checkoutData.original} DT</span>
-                                </p>
-                                {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
-                                    Remise <span>{checkoutData.remise}%</span>
-                                </p>}
-
-                                {fraisLivraison > 0 && (
-                                <p className="text-sm font-normal flex justify-between">
-                                    Frais de livraison <span>{fraisLivraison} DT</span>
-                                </p>
-                                )}
-                                <p className="text-lg font-semibold flex justify-between">
-                                    Total <strong>{totalAvecFrais} DT</strong>
-                                </p>
                             </div>
+                            {show && 
+                                <div className="py-8">
+                                    <div className="border-b border-gray-300 dark:border-borderDark pb-4 mb-4 space-y-4">
+                                        {checkoutData.produits.map((produit, index) => {
+                                            return (
+                                                <div key={index} className="flex items-center justify-between">
+                                                    <div className="flex items-center">
+                                                        <div className="relative">
+                                                            <img src={produit.image ? (`/produits/${produit.image}`) : img} alt="image" onError={(e) => e.target.src = img} className="w-17 h-17 object-cover rounded-md border border-gray-300 dark:border-purpleLight" />
+                                                            <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] min-h-[20px] text-xs font-bold text-white bg-[#666666] rounded-full transition-transform duration-300 transform rotate-[360deg]">
+                                                                {produit.pivot?.quantite ?? produit.quantite}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex flex-col text-start text-md ml-2">
+                                                            <p className="font-semibold">{produit.nom}</p>
+                                                            <span className="text-sm">{produit.pivot?.couleur}</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div>                              
+                                                        <strong>{produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)} DT</strong>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    <p className="text-sm font-normal flex justify-between">
+                                        Sous-total · {checkoutData.produits?.length} produits <span>{checkoutData.original} DT</span>
+                                    </p>
+                                    {checkoutData.remise && <p className="text-sm font-normal flex justify-between">
+                                        Remise <span>{checkoutData.remise}%</span>
+                                    </p>}
+
+                                    {fraisLivraison > 0 && (
+                                    <p className="text-sm font-normal flex justify-between">
+                                        Frais de livraison <span>{fraisLivraison} DT</span>
+                                    </p>
+                                    )}
+                                    <p className="text-lg font-semibold flex justify-between">
+                                        Total <strong>{totalAvecFrais} DT</strong>
+                                    </p>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

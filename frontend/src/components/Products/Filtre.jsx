@@ -38,12 +38,12 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
   return (
     <>
       <div className="mt-8 flex items-center justify-between">
-        <div className="flex gap-3">
-          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",true)} className={`p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
-            <Grid size={17} />
+        <div className="flex gap-3 mt-1">
+          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",true)} className={`p-2.5 sm:p-2 hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`}>
+            <Grid className="h-5.5 w-5.5 sm:h-4 sm:w-4"  />
           </div>
-          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",false)} className={`p-2 hidden sm:flex hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`} >
-            <List size={17} />
+          <div onClick={() => gridInfo.handleConfigGridChange("isGrid",false)} className={`p-2.5 sm:p-2 hidden sm:flex hover:bg-bgLight hover:dark:bg-bgDark rounded-md text-purpleLight ${!gridInfo.isGrid ? "bg-bgLight dark:bg-bgDark" : ""}`} >
+            <List className="h-5.5 w-5.5 sm:h-4 sm:w-4" />
           </div>
           {gridInfo.isGrid && (
             <div className="hidden md:hidden lg:flex gap-2">
