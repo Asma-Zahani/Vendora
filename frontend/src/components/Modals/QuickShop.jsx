@@ -19,15 +19,8 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
     }
   }, [produit]);
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    setQuantity(1);
-  };
-
-  const maxQuantity = selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite;
-
   const handleIncrease = () => {
-    if (quantity < maxQuantity) {
+    if (quantity < selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite) {
       setQuantity(quantity + 1);
     }
   };
@@ -39,7 +32,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
   };
 
   const handleAddToCart = () => {    
-    if (quantity <= maxQuantity) {
+    if (quantity <= selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite) {
       const ancienne_couleur = window.location.pathname === '/cart' ? produit.pivot?.couleur : null;
       
       ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom, ancienne_couleur);
@@ -72,7 +65,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
                 {produit.couleurs.map((couleur) => (
                   <button
                     key={couleur.couleur_id}
-                    onClick={() => handleColorSelect(couleur)}
+                    onClick={() => {setSelectedColor(couleur);setQuantity(1)}}
                     className={`w-8 h-8 rounded-full border ${
                       selectedColor?.couleur_id === couleur.couleur_id ? "border-purpleLight" : "border-gray-300"
                     } ${couleur.pivot?.quantite === 0 ? "opacity-50 grayscale cursor-not-allowed" : ""}`}  

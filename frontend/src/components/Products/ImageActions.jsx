@@ -46,27 +46,14 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
   return (
     <>
       <img src={imageSrc} alt={produit.nom} onError={handleImageError} className="w-full h-full object-cover brightness-110 transition-all duration-300 group-hover:scale-110"/>
-      <div className="absolute right-2 top-2">
-        {produit.status === 'Rupture de stock' && (
-          <div className="flex bg-red-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
-            Rupture de stock
-          </div>
-        )}
-      </div>
-      <div className="absolute right-2 top-2">
-        {produit.status === 'En arrivage' && (
-          <div className="flex bg-yellow-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
-            En arrivage
-          </div>
-        )}
-      </div>
-      <div className="absolute right-2 top-2">
-        {produit.status === 'Hors vente' && (
-          <div className="flex bg-gray-600 text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md">
-            Hors vente
-          </div>
-        )}
-      </div>
+      {produit.status != "Disponible" && (
+        <div className={`absolute right-2 top-2 flex text-white text-xs sm:text-sm font-semibold py-1 px-2 sm:px-3 rounded-full items-center justify-center shadow-md ${
+          produit.status === 'Rupture de stock' ? 'bg-red-600' :
+          produit.status === 'En arrivage' ? 'bg-yellow-600' :
+          produit.status === 'Hors vente' ? 'bg-gray-600' : '' }`}>
+          {produit.status}
+        </div>
+      )}   
       <div onClick={() => navigate(`/boutique/${produit.produit_id}`)} className="absolute top-0 left-0 sm:top-0 sm:left-0 right-0 bottom-0 bg-customDark/10 dark:bg-customDark/50 flex justify-center items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
         { !list &&
           <div className="flex flex-col space-y-1 md:space-y-2">
