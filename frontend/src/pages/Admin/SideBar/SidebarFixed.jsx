@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useLocation } from "react-router-dom";
-import logo from "@/assets/logo/logo-icon.png";
+import logo from "@/assets/logo/logo-ico.svg";
 import menuItems from "@/pages/Admin/SideBar/menuItems"
 
 const SidebarFixed = ({ toggleSidebarHover }) => {
