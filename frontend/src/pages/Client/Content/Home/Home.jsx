@@ -1,22 +1,49 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from '@/utils/UserContext';
 import Hero from "./Hero";
 import Features from "./Features";
-import RecentsProduits from "./RecentsProduits";
+import ProduitsSection from "./ProduitsSection";
 import PreferencesModal from "@/components/Modals/PreferencesModal";
-// import ProductRecommendations from './ProductRecommendations';
+import { getEntities, createEntity } from "@/service/EntitesService";
 
 const Home = () => {
   const { user } = useContext(UserContext);
+  const [recentsProduits, setRecentsProduits] = useState([]);
+  const [produits, setProduits] = useState([]);
   const showPreferencesModal = user && !user.preferences;
   
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        let data;
+        if (user && user.id) {
+          data = await createEntity("getRecommendations", { user_id: user.id });
+        } else {
+          data = await getEntities("getRecommendations");
+        }
+        setProduits(data.produits_recommandes || []);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des recommandations", error);
+      }
+    };
+  
+    fetchRecommendations();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setRecentsProduits(await getEntities("recentProduits"));
+    }; 
+    fetchData();
+  }, []);
+
   return (
     <div className="duration-200">
       {showPreferencesModal && <PreferencesModal />}
       <Hero />
       <Features />
-      <RecentsProduits />
-      {/* <ProductRecommendations /> */}
+      <ProduitsSection titre={"Produits récents"} sousTitre={"Nouveautés cette semaine"} produits={recentsProduits} />
+      <ProduitsSection titre={"Produits recommandés"} sousTitre={"Produits basés sur vos préférences et interactions"} produits={produits} />
     </div>
   );
 };
