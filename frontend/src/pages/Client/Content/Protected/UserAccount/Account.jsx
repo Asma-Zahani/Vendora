@@ -4,7 +4,7 @@ import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
-import { handleLogout } from "@/service/AuthService";
+import { handleLogout } from "@/service/EntitesService";
 
 const Account = () => {
     const { user, setUser, setToken } = useContext(UserContext);

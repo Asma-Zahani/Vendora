@@ -2,7 +2,7 @@
 import { ChevronDown, Home, Truck, User, Package, LogIn } from 'lucide-react';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
-import { handleLogout } from "@/service/AuthService";
+import { handleLogout } from "@/service/EntitesService";
 import { UserContext } from '@/utils/UserContext';
 import { useContext } from 'react';
 import { Link } from 'react-router';
