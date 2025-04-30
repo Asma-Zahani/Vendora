@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('promotion_id')->nullable()->constrained('promotions', 'promotion_id')->onDelete('cascade');
             $table->string('nom');
             $table->enum('status', StatusProduitEnum::values())->default(StatusProduitEnum::Disponible->value);
-            $table->string('description');
+            $table->text('description');
             $table->decimal('prix', 10, 2);
             $table->string('image');
             $table->integer('quantite')->nullable(); 

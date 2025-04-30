@@ -25,7 +25,7 @@ class ProduitFactory extends Factory
                 array_fill(0, 5, StatusProduitEnum::Disponible),
                 StatusProduitEnum::values()
             )),
-            'description' => $this->faker->sentence(),
+            'description' => $this->faker->text(300),
             'prix' => $this->faker->randomFloat(2, 10, 1000),
             'image' => $this->faker->imageUrl(),
         ];
