@@ -32,6 +32,16 @@ const DetailProduit = () => {
   }, [id]);
   
   useEffect(() => {
+    if (produit.couleurs?.length > 0) {
+      setSelectedColor(
+        produit.couleurs.find((c) => c.selectionne) || produit.couleurs[0]
+      );
+    } else {
+      setSelectedColor(null);
+    }
+  }, [produit]);
+  
+  useEffect(() => {
     if (user) {
       const createInteraction = async () => {
         await createEntity("interactions", { user_id: user?.id, produit_id: id, vue_produit: 1 });
@@ -41,7 +51,7 @@ const DetailProduit = () => {
   }, [id, user]);
 
   const handleIncrease = () => {
-    if (quantity < selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite) {
+    if (quantity < (selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite)) {
       setQuantity(quantity + 1);
     }
   };
@@ -106,11 +116,11 @@ const DetailProduit = () => {
 
           <div className="flex items-center gap-3 mt-4">
             <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
-                <Minus size={16} />
+              <Minus size={16} />
             </div>
             <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
             <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
-                <Plus size={16} />
+              <Plus size={16} />
             </div>
             <button className="bg-purpleLight text-white py-1 px-6 rounded-md flex items-center gap-2">Add to Cart</button>
             <div className="p-2 rounded-md border border-gray-200 dark:border-borderDark"

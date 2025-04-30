@@ -9,5 +9,6 @@ ktiba fou9 b3athha (dashboard)
 modal facture (dashboard)
 modal scroll
 detail produit (client)
+photo hero (theme sombre)
 
 quatité (ki yabda andek fel panier w taamel +)

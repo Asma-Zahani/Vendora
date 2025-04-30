@@ -20,7 +20,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
   }, [produit]);
 
   const handleIncrease = () => {
-    if (quantity < selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite) {
+    if (quantity < (selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite)) {
       setQuantity(quantity + 1);
     }
   };
@@ -32,12 +32,10 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
   };
 
   const handleAddToCart = () => {    
-    if (quantity <= selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite) {
+    if (quantity <= (selectedColor && produit.couleurs.length > 0 ? selectedColor.pivot.quantite : produit.quantite)) {
       const ancienne_couleur = window.location.pathname === '/cart' ? produit.pivot?.couleur : null;
       
       ajouterAuPanier(produit.produit_id, quantity, selectedColor.nom, ancienne_couleur);
-    } else {
-      alert("La quantité demandée dépasse le stock disponible !");
     }
   };
 
@@ -79,11 +77,11 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
 
           <div className="flex items-center gap-3 mt-4">
             <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
-                <Minus size={16} />
+              <Minus size={16} />
             </div>
             <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
             <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
-                <Plus size={16} />
+              <Plus size={16} />
             </div>
 
             <div className="p-2 rounded-md border border-gray-200 dark:border-borderDark"
