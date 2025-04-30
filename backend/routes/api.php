@@ -23,6 +23,7 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\UserPreferencesController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\DashboardLivreurController;
+use App\Http\Controllers\RecommendationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
