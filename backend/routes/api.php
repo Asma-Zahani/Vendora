@@ -23,6 +23,7 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\UserPreferencesController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\DashboardLivreurController;
+use App\Http\Controllers\RecommendationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -99,5 +100,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/livraisonsEnCours', [DashboardLivreurController::class, 'livraisonsEnCours']);
     Route::get('/livraisonsAnnulees', [DashboardLivreurController::class, 'livraisonsAnnulees']);
 });
+
+Route::get('/getRecommendations', [RecommendationController::class, 'getRecommendations']);
+Route::post('/getRecommendations', [RecommendationController::class, 'getRecommendations']);
+Route::get('/produits-encodes', [ProduitController::class, 'produitsEncodes']);
+
 
 require __DIR__.'/auth.php';
