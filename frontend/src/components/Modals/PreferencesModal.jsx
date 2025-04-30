@@ -4,9 +4,8 @@ import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { ArrowLeft } from "lucide-react";
-import { getEntities } from "@/service/EntitesService";
+import { getEntities, createEntity } from "@/service/EntitesService";
 import Card from "../ui/Card";
-import { createEntity } from "@/service/EntitesService";
 
 const PreferencesModal = () => {
   const { user, setUser } = useContext(UserContext);

@@ -7,7 +7,8 @@ import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
 import { UserContext } from "@/utils/UserContext";
 import { resendVerificationEmail } from "@/service/AuthService";
-import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
+import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
+import { createEntity } from "@/service/EntitesService";
 
 const Login = () => {
     const [inputType, setInputType] = useState("password");
@@ -29,18 +30,16 @@ const Login = () => {
         e.preventDefault();
         if (!isValid) return;
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-            method: 'post',
-            body: JSON.stringify(formData)
-        });
-        const data = await response.json();
-
+        const data = await createEntity("login",formData);
         if (data.errors) { setErrors(data.errors); }
         else {
             localStorage.setItem('token',data.token);
             setToken(data.token);
         }
-    };
+        if (data.message) {
+          setSuccessMessage(data.message);     
+        }
+    }
 
     const renvoyerEmail = async (e) => {
         e.preventDefault();
