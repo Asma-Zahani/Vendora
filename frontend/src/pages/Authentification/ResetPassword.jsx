@@ -6,7 +6,7 @@ import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
-import { resetPassword } from "@/service/AuthService";
+import { createEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const ResetPassword = () => {    
@@ -45,7 +45,7 @@ const ResetPassword = () => {
           e.preventDefault();
           if (!isValid) return;
       
-          const data = await resetPassword(formData);
+          const data = await createEntity("reset-password", formData);
           
           if (data.errors) { 
             setErrors(data.errors); 

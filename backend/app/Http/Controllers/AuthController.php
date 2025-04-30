@@ -132,8 +132,8 @@ class AuthController extends Controller
 
     public function logout(Request $request){
         $request->user()->tokens()->delete();
-
-        return "You are logged out";
+        
+        return response()->json(['message' => 'You are logged out'], 201);  
     }
 
     public function verifyEmail(Request $request)

@@ -3,7 +3,7 @@ import UserContext from "@/utils/UserContext";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import ShowPassword from "@/components/ui/ShowPassword";
-import { updatePassword } from "@/service/AuthService";
+import { updateEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const UpdatePassword = () => {
@@ -25,7 +25,7 @@ const UpdatePassword = () => {
         e.preventDefault();
         setErrors({}); setSuccessMessage("");
 
-        const data = await updatePassword(user.id,formData);
+        const data = await updateEntity("updatePassword", user.id,formData);
         
         if (data.errors) {
             setErrors(data.errors);

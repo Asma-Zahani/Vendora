@@ -4,7 +4,7 @@ import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import Dropdown from "@/components/ui/Dropdown";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
-import { updateProfile } from "@/service/AuthService";
+import { updateEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const UpdateProfile = () => {
@@ -43,7 +43,7 @@ const UpdateProfile = () => {
         e.preventDefault();
         setErrors({});
 
-        const data = await updateProfile(user.id,formData);
+        const data = await updateEntity("users",user.id,formData);
         
         if (data.errors) {
             setErrors(data.errors);

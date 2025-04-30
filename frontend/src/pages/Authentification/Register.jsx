@@ -7,7 +7,7 @@ import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Dropdown from "@/components/ui/Dropdown";
 import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
-import { handleRegister } from "@/service/AuthService";
+import { createEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const Register = () => {
@@ -67,7 +67,7 @@ const Register = () => {
     e.preventDefault();
     if (!isValid) return;
 
-    const data = await handleRegister(formData);
+    const data = await createEntity("register",formData);
 
     if (data.errors) { 
       setErrors(data.errors); 

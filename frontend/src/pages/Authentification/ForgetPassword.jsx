@@ -1,9 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import FormContainer from "./Form";
 import Input from "@/components/ui/Input";
-import { forgotPassword } from "@/service/AuthService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
-import { resendForgotPasswordEmail } from "@/service/AuthService";
+import { createEntity } from "@/service/EntitesService";
 
 const ForgetPassword = () => {
   const [formData, setFormData] = useState({ email: "" });
@@ -20,7 +19,7 @@ const ForgetPassword = () => {
       e.preventDefault();
       if (!isValid) return;
   
-      const data = await forgotPassword(formData);
+      const data = await createEntity("forgot-password",formData);
   
       if (data.errors) { 
         setErrors(data.errors); 
@@ -33,7 +32,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     if (!isValid) return;
 
-    const data = await resendForgotPasswordEmail(formData);
+    const data = await createEntity("forgot-password/resend",formData);
     
     if (data.errors) { 
       setErrors(data.errors); 

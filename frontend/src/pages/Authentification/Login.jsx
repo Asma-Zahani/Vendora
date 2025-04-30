@@ -6,7 +6,6 @@ import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
 import { UserContext } from "@/utils/UserContext";
-import { resendVerificationEmail } from "@/service/AuthService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import { createEntity } from "@/service/EntitesService";
 
@@ -45,7 +44,7 @@ const Login = () => {
         e.preventDefault();
         if (!isValid) return;
     
-        const data = await resendVerificationEmail(formData);
+        const data = await createEntity("email/resend", formData);
         
         if (data.errors) { 
           setErrors(data.errors); 
