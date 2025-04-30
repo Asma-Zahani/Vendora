@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-class RecommendationController extends Controller
+class RecommandationController extends Controller
 {
     public function getRecommendations(Request $request)
     {
