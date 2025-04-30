@@ -100,4 +100,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/livraisonsAnnulees', [DashboardLivreurController::class, 'livraisonsAnnulees']);
 });
 
+Route::get('/getRecommendations', [RecommendationController::class, 'getRecommendations']);
+Route::post('/getRecommendations', [RecommendationController::class, 'getRecommendations']);
+Route::get('/produits-encodes', [ProduitController::class, 'produitsEncodes']);
+
+
 require __DIR__.'/auth.php';
