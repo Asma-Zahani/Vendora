@@ -14,7 +14,7 @@ export const UserProvider = ({ children }) => {
 
     async function getUser() {
         if (!token) return;
-        const res = await fetch('api/user', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();

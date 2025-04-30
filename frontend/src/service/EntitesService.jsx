@@ -6,13 +6,10 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
   if (search) params.append("search", search);
   if (sortBy) params.append("sort_by", sortBy);
   if (sortOrder) params.append("sort_order", sortOrder);
-  // if (filtre) params.append("filtre_column", filtre[0]);
-  // if (filtre) params.append("filtre_text", filtre[1]);
   
   if (filtreObj) {
     Object.entries(filtreObj).forEach(([key, value]) => {
       if (Array.isArray(value)) {
-        // Si c'est un tableau, ajouter plusieurs fois la clé
         value.forEach((val) => params.append(`filtre[${key}][]`, val));
       } else {
         params.append(`filtre[${key}]`, value);
@@ -20,14 +17,14 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
     });
   }
 
-  const url = `/api/${label}${params.toString() ? "?" + params.toString() : ""}`;
+  const url = `${import.meta.env.VITE_API_URL}/${label}${params.toString() ? "?" + params.toString() : ""}`;
   const response = await fetch(url);
   
   return await response.json();
 };
 
 const getAuthenticatedEntities = async (label) => {
-  const response = await fetch(`/api/${label}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
@@ -36,7 +33,7 @@ const getAuthenticatedEntities = async (label) => {
 };
 
 const getEntity = async (label, _id) => {
-  const response = await fetch(`/api/${label}/${_id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${_id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
@@ -45,7 +42,7 @@ const getEntity = async (label, _id) => {
 };
 
 const getEntityBy = async (label, by, _id) => {
-  const response = await fetch(`/api/${label}/${by}/${_id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${by}/${_id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
@@ -54,7 +51,7 @@ const getEntityBy = async (label, by, _id) => {
 };
   
 const createEntity = async (label, formData) => {
-  const response = await fetch(`/api/${label}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -66,7 +63,7 @@ const createEntity = async (label, formData) => {
 };
 
 const updateEntity = async (label, _id, formData) => {
-  const response = await fetch(`/api/${label}/${_id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${_id}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -78,7 +75,7 @@ const updateEntity = async (label, _id, formData) => {
 };
   
 const deleteEntity = async (label, _id, formData) => {
-  const url = _id ? `/api/${label}/${_id}` : `/api/${label}`;
+  const url = _id ? `${import.meta.env.VITE_API_URL}/${label}/${_id}` : `${import.meta.env.VITE_API_URL}/${label}`;
   const response = await fetch(url, {
     method: 'DELETE',
     headers: {

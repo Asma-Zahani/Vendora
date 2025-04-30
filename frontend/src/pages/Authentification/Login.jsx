@@ -29,7 +29,7 @@ const Login = () => {
         e.preventDefault();
         if (!isValid) return;
 
-        const response = await fetch("api/login", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
             method: 'post',
             body: JSON.stringify(formData)
         });
