@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 import pandas as pd
 from tensorflow.keras.models import load_model # type: ignore
 import requests
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
 
@@ -38,3 +36,6 @@ def recommander_produits():
 
     # À remplacer par l'utilisation réelle du modèle
     return jsonify({"message": "Le modèle sera utilisé pour générer les recommandations."})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
