@@ -4,6 +4,9 @@ from tensorflow.keras.models import load_model # type: ignore
 import requests
 import os
 
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 app = Flask(__name__)
 
 # Chargement du modèle
@@ -15,6 +18,10 @@ except Exception as e:
 
 # Configuration de l'API externe via variable d'environnement
 API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:8000/api')
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "healthy", "model_loaded": True})
 
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():
