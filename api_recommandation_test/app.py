@@ -1,52 +1,10 @@
-from flask import Flask, request, jsonify
-import pandas as pd
-from tensorflow.keras.models import load_model # type: ignore
-import requests
-import os
-
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+from flask import Flask
 
 app = Flask(__name__)
 
-# Chargement du modèle
-try:
-    model = load_model('modele_recommandation.h5')
-    print("✅ Modèle chargé avec succès")
-except Exception as e:
-    print(f"❌ Erreur lors du chargement du modèle: {e}")
+@app.route("/")
+def home():
+    return "Hello from Flask on Railway!"
 
-# Configuration de l'API externe via variable d'environnement
-API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:8000/api')
-
-@app.route('/health')
-def health():
-    return jsonify({"status": "healthy", "model_loaded": True})
-
-@app.route("/recommander-produits", methods=["POST"])
-def recommander_produits():
-    """Endpoint pour obtenir des recommandations"""
-    data = request.get_json()
-    user_id = data.get("user_id")
-    
-    if not user_id:
-        return jsonify({"error": "Le paramètre user_id est requis"}), 400
-    
-    # Exemple de logique (à adapter)
-    recommendations = [
-        {"product_id": 1, "score": 0.95},
-        {"product_id": 3, "score": 0.87}
-    ]
-    
-    return jsonify({
-        "user_id": user_id,
-        "recommendations": recommendations
-    })
-
-@app.route("/", methods=["GET"])
-def health_check():
-    """Endpoint de vérification de santé"""
-    return jsonify({
-        "status": "OK",
-        "message": "API de recommandation opérationnelle"
-    })
+if __name__ == "__main__":
+    app.run(debug=True)
