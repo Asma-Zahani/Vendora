@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class RecommandationController extends Controller
 {
-    public function getRecommendations(Request $request)
+    public function getRecommandations(Request $request)
     {
         try {
             $userId = $request->input('user_id');
@@ -84,7 +84,7 @@ class RecommandationController extends Controller
     private function getRecommendationsFromTensorFlow($userId)
     {
         try {
-            $response = Http::post('http://127.0.0.1:5000/recommend', [
+            $response = Http::post('http://127.0.0.1:5000/recommander-produits', [
                 'user_id' => $userId
             ]);
 

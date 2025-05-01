@@ -11,11 +11,11 @@ app = Flask(__name__)
 # Charger le modèle de recommandation
 model = load_model('modele_recommandation.h5')
 
-# Récupérer les produits depuis l'API
-response = requests.get('http://127.0.0.1:8000/api/produits')
-produits_json = response.json()
+url = "http://localhost:8000/api"
+response_produits = requests.get(url + "/produits")
 
-produits = pd.DataFrame(produits_json)
+if response_produits.status_code == 200:
+    produits = pd.DataFrame(response_produits.json())
 
 # Initialiser les encodeurs LabelEncoder
 user_encoder = LabelEncoder()

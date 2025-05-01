@@ -13,13 +13,13 @@ const Home = () => {
   const showPreferencesModal = user && !user.preferences;
   
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchRecommandations = async () => {
       try {
         let data;
         if (user && user.id) {
-          data = await createEntity("getRecommendations", { user_id: user.id });
+          data = await createEntity("getRecommandations", { user_id: user.id });
         } else {
-          data = await getEntities("getRecommendations");
+          data = await getEntities("getRecommandations");
         }
         setProduits(data.produits_recommandes || []);
       } catch (error) {
@@ -27,7 +27,7 @@ const Home = () => {
       }
     };
   
-    fetchRecommendations();
+    fetchRecommandations();
   }, [user]);
 
   useEffect(() => {
