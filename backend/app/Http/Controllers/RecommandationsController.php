@@ -10,24 +10,12 @@ class RecommandationsController extends Controller
     public function getRecommandations(Request $request)
     {
         try {
-            // Requête à l'API Flask
             $response = Http::post('https://vendora-recommandation.up.railway.app/recommander-produits',
                 $request->has('user_id') ? ['user_id' => $request->input('user_id')] : []
             );
 
-            if ($response->failed()) {
-                return response()->json([
-                    'error' => 'Échec de la récupération des recommandations'
-                ], 500);
-            }
-
-            $productIds = $response->json();
-
-            // Exemple d’obtention des produits depuis leur ID (si tu as un modèle Produit)
-            // $produits = Produit::whereIn('id', $productIds)->get();
-
             return response()->json([
-                'produits_recommandes' => $productIds
+                'response' => $response
             ]);
 
         } catch (\Exception $e) {
