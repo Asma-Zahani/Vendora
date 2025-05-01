@@ -1,6 +1,5 @@
-flask
-pandas
-tensorflow
-scikit-learn
-requests
-gunicorn
+flask==2.3.2
+pandas==2.0.3
+tensorflow==2.12.0
+scikit-learn==1.2.2
+requests==2.31.0
