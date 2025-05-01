@@ -17,10 +17,11 @@ if response_interactions.status_code == 200:
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():
     data = request.get_json()
-    user_id = data.get("user_id")
 
-    if user_id is None:
+    if not isinstance(data, dict) or "user_id" not in data:
         return jsonify({"message": "user_id is required"}), 200
+
+    user_id = data["user_id"]
 
     # Filtrer les interactions pour cet utilisateur
     user_interactions = interactions[interactions["user_id"] == user_id]

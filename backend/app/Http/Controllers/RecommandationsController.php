@@ -14,8 +14,11 @@ class RecommandationsController extends Controller
                 $request->has('user_id') ? ['user_id' => $request->input('user_id')] : []
             );
 
+            // Récupérer le message de la réponse
+            $message = $response->json('message');
+
             return response()->json([
-                'response' => $response
+                'message' => $message
             ]);
 
         } catch (\Exception $e) {

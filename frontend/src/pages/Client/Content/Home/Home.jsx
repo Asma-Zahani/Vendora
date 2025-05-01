@@ -11,34 +11,17 @@ const Home = () => {
   const [recentsProduits, setRecentsProduits] = useState([]);
   const [produits, setProduits] = useState([]);
   const showPreferencesModal = user && !user.preferences;
-  
-  useEffect(() => {
-    const fetchRecommandations = async () => {
-      try {
-        let data;
-        if (user && user.id) {
-          data = await createEntity("getRecommandations", { user_id: user.id });
-        } else {
-          data = await getEntities("getRecommandations");
-        }
-        console.log(data);
-        
-        setProduits(data.produits_recommandes || []);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des recommandations", error);
-      }
-    };
-  
-    fetchRecommandations();
-  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
+      setProduits(await createEntity("getRecommandations", user ? { user_id: user.id } : {}));
       setRecentsProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
-  }, []);
+  }, [user]);
 
+  console.log(produits);
+  
   return (
     <div className="duration-200">
       {showPreferencesModal && <PreferencesModal />}
