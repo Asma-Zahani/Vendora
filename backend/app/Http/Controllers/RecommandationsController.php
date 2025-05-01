@@ -11,7 +11,7 @@ class RecommandationsController extends Controller
     {
         try {
             // Requête à l'API Flask
-            $response = Http::post('http://127.0.0.1:5000/recommander-produits',
+            $response = Http::post('https://vendora-recommandation.up.railway.app/recommander-produits',
                 $request->has('user_id') ? ['user_id' => $request->input('user_id')] : []
             );
 
