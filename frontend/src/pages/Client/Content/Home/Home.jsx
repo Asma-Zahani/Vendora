@@ -21,6 +21,8 @@ const Home = () => {
         } else {
           data = await getEntities("getRecommandations");
         }
+        console.log(data);
+        
         setProduits(data.produits_recommandes || []);
       } catch (error) {
         console.error("Erreur lors de la récupération des recommandations", error);
