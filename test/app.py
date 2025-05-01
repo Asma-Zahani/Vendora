@@ -26,7 +26,7 @@ def recommander_produits():
     user_interactions = interactions[interactions["user_id"] == user_id]
 
     if user_interactions.empty:
-        return jsonify({"message": "Cet utilisateur n'existe pas dans les interactions."}), 404
+        return jsonify({"message": "Cet utilisateur n'existe pas dans les interactions."}), 200
 
     if len(user_interactions) < 10:
         return jsonify({"message": "Pas assez d'interactions pour générer des recommandations (minimum 10)."}), 200
