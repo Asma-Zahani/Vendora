@@ -20,7 +20,7 @@ def recommander_produits():
     user_id = data.get("user_id")
 
     if user_id is None:
-        return jsonify({"error": "user_id is required"})
+        return jsonify({"message": "user_id is required"}), 200
 
     # Filtrer les interactions pour cet utilisateur
     user_interactions = interactions[interactions["user_id"] == user_id]
