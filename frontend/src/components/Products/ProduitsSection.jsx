@@ -3,14 +3,15 @@ import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
 import Card from '@/components/Products/Card';
 import { Link } from "react-router";
-import usePanierWishlist from "../Protected/usePanierWishlist";
+import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
 import { useMediaQuery } from "react-responsive";
 
 const ProduitsSection = ({titre, sousTitre, produits}) => {
   const { wishlist } = useContext(UserContext);
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
-  const produitsAffiches = isMd ? produits.slice(0, 9) : produits;
+  const produitsArray = Array.isArray(produits) ? produits : [];
+  const produitsAffiches = isMd ? produitsArray.slice(0, 9) : produitsArray;  
 
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 

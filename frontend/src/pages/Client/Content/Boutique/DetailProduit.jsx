@@ -12,7 +12,7 @@ const DetailProduit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [produit, setProduit] = useState();
-  const [imageSrc, setImageSrc] = useState(`/produits/${produit?.image}`);
+  const [imageSrc, setImageSrc] = useState();
 
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -23,20 +23,21 @@ const DetailProduit = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const produitData = await getEntity("produits", id);
-      setProduit(produitData);
-      setImageSrc(`/produits/${produitData.image}`);
+      setProduit(await getEntity("produits", id));
     }; 
     fetchData();
   }, [id]);
   
   useEffect(() => {
-    if (produit?.couleurs?.length > 0) {
-      setSelectedColor(
-        produit.couleurs.find((c) => c.selectionne) || produit.couleurs[0]
-      );
-    } else {
-      setSelectedColor(null);
+    if (produit) {
+      setImageSrc(`/produits/${produit?.image}`);
+      if (produit?.couleurs?.length > 0) {
+        setSelectedColor(
+          produit.couleurs.find((c) => c.selectionne) || produit.couleurs[0]
+        );
+      } else {
+        setSelectedColor(null);
+      }
     }
   }, [produit]);
   
@@ -121,15 +122,18 @@ const DetailProduit = () => {
             </div>
 
             <div className="flex items-center gap-3 mt-4">
-              <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
+              <div onClick={handleDecrease} className="p-3 rounded-l-md border border-gray-200 dark:border-borderDark">
                 <Minus size={16} />
               </div>
-              <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} onChange={() => {}} />
-              <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
+              <input className="-mx-3 py-2 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} onChange={() => {}} />
+              <div onClick={handleIncrease} className="p-3 rounded-r-md border border-gray-200 dark:border-borderDark">
                 <Plus size={16} />
               </div>
-              <button onClick={() => handleAddToCart()} className="bg-purpleLight text-white py-1 px-6 rounded-md flex items-center gap-2">Add to Cart</button>
-              <div className="p-2 rounded-md border border-gray-200 dark:border-borderDark"
+              {produit.status == "Disponible" ?
+                <button onClick={() => handleAddToCart()} className="bg-purpleLight text-white py-2 px-8 rounded-md flex items-center gap-2">Add to Cart</button>
+                : <button className="bg-purpleLight text-white py-2 px-8 rounded-md flex items-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
+              }
+              <div className="p-3 rounded-md border border-gray-200 dark:border-borderDark"
                 onClick={() => {
                   const isProductInWishlist = wishlist && wishlist.some(item => item.produit_id === produit.produit_id);
 

@@ -74,7 +74,7 @@ const Filtre = ({ gridInfo, onSortChange, indexOfFirstItem, indexOfLastItem, tot
         <div className="relative">
           <Input value="Filtres" onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} required readOnly/>
           {isOpen && (
-            <div className="absolute mt-1 p-4 z-[9999] w-full bg-customLight dark:bg-contentDark border border-gray-300 dark:border-borderDark rounded-md shadow-lg max-h-50 overflow-x-auto scrollbar">
+            <div className="absolute mt-1 p-4 z-[9999] w-full bg-customLight dark:bg-contentDark border border-gray-300 dark:border-borderDark rounded-md shadow-lg max-h-100 overflow-x-auto scrollbar">
                 <h4 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200">Catégories</h4>
                 {filtres.categories.length > 0 ? 
                   <div className="space-y-1">

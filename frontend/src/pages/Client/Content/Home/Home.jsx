@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from '@/utils/UserContext';
 import Hero from "./Hero";
 import Features from "./Features";
-import ProduitsSection from "./ProduitsSection";
+import ProduitsSection from "@/components/Products/ProduitsSection";
 import PreferencesModal from "@/components/Modals/PreferencesModal";
 import { getEntities, createEntity } from "@/service/EntitesService";
 
@@ -20,7 +20,7 @@ const Home = () => {
     fetchData();
   }, [user]);
 
-  console.log(produits);
+  // console.log(produits);
   
   return (
     <div className="duration-200">
