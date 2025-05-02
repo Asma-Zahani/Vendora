@@ -79,7 +79,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
             <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
               <Minus size={16} />
             </div>
-            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
+            <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} onChange={() => {}} />
             <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
               <Plus size={16} />
             </div>
