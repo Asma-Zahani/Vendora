@@ -64,6 +64,8 @@ const DetailProduit = () => {
 
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist();
 
+  console.log(produit);
+  
   return (
     <section className="mx-6 lg:mx-26 py-6">
       <div className="flex flex-col md:flex-row p-6 max-w-6xl mx-auto">
@@ -137,10 +139,9 @@ const DetailProduit = () => {
                 <Heart size={16} fill={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`} className={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : ''}`}/>
             </div>
           </div>
-
           <div className="mt-4 text-sm text-gray-600">
-            <p>Availability: <span className="text-black font-medium">In Stock</span></p>
-            <p>Categories: <span className="text-black font-medium">Men</span></p>
+            <p>Disponibilité: <span className="text-black font-medium">{produit.status}</span></p>
+            <p>Catégorie: <span className="text-black font-medium">Men</span></p>
           </div>
         </div>
       </div>
