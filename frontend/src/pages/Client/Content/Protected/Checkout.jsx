@@ -353,7 +353,7 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="test" onConfirm={() => {setIsOpen(false); passerCommande()}}/> }
+            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="Souhaitez-vous passer la commande ?" onConfirm={() => {setIsOpen(false); passerCommande()}}/> }
         </section>
     );
 };
