@@ -19,7 +19,10 @@ def recommander_produits():
     data = request.get_json()
 
     if not isinstance(data, dict) or "user_id" not in data:
-        return jsonify({"message": "user_id is required"}), 200
+        produits_populaires = interactions.groupby("produit_id")["achat"].sum().sort_values(ascending=False)
+        top_produits = produits_populaires.head(10).index.tolist()
+
+        return jsonify({"message": "user_id is required", "top_produits": top_produits}), 200
 
     user_id = data["user_id"]
 
