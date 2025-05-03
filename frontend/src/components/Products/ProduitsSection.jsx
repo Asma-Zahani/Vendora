@@ -4,15 +4,9 @@ import UserContext from '@/utils/UserContext';
 import Card from '@/components/Products/Card';
 import { Link } from "react-router";
 import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
-import { useMediaQuery } from "react-responsive";
 
 const ProduitsSection = ({titre, sousTitre, produits}) => {
   const { wishlist } = useContext(UserContext);
-  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-
-  const produitsArray = Array.isArray(produits) ? produits : [];
-  const produitsAffiches = isMd ? produitsArray.slice(0, 9) : produitsArray;  
-
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
   return (
@@ -27,9 +21,9 @@ const ProduitsSection = ({titre, sousTitre, produits}) => {
             </div>
             <p className="italic font-greatvibes text-gray-500">{sousTitre}</p>
           </div>
-          <div className="mt-10 mx-0 lg:mx-20 gap-2 sm:gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-10 mx-0 lg:mx-20 gap-2 sm:gap-6 grid grid-cols-2 md:grid-cols-4">
             {
-              produitsAffiches.map((produit, index) => {
+              produits.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
               })
             }
