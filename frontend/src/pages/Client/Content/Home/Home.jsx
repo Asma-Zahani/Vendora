@@ -14,13 +14,13 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setProduits(await createEntity("getRecommandations", user ? { user_id: user.id } : {}));
+      const data = await createEntity("getRecommandations", user ? { user_id: user.id } : {})
+      console.log(data);
+      setProduits(data?.data ? data.data : []);
       setRecentsProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, [user]);
-
-  // console.log(produits);
   
   return (
     <div className="duration-200">
