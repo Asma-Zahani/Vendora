@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from utils import (
-    users, produits, interactions, preferences, model,
-    filtrer_produits_preferes, calculate_age
+    users, produits, interactions,
+    filtrer_produits_preferes, get_model
 )
 
 app = Flask(__name__)
@@ -22,6 +22,7 @@ def recommander_produits():
     user_interactions = interactions[interactions["user_id"] == user_id]
 
     if user_interactions.empty:
+        model = get_model()
         user = users[users['user_id'] == user_id].iloc[0]
 
         produits_filtres = filtrer_produits_preferes(user, produits)

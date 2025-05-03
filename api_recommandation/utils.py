@@ -51,4 +51,8 @@ users.genre = le.transform(users.genre)
 users["date_naissance"] = pd.to_datetime(users["date_naissance"])
 users['age'] = users['date_naissance'].apply(calculate_age)
 
-model = joblib.load('preferences_model.pkl')
+def get_model():
+    global model
+    if model is None:
+        model = joblib.load("preferences_model.pkl")
+    return model
