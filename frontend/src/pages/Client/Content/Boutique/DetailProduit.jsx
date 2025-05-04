@@ -1,17 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
-import { getEntity, createEntity } from "@/service/EntitesService";
+import { getEntity, getEntities, createEntity } from "@/service/EntitesService";
 import UserContext from '@/utils/UserContext';
 import { useNavigate } from "react-router-dom";
 import { Heart, Minus, Plus } from "lucide-react";
 import usePanierWishlist from "../Protected/usePanierWishlist";
+import ProduitsSlider from "@/components/Produits/ProduitsSlider";
 
 const DetailProduit = () => {
   const { user, wishlist } = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [produit, setProduit] = useState();
+  const [produits, setProduits] = useState([]);
   const [imageSrc, setImageSrc] = useState();
 
   const [quantity, setQuantity] = useState(1);
@@ -24,6 +26,7 @@ const DetailProduit = () => {
   useEffect(() => {
     const fetchData = async () => {
       setProduit(await getEntity("produits", id));
+      setProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, [id]);
@@ -71,7 +74,7 @@ const DetailProduit = () => {
   };
 
   return (
-    <section className="mx-6 lg:mx-26 py-6">
+    <section className="mx-0 lg:mx-26 py-6">
       {produit && 
         <div className="flex flex-col md:flex-row p-6 max-w-6xl mx-auto">
           <div className="relative md:w-1/3 py-2">
@@ -130,8 +133,8 @@ const DetailProduit = () => {
                 <Plus size={16} />
               </div>
               {produit.status == "Disponible" ?
-                <button onClick={() => handleAddToCart()} className="bg-purpleLight text-white py-2 px-8 rounded-md flex items-center gap-2">Add to Cart</button>
-                : <button className="bg-purpleLight text-white py-2 px-8 rounded-md flex items-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
+                <button onClick={() => handleAddToCart()} className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2">Add to Cart</button>
+                : <button className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
               }
               <div className="p-3 rounded-md border border-gray-200 dark:border-borderDark"
                 onClick={() => {
@@ -147,6 +150,12 @@ const DetailProduit = () => {
                   <Heart size={16} fill={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'red' : 'none'}`} className={`${wishlist && wishlist.some(item => item.produit_id === produit.produit_id) ? 'text-transparent' : ''}`}/>
               </div>
             </div>
+            
+            {produit.status == "Disponible" ?
+              <button onClick={() => handleAddToCart()} className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2">Add to Cart</button>
+              : <button className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
+            }
+
             <div className="mt-4 text-sm text-gray-600 dark:text-grayDark">
               <p>Disponibilité: <span className="text-black dark:text-white font-medium">{produit.status}</span></p>
               <p>Catégorie: <span className="text-black dark:text-white font-medium">{produit.sous_categorie?.categorie?.titre} - {produit.sous_categorie?.titre}</span></p>
@@ -154,6 +163,7 @@ const DetailProduit = () => {
           </div>
         </div>
       }
+      <ProduitsSlider titre={"Produits recommandés"} sousTitre={"Produits basés sur vos préférences et interactions"} produits={produits} />
     </section>
   );
 };

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from '@/utils/UserContext';
 import Hero from "./Hero";
 import Features from "./Features";
-import ProduitsSection from "@/components/Products/ProduitsSection";
+import ProduitsSection from "@/components/Produits/ProduitsSection";
 import PreferencesModal from "@/components/Modals/PreferencesModal";
 import { getEntities, createEntity } from "@/service/EntitesService";
 

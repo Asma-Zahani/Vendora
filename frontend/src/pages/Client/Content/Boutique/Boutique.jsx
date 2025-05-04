@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext, useCallback, useMemo } from "react";
-import FilteredProducts from '@/components/Products/FilteredProducts';
+import FilteredProducts from '@/components/Produits/FilteredProducts';
 import UserContext from '@/utils/UserContext';
 import { getEntities } from "@/service/EntitesService";
 import usePanierWishlist from "../Protected/usePanierWishlist";
@@ -98,7 +98,7 @@ const Shop = () => {
   const selectedFiltres = {selectedCategories, setSelectedCategories, selectedBrands, setSelectedBrands, selectedColors, setSelectedColors, maxPrice, setMaxPrice};
   
   return (
-    <div className="px-8">
+    <div className="px-4 sm:px-8">
       <FilteredProducts wishlist={wishlist} data={produits} gridInfo={gridInfo} productConfig={productConfig} filtres={filtres} selectedFiltres={selectedFiltres}
         ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />
     </div>

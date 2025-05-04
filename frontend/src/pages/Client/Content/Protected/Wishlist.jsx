@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import UserContext from '@/utils/UserContext';
-import Card from "@/components/Products/Card";
+import Card from "@/components/Produits/Card";
 import { HeartOff } from "lucide-react";
 import usePanierWishlist from "./usePanierWishlist";
 

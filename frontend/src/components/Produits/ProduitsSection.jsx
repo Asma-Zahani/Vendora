@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
-import Card from '@/components/Products/Card';
+import Card from '@/components/Produits/Card';
 import { Link } from "react-router";
 import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
 

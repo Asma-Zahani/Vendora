@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import Card from "@/components/Products/Card";
-import List from "@/components/Products/List";
-import Filtre from "@/components/Products/Filtre";
+import Card from "@/components/Produits/Card";
+import List from "@/components/Produits/List";
+import Filtre from "@/components/Produits/Filtre";
 import Pagination from "@/components/Pagination/ProductPagination";
 
 const FilteredProducts = ({ wishlist, data, gridInfo, filtres, ajouterAuPanier, ajouterAuListeSouhait, productConfig, selectedFiltres }) => {
