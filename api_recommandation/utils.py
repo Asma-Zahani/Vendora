@@ -5,6 +5,40 @@ import joblib
 from datetime import datetime
 from sklearn import preprocessing
 
+url = "https://vendora-app.up.railway.app/api"
+
+def load_users():
+    users = pd.DataFrame(requests.get(url + "/users").json())
+    preferences = pd.DataFrame(requests.get(url + "/userPreferences").json())
+
+    preferences["preferred_categorie_ids"] = preferences["preferred_categorie_ids"].apply(safe_literal_eval)
+    preferences["preferred_marque_ids"] = preferences["preferred_marque_ids"].apply(safe_literal_eval)
+
+    users = users.rename(columns={"id": "user_id"})
+    users = users.merge(preferences, on='user_id', how='left')
+
+    le = preprocessing.LabelEncoder()
+    le.fit(users.genre)
+    users.genre = le.transform(users.genre)
+
+    users["date_naissance"] = pd.to_datetime(users["date_naissance"])
+    users['age'] = users['date_naissance'].apply(calculate_age)
+    users["age"] = users["age"].astype("int8")
+
+    return users
+
+def load_produits():
+    produits = pd.DataFrame(requests.get(url + "/produits").json())
+
+    produits["categorie_id"] = produits["sous_categorie"].apply(lambda x: x["categorie_id"] if isinstance(x, dict) and "categorie_id" in x else None)
+    produits["categorie_id"] = produits["categorie_id"].astype("int32")
+
+    return produits
+
+def load_interactions():
+    interactions = pd.DataFrame(requests.get(url + "/interactions").json())
+    return interactions
+
 def calculate_age(birth_date):
     today = datetime.now()
     return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
@@ -30,30 +64,6 @@ def safe_literal_eval(val):
         return ast.literal_eval(val)
     except Exception:
         return []
-
-def load_data():
-    url = "https://vendora-app.up.railway.app/api"
-    users = pd.DataFrame(requests.get(url + "/users").json())
-    produits = pd.DataFrame(requests.get(url + "/produits").json())
-    interactions = pd.DataFrame(requests.get(url + "/interactions").json())
-    preferences = pd.DataFrame(requests.get(url + "/userPreferences").json())
-
-    preferences["preferred_categorie_ids"] = preferences["preferred_categorie_ids"].apply(safe_literal_eval)
-    preferences["preferred_marque_ids"] = preferences["preferred_marque_ids"].apply(safe_literal_eval)
-
-    users = users.rename(columns={"id": "user_id"})
-    users = users.merge(preferences, on='user_id', how='left')
-
-    le = preprocessing.LabelEncoder()
-    le.fit(users.genre)
-    users.genre = le.transform(users.genre)
-
-    users["date_naissance"] = pd.to_datetime(users["date_naissance"])
-    users['age'] = users['date_naissance'].apply(calculate_age)
-
-    produits["categorie_id"] = produits["sous_categorie"].apply(lambda x: x["categorie_id"] if isinstance(x, dict) and "categorie_id" in x else None)
-
-    return users, produits, interactions
 
 def get_model():
     return joblib.load("preferences_model.pkl")

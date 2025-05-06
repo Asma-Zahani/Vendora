@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify
-from utils import (filtrer_produits_preferes, get_model, load_data)
+from utils import (filtrer_produits_preferes, get_model, load_users, load_produits, load_interactions)
 
 app = Flask(__name__)
 
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():
     data = request.get_json()
-    users, produits, interactions = load_data()
+
+    produits = load_produits()
+    interactions = load_interactions()
     
     if not isinstance(data, dict) or "user_id" not in data:
         produits_populaires = interactions.groupby("produit_id")["achat"].sum().sort_values(ascending=False)
@@ -20,6 +22,8 @@ def recommander_produits():
     user_interactions = interactions[interactions["user_id"] == user_id]
 
     if user_interactions.empty:
+        users = load_users()
+
         user = users[users['user_id'] == user_id].iloc[0]
 
         produits_filtres = filtrer_produits_preferes(user, produits)
@@ -47,3 +51,6 @@ def recommander_produits():
 @app.route("/")
 def home():
     return "Hello from Flask on Railway!"
+
+if __name__ == '__main__':
+    app.run(debug=True)
