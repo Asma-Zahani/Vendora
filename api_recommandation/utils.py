@@ -11,6 +11,9 @@ produits = pd.DataFrame(requests.get(url + "/produits").json())
 interactions = pd.DataFrame(requests.get(url + "/interactions").json())
 preferences = pd.DataFrame(requests.get(url + "/userPreferences").json())
 
+model = None  # Variable globale
+modelInteraction = None
+
 def calculate_age(birth_date):
     today = datetime.now()
     return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
@@ -56,3 +59,9 @@ def get_model():
     if model is None:
         model = joblib.load("preferences_model.pkl")
     return model
+
+def get_modelInteraction():
+    global modelInteraction
+    if modelInteraction is None:
+        modelInteraction = joblib.load("preferences_model.pkl")
+    return modelInteraction
