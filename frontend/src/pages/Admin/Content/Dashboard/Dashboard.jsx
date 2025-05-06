@@ -56,7 +56,7 @@ export const Dashboard = () => {
                 Sélectionnez l&apos;année pour afficher les statistiques :
               </p>
               <div className="relative w-40 my-4 mt-3">
-                <Input value={selectedYear} name={name} onClick={() => setIsOpen(!isOpen)} required readOnly/>
+                <Input value={selectedYear} onClick={() => setIsOpen(!isOpen)} required readOnly/>
                 {isOpen && (
                   <div className="absolute mt-1 z-10 w-full bg-customLight dark:bg-contentDark border border-gray-300 dark:border-purpleLight rounded-md shadow-lg max-h-50 overflow-x-auto scrollbar">
                     {listAnnee.map((option, index) => (

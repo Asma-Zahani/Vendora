@@ -62,25 +62,23 @@ const UpdateProfile = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
                         <div className="col-span-2 sm:col-span-1">
                             <Label label="Nom"/>
-                            <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
+                            <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" error={errors.nom} required />
                         </div>
-                        {errors.current_password && <p className="text-sm text-red-500">{errors.current_password}</p>}
                         <div className="col-span-2 sm:col-span-1">
                             <Label label="Prénom"/>
-                            <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
+                            <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" error={errors.prenom} required />
                         </div>
                         <div className="col-span-2 sm:col-span-1">
                             <Label label="Téléphone"/>
-                            <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" required />
-                            {errors.telephone && <p className="text-sm text-red-500">{errors.telephone}</p>}
+                            <Input type="text" name="telephone" value={formData.telephone} onChange={handleChange} placeholder="Téléphone" error={errors.telephone} required />
                         </div>
                         <div className="col-span-2 sm:col-span-1">
                             <Label label="Email"/>
-                            <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+                            <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" error={errors.email} required />
                         </div>
                         <div className="col-span-2">
                             <Label label="Adresse"/>
-                            <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />
+                            <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" error={errors.adresse} required />
                         </div>
                         <div className="col-span-2 grid grid-cols-2 gap-6">
                             <div className="col-span-2 sm:col-span-1 -mb-4 sm:mb-0">

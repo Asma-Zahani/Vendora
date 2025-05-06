@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
-import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Dropdown from "@/components/ui/Dropdown";
@@ -111,48 +110,38 @@ const Register = () => {
         {step === 1 && ( <>
           <div className="mb-4">
               <Label label="Nom"/>
-              <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" required />
-              {errors.nom && <p className="error">{errors.nom}</p>}
+              <Input type="text" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom" error={errors.nom} required />
           </div>
           <div className="mb-4">
               <Label label="Prenom"/>
-              <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" required />
-              {errors.prenom && <p className="error">{errors.prenom}</p>}
+              <Input type="text" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom" error={errors.prenom} required />
           </div>
           <div className="mb-4">
               <Label label="Telephone"/>
               <div className="flex gap-2">
                 <Input type="text" value="+216" required readOnly width="w-1/4"/>
-                <Input type="number"name="telephone" value={formData.telephone} onChange={handleChange} placeholder="12 345 678" width="w-3/4"/>
+                <Input type="number"name="telephone" value={formData.telephone} onChange={handleChange} placeholder="12 345 678" width="w-3/4" error={errors.telephone}/>
               </div>
           </div>
         </> )}
         {step === 2 && ( <>
           <div className="mb-4">
             <Label label="Adresse Email"/>
-            <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
-            {errors.email && <p className="error">{errors.email}</p>}
+            <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" error={errors.email} required />
           </div>
           <div className="mb-4">
             <Label label="Mot de passe"/>
-            <div className="relative">
-                <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
-                <ShowPassword onToggle={setInputType} />
-            </div>
-            {errors.password && <p className="error">{errors.password}</p>}
+            <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" error={errors.password} onToggle={setInputType} required />
           </div>
           <div className="mb-4">
               <Label label="Confirmer le mot de passe"/>
-              <div className="relative">
-                  <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
-                  <ShowPassword onToggle={setInputType1} />
-              </div>
+              <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" onToggle={setInputType1} required />
           </div>
         </> )}
         {step === 3 && ( <>
           <div className="mb-4">
               <Label label="Date de naissance"/>
-              <Input type="date" name="date_naissance" value={formData.date_naissance} onChange={handleChange} required />
+              <Input type="date" name="date_naissance" value={formData.date_naissance} onChange={handleChange} error={errors.date_naissance} required />
           </div>
           <div className="mb-4">
             <Label label="Genre" />
@@ -205,7 +194,7 @@ const Register = () => {
             }} />
           <div className="mb-4">
               <Label label="Adresse"/>
-              <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" required />            
+              <Input type="text" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse" error={errors.adresse} required />            
           </div>
         </> )}
         <div className="flex justify-between">

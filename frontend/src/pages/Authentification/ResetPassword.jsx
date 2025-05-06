@@ -2,7 +2,6 @@ import { useState, useEffect, useContext }  from "react";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
-import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
@@ -67,18 +66,11 @@ const ResetPassword = () => {
                 <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Réinitialiser votre mot de passe</h4>
                 <div className="mb-4">
                     <Label label="Nouveau mot de passe"/>
-                    <div className="relative">
-                        <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
-                        <ShowPassword onToggle={setInputType} />
-                    </div>
-                    {errors.password && <p className="error">{errors.password}</p>}
+                    <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" error={errors.password} onToggle={setInputType} required />
                 </div>
                 <div className="mb-4">
                     <Label label="Confirmer le nouveau mot de passe"/>
-                    <div className="relative">
-                        <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" required />
-                        <ShowPassword onToggle={setInputType1} />
-                    </div>
+                    <Input type={inputType1} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="*********" onToggle={setInputType1} required />
                 </div>
                 <Button isValid={isValid} text="Terminé" />
                 <div className="mt-6 text-center">

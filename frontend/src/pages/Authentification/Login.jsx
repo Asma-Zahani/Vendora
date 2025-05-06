@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router";
 import Input from "@/components/ui/Input";
-import ShowPassword from "@/components/ui/ShowPassword";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Button from "@/components/ui/Button";
@@ -65,21 +64,12 @@ const Login = () => {
                 <p className="text-sm text-gray-600 dark:text-grayDark mb-6">Entrez votre email et votre mot de passe pour vous connecter</p>
                 <div className="mb-4">
                     <Label label="Email Address"/>
-                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
-                    {errors.email && 
-                        <>
-                            <p className="text-sm text-red-500">{errors.email}</p>
-                            <p className="text-sm">Vous n&apos;avez pas reçu l&apos;email ? <span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span></p>
-                        </>
-                    }
+                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" error={errors.email} required />
+                    {errors.email && <p className="text-sm">Vous n&apos;avez pas reçu l&apos;email ? <span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span></p>}
                 </div>
                 <div className="mb-4">
                     <Label label="Mot de passe"/>
-                    <div className="relative">
-                        <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" required />
-                        <ShowPassword onToggle={setInputType} />
-                    </div>
-                    {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+                    <Input type={inputType} name="password" value={formData.password} onChange={handleChange} placeholder="*********" error={errors.password} onToggle={setInputType} required />
                 </div>
                 <div className="sm:flex sm:justify-between mb-6">
                     <label className="flex items-center cursor-pointer text-sm text-gray-700 dark:text-white">

@@ -51,8 +51,7 @@ const ForgetPassword = () => {
       <form onSubmit={handleSubmit}>
         <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Vous avez oublié votre mot de passe ?</h4>
         <p className="text-sm text-gray-600 dark:text-grayDark mb-2">Entrez votre email</p>
-        <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" required />
-        {errors.email && <p className="error">{errors.email}</p>}
+        <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" error={errors.email} required />
         <div className="flex justify-end">
             <button className={`mt-4 bg-purpleLight text-white text-[14px] py-2 px-6 rounded-md
                 ${!isValid ? "opacity-50 cursor-not-allowed" : ""}`} type="submit" disabled={!isValid}>

@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import UserContext from "@/utils/UserContext";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
-import ShowPassword from "@/components/ui/ShowPassword";
 import { updateEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
@@ -43,33 +42,15 @@ const UpdatePassword = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
                         <div className="col-span-2">
                             <Label label="Mot de passe Actuel"/>
-                            <div className="relative">
-                                <Input type={inputType} name="current_password" value={formData.current_password} onChange={handleChange} placeholder="*********" required />
-                                <ShowPassword onToggle={setInputType} />
-                            </div>
-                            {errors.current_password && <p className="text-sm text-red-500">{errors.current_password}</p>}
+                            <Input type={inputType} name="current_password" value={formData.current_password} onChange={handleChange} placeholder="*********" error={errors.current_password} onToggle={setInputType} required />
                         </div>
                         <div className="col-span-2 sm:col-span-1">
                             <Label label="Nouveau mot de passe"/>
-                            <div className="relative">
-                                <Input type={inputType1} name="new_password" value={formData.new_password} onChange={handleChange} placeholder="*********" required />
-                                <ShowPassword onToggle={setInputType1} />
-                            </div>
-                            {errors.new_password && (
-                                <div className="text-sm text-red-500">
-                                    {errors.new_password.map((error, index) => (
-                                    <p key={index}>{error}</p>
-                                    ))}
-                                </div>
-                            )}
+                            <Input type={inputType1} name="new_password" value={formData.new_password} onChange={handleChange} placeholder="*********" error={errors.new_password} onToggle={setInputType1} required />
                         </div>
                         <div className="mb-4 col-span-2 sm:col-span-1">
                             <Label label="Confirmer le mot de passe"/>
-                            <div className="relative">
-                                <Input type={inputType2} name="new_password_confirmation" value={formData.new_password_confirmation} onChange={handleChange} placeholder="*********" required />
-                                <ShowPassword onToggle={setInputType2} />
-                            </div>
-                            {errors.new_password_confirmation && <p className="text-sm text-red-500">{errors.new_password_confirmation}</p>}
+                            <Input type={inputType2} name="new_password_confirmation" value={formData.new_password_confirmation} onChange={handleChange} placeholder="*********" onToggle={setInputType2} required />
                         </div>
                     </div>
                     <div className="border-t pt-5 border-contentLight dark:border-borderDark -mx-6 flex">
