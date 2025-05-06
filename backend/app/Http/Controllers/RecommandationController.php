@@ -14,7 +14,8 @@ class RecommandationController extends Controller
     public function getRecommandations(Request $request)
     {
         try {
-            $response = Http::post('https://vendora-recommandation.up.railway.app/recommander-produits',
+            // $response = Http::post('https://vendora-recommandation.up.railway.app/recommander-produits',
+            $response = Http::post('http://127.0.0.1:5000/recommander-produits',
                 $request->has('user_id') ? ['user_id' => $request->input('user_id')] : []
             );
 
