@@ -7,7 +7,7 @@
     <div style="max-width: 600px; margin: auto; border: 1px solid #dadce0; padding: 20px; border-radius: 8px;">        
         <!-- Logo -->
         <div style="text-align: center;">
-            <img src="{{ $pathToImage }}" alt="Logo" style="height: 50px;">
+            <img src="{{ $pathToImage }}" alt="Logo" style="height: 70px;">
         </div>
 
         <h2 style="color: #333;">Bonjour {{ $user->prenom }} {{ $user->nom }},</h2>
