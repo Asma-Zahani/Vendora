@@ -56,7 +56,4 @@ def load_data():
     return users, produits, interactions
 
 def get_model():
-    global model
-    if model is None:
-        model = joblib.load("preferences_model.pkl")
-    return model
+    return joblib.load("preferences_model.pkl")
