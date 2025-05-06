@@ -1,8 +1,5 @@
 from flask import Flask, request, jsonify
-from utils import (
-    users, produits, interactions,
-    filtrer_produits_preferes, get_model, load_data
-)
+from utils import (filtrer_produits_preferes, get_model, load_data)
 
 app = Flask(__name__)
 
