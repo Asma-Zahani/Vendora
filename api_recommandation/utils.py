@@ -8,28 +8,36 @@ from sklearn import preprocessing
 # url = "https://vendora-app.up.railway.app/api"
 url = "http://127.0.0.1:8000/api"
 
-def load_users():
-    users = pd.DataFrame(requests.get(url + "/users").json())
-    preferences = pd.DataFrame(requests.get(url + "/userPreferences").json())
+def load_user_by_id(user_id):
+    user = requests.get(f"{url}/users/{user_id}").json()
+    preferences = requests.get(f"{url}/userPreferences/{user_id}").json()
 
-    preferences["preferred_categorie_ids"] = preferences["preferred_categorie_ids"].apply(safe_literal_eval)
-    preferences["preferred_marque_ids"] = preferences["preferred_marque_ids"].apply(safe_literal_eval)
+    # Convertir en DataFrame
+    user_df = pd.DataFrame([user])
+    preferences_df = pd.DataFrame([preferences])
 
-    users = users.rename(columns={"id": "user_id"})
-    users = users.merge(preferences, on='user_id', how='left')
+    # Traitement des préférences
+    preferences_df["preferred_categorie_ids"] = preferences_df["preferred_categorie_ids"].apply(safe_literal_eval)
+    preferences_df["preferred_marque_ids"] = preferences_df["preferred_marque_ids"].apply(safe_literal_eval)
 
+    # Renommer et fusionner
+    user_df = user_df.rename(columns={"id": "user_id"})
+    user_df = user_df.merge(preferences_df, on='user_id', how='left')
+
+    # Encodage et transformation
     le = preprocessing.LabelEncoder()
-    le.fit(users.genre)
-    users.genre = le.transform(users.genre)
+    le.fit(user_df.genre)
+    user_df.genre = le.transform(user_df.genre)
 
-    users["date_naissance"] = pd.to_datetime(users["date_naissance"])
-    users['age'] = users['date_naissance'].apply(calculate_age)
-    users["age"] = users["age"].astype("int8")
+    user_df["date_naissance"] = pd.to_datetime(user_df["date_naissance"])
+    user_df['age'] = user_df['date_naissance'].apply(calculate_age)
+    user_df["age"] = user_df["age"].astype("int8")
 
-    return users
+    return user_df.iloc[0]
 
 def load_produits():
-    produits = pd.DataFrame(requests.get(url + "/produits").json())
+    response = requests.get(url + "/produits")
+    produits = pd.DataFrame(response.json())
 
     produits["categorie_id"] = produits["sous_categorie"].apply(lambda x: x["categorie_id"] if isinstance(x, dict) and "categorie_id" in x else None)
     produits["categorie_id"] = produits["categorie_id"].astype("int32")
@@ -67,4 +75,7 @@ def safe_literal_eval(val):
         return []
 
 def get_model():
+    return joblib.load("preferences_model.pkl")
+
+def get_modelInteraction():
     return joblib.load("preferences_model.pkl")
