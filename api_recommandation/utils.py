@@ -5,7 +5,8 @@ import joblib
 from datetime import datetime
 from sklearn import preprocessing
 
-url = "https://vendora-app.up.railway.app/api"
+# url = "https://vendora-app.up.railway.app/api"
+url = "http://127.0.0.1:8000/api"
 
 def load_users():
     users = pd.DataFrame(requests.get(url + "/users").json())
