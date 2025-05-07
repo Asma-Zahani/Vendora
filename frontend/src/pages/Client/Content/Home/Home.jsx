@@ -28,7 +28,7 @@ const Home = () => {
       <Hero />
       <Features />
       <ProduitsSection titre={"Produits récents"} sousTitre={"Nouveautés cette semaine"} produits={recentsProduits} />
-      <ProduitsSection titre={"Produits recommandés"} sousTitre={"Produits basés sur vos préférences et interactions"} produits={produits} />
+      <ProduitsSection titre={"Produits recommandés"} sousTitre={"Notre sélection personnalisée"} produits={produits} />
     </div>
   );
 };

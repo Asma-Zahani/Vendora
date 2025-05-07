@@ -13,7 +13,8 @@ const DetailProduit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [produit, setProduit] = useState();
-  const [produits, setProduits] = useState([]);
+  const [produitsRecommandes, setProduitsRecommandes] = useState([]);
+  const [produitsRecentsVue, setProduitsRecentsVue] = useState([]);
   const [imageSrc, setImageSrc] = useState();
 
   const [quantity, setQuantity] = useState(1);
@@ -26,7 +27,8 @@ const DetailProduit = () => {
   useEffect(() => {
     const fetchData = async () => {
       setProduit(await getEntity("produits", id));
-      setProduits(await getEntities("recentProduits"));
+      setProduitsRecommandes(await getEntities("recentProduits"));
+      setProduitsRecentsVue(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, [id]);
@@ -163,7 +165,8 @@ const DetailProduit = () => {
           </div>
         </div>
       }
-      <ProduitsSlider titre={"Produits recommandés"} sousTitre={"Produits basés sur vos préférences et interactions"} produits={produits} />
+      <ProduitsSlider titre="Produits recommandés pour vous" produits={produitsRecommandes} />
+      <ProduitsSlider titre="Produits récemment consultés"produits={produitsRecentsVue} />
     </section>
   );
 };

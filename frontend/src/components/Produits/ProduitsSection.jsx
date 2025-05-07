@@ -5,7 +5,7 @@ import Card from '@/components/Produits/Card';
 import { Link } from "react-router";
 import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
 
-const ProduitsSection = ({titre, sousTitre, produits}) => {
+const ProduitsSection = ({titre, sousTitre, produits, button}) => {
   const { wishlist } = useContext(UserContext);
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
@@ -29,11 +29,13 @@ const ProduitsSection = ({titre, sousTitre, produits}) => {
             }
           </div>
 
-          <div className="flex justify-center">
-            <Link to={"/boutique"} className="mt-8 border-2 text-purpleLight text-lg py-2 px-6 rounded-lg">
-              Voir tous les produits
-            </Link>
-          </div>
+          {button && 
+            <div className="flex justify-center">
+              <Link to={"/boutique"} className="mt-8 border-2 text-purpleLight text-lg py-2 px-6 rounded-lg">
+                Voir tous les produits
+              </Link>
+            </div>
+          }
         </>
       }
     </div>

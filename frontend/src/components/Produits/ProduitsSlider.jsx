@@ -6,7 +6,7 @@ import UserContext from '@/utils/UserContext';
 import Card from '@/components/Produits/Card';
 import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
 
-const ProduitsSlider = ({ titre, sousTitre, produits }) => {
+const ProduitsSlider = ({ titre, produits }) => {
   const sliderRef = useRef(null);
   const { wishlist } = useContext(UserContext);
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
@@ -33,14 +33,7 @@ const ProduitsSlider = ({ titre, sousTitre, produits }) => {
     <div className="px-4 sm:px-0 relative py-4 sm:py-12">
       {produits.length > 0 && (
         <>
-          <div className="flex flex-col items-center text-center mb-5">
-            <div className="flex items-center w-full justify-center">
-              <div className="border-t-2 w-10 sm:w-20 mr-5"></div> 
-              <h1 className="text-md sm:text-2xl font-semibold uppercase">{titre}</h1>
-              <div className="border-t-2 w-10 sm:w-20 ml-5"></div> 
-            </div>
-            <p className="italic font-greatvibes text-gray-500">{sousTitre}</p>
-          </div>
+          <h1 className="text-center mb-5 text-md sm:text-2xl font-semibold">{titre}</h1>
 
           <button onClick={() => sliderRef.current?.slickPrev()} className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full border hover:bg-purpleLight hover:text-white">
             <ChevronLeft size={24} />
