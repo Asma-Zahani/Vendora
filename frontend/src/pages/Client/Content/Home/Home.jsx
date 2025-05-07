@@ -4,7 +4,7 @@ import Hero from "./Hero";
 import Features from "./Features";
 import ProduitsSection from "@/components/Produits/ProduitsSection";
 import PreferencesModal from "@/components/Modals/PreferencesModal";
-import { getEntities, createEntity } from "@/service/EntitesService";
+import { getEntities, getRecommandations } from "@/service/EntitesService";
 
 const Home = () => {
   const { user } = useContext(UserContext);
@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await createEntity("getRecommandations", user ? { user_id: user.id } : {})
+      const data = await getRecommandations(user ? { user_id: user.id } : {})
       console.log(data);
       setProduits(data?.data ? data.data : []);
       setRecentsProduits(await getEntities("recentProduits"));

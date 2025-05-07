@@ -108,4 +108,13 @@ const handleLogout = async (setUser, setToken) => {
   }
 };
 
-export { getEntities, getAuthenticatedEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity, handleLogout };
+const getRecommandations = async (formData) => {
+  const response = await fetch(`http://127.0.0.1:5000/recommander-produits`, {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  });
+
+  return await response.json();
+};
+
+export { getEntities, getAuthenticatedEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity, handleLogout, getRecommandations };
