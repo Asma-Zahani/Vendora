@@ -74,8 +74,8 @@ def safe_literal_eval(val):
     except Exception:
         return []
 
-def get_model():
+def get_preferences_model():
     return joblib.load("preferences_model.pkl")
 
-def get_modelInteraction():
-    return joblib.load("preferences_model.pkl")
+def get_interactions_model():
+    return joblib.load("interactions_model.pkl")
