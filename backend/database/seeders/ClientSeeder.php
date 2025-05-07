@@ -14,7 +14,7 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        ClientFactory::new()->count(1000)->create()->each(function ($user) {
+        ClientFactory::new()->count(400)->create()->each(function ($user) {
             UserPreference::factory()->create([
                 'user_id' => $user->id,
             ]);

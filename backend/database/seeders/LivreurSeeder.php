@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserPreference;
 use Database\Factories\LivreurFactory;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,10 @@ class LivreurSeeder extends Seeder
      */
     public function run(): void
     {
-        LivreurFactory::new()->count(10)->create();
+        LivreurFactory::new()->count(5)->create()->each(function ($user) {
+            UserPreference::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
     }
 }
