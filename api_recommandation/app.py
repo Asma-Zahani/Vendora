@@ -8,6 +8,7 @@ CORS(app)
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():
     data = request.get_json()
+    user_id = data.get('user_id')
 
     produits = load_produits()
     interactions = load_interactions()
@@ -19,7 +20,6 @@ def recommander_produits():
 
         return jsonify({"message": "user_id is required", "data": produits_recommandes.to_dict(orient="records")}), 200
 
-    user_id = data["user_id"]
     user = load_user_by_id(user_id)
 
     produits_filtres = filtrer_produits_preferes(user, produits)
