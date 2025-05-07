@@ -23,6 +23,23 @@ class InteractionController extends Controller implements HasMiddleware
         return response()->json(Interaction::all());
     }
 
+    public function derniersProduitsVus(Request $request, $limit = 8)
+    {
+        $user = $request->user();
+
+        $interactions = Interaction::with('produit')
+            ->where('user_id', $user->id)
+            ->where('vue_produit', '>', 0)
+            ->orderBy('updated_at', 'desc')
+            ->limit($limit)
+            ->get();
+
+        // On renvoie directement les produits associés
+        $produits = $interactions->pluck('produit');
+
+        return response()->json($produits);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

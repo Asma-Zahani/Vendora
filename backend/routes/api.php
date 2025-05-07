@@ -75,7 +75,8 @@ Route::apiResource('couleurs', CouleurController::class);
 
 Route::apiResource('drives', DriveController::class);
 
-Route::apiResource('interactions', InteractionController::class); 
+Route::apiResource('interactions', InteractionController::class);
+Route::middleware('auth:sanctum')->get('derniersProduitsVus', [InteractionController::class, 'derniersProduitsVus']);
 Route::apiResource('userPreferences', UserPreferencesController::class); 
 
 Route::get('/etatCommandes', [EnumsController::class, 'getEtatCommandes']);

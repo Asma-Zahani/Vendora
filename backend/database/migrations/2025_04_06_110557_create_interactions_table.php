@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('favori')->default(false);
             $table->integer('ajout_panier')->default(0);
             $table->boolean('achat')->default(false);
+            $table->timestamps();
             $table->primary(['user_id', 'produit_id']);
         });
     }

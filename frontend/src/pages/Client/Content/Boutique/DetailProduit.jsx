@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
-import { getEntity, getEntities, createEntity } from "@/service/EntitesService";
+import { getEntity, getEntities, getAuthenticatedEntities, createEntity } from "@/service/EntitesService";
 import UserContext from '@/utils/UserContext';
 import { useNavigate } from "react-router-dom";
 import { Heart, Minus, Plus } from "lucide-react";
@@ -14,7 +14,7 @@ const DetailProduit = () => {
   const { id } = useParams();
   const [produit, setProduit] = useState();
   const [produitsRecommandes, setProduitsRecommandes] = useState([]);
-  const [produitsRecentsVue, setProduitsRecentsVue] = useState([]);
+  const [derniersProduitsVus, setDerniersProduitsVus] = useState([]);
   const [imageSrc, setImageSrc] = useState();
 
   const [quantity, setQuantity] = useState(1);
@@ -28,7 +28,7 @@ const DetailProduit = () => {
     const fetchData = async () => {
       setProduit(await getEntity("produits", id));
       setProduitsRecommandes(await getEntities("recentProduits"));
-      setProduitsRecentsVue(await getEntities("recentProduits"));
+      setDerniersProduitsVus(await getAuthenticatedEntities("derniersProduitsVus"));
     }; 
     fetchData();
   }, [id]);
@@ -166,7 +166,7 @@ const DetailProduit = () => {
         </div>
       }
       <ProduitsSlider titre="Produits recommandés pour vous" produits={produitsRecommandes} />
-      <ProduitsSlider titre="Produits récemment consultés"produits={produitsRecentsVue} />
+      <ProduitsSlider titre="Produits récemment consultés"produits={derniersProduitsVus} />
     </section>
   );
 };
