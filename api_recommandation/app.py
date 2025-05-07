@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from utils import (filtrer_produits_preferes, get_model, load_user_by_id, load_produits, load_interactions)
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():

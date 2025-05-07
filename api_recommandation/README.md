@@ -4,6 +4,7 @@ python -m venv venv
 venv\Scripts\activate 
 
 pip install flask
+pip install flask_cors
 pip install guincorn
 pip install pandas
 pip install requests
