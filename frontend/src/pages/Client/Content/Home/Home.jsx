@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRecommandations(user ? { user_id: user.id } : {})
+      const data = await getRecommandations(user?.id)
       console.log(data);
       setProduits(data?.data ? data.data : []);
       setRecentsProduits(await getEntities("recentProduits"));

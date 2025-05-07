@@ -108,10 +108,13 @@ const handleLogout = async (setUser, setToken) => {
   }
 };
 
-const getRecommandations = async (formData) => {
+const getRecommandations = async (id) => {
   const response = await fetch(`http://127.0.0.1:5000/recommander-produits`, {
     method: 'POST',
-    body: JSON.stringify(formData)
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(id ? { user_id: id }: {}),
   });
 
   return await response.json();
