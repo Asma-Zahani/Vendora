@@ -21,8 +21,8 @@ return new class extends Migration
 
         DB::table('user_preferences')->insert([
             'user_id' => 1,
-            'preferred_categorie_ids' => json_encode([]),
-            'preferred_marque_ids' => json_encode([])
+            'preferred_categorie_ids' => json_encode([1,2,3]),
+            'preferred_marque_ids' => json_encode([1,2,3])
         ]);
     }
 
