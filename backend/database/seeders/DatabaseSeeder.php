@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            LivreurSeeder::class,
             CouleurSeeder::class,
             CategorieSeeder::class,
             SousCategorieSeeder::class,
@@ -23,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CodePromotionSeeder::class,
             DriveSeeder::class,
             ProduitSeeder::class,
+            LivreurSeeder::class,
             ClientSeeder::class,
             CommandeLivraisonSeeder::class,
             CommandeRetraitDriveSeeder::class,
