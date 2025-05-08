@@ -318,7 +318,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     }
                     setIsSwitchOpen(false); 
             }}/> }
-            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label} selectedItem={selectedItem}/> }
+            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label} facture={selectedItem}/> }
         </section>
     );
 }

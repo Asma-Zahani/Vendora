@@ -40,6 +40,11 @@ class DetailFacture extends Model
         return $this->belongsTo(FactureCommande::class, 'facture_id');
     }
 
+    public function produit()
+    {
+        return $this->belongsTo(Produit::class, 'produit_id');
+    }
+
     public function calculMontants()
     {
         $tva = $this->factureCommande?->tva;

@@ -41,11 +41,15 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
   
   const flattenObject = (obj) => {
     return Object.keys(obj).reduce((acc, key) => {
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        Object.assign(acc, flattenObject(obj[key]));
+      const value = obj[key];
+  
+      if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        const flattenedChild = flattenObject(value);
+        Object.assign(acc, flattenedChild);
       } else {
-        acc[key] = obj[key];
+        acc[key] = value;
       }
+  
       return acc;
     }, {});
   };  

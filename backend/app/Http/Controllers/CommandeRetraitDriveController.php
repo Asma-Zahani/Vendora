@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\EtatCommandeEnum;
 use App\Models\CodePromotion;
 use App\Models\Commande;
-use App\Models\CommandeProduit;
 use App\Models\CommandeRetraitDrive;
 use App\Models\Couleur;
 use App\Models\DetailFacture;
@@ -31,7 +30,7 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(CommandeRetraitDrive::with('commande')->get());
+            return response()->json(CommandeRetraitDrive::with('commande.facture.detailsFacture.produit')->get());
         }
 
         $query = CommandeRetraitDrive::query();
@@ -79,7 +78,7 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
             $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
         }
         
-        $commandeRetraitDrive = $query->with('commande')->paginate($request->input('per_page'));
+        $commandeRetraitDrive = $query->with('commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
 
         return response()->json($commandeRetraitDrive);
     }
