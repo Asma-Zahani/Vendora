@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodePromotionController;
 use App\Http\Controllers\CommandeLivraisonController;
 use App\Http\Controllers\CommandeRetraitDriveController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\JourFerieController;
 use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\DetailFactureController;
@@ -100,5 +101,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/livraisonsEnCours', [DashboardLivreurController::class, 'livraisonsEnCours']);
     Route::get('/livraisonsAnnulees', [DashboardLivreurController::class, 'livraisonsAnnulees']);
 });
+
+Route::post('/contact', [ContactController::class, 'contact']);
 
 require __DIR__.'/auth.php';

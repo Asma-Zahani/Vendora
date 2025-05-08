@@ -43,13 +43,13 @@ const Footer = () => {
                                             </div>
                                         </div>
                                         <div className="flex mt-4">
-                                            <a className="mr-2 text-gray-600 transition-colors duration-300" href="#">
+                                            <a className="mr-2 text-gray-600 dark:text-gray-400 transition-colors duration-300" href="#">
                                                 <Instagram size={17} />
                                             </a>
-                                            <a className="mx-2 text-gray-600 transition-colors duration-300" href="#">
+                                            <a className="mx-2 text-gray-600 dark:text-gray-400 transition-colors duration-300" href="#">
                                                 <Facebook size={17} />
                                             </a>
-                                            <a className="mx-2 text-gray-600 transition-colors duration-300" href="#">
+                                            <a className="mx-2 text-gray-600 dark:text-gray-400 transition-colors duration-300" href="#">
                                                 <Linkedin size={17} />
                                             </a>
                                         </div>

@@ -14,10 +14,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setRecentsProduits(await getEntities("recentProduits"));
       const data = await getRecommandations(user?.id)
       console.log(data);
       setProduits(data?.data ? data.data : []);
-      setRecentsProduits(await getEntities("recentProduits"));
     }; 
     fetchData();
   }, [user]);
