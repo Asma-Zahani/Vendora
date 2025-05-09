@@ -50,6 +50,7 @@
     "react-router-dom": "^7.1.5",
     "react-simple-maps": "^3.0.0",
     "react-slick": "^0.30.3",
+    "react-to-print": "^3.1.0",
     "recharts": "^2.15.1",
     "slick-carousel": "^1.8.1",
     "tailwind-scrollbar": "^4.0.0",

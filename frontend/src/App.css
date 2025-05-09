@@ -192,6 +192,11 @@ input:-webkit-autofill:active {
 }
 
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 1cm;
+    }
+
     .no-print {
         display: none !important;
     }

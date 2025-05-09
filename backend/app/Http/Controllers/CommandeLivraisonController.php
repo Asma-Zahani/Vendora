@@ -32,7 +32,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(CommandeLivraison::with('commande.facture.detailsFacture.produit')->get());
+            return response()->json(CommandeLivraison::with('commande.client','commande.facture.detailsFacture.produit')->get());
         }
 
         $query = CommandeLivraison::query();
@@ -81,7 +81,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
         }
         
-        $commandeLivraison = $query->with('commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
+        $commandeLivraison = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
 
         return response()->json($commandeLivraison);
     }
