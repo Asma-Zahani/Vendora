@@ -20,16 +20,24 @@ const usePanierWishlist = (produits) => {
         const produitExistant = panier?.find(item => 
             item.produit_id === produit_id && item.pivot?.couleur === couleur
         );
-    
+        
         let quantiteTotale = parseInt(quantiteAjoutee);
     
+        // console.log(produitExistant);
+        
         if (produitExistant) {
-            const quantiteActuelle = produitExistant.pivot?.quantite
-                ? parseInt(produitExistant.pivot.quantite)
-                : parseInt(produitExistant.quantite);
+            const quantiteActuelle = parseInt(produitExistant.pivot.quantite);
             quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
+
+            const couleurInfo = produitExistant?.couleurs?.find(c => c.nom === couleur);            
+            const quantiteMaxProduit = produitExistant?.quantite ? produitExistant.quantite : couleurInfo.pivot?.quantite ;
+
+            if (quantiteTotale > quantiteMaxProduit) {
+                quantiteTotale = quantiteMaxProduit;
+                setSuccessMessage("La quantité demandée dépasse le stock disponible !");
+            }
         }
-    
+        
         setFormData({
             client_id: user?.id,
             produit_id: produit_id,

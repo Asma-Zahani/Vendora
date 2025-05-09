@@ -1,20 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useContext, useRef } from "react";
-import ThemeContext from '@/utils/ThemeContext';
+import { useRef } from "react";
 import { CgClose } from "react-icons/cg";
 import { Link } from "react-router";
 import Logo from "@/assets/logo/logo.svg";
-import FactureLogo from "@/assets/logo/logo-black.svg";
-import LightBgLogo from "@/assets/logo/bg-logo-light.png";
-import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
-import FactureBgLogo from "@/assets/logo/bg-logo-gray.png";
 import Icon from "@/assets/logo/logo-ico.svg";
-import FactureIcon from "@/assets/logo/logo-black-ico.svg";
 // import img from "@/assets/default/image.png";
 import { useReactToPrint } from "react-to-print";
 
 const FactureModal = ({ onClose, facture }) => {
-  const { theme } = useContext(ThemeContext);
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
   
@@ -35,17 +28,10 @@ const FactureModal = ({ onClose, facture }) => {
             <div className="flex items-center justify-between">     
               <div className="flex flex-col">
                 <div className="flex flex-col">
-                  <div className="hidden print:flex relative">
-                    <div className="flex relative justify-center items-center">
-                      <div style={{ backgroundImage: `url(${FactureBgLogo})` }} className="absolute h-25 w-50 bg-cover bg-center rounded-md z-0"/>
-                      <div style={{ backgroundImage: `url(${FactureIcon})` }} className="absolute top-7 left-5 h-16 w-16 bg-cover bg-center rounded-md z-10"/>
-                      <img src={FactureLogo} alt="Logo" className="relative h-30 z-30" />
-                    </div>
-                  </div>
-                  <Link to="/" className="flex print:hidden relative justify-center items-center">
-                    <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0"/>
-                    <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 bg-cover bg-center rounded-md z-10"/>
-                    <img src={Logo} alt="Logo" className="relative h-20 z-20" />
+                  <Link to="/" className="flex relative justify-center items-center">
+                    <div className="absolute h-20 print:h-25 w-40 print:w-50 bg-cover bg-center rounded-md z-0 bg-image print:bg-gray-image"/>
+                    <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 print:top-7 print:left-5 print:h-16 print:w-16 bg-cover bg-center rounded-md z-10 print:filter print:grayscale print:contrast-200 print:brightness-0"/>
+                    <img src={Logo} alt="Logo" className="relative h-20 print:h-30 z-20" />
                   </Link>
                 </div>
                 <div className="block print:hidden text-sm text-gray-600 dark:text-gray-300">
@@ -53,7 +39,7 @@ const FactureModal = ({ onClose, facture }) => {
                   <p>5000 Monastir, Tunisie</p>
                 </div>
               </div>
-              <div className="hidden print:flex text-[80px] font-semibold font-greatvibes mx-2">Facture</div>
+              <div className="hidden print:flex text-[80px] font-semibold font-fredoka mx-2">Facture</div>
               <div className="flex print:hidden mx-4 print:mt-2 print:mx-0 text-sm print:text-[8px] text-gray-600 dark:text-gray-300">
                 <table className="table-fixed border-separate border-spacing-y-1">
                   <tbody>
@@ -172,7 +158,7 @@ const FactureModal = ({ onClose, facture }) => {
                   <div className="h-8 w-40 border-b mx-auto"></div>
                 </div>
               </div>
-              <p className="border-t text-center uppercase py-2">merci de votre confiance</p>
+              <p className="border-t text-center uppercase py-2">Merci de votre confiance - À bientôt sur Vendora !</p>
             </div>
           </div>
           <div className="flex items-center p-4 md:p-5 rounded-b dark:border-gray-600 justify-end no-print">

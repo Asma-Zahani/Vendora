@@ -2,16 +2,10 @@ import logo from "@/assets/logo/logo.svg";
 import { Facebook, Instagram, Linkedin, Mail, Phone } from "lucide-react";
 import { Link } from "react-router";
 import FooterSection from "./FooterSection";
-import LightBgLogo from "@/assets/logo/bg-logo-light.png";
-import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
 import Icon from "@/assets/logo/logo-ico.svg";
-import { useContext } from "react";
-import ThemeContext from '@/utils/ThemeContext';
 import BottomNavigation from "@/components/Header/BottomNavigation";
 
 const Footer = () => {
-    const { theme } = useContext(ThemeContext);
-
     return (
         <>
             <footer className="relative bg-customLight dark:bg-customDark mb-16 sm:mb-0">
@@ -22,7 +16,7 @@ const Footer = () => {
                             <div className="lg:col-span-2">
                                 <FooterSection hidden={true} title="Get in touch">
                                     <Link to="/" className="relative order-1 lg:order-none">
-                                        <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0"/>
+                                        <div className="absolute h-20 w-40 bg-cover bg-center rounded-md z-0 bg-image"/>
                                         <div style={{ backgroundImage: `url(${Icon})` }} className="absolute top-4.5 left-3 h-11 w-11 bg-cover bg-center rounded-md z-10"/>
                                         <img src={logo} alt="Logo" className="relative w-auto h-20 z-20" />
                                     </Link>

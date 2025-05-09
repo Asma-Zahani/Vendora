@@ -6,8 +6,6 @@ import logo from "@/assets/logo/logo.svg";
 import { UserContext } from "@/utils/UserContext";
 import { Link } from "react-router";
 import UserAction from "@/components/Header/UserAction";
-import LightBgLogo from "@/assets/logo/bg-logo-light.png";
-import DarkBgLogo from "@/assets/logo/bg-logo-dark.png";
 import Icon from "@/assets/logo/logo-ico.svg";
 
 const Header = () => {
@@ -27,7 +25,7 @@ const Header = () => {
     <header className="w-full fixed left-0 px-4 bg-customLight dark:bg-customDark border-b border-contentLight dark:border-borderDark dark:shadow-none transition-all">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-2 px-4 sm:px-0">
         <Link to="/" className="relative flex justify-center items-center">
-          <div style={{ backgroundImage: `url(${theme === "light" ? LightBgLogo : DarkBgLogo})` }} className="absolute h-10 sm:h-20 w-28 sm:w-40 bg-cover bg-center rounded-md z-0"/>
+          <div className="absolute h-10 sm:h-20 w-28 sm:w-40 bg-cover bg-center rounded-md z-0 bg-image"/>
           <div style={{ backgroundImage: `url(${Icon})` }} className="absolute sm:top-4.5 left-2 sm:left-3 h-7.5 sm:h-11 w-7.5 sm:w-11 bg-cover bg-center rounded-md z-10"/>
           <img src={logo} alt="Logo" className="relative h-14 sm:h-20 z-20" />
         </Link>

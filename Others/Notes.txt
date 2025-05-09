@@ -6,7 +6,5 @@ admin ynjeem y3ady commande ??
 session expire
 
 ktiba fou9 b3athha (dashboard)
-modal scroll
-detail produit (client)
 
-quatité (ki yabda andek fel panier w taamel +)
+les alert mte3 l panier

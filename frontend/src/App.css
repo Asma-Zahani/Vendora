@@ -6,6 +6,8 @@
     --font-libre: "Libre Baskerville", serif;
     --font-dancing: "Dancing Script", cursive;
     --font-greatvibes: "Great Vibes", cursive;
+    --font-fredoka: "Fredoka", cursive;
+
     --breakpoint-w-990: 990px;
     --breakpoint-w-500: 500px;
 
@@ -200,4 +202,19 @@ input:-webkit-autofill:active {
     .no-print {
         display: none !important;
     }
+    img {
+        filter: grayscale(100%) contrast(200%) brightness(0%) !important;
+    }
+}
+
+.bg-image {
+    background-image: url('@/assets/logo/bg-logo-light.png');
+}
+
+.dark .bg-image {
+    background-image: url('@/assets/logo/bg-logo-dark.png');
+}
+
+.bg-gray-image {
+    background-image: url('@/assets/logo/bg-logo-gray.png') !important;
 }

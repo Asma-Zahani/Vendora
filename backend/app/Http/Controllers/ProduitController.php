@@ -109,7 +109,7 @@ class ProduitController extends Controller implements HasMiddleware
 
     public function latestProducts()
     {
-        $produits = Produit::with('couleurs')->where('status', StatusProduitEnum::Disponible)->latest('created_at')->take(8)->get();
+        $produits = Produit::with('couleurs', 'sousCategorie.categorie')->where('status', StatusProduitEnum::Disponible)->latest('created_at')->take(8)->get();
         return response()->json($produits);
     }
 
