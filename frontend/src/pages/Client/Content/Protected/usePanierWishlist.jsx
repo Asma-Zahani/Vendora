@@ -22,8 +22,6 @@ const usePanierWishlist = (produits) => {
         );
         
         let quantiteTotale = parseInt(quantiteAjoutee);
-    
-        // console.log(produitExistant);
         
         if (produitExistant) {
             const quantiteActuelle = parseInt(produitExistant.pivot.quantite);
