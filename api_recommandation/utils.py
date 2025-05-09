@@ -5,6 +5,7 @@ import joblib
 from datetime import datetime
 from sklearn import preprocessing
 
+
 # url = "https://vendora-app.up.railway.app/api"
 url = "http://127.0.0.1:8000/api"
 
@@ -78,4 +79,4 @@ def get_preferences_model():
     return joblib.load("preferences_model.pkl")
 
 def get_interactions_model():
-    return joblib.load("interactions_model.pkl")
+    return joblib.load("interaction_model.pkl")
