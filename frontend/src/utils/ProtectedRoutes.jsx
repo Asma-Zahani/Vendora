@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import UserContext from './UserContext';
-import LoadingSpinner from './LoadingSpinner'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export const ProtectedAdminRoutes = () => {
     const { user } = useContext(UserContext);
