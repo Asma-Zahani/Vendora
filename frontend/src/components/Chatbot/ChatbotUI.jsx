@@ -90,7 +90,7 @@ const ChatbotUI = ({step, setStep}) => {
   return (
     <div className="flex flex-col h-full">
         {step === 1 && <>
-            <div className="flex-1 overflow-y-auto py-4 mb-12 sm:mb-0 px-4">
+            <div className="flex-1 overflow-y-auto scrollbar p-4 mb-12 sm:mb-0">
                 {Object.entries(groupedMessages).map(([date, msgs], i) => (
                 <div key={i} className="flex flex-col space-y-2">
                     <div className="text-center text-xs text-gray-500 my-2">{date}</div>
@@ -106,18 +106,19 @@ const ChatbotUI = ({step, setStep}) => {
                 ))}
                 <div ref={endOfMessagesRef} />
             </div>
-            <div className="sticky bottom-0 bg-white dark:bg-customDark py-3 space-y-2 px-4">
+            <div className="sticky bottom-0 bg-white dark:bg-customDark p-4 space-y-2">
                 <Button onClick={() => {setStep(2); handleSend("Saisir les informations de la commande")}} isValid={true} text="Saisir les informations de la commande"/>
                 <Button onClick={() => handleSend("Annuler")} isValid={true} text="Annuler" />
             </div></>}
         {step === 2 && <>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center p-4">
                 <p className="text-lg font-semibold">Suivre ma commande</p>
                 <p className="text-md text-gray-500">Veuillez fournir vos coordonnées.</p>
-                <Input type="text" value={formData.num} onChange={(e) => setFormData({ ...formData, num: e.target.value })} placeholder="ex : chaussures, PC..."/>
-                <Input type="text" value={formData.num} onChange={(e) => setFormData({ ...formData, num: e.target.value })} placeholder="ex : chaussures, PC..."/>
+                
+                <Input type="text" value={formData.num} onChange={(e) => setFormData({ ...formData, num: e.target.value })} placeholder="#1234"/>
+                <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Test@gmail.com"/>
             </div>
-            <div className="sticky bottom-0 bg-white dark:bg-customDark py-3">
+            <div className="sticky bottom-0 bg-white dark:bg-customDark p-4">
                 <Button onClick={() => {setStep(2); handleSend("Saisir les informations de la commande")}} isValid={true} text="Suivre ma commande"/>
             </div>
         </>}

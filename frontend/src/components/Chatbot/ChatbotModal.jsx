@@ -19,8 +19,8 @@ const ChatbotModal = ({ onClose }) => {
                     <X size={18} />
                 </button>
             </div>
-            <div className="max-h-full sm:max-h-[65vh] overflow-y-auto scrollbar">
-                <div className="p-2 rounded-xl shadow-md max-w-md mx-auto mt-4 flex flex-col h-full">
+            <div className="max-h-full h-full sm:h-[65vh] sm:max-h-[65vh]">
+                <div className="rounded-xl shadow-md max-w-md mx-auto mt-4 flex flex-col h-full">
                     <h2 className="flex flex-col justify-center items-center text-2xl font-semibold mb-6 text-center space-y-2">
                         <Bot size={30} /> 
                         <p className="max-w-[15rem]">Assistant Recommandation</p>
