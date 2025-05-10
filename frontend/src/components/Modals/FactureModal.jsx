@@ -1,21 +1,32 @@
 /* eslint-disable react/prop-types */
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { CgClose } from "react-icons/cg";
 import { Link } from "react-router";
 import Logo from "@/assets/logo/logo.svg";
 import Icon from "@/assets/logo/logo-ico.svg";
 // import img from "@/assets/default/image.png";
 import { useReactToPrint } from "react-to-print";
+import JsBarcode from "jsbarcode";
 
 const FactureModal = ({ onClose, facture }) => {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
-  
+   
+  useEffect(() => {
+    if (facture?.facture_id) {
+      JsBarcode("#barcode", facture.facture_id, {
+        format: "CODE128",
+        lineColor: "#000",
+        width: 3,
+        height: 40,
+        displayValue: false,
+      });
+    }
+  }, [facture]);
+
   const handlePrint = () => {
     reactToPrintFn();
   };
-
-  console.log(facture);
   
   return (
     <>
@@ -158,6 +169,7 @@ const FactureModal = ({ onClose, facture }) => {
                 <div className="text-sm">
                   <p>Conditions générales de vente consultables sur le site:</p>
                   <p>https://vendora-app.vercel.app</p>
+                  <svg className="-mb-7" id="barcode"></svg>
                 </div>
                 <div className="text-sm text-center">
                   <p>Cachet et signature de l&apos;entreprise :</p>
