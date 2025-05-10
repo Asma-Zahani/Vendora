@@ -185,7 +185,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                                 </div>
                                                             )}
                                                             {column.type === "date" && (
-                                                                <h2 className="text-gray-800 dark:text-white " >
+                                                                <h2 className="text-gray-800 dark:text-white">
                                                                     {item[column.key] ? item[column.key].slice(0,10) :  "Non Valide"}
                                                                 </h2>
 
@@ -311,7 +311,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     }
                     setIsDeleteOpen(false);
             }}/> }
-            {isSwitchOpen && ( <FormModal isOpen={isSwitchOpen} onClose={() => setIsSwitchOpen(false)} action="Modifier" formData={entityConfig.formData} setFormData={entityConfig.setFormData} fields={entityConfig.fields} formLabel={entityConfig.label} errors={entityConfig.errors}
+            {isSwitchOpen && <FormModal isOpen={isSwitchOpen} onClose={() => setIsSwitchOpen(false)} action="Modifier" formData={entityConfig.formData} setFormData={entityConfig.setFormData} fields={entityConfig.fields} formLabel={entityConfig.label} errors={entityConfig.errors}
                 onSubmit={async () => { 
                     let isValid = false;
                     if (entityConfig.formData[entityConfig.identifiant]) {
@@ -322,8 +322,8 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     if (isValid) {
                         setIsSwitchOpen(false);  
                     }
-                }}/>)}
-            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label} facture={selectedItem}/> }
+            }}/>}
+             {isFactureOpen && <FactureModal onClose={() => setIsFactureOpen(false)} facture={selectedItem}/> }
         </section>
     );
 }
