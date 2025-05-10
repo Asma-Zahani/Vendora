@@ -18,7 +18,7 @@ const Hero = () => {
                       Découvrez une large sélection d&apos;articles tendance alliant qualité, confort et prix avantageux. Trouvez ce que vous aimez en quelques clics!
                     </p>
                     <Link to={"/boutique"}>
-                      <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform bg-purpleLight rounded-lg lg:w-auto hover:bg-purpleLightHover focus:outline-none focus:bg-purpleLightHover">
+                      <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform bg-purpleLight rounded-lg lg:w-auto hover:scale-110 focus:outline-none focus:bg-purpleLightHover">
                         Achetez Maintenant
                       </button>
                     </Link>

@@ -38,7 +38,7 @@ function App() {
         </Route>
       </Routes>
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
-        className="fixed bottom-17 right-4 bg-purpleLight/75 text-borderGrayLight p-2 rounded-sm shadow-lg transition-all transform hover:scale-110 z-10">
+        className="fixed bottom-15 right-4 bg-purpleLight/75 text-borderGrayLight p-2 rounded-lg shadow-lg transition-all transform hover:scale-110 z-10">
           <ChevronsUp size={23} />
       </button>)}
     </>
