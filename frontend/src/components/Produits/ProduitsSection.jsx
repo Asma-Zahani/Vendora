@@ -3,7 +3,7 @@ import { useContext } from "react";
 import UserContext from '@/utils/UserContext';
 import Card from '@/components/Produits/Card';
 import { Link } from "react-router";
-import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
+import usePanierWishlist from "@/pages/Client/Protected/usePanierWishlist";
 
 const ProduitsSection = ({titre, sousTitre, produits, button}) => {
   const { wishlist } = useContext(UserContext);

@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"; // ou n'importe quelle
 import Slider from "react-slick";
 import UserContext from '@/utils/UserContext';
 import Card from '@/components/Produits/Card';
-import usePanierWishlist from "@/pages/Client/Content/Protected/usePanierWishlist";
+import usePanierWishlist from "@/pages/Client/Protected/usePanierWishlist";
 
 const ProduitsSlider = ({ titre, produits }) => {
   const sliderRef = useRef(null);

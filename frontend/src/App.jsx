@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
-import routes from "@/routes/index";
-import UserInterface from "@/pages/Client/UserInterface";
-import Home from "@/pages/Client/Content/Home/Home";
+import routes from "@/index";
+import UserInterface from "@/pages/UserInterface";
+import Home from "@/pages/Client/Home/Home";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect, useState } from "react";

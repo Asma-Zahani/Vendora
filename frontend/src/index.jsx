@@ -1,0 +1,142 @@
+import PageNotFound from "@/pages/PageNotFound";
+import menuAdmin from "@/pages/Admin/menuItems";
+import menuLivreur from "@/pages/Livreur/menuItems";
+import UserInterface from "@/pages/UserInterface";
+import DashboardInterface from "@/pages/DashboardInterface";
+import Login from "@/pages/Authentification/Login";
+import Register from "@/pages/Authentification/Register";
+import ForgetPassword from "@/pages/Authentification/ForgetPassword";
+import ResetPassword from "@/pages/Authentification/ResetPassword";
+import Shop from "@/pages/Client/Boutique/Boutique";
+import { Dashboard as AdminDashboard }  from "@/pages/Admin/Dashboard";
+import { Dashboard as LivreurDashboard }  from "@/pages/Livreur/Dashboard";
+import Produits from "@/pages/Admin/Gestion des produits/Produits";
+import Categories from "@/pages/Admin/Gestion des produits/Categories";
+import SousCategories from "@/pages/Admin/Gestion des produits/SousCategories";
+import Marques from "@/pages/Admin/Gestion des produits/Marques";
+import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
+import Clients from "@/pages/Admin/Gestion des utilisateurs/Clients";
+import Livreurs from "@/pages/Admin/Gestion des utilisateurs/Livreurs";
+import CommandeLivraison from "@/pages/Admin/Gestion des commandes/CommandeLivraison";
+import CommandeRetraitDrive from "@/pages/Admin/Gestion des commandes/CommandeRetraitDrive";
+import CodePromotions from "@/pages/Admin/Promotions et Offres/CodePromotions";
+import Promotions from "@/pages/Admin/Promotions et Offres/Promotions";
+import Drives from "@/pages/Admin/Parametres/Drives";
+import Horaires from "@/pages/Admin/Parametres/Horaires";
+import JoursFeries from "@/pages/Admin/Parametres/JoursFeries";
+import Cart from "@/pages/Client/Protected/Cart";
+import Wishlist from "@/pages/Client/Protected/Wishlist";
+import Checkout from "@/pages/Client/Protected/Checkout";
+import Account from "@/pages/Client/Protected/UserAccount/Account";
+import UpdateProfile from "@/pages/Client/Protected/UserAccount/UpdateProfile";
+import UpdatePassword from "@/pages/Client/Protected/UserAccount/UpdatePassword";
+import OrderHistory from "@/pages/Client/Protected/UserAccount/OrderHistory";
+import Offres from "@/pages/Client/Protected/UserAccount/Offres";
+import DetailProduit from "@/pages/Client/Boutique/DetailProduit";
+import Tracking from "@/pages/Client/Protected/UserAccount/Tracking";
+import AdressesLivraison from "@/pages/Livreur/Clients/AdressesLivraison";
+import CommandesEnCours from "@/pages/Livreur/Commandes/CommandesEnCours";
+import HistoriqueCommandes from "@/pages/Livreur/Commandes/HistoriqueCommandes";
+import ClientsLivreur from "@/pages/Livreur/Clients/Clients";
+import Mentions from "@/pages/Legal/Mentions";
+import Confidentialite from "@/pages/Legal/Confidentialite";
+import CGV from "@/pages/Legal/CGV";
+import CGU from "@/pages/Legal/CGU";
+import Protection from "@/pages/Legal/Protection";
+import Contact from "@/pages/Client/Contact";
+import About from "@/pages/Client/About";
+
+const routes = [
+  {
+    path: "",
+    element: <ProtectedAuthRoutes />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forget-password", element: <ForgetPassword /> },
+      { path: "reset-password", element: <ResetPassword /> }
+    ]
+  },
+  {
+    path: "/",
+    element: <UserInterface />,
+    children: [ 
+      { path: "contact", element: <Contact /> },
+      { path: "about", element: <About /> },
+      { path: "mentions", element: <Mentions /> },
+      { path: "confidentialite", element: <Confidentialite /> },
+      { path: "cgv", element: <CGV /> },
+      { path: "cgu", element: <CGU /> },
+      { path: "protection", element: <Protection /> },
+      { path: "boutique", element: <Shop /> },
+      { path: "boutique/:id", element: <DetailProduit /> },
+      { path: "", element: <ProtectedClientRoutes />, 
+        children: [
+          { path: "cart", element: <Cart /> },
+          { path: "wishlist", element: <Wishlist /> },
+          { path: "checkout", element: <Checkout /> },
+          {
+            path: "", 
+            element: <Account />,
+            children: [
+              { path: "updateProfile", element: <UpdateProfile /> },
+              { path: "updatePassword", element: <UpdatePassword /> },
+              { path: "tracking", element: <Tracking /> },
+              { path: "orderHistory", element: <OrderHistory /> },
+              { path: "offres", element: <Offres /> },
+            ]
+          }
+        ] 
+      }
+    ]
+  },
+  {
+    path: "*",
+    element: <PageNotFound />
+  },
+  {
+    path: "",
+    element: <ProtectedLivreurRoutes />,
+    children: [
+      {
+        path: "",
+        element: <DashboardInterface menuItems={menuLivreur} />,
+        children: [
+          { path: "DashboardLivreur", element: <LivreurDashboard /> },
+          { path: "commandesEncours", element: <CommandesEnCours /> },
+          { path: "commandesHistorique", element: <HistoriqueCommandes /> },
+          { path: "clientsLivreur", element: <ClientsLivreur /> },
+          { path: "adresses", element: <AdressesLivraison /> },
+        ]
+      }
+    ]
+  },
+  {
+    path: "",
+    element: <ProtectedAdminRoutes />,
+    children: [
+      {
+        path: "",
+        element: <DashboardInterface menuItems={menuAdmin} />,
+        children: [
+          { path: "dashboard", element: <AdminDashboard /> },
+          { path: "produits", element: <Produits /> },
+          { path: "categories", element: <Categories /> },
+          { path: "sousCategories", element: <SousCategories /> },
+          { path: "marques", element: <Marques /> },
+          { path: "clients", element: <Clients /> },
+          { path: "livreurs", element: <Livreurs /> },
+          { path: "commandesLivraison", element: <CommandeLivraison /> },
+          { path: "commandesRetraitDrive", element: <CommandeRetraitDrive /> },
+          { path: "promotions", element: <Promotions /> },
+          { path: "codePromotions", element: <CodePromotions /> },
+          { path: "drives", element: <Drives /> },
+          { path: "horaires", element: <Horaires /> },
+          { path: "joursFeries", element: <JoursFeries /> }
+        ]
+      }
+    ]
+  }
+];
+
+export default routes;
