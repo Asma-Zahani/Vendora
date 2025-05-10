@@ -1,17 +1,19 @@
+import Legal from "./Legal";
+
 const Mentions = () => {
   const data = [
     { titre: "1. Éditeur du site",
       contenu: (
         <>
           <p>
-            Le site <strong>www.kdmarche.com</strong> est édité par <strong>Primacop International Business</strong>, 
+            Le site <strong>https://vendora-app.vercel.app</strong> est édité par <strong>Primacop International Business</strong>, 
             entreprise individuelle immatriculée au Registre National des Entreprises (RNE) en Tunisie.
           </p>
           <p>
             Siège social : chemin Symphart Lampecinado, Morne-Bourg, 97170 PETIT-BOURG<br />
             Matricule fiscal : [À compléter]<br />
             Téléphone : +59 0 60 79 46 (prix d&apos;un appel local)<br />
-            Email : contact@kdmarche.com
+            Email : vendora.shop.contact@gmail.com
           </p>
         </>
       ),
@@ -36,7 +38,7 @@ const Mentions = () => {
         <p>
           Conformément à la <strong>loi n°2004-63 du 27 juillet 2004</strong> relative à la protection des données personnelles en Tunisie, 
           l&apos;utilisateur dispose d&apos;un droit d&apos;accès, de modification, de rectification et de suppression des données qui le concernent. 
-          Ce droit peut être exercé par email à : contact@kdmarche.com.
+          Ce droit peut être exercé par email à : vendora.shop.contact@gmail.com.
         </p>
       ),
     },
@@ -52,15 +54,7 @@ const Mentions = () => {
   ];
 
   return (
-    <div className="my-8 p-4 max-w-7xl mx-auto text-sm text-gray-800">
-      <h1 className="flex justify-center text-3xl font-bold mb-4 text-purpleLight">Mentions légales</h1>
-      {data.map((item, index) => (
-        <div key={index} className="mb-6">
-          <h2 className="font-semibold my-4 text-purpleLight text-xl">{item.titre}</h2>
-          <div className="space-y-2">{item.contenu}</div>
-        </div>
-      ))}
-    </div>
+    <Legal titre={"Mentions légales"} data={data} />
   );
 };
 
