@@ -193,7 +193,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                             {column.type === "actions" && (
                                                                 <div className="flex items-center gap-x-3">
                                                                     {item.actions.view && (
-                                                                        <button onClick={() => {setIsViewOpen(true); item.actions.view(item[entityConfig.identifiant]);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-blue-500 dark:text-gray-300 hover:text-blue-500 focus:outline-none">
+                                                                        <button onClick={() => {setIsViewOpen(true); setSelectedItem(item);}} type="button" className="text-gray-500 transition-colors duration-200 dark:hover:text-blue-500 dark:text-gray-300 hover:text-blue-500 focus:outline-none">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5c-4.688 0-8.625 3.135-10.5 7.5 1.875 4.365 5.813 7.5 10.5 7.5s8.625-3.135 10.5-7.5c-1.875-4.365-5.813-7.5-10.5-7.5z" />
                                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
@@ -299,7 +299,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                         setIsFormOpen(false);
                     }
             }}/> }
-            {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={entityConfig.label} /> }
+            {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={entityConfig.label} viewData={selectedItem} /> }
             {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
                 message={selectedItem ? `Êtes-vous sûr de vouloir supprimer ce ${entityConfig.label} ?` : `Êtes-vous sûr de vouloir supprimer tous ces ${entityConfig.label} ?`}
                 onConfirm={() => { 

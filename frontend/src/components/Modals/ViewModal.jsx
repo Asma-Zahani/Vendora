@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { CgClose } from "react-icons/cg";
 
 const ViewModal = ({ onClose, label, viewData }) => {
+  console.log(viewData);
+  
   return (
     <div className="fixed z-50 w-full h-full inset-0 flex items-center justify-center">
       <div className={`fixed inset-0 bg-contentLight/75 dark:bg-customDark/75 transition-opacity`} aria-hidden="true"></div>
@@ -20,15 +23,18 @@ const ViewModal = ({ onClose, label, viewData }) => {
             </button>
           </div>
           <div className="p-4 md:p-5 space-y-4 max-h-[80vh] scrollbar overflow-y-auto">
-            {viewData && Object.entries(viewData).map(([key, value]) => (
-              <div key={key}>
-                <h4 className="font-semibold text-gray-700 dark:text-gray-200">
-                  {key.replace(/_/g, ' ')}:
-                </h4>
-                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 break-words whitespace-pre-wrap">
-                  {typeof value === "string" ? value : JSON.stringify(value, null, 2)}
-                </p>
-              </div>
+            {viewData &&
+              Object.entries(viewData)
+                .filter(([_, value]) => typeof value === "string")
+                .map(([key, value]) => (
+                  <div key={key}>
+                    <h4 className="font-semibold text-gray-700 dark:text-gray-200">
+                      {key.replace(/_/g, ' ')}:
+                    </h4>
+                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 break-words whitespace-pre-wrap">
+                      {value}
+                    </p>
+                  </div>
             ))}
           </div>
         </div>
