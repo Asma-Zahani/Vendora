@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Layers2Icon } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const Categories = () => {
   const [formData, setFormData] = useState({categorie_id: "", title: "", image: "", rang: "" });

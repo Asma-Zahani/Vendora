@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Package } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 import { getEntities } from "@/service/EntitesService";
 
 const CommandeLivraison = () => {

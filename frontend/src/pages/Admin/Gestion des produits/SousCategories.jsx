@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { getEntities } from "@/service/EntitesService";
 import { Layers3Icon } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const SousCategories = () => {
   const [categories, setCategories] = useState([]);

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Tag } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const CodePromotions = () => {
   const [formData, setFormData] = useState({code_promotion_id: "", code: "", reduction: "", dateExpiration: "", nbUtilisationMax: "" });

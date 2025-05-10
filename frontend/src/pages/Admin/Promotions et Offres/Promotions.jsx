@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Percent } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const Promotions = () => {
   const [formData, setFormData] = useState({promotion_id: "", nom: "", reduction: "", dateDebut: "", dateFin: "" });

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { ShoppingBag } from "lucide-react";
 import { getEntities } from "@/service/EntitesService";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 import { createEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 

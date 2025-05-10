@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Truck } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const Livreurs = () => {
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "", password_confirmation: "", date_naissance: "", genre: "" });

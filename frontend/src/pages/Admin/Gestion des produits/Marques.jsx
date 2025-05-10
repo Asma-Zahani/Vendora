@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { Bookmark } from "lucide-react";
-import EntityManager from "../EntityManager";
+import EntityManager from "@/service/EntityManager";
 
 const Marques = () => {
   const [formData, setFormData] = useState({nom: "", image: ""});
