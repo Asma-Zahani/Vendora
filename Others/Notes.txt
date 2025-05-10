@@ -15,3 +15,5 @@ header admin (border notification)
 
 achref:
 t3aweny fel hebergement mte3 l api mte3 l rocommandation
+dashboard
+connect as user
