@@ -127,14 +127,17 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
     
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
-        $codePromo = null;
+        $remise = 0;
         if (!empty($validatedData['code_promotion_id'])) {
             $codePromo = CodePromotion::find($validatedData['code_promotion_id']);
+            if ($codePromo && $codePromo->reduction) {
+                $remise = ($validatedData['total'] * $codePromo->reduction) / 100;
+            }
         }
 
         $facture = FactureCommande::create([
             'totalTTC' => $validatedData['total'],
-            'remise' => $codePromo ? $codePromo->reduction : 0,
+            'remise' => $remise,
             'commande_id' => $commande->commande_id
         ]);
 
@@ -208,7 +211,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
             'total' => 'numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
-            'dateLivraison' => 'nullable|date',
+            'dateLivraison' => 'nullable|date|after_or_equal:today',
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
             'adresse_livraison' => 'nullable|string|max:255',
             'region_livraison' => 'nullable|string|max:255',
