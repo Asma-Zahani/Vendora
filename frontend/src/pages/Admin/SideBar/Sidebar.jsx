@@ -36,7 +36,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover }) => {
         )}
       </div>
       <div className="scrollbar pt-2 overflow-y-auto h-full">
-        <ul className="space-y-4 px-5 pb-20">
+        <ul className="space-y-4 px-5 pb-25">
           {menuItems.map((menu, menuIndex) => (
             <li key={menuIndex}>
               <h6 className="text-gray-700 dark:text-white font-semibold uppercase text-xs">

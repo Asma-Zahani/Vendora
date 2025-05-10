@@ -13,7 +13,7 @@ const SidebarFixed = ({ toggleSidebarHover }) => {
         <img src={logo} alt="Logo" className="h-10" />
       </div>
       <div className="pt-10">
-        <ul className="flex flex-col items-center space-y-2 pb-20">
+        <ul className="flex flex-col items-center space-y-5">
           {menuItems.map((section, sectionIndex) => (
             <div key={sectionIndex}>
               {section.items.map((item, itemIndex) => {
