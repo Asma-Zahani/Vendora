@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal('prixUnitaireTTC', 10, 2);
             $table->decimal('totalLigneTTC', 10, 2);
             $table->decimal('totalLigneHT', 10, 2);
-            $table->decimal('tvaLigne', 10, 2)->default(19.00); 
-            $table->integer('remise');
+            $table->decimal('tvaLigne', 10, 2)->default(19.00);
+            $table->integer('remise')->default(0);
             $table->foreignId('facture_id')->constrained('factures', 'facture_id')->onDelete('cascade');
             $table->foreignId('produit_id')->constrained('produits', 'produit_id')->onDelete('cascade'); 
             $table->timestamps();

@@ -326,7 +326,7 @@ const Checkout = () => {
                                                     </div>
                                                     
                                                     <div>                              
-                                                        <strong>{produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)} DT</strong>
+                                                        <strong>{(produit.prix_apres_promo * (produit.pivot?.quantite ?? produit.quantite)).toFixed(2)} DT</strong>
                                                     </div>
                                                 </div>
                                             );

@@ -15,6 +15,8 @@ const FactureModal = ({ onClose, facture }) => {
     reactToPrintFn();
   };
 
+  console.log(facture);
+  
   return (
     <>
     <div className={`fixed z-[9999] w-full h-full inset-0 flex items-center justify-center`}>
@@ -134,12 +136,16 @@ const FactureModal = ({ onClose, facture }) => {
             <div className="flex w-full justify-end">
               <div className="space-y-3 w-full max-w-full">
                 <div className="flex gap-3 px-3">
-                  <span className="text-right font-semibold w-full">Sous total :</span>
+                  <span className="text-right font-semibold uppercase w-full">total HT :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{facture?.totalHT} DT</span>
                 </div>
                 <div className="flex gap-3 px-3">
-                  <span className="text-right font-semibold w-full">TVA (19%) :</span>
+                  <span className="text-right font-semibold uppercase w-full">TVA (19%) :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{(facture?.totalHT * facture?.tva / 100).toFixed(2)} DT</span>
+                </div>
+                <div className="flex gap-3 px-3">
+                  <span className="text-right font-semibold uppercase w-full">Remise :</span>
+                  <span className="text-left w-1/3 sm:w-1/5">{facture?.remise} %</span>
                 </div>
                 <div className="flex gap-3 px-3 text-lg font-bold uppercase print:py-2 print:bg-[#cccccc] print:border">
                   <span className="text-right w-full">Total :</span>

@@ -93,9 +93,6 @@ const handleLogout = async (setUser, setToken) => {
       method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-
-    console.log(res);
-    
     if (res.ok) {
       setUser(null);
       setToken(null);

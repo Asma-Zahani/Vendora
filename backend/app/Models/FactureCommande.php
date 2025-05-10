@@ -25,22 +25,25 @@ class FactureCommande extends Model
         static::creating(function ($facture) {
             $facture->tva = 19.00;
             if ($facture->totalTTC && !$facture->totalHT) {
-                $facture->totalHT = $facture->totalTTC / (1 + $facture->tva / 100);
+                $totalTTCAvantRemise = $facture->totalTTC / (1 - $facture->remise / 100);
+                $facture->totalHT = $totalTTCAvantRemise / (1 + $facture->tva / 100);
             }
         });
 
         static::updating(function ($facture) {
             $facture->tva = 19.00;
-
             if ($facture->totalTTC && !$facture->totalHT) {
-                $facture->totalHT = $facture->totalTTC / (1 + $facture->tva / 100);
+                $totalTTCAvantRemise = $facture->totalTTC / (1 - $facture->remise / 100);
+                $facture->totalHT = $totalTTCAvantRemise / (1 + $facture->tva / 100);
             }
         });
     }
 
     public function totalApresRemise()
     {
-        return $this->totalTTC - $this->remise;
+        $totalApresRemise = $this->totalTTC - $this->remise;
+    
+        return number_format($totalApresRemise, 2, '.', '');
     }
 
     public function calculTTC()

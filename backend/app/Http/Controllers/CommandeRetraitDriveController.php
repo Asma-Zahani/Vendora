@@ -123,17 +123,14 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
         
         PanierProduit::where('client_id', $validatedData['client_id'])->delete();
 
-        $remise = 0;
+        $codePromo = null;
         if (!empty($validatedData['code_promotion_id'])) {
             $codePromo = CodePromotion::find($validatedData['code_promotion_id']);
-            if ($codePromo && $codePromo->reduction) {
-                $remise = ($validatedData['total'] * $codePromo->reduction) / 100;
-            }
         }
 
         $facture = FactureCommande::create([
             'totalTTC' => $validatedData['total'],
-            'remise' => $remise,
+            'remise' => $codePromo ? $codePromo->reduction : 0,
             'commande_id' => $commande->commande_id
         ]);
 

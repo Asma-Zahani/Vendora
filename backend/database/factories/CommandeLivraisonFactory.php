@@ -33,8 +33,6 @@ class CommandeLivraisonFactory extends Factory
         });
 
         $codePromo = rand(0, 1) ? CodePromotion::inRandomOrder()->first() : null;
-        $reductionPourcentage = $codePromo?->reduction ?? 0;
-        $remise = $reductionPourcentage > 0 ? ($total * $reductionPourcentage) / 100 : 0;
 
         $commande = Commande::create([
             'client_id' => $client->id,
@@ -52,7 +50,7 @@ class CommandeLivraisonFactory extends Factory
 
         $facture = FactureCommande::create([
             'totalTTC' => $total,
-            'remise' => $remise,
+            'remise' => $codePromo?->reduction ?? 0,
             'commande_id' => $commande->commande_id,
         ]);
 
