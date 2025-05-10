@@ -32,7 +32,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('commande/user', function (Request $request) {
-    return $request->user()->commandes()->with('commandeLivraison', 'commandeRetraitDrive.drive', 'facture.detailsFacture')->get();
+    return $request->user()->commandes()->with('client','commandeLivraison', 'commandeRetraitDrive.drive', 'facture.detailsFacture.produit')->get();
 })->middleware('auth:sanctum');
 
 Route::apiResource('users', UserController::class);

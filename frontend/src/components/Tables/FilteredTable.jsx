@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
 import DeleteModal from "@/components/Modals/DeleteModal";
 import ViewModal from "@/components/Modals/ViewModal";
-import FactureModal from "@/components/Modals/Facture";
+import FactureModal from "@/components/Modals/FactureModal";
 import FormModal from "@/components/Modals/FormModal";
 import Checkbox from "@/components/ui/Checkbox";
 import Dropdown from "@/components/ui/Dropdown";
@@ -318,7 +318,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     }
                     setIsSwitchOpen(false); 
             }}/> }
-            {isFactureOpen && <FactureModal isOpen={isFactureOpen} onClose={() => setIsFactureOpen(false)} label={entityConfig.label} facture={selectedItem}/> }
+            {isFactureOpen && <FactureModal onClose={() => setIsFactureOpen(false)} facture={selectedItem}/> }
         </section>
     );
 }

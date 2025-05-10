@@ -14,7 +14,7 @@ const OrderHistory = () => {
             setCommandes(await getAuthenticatedEntities("commande/user"));   
         };
         fetchData();
-    }, []);
+    }, []);    
 
     return (
         <div className="col-span-2 w-full py-2 space-y-5">
@@ -132,16 +132,7 @@ const OrderHistory = () => {
                 </div>
             </div>
             
-            {isFactureOpen && selectedCommande && (
-    <FactureModal
-        onClose={() => {
-            setIsFactureOpen(false);
-            setSelectedCommande(null);
-        }}
-        label={"Facture commande"}
-        viewData={selectedCommande}
-    />
-)}
+            {isFactureOpen && <FactureModal onClose={() => setIsFactureOpen(false)} facture={{ ...selectedCommande, ...selectedCommande.facture, ...selectedCommande.client }}/> }
         </div>
     );
 }; 
