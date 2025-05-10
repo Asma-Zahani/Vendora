@@ -24,7 +24,7 @@ const CommandeLivraison = () => {
     fetchData();
   }, []);
 
-  const [formData, setFormData] = useState({etatCommande: "", livreur_id: ""});
+  const [formData, setFormData] = useState({etatCommande: "", livreur_id: "" , date_livraison: ""});
 
   const columns = [
     { label: "Num°", key: "commande_id", type: "text", prefix: "#" },
@@ -37,6 +37,7 @@ const CommandeLivraison = () => {
   const fields = [
     { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
     { label: "Livreur", key: "livreur_id", type: "dropdown", options: livreurs.map(livreur => ({ value: livreur.id, label: livreur.prenom + " " + livreur.nom })) },
+    { label: "Date Livraison", key: "dateLivraison", type: "date" },
   ];
 
   return (
