@@ -18,7 +18,12 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
   }
 
   const url = `${import.meta.env.VITE_API_URL}/${label}${params.toString() ? "?" + params.toString() : ""}`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    }
+  });
   
   return await response.json();
 };
@@ -26,6 +31,8 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
 const getAuthenticatedEntities = async (label) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}`, {
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
   });
@@ -35,6 +42,8 @@ const getAuthenticatedEntities = async (label) => {
 const getEntity = async (label, _id) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${_id}`, {
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
   });
@@ -44,6 +53,8 @@ const getEntity = async (label, _id) => {
 const getEntityBy = async (label, by, _id) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${by}/${_id}`, {
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
   });
@@ -54,6 +65,8 @@ const createEntity = async (label, formData) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}`, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(formData)
@@ -66,6 +79,8 @@ const updateEntity = async (label, _id, formData) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${_id}`, {
     method: 'PUT',
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(formData)
@@ -79,6 +94,8 @@ const deleteEntity = async (label, _id, formData) => {
   const response = await fetch(url, {
     method: 'DELETE',
     headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(formData)

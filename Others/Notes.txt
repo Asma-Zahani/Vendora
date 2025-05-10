@@ -8,3 +8,5 @@ session expire
 ktiba fou9 b3athha (dashboard)
 
 les alert mte3 l panier
+
+livraison (frais dans le facture non appliqué)
