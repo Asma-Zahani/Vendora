@@ -33,7 +33,6 @@ import UpdatePassword from "@/pages/Client/Protected/UserAccount/UpdatePassword"
 import OrderHistory from "@/pages/Client/Protected/UserAccount/OrderHistory";
 import Offres from "@/pages/Client/Protected/UserAccount/Offres";
 import DetailProduit from "@/pages/Client/Boutique/DetailProduit";
-import Tracking from "@/pages/Client/Protected/UserAccount/Tracking";
 import AdressesLivraison from "@/pages/Livreur/Clients/AdressesLivraison";
 import CommandesEnCours from "@/pages/Livreur/Commandes/CommandesEnCours";
 import HistoriqueCommandes from "@/pages/Livreur/Commandes/HistoriqueCommandes";
@@ -81,7 +80,6 @@ const routes = [
             children: [
               { path: "updateProfile", element: <UpdateProfile /> },
               { path: "updatePassword", element: <UpdatePassword /> },
-              { path: "tracking", element: <Tracking /> },
               { path: "orderHistory", element: <OrderHistory /> },
               { path: "offres", element: <Offres /> },
             ]
