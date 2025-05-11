@@ -17,7 +17,7 @@ const UserInterface = () => {
         <Outlet />
       </div>
       <button onClick={() => setIsChatbotOpen(true)} className={`${isChatbotOpen ? 'hidden' : 'fixed'} bottom-4 right-4 bg-purpleLight text-white px-2 sm:px-4 py-2 rounded-lg shadow-lg hover:scale-110 z-40`}>
-        <div className="flex items-center justify-center gap-1"><MessageSquareMore size={25} /> <p className="hidden sm:flex">Assistant</p></div>
+        <div className="flex items-center justify-center gap-1"><MessageSquareMore size={25} /> <p className="hidden sm:flex">Discuter</p></div>
       </button>
       {isChatbotOpen && <ChatbotModal onClose={() => setIsChatbotOpen(false)} />}
       <div>
