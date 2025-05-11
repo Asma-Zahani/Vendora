@@ -36,7 +36,7 @@ const UserInterface = () => {
       <div>
         <Footer />
       </div>
-      <button onClick={() => setIsChatbotOpen(true)} className={`${isChatbotOpen ? 'hidden' : 'fixed'} bottom-17 sm:bottom-4 right-4 bg-purpleLight text-white px-3 sm:px-4 py-3 rounded-lg shadow-lg hover:scale-110 z-40`}>
+      <button onClick={() => setIsChatbotOpen(true)} className={`${isChatbotOpen ? 'hidden' : 'fixed'} bottom-17 sm:bottom-4 right-4 bg-purpleLight border border-purpleLight text-white px-3 sm:px-4 py-3 rounded-lg shadow-lg hover:scale-110 z-40`}>
         <div className="flex items-center justify-center gap-1"><MessageSquareMore size={25} /> <p className="hidden sm:flex">Discuter</p></div>
       </button>
       {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}} className="fixed bottom-30 sm:bottom-18 right-4 bg-contentLight dark:bg-contentDark border border-purpleLight text-purpleLight p-3 rounded-lg shadow-lg transition-all transform hover:scale-110 z-10">

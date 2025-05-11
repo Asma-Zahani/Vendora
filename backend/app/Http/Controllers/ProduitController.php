@@ -267,30 +267,32 @@ class ProduitController extends Controller implements HasMiddleware
             'message' => 'Produit supprimée avec succès'
         ], 200);    
     }
+
     public function recommander(Request $request)
     {
-        $category = $request->input('category');
-        $budget = $request->input('budget');
-        $brand = $request->input('brand');
+        $validatedData = $request->validate([
+            'categorie' => 'nullable|string',
+            'montant' => 'nullable|string',
+            'marque' => 'nullable|string',
+        ]);
 
-        try {
-            $produits = Produit::with(['marque', 'couleurs']) // Charger les relations marque et couleurs
-                ->whereHas('sousCategorie.categorie', function ($query) use ($category) {
-                    $query->where('categories.titre', 'like', "%$category%"); // Filtrage par catégorie
-                })
-                ->where('prix', '<=', $budget)
-                ->when($brand, function ($query) use ($brand) {
-                    $query->whereHas('marque', function ($q) use ($brand) {
-                        $q->where('nom', 'like', "%$brand%"); // Filtrage par marque en utilisant la relation
-                    });
-                })
-                ->limit(5)
-                ->get();
+        $produits = Produit::with(['couleurs'])
+            ->when($validatedData['categorie'], function ($query) use ($validatedData) {
+                $query->whereHas('sousCategorie.categorie', function ($q) use ($validatedData) {
+                    $q->where('categories.titre', 'like', '%' . $validatedData['categorie'] . '%');
+                });
+            })
+            ->when($validatedData['montant'], function ($query) use ($validatedData) {
+                $query->where('prix', '<=', $validatedData['montant']);
+            })
+            ->when($validatedData['marque'], function ($query) use ($validatedData) {
+                $query->whereHas('marque', function ($q) use ($validatedData) {
+                    $q->where('nom', 'like', '%' . $validatedData['marque'] . '%');
+                });
+            })
+            ->limit(10)
+            ->get();
 
-            return response()->json($produits);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return response()->json($produits);
     }
-
 }

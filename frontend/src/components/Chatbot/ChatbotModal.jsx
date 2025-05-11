@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Chatbot from "./Chatbot";
 import ChatbotUI from "./ChatbotUI";
-import { Bot } from "lucide-react";
 import { ArrowLeft, X } from "lucide-react";
 import { createEntity } from "@/service/EntitesService";
 
@@ -105,12 +104,8 @@ const ChatbotModal = ({ onClose }) => {
                     }
                     {step <= 2 
                         ? (<ChatbotUI step={step} setStep={setStep} choix={choix} setChoix={setChoix} messages={messages} handleSend={handleSend} formData={formData} setFormData={setFormData} isValid={isValid} />) 
-                        : (<div className="p-4 max-h-[400px] overflow-y-auto scrollbar">
-                            <h2 className="flex flex-col justify-center items-center text-2xl font-semibold mb-6 text-center space-y-2">
-                                <Bot size={30} /> 
-                                <p className="max-w-[15rem]">Assistant Recommandation</p>
-                            </h2>
-                                <Chatbot step={step} setStep={setStep} />
+                        : (<div className="overflow-y-auto scrollbar">
+                            <Chatbot step={step} setStep={setStep} />
                         </div>)}
                 </div>
             </div>

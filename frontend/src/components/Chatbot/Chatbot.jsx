@@ -1,121 +1,61 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
 import Card from '@/components/Produits/Card';
 import UserContext from '@/utils/UserContext';
 import usePanierWishlist from "@/pages/Client/Protected/usePanierWishlist";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-
+import { Bot } from "lucide-react";
+import { createEntity } from "@/service/EntitesService"
 const Chatbot = ({step, setStep}) => {
   const { wishlist } = useContext(UserContext);
-  const [answers, setAnswers] = useState({
-    category: "",
-    budget: "",
-    brand: "",
-  });
-  const [response, setResponse] = useState(null);
+  const [produits, setProduits] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [formData, setFormData] = useState({categorie: '', montant: '', marque: ''}); 
 
-  
-  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(response);
-
-  const handleNext = () => {
-    if (step === 3) setAnswers({ ...answers, category: inputValue });
-    if (step === 4) setAnswers({ ...answers, budget: inputValue });
-    if (step === 5) setAnswers({ ...answers, brand: inputValue });
-    setStep(step + 1);
-    setInputValue("");
-  };
+  const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(produits);
 
   useEffect(() => {
-    if (step === 6) {
-      sendToApi();
-    }
-  }, [step, answers]);
-
-
-
-  const sendToApi = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:8000/api/recommendations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(answers),
-      });
-
-      const textResponse = await response.text();
-      let data;
-      try {
-        data = JSON.parse(textResponse);
-      } catch (error) {
-        data = [];
-        console.log(error);
-        
-      }
-
-      const cleanedData = data.map((item) => {
-        if (item.quantite === null || isNaN(item.quantite)) {
-          item.quantite = 0;
-        }
-        return item;
-      });
-
-      if (response.ok && Array.isArray(cleanedData)) {
-        setResponse(cleanedData);
-      } else {
-        setResponse([]);
-      }
-    } catch (error) {
-      setResponse([]);
-      console.log(error);
-      
-    } finally {
+    const fetchData = async () => {
+      setLoading(true);
+      setProduits(await createEntity("recommendations", formData));
       setLoading(false);
-    }
-  };
+    };
+    if (step === 6) {fetchData()}
+  }, [formData, step]);
 
   const renderStep = () => {
     switch (step) {
       case 3:
         return (
           <div className="space-y-4">
-            <p className="text-lg font-semibold mb-2 text-gray-700">🛍️ Quel type de produit cherchez-vous ?</p>          
-            <Input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="ex : chaussures, PC..."/>
-            <Button onClick={handleNext} isValid={true} text="Valider" />
+            <p className="text-lg font-semibold mb-2 text-gray-700 dark:text-grayDark">🛍️ Quel type de produit cherchez-vous ?</p>          
+            <Input type="text" value={formData.categorie} onChange={(e) => setFormData({ ...formData, categorie: e.target.value })} placeholder="ex : chaussures, PC..."/>
           </div>
         );
       case 4:
         return (
           <div className="space-y-4">
-            <p className="text-lg font-semibold mb-2 text-gray-700">💰 Quel est votre budget maximum ?</p>
-            <Input type="number" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="ex : 100"/>
-            <Button onClick={handleNext} isValid={true} text="Valider" />
+            <p className="text-lg font-semibold mb-2 text-gray-700 dark:text-grayDark">💰 Quel est votre budget maximum ?</p>
+            <Input type="number" value={formData.montant} onChange={(e) => setFormData({ ...formData, montant: e.target.value })} placeholder="ex : 100"/>
           </div>
         );
       case 5:
         return (
           <div className="space-y-4">
-            <p className="text-lg font-semibold mb-2 text-gray-700">🏷️ Une marque en particulier ?</p>
-            <Input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="ex : Adidas, HP..."/>
-            <Button onClick={handleNext} isValid={true} text="Valider" />
+            <p className="text-lg font-semibold mb-2 text-gray-700 dark:text-grayDark">🏷️ Une marque en particulier ?</p>
+            <Input type="text" value={formData.marque} onChange={(e) => setFormData({ ...formData, marque: e.target.value })} placeholder="ex : Adidas, HP..."/>
           </div>
         );
       case 6:
         return loading ? (
           <p className="text-purpleLight text-center">⏳ Chargement...</p>
-        ) : response && response.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4">
+        ) : produits?.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-1 gap-4 rounded-lg">
-              {response.map((produit, index) => {
+              {produits.map((produit, index) => {
                 return <Card key={index} wishlist={wishlist} produit={produit} ajouterAuPanier={ajouterAuPanier} ajouterAuListeSouhait={ajouterAuListeSouhait} />;
               })}
             </div>
-          </div>
         ) : (
           <p className="text-gray-500 text-center">❌ Aucune recommandation trouvée.</p>
         );
@@ -124,7 +64,24 @@ const Chatbot = ({step, setStep}) => {
     }
   };
 
-  return ( renderStep() );
+  return (
+    <div className="flex flex-col h-full">
+      <div className="min-h-[90vh] sm:min-h-[400px] flex flex-col justify-between">
+
+              <div className="px-4 pt-6 space-y-3">
+                <h2 className="flex flex-col justify-center items-center text-2xl font-semibold mb-6 text-center space-y-2">
+                  <Bot size={30} /> 
+                  <p className="max-w-[15rem]">Assistant Recommandation</p>
+                </h2>
+                {renderStep()}
+              </div>
+              {step !== 6 && 
+              <div className="p-4">
+                <Button onClick={() => setStep(step + 1)} isValid={true} text="Valider" />
+              </div>}
+          </div>
+    </div>
+  );
 };
 
 export default Chatbot;

@@ -31,9 +31,23 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
   }, [messages]);
 
   const groupedMessages = messages.reduce((acc, msg) => {
-    const date = (new Date(msg.timestamp)).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
-    acc[date] = acc[date] || [];
-    acc[date].push(msg);
+    const msgDate = new Date(msg.timestamp);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const isSameDay = (d1, d2) =>
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+
+    let dateLabel;
+    if (isSameDay(msgDate, today)) {dateLabel = "Aujourd'hui";} 
+    else if (isSameDay(msgDate, yesterday)) { dateLabel = "Hier";} 
+    else {dateLabel = msgDate.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });}
+
+    acc[dateLabel] = acc[dateLabel] || [];
+    acc[dateLabel].push(msg);
     return acc;
   }, {});
 
