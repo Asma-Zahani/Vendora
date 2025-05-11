@@ -1,15 +1,22 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/SideBar/Sidebar";
 import SidebarFixed from "@/components/SideBar/SidebarFixed";
 import Header from "@/components/Header/DashboardHeader";
 import Footer from "@/components/Footer/DashboardFooter";
 import { Outlet } from "react-router";
+import { ChevronsUp } from "lucide-react";
 
 const DashboardInterface = ({ menuItems }) => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [isSidebarHover, setIsSidebarHover] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    window.addEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
+    return () => window.removeEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -41,7 +48,7 @@ const DashboardInterface = ({ menuItems }) => {
         <div className={`${sidebarClasses} lg:hidden ${isDrawerOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <Sidebar isDrawer={true} onClose={() => setIsDrawerOpen(false)} menuItems={menuItems} />
         </div>
-
+        
         <div className={`flex-1 flex flex-col ${!isSidebarVisible ? "w-990:ml-[5rem]" : ""}`}>
           <Header isSidebarVisible={isSidebarVisible} toggleSidebar={toggleSidebar} toggleDrawerOpen={toggleDrawerOpen}/>
           <div>
@@ -49,6 +56,11 @@ const DashboardInterface = ({ menuItems }) => {
           </div>
           <Footer isSidebarVisible={isSidebarVisible}/>
         </div>
+
+        {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
+          className="fixed bottom-4 right-4 bg-purpleLight text-white p-3 rounded-lg shadow-lg transition-all transform hover:scale-110 z-10">
+          <ChevronsUp size={25} />
+        </button>)}
       </div>
     </div>
   );

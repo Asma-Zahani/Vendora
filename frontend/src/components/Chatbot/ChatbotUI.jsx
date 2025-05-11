@@ -6,6 +6,20 @@ import { useEffect, useRef } from "react";
 const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormData, isValid, handleSend}) => {
   const endOfMessagesRef = useRef(null);
 
+  const textareaRef = useRef(null);
+
+  const autoResizeTextarea = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    autoResizeTextarea();
+  }, []);
+
   useEffect(() => {
     const container = endOfMessagesRef.current?.parentElement;
     if (container) {
@@ -26,14 +40,14 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
   return (
       <div className="flex flex-col h-full">
           {(choix !== 1 && (step === 1 || step === 2)) && <>
-              <div className="flex-1 overflow-y-auto scrollbar p-4 mb-18 sm:mb-0">
+              <div className="flex-1 overflow-y-auto scrollbar p-4 mb-13 sm:-mb-2">
                   {Object.entries(groupedMessages).map(([date, msgs], i) => (
                   <div key={i} className="flex flex-col space-y-2">
                       <div className="text-center text-xs text-gray-500 my-2">{date}</div>
                       {msgs.map((msg, index) => (
-                      <div key={index} className={`p-3 rounded-lg max-w-[70%] break-words whitespace-pre-wrap text-sm ${msg.sender === "user" ? "bg-purpleLight text-white self-end" : "bg-bgLight dark:bg-bgDark text-purpleLight self-start"}`}>
+                      <div key={index} className={`px-3 py-2 rounded-lg max-w-[70%] break-words whitespace-pre-wrap text-sm ${msg.sender === "user" ? "bg-purpleLight text-white self-end" : "bg-gray-100 dark:bg-borderGrayDark self-start"}`}>
                           <div dangerouslySetInnerHTML={{ __html: msg.text }} />
-                          <span className="text-xs text-gray-400 block mt-1 text-right">
+                          <span className={`text-xs text-gray-400 block ${msg.sender === "user" ? '' : 'text-right'}`}>
                           {(new Date(msg.timestamp)).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </span>
                       </div>
@@ -42,32 +56,42 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
                   ))}
                   <div ref={endOfMessagesRef} />
               </div>
-              <div className="sticky bottom-0 bg-white dark:bg-customDark px-4 py-2 space-y-2">
+              <div className="sticky bottom-0 bg-white dark:bg-customDark px-4 py-2 pb-3 space-y-2 rounded-b-xl">
                   {(choix === 0 && step === 1) && <>
-                      <div onClick={() => {setStep(2); setChoix(1);}} className="relative">
-                        <button type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                      <div onClick={() => {setStep(2); setChoix(1);}} className="relative group transform transition duration-200 hover:scale-105">
+                        <button type="button" className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-2 py-3 rounded-md text-sm`}> 
                           Saisir les informations de la commande
                         </button>
-                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-purpleLight hover:scale-110`} />
+                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
                       </div>
-                      <div onClick={() => {setChoix(3); handleSend("<p>Annuler</p>");}} className="relative">
-                        <button type="button"  className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}>
+                      <div onClick={() => {setChoix(3); handleSend("<p>Annuler</p>");}} className="relative group transform transition duration-200 hover:scale-105">
+                        <button type="button"  className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-2 py-3 rounded-md text-sm`}>
                           Annuler
                         </button>
-                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-purpleLight hover:scale-110`} />
+                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
                       </div>
                       
                   </>}
                   {(choix === 2 && step === 1) &&
-                    <button onClick={() => {setStep(2); setChoix(1);}} type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                    <button onClick={() => {setStep(2); setChoix(1);}} type="button" className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-2 py-3 rounded-md text-sm transform transition duration-200 hover:scale-105`}> 
                       Suivre une autre commande
                     </button>
                   }
                   {(choix === 2 || choix === 3) && 
                     <div className="relative">
-                      <input type="text" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="Message" className={`mt-1 px-4 py-2 text-gray-700 dark:text-grayDark dark:bg-contentDark focus:outline-none rounded-md border border-gray-300 dark:border-borderDark placeholder:text-gray-300 dark:placeholder:text-grayDark w-full`} />
-                      <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[30%] flex items-center text-gray-700 dark:text-grayDark hover:scale-110 ${ !formData.message ? "opacity-50 cursor-not-allowed" : ""  }`} />
-                    </div>}                
+                      <textarea ref={textareaRef} value={formData.message} placeholder="Message" maxLength={350} rows={1} className={`mt-1 px-4 py-2 pr-10 pb-6 text-gray-700 dark:text-grayDark dark:bg-contentDark focus:outline-none focus:border-gray-600 dark:focus:border-gray-400 hover:border-gray-600 dark:hover:border-gray-400 rounded-md border border-gray-300 dark:border-borderDark placeholder:text-gray-300 dark:placeholder:text-grayDark w-full resize-none break-words whitespace-pre-wrap overflow-hidden`}
+                        onChange={(e) => {
+                          setFormData({ ...formData, message: e.target.value });                                          
+                          autoResizeTextarea();
+                        }} />
+                        {formData.message.length >= 350 && (
+                          <div className="absolute text-xs bottom-3 left-2 text-red-500">
+                            Vous avez atteint la limite de caractères autorisée
+                          </div>
+                        )}
+                      <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute bottom-1 -translate-y-1/2 right-3 text-gray-700 dark:text-grayDark ${!formData.message ? "opacity-50 cursor-not-allowed" : "hover:scale-110 transition"}`} />
+                    </div>
+                  }           
               </div>
           </>}
           {(choix === 1 && step === 2) && 
@@ -81,7 +105,7 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
                   </div>
                   
                   <div className="p-4">
-                    <button onClick={() => {setStep(1); setChoix(2); handleSend(`<p>Mon numéro de commande est #${formData.commande_id}.</p><p>Mon adresse e-mail est  ${formData.email}</p>`)}} type="button" className={`w-full bg-purpleLight text-white py-3 rounded-md text-sm ${ !isValid ? "opacity-50 cursor-not-allowed" : ""  }`}> 
+                    <button onClick={() => {setStep(1); setChoix(2); handleSend(`<p>Mon numéro de commande est #${formData.commande_id}.</p><p>Mon adresse e-mail est  ${formData.email}</p>`)}} type="button" className={`w-full bg-purpleLight text-white py-3 rounded-md text-sm ${ !isValid ? "opacity-50 cursor-not-allowed" : "transform transition duration-200 hover:scale-105"  }`}> 
                       Suivre ma commande
                     </button>
                   </div>

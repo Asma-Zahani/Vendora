@@ -4,8 +4,7 @@ import UserInterface from "@/pages/UserInterface";
 import Home from "@/pages/Client/Home/Home";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect, useState } from "react";
-import { ChevronsUp } from "lucide-react";
+import { useEffect } from "react";
 
 function renderRoutes(routesArray) {
   return routesArray.map((route, index) => (
@@ -22,13 +21,6 @@ function App() {
     });
   }, []);
 
-  const [isVisible, setIsVisible] = useState(false);
-  
-  useEffect(() => {
-    window.addEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
-    return () => window.removeEventListener("scroll", () => {setIsVisible(window.scrollY > 200)});
-  }, []);
-
   return (
     <>
       <Routes>
@@ -37,10 +29,6 @@ function App() {
             <Route index element={<Home />} />
         </Route>
       </Routes>
-      {isVisible && ( <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" })}}
-        className="fixed bottom-15 right-4 bg-purpleLight/75 text-borderGrayLight p-2 rounded-lg shadow-lg transition-all transform hover:scale-110 z-10">
-          <ChevronsUp size={23} />
-      </button>)}
     </>
   );
 }

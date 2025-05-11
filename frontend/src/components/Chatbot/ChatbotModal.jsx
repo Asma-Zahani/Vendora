@@ -83,21 +83,21 @@ const ChatbotModal = ({ onClose }) => {
                     </button>
                 </div>
                 {step === 0 && 
-                    <button onClick={() => setStep(1)} type="button" className={`w-full border mt-4 px-2 py-3 rounded-md text-sm`}> 
+                    <button onClick={() => setStep(1)} type="button" className={`w-full border dark:border-gray-400 mt-4 px-2 py-3 rounded-md text-sm transform transition duration-200 hover:scale-105`}> 
                         Revenir au chat
                     </button>
                 }
             </div>
             <div className={`${step === 0 ? '' : 'max-h-full h-full sm:h-[400px] sm:max-h-[400px]'}`}>
-                <div className="rounded-xl shadow-md max-w-sm mx-auto mt-4 flex flex-col h-full">                    
+                <div className="rounded-xl shadow-md max-w-sm mx-auto flex flex-col h-full">                    
                     {step === 0 &&
                         <div className="flex flex-col items-center">
-                            <p>Réponses instantanées</p>
-                            <div className="space-y-2 mb-6 p-4">
-                                <button onClick={() => {handleSend("<p>Suivre ma commande</p>"); setStep(1)}} type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                            <p className="mt-4">Réponses instantanées</p>
+                            <div className="space-y-2 p-4">
+                                <button onClick={() => {handleSend("<p>Suivre ma commande</p>"); setStep(1)}} type="button" className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-4 py-3 rounded-md text-sm transform transition duration-200 hover:scale-105`}> 
                                     Suivre ma commande
                                 </button>
-                                <button onClick={() => setStep(3)} type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                                <button onClick={() => setStep(3)} type="button" className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-4 py-3 rounded-md text-sm transform transition duration-200 hover:scale-105`}> 
                                     Produits recommandés
                                 </button>
                             </div>
