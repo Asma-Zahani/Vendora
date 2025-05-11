@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodePromotionController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\CommandeLivraisonController;
 use App\Http\Controllers\CommandeRetraitDriveController;
 use App\Http\Controllers\ContactController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\JourFerieController;
 use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\FactureCommandeController;
-use App\Http\Controllers\LivreurController;
 use App\Http\Controllers\MarqueController;
 use App\Http\Controllers\PeriodeHoraireController;
 use App\Http\Controllers\ProduitController;
@@ -24,6 +24,7 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\UserPreferencesController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\DashboardLivreurController;
+use App\Models\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,9 +32,8 @@ Route::get('/user', function (Request $request) {
     return $request->user()->load('produits.couleurs', 'wishlist.couleurs', 'preferences');
 })->middleware('auth:sanctum');
 
-Route::get('commande/user', function (Request $request) {
-    return $request->user()->commandes()->with('client','commandeLivraison', 'commandeRetraitDrive.drive', 'facture.detailsFacture.produit')->get();
-})->middleware('auth:sanctum');
+Route::get('commande/user', [CommandeController::class, 'userCommande'])->middleware('auth:sanctum');
+Route::post('trackCommande', [CommandeController::class, 'trackCommande']);
 
 Route::apiResource('users', UserController::class);
 

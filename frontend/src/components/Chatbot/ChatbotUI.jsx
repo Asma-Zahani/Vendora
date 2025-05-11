@@ -1,128 +1,94 @@
 /* eslint-disable react/prop-types */
-import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useEffect, useRef, useState } from "react";
+import { SendHorizonal } from "lucide-react";
+import { useEffect, useRef } from "react";
 
-const getTime = () => {
-  const now = new Date();
-  return now.toISOString();
-};
-
-const formatTime = (isoString) => {
-  const date = new Date(isoString);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-};
-
-const formatDate = (isoString) => {
-  const date = new Date(isoString);
-  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
-};
-
-const ChatbotUI = ({step, setStep}) => {
-  const [messages, setMessages] = useState([]);
+const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormData, isValid, handleSend}) => {
   const endOfMessagesRef = useRef(null);
-  const [formData, setFormData] = useState({num: '', email: ''}); 
 
-  // 🔹 Scroller à la fin à chaque mise à jour des messages
   useEffect(() => {
-    if (endOfMessagesRef.current) {
-      endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+    const container = endOfMessagesRef.current?.parentElement;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth"
+      });
     }
   }, [messages]);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("chat_messages");
-    const existing = saved ? JSON.parse(saved) : [];
-
-    const now = getTime();
-    const newEntry = [{ sender: "user", text: "Suivre ma commande", timestamp: now }];
-    const updated = [...existing, ...newEntry];
-
-    setMessages(updated);
-    localStorage.setItem("chat_messages", JSON.stringify(updated));
-
-    setTimeout(() => {
-      const replaced = updated.slice(0, -1).concat({
-        sender: "bot",
-        text: "Pour voir le statut de votre commande, veuillez fournir les informations de celle-ci.",
-        timestamp: getTime(),
-      });
-      setMessages(replaced);
-      localStorage.setItem("chat_messages", JSON.stringify(replaced));
-    }, 1000);
-  }, []);
-
-  const handleSend = (userMessage) => {
-    const now = getTime();
-    const newMessages = [
-      ...messages,
-      { sender: "user", text: userMessage, timestamp: now },
-      { sender: "bot", text: "...", timestamp: now },
-    ];
-
-    setMessages(newMessages);
-    localStorage.setItem("chat_messages", JSON.stringify(newMessages));
-
-    setTimeout(() => {
-      const responseText =
-        userMessage === "Annuler"
-          ? "N'hésitez pas à nous écrire directement si vous avez des questions. Nous serons ravis de vous aider."
-          : "Pour voir le statut de votre commande, veuillez fournir les informations de celle-ci.";
-
-      const replaced = newMessages.slice(0, -1).concat({
-        sender: "bot",
-        text: responseText,
-        timestamp: getTime(),
-      });
-
-      setMessages(replaced);
-      localStorage.setItem("chat_messages", JSON.stringify(replaced));
-    }, 1000);
-  };
-
   const groupedMessages = messages.reduce((acc, msg) => {
-    const date = formatDate(msg.timestamp);
+    const date = (new Date(msg.timestamp)).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
     acc[date] = acc[date] || [];
     acc[date].push(msg);
     return acc;
   }, {});
 
   return (
-    <div className="flex flex-col h-full">
-        {step === 1 && <>
-            <div className="flex-1 overflow-y-auto scrollbar p-4 mb-12 sm:mb-0">
-                {Object.entries(groupedMessages).map(([date, msgs], i) => (
-                <div key={i} className="flex flex-col space-y-2">
-                    <div className="text-center text-xs text-gray-500 my-2">{date}</div>
-                    {msgs.map((msg, index) => (
-                    <div key={index} className={`p-3 rounded-lg max-w-[80%] text-sm ${msg.sender === "user" ? "bg-purpleLight text-white self-end" : "bg-bgLight dark:bg-bgDark text-purpleLight self-start"}`}>
-                        <p>{msg.text}</p>
-                        <span className="text-xs text-gray-400 block mt-1 text-right">
-                        {formatTime(msg.timestamp)}
-                        </span>
-                    </div>
-                    ))}
-                </div>
-                ))}
-                <div ref={endOfMessagesRef} />
-            </div>
-            <div className="sticky bottom-0 bg-white dark:bg-customDark p-4 space-y-2">
-                <Button onClick={() => {setStep(2); handleSend("Saisir les informations de la commande")}} isValid={true} text="Saisir les informations de la commande"/>
-                <Button onClick={() => handleSend("Annuler")} isValid={true} text="Annuler" />
-            </div></>}
-        {step === 2 && <>
-            <div className="flex flex-col items-center p-4">
-                <p className="text-lg font-semibold">Suivre ma commande</p>
-                <p className="text-md text-gray-500">Veuillez fournir vos coordonnées.</p>
-                
-                <Input type="text" value={formData.num} onChange={(e) => setFormData({ ...formData, num: e.target.value })} placeholder="#1234"/>
-                <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Test@gmail.com"/>
-            </div>
-            <div className="sticky bottom-0 bg-white dark:bg-customDark p-4">
-                <Button onClick={() => {setStep(2); handleSend("Saisir les informations de la commande")}} isValid={true} text="Suivre ma commande"/>
-            </div>
-        </>}
-    </div>
+      <div className="flex flex-col h-full">
+          {(choix !== 1 && (step === 1 || step === 2)) && <>
+              <div className="flex-1 overflow-y-auto scrollbar p-4 mb-18 sm:mb-0">
+                  {Object.entries(groupedMessages).map(([date, msgs], i) => (
+                  <div key={i} className="flex flex-col space-y-2">
+                      <div className="text-center text-xs text-gray-500 my-2">{date}</div>
+                      {msgs.map((msg, index) => (
+                      <div key={index} className={`p-3 rounded-lg max-w-[70%] break-words whitespace-pre-wrap text-sm ${msg.sender === "user" ? "bg-purpleLight text-white self-end" : "bg-bgLight dark:bg-bgDark text-purpleLight self-start"}`}>
+                          <div dangerouslySetInnerHTML={{ __html: msg.text }} />
+                          <span className="text-xs text-gray-400 block mt-1 text-right">
+                          {(new Date(msg.timestamp)).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          </span>
+                      </div>
+                      ))}
+                  </div>
+                  ))}
+                  <div ref={endOfMessagesRef} />
+              </div>
+              <div className="sticky bottom-0 bg-white dark:bg-customDark px-4 py-2 space-y-2">
+                  {(choix === 0 && step === 1) && <>
+                      <div onClick={() => {setStep(2); setChoix(1);}} className="relative">
+                        <button type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                          Saisir les informations de la commande
+                        </button>
+                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-purpleLight hover:scale-110`} />
+                      </div>
+                      <div onClick={() => {setChoix(3); handleSend("<p>Annuler</p>");}} className="relative">
+                        <button type="button"  className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}>
+                          Annuler
+                        </button>
+                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-purpleLight hover:scale-110`} />
+                      </div>
+                      
+                  </>}
+                  {(choix === 2 && step === 1) &&
+                    <button onClick={() => {setStep(2); setChoix(1);}} type="button" className={`w-full border border-purpleLight text-purpleLight text-left px-2 py-3 rounded-md text-sm`}> 
+                      Suivre une autre commande
+                    </button>
+                  }
+                  {(choix === 2 || choix === 3) && 
+                    <div className="relative">
+                      <input type="text" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="Message" className={`mt-1 px-4 py-2 text-gray-700 dark:text-grayDark dark:bg-contentDark focus:outline-none rounded-md border border-gray-300 dark:border-borderDark placeholder:text-gray-300 dark:placeholder:text-grayDark w-full`} />
+                      <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[30%] flex items-center text-gray-700 dark:text-grayDark hover:scale-110 ${ !formData.message ? "opacity-50 cursor-not-allowed" : ""  }`} />
+                    </div>}                
+              </div>
+          </>}
+          {(choix === 1 && step === 2) && 
+              <div className="min-h-[90vh] sm:min-h-[400px] flex flex-col justify-between">
+                  <div className="px-4 pt-6 space-y-3">
+                    <p className="text-lg font-semibold text-center">Suivre ma commande</p>
+                    <p className="text-md text-gray-500 text-center">Veuillez fournir vos coordonnées.</p>
+
+                    <Input type="number" value={formData.commande_id} onChange={(e) => setFormData({ ...formData, commande_id: e.target.value })} placeholder="Numéro de commande"/>
+                    <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Adresse e-mail"/>
+                  </div>
+                  
+                  <div className="p-4">
+                    <button onClick={() => {setStep(1); setChoix(2); handleSend(`<p>Mon numéro de commande est #${formData.commande_id}.</p><p>Mon adresse e-mail est  ${formData.email}</p>`)}} type="button" className={`w-full bg-purpleLight text-white py-3 rounded-md text-sm ${ !isValid ? "opacity-50 cursor-not-allowed" : ""  }`}> 
+                      Suivre ma commande
+                    </button>
+                  </div>
+              </div>
+              }
+
+      </div>
   );
 };
 

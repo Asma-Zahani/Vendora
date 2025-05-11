@@ -21,15 +21,15 @@ const Chatbot = ({step, setStep}) => {
   const { ajouterAuPanier, ajouterAuListeSouhait } = usePanierWishlist(response);
 
   const handleNext = () => {
-    if (step === 0) setAnswers({ ...answers, category: inputValue });
-    if (step === 1) setAnswers({ ...answers, budget: inputValue });
-    if (step === 2) setAnswers({ ...answers, brand: inputValue });
+    if (step === 3) setAnswers({ ...answers, category: inputValue });
+    if (step === 4) setAnswers({ ...answers, budget: inputValue });
+    if (step === 5) setAnswers({ ...answers, brand: inputValue });
     setStep(step + 1);
     setInputValue("");
   };
 
   useEffect(() => {
-    if (step === 3) {
+    if (step === 6) {
       sendToApi();
     }
   }, [step, answers]);
@@ -81,7 +81,7 @@ const Chatbot = ({step, setStep}) => {
 
   const renderStep = () => {
     switch (step) {
-      case 0:
+      case 3:
         return (
           <div className="space-y-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">🛍️ Quel type de produit cherchez-vous ?</p>          
@@ -89,7 +89,7 @@ const Chatbot = ({step, setStep}) => {
             <Button onClick={handleNext} isValid={true} text="Valider" />
           </div>
         );
-      case 1:
+      case 4:
         return (
           <div className="space-y-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">💰 Quel est votre budget maximum ?</p>
@@ -97,7 +97,7 @@ const Chatbot = ({step, setStep}) => {
             <Button onClick={handleNext} isValid={true} text="Valider" />
           </div>
         );
-      case 2:
+      case 5:
         return (
           <div className="space-y-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">🏷️ Une marque en particulier ?</p>
@@ -105,7 +105,7 @@ const Chatbot = ({step, setStep}) => {
             <Button onClick={handleNext} isValid={true} text="Valider" />
           </div>
         );
-      case 3:
+      case 6:
         return loading ? (
           <p className="text-purpleLight text-center">⏳ Chargement...</p>
         ) : response && response.length > 0 ? (
