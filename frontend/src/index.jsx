@@ -47,6 +47,9 @@ import CGU from "@/pages/Legal/CGU";
 import Protection from "@/pages/Legal/Protection";
 import Contact from "@/pages/Client/Contact";
 import About from "@/pages/Client/About";
+import ColisPrets from "./pages/Responsable/Gestion des colis/ColisPrets";
+import ColisRecuperes from "./pages/Responsable/Gestion des colis/ColisRecuperes";
+import ScanColis from "./pages/Responsable/Scan/ScanColis";
 
 const routes = [
   {
@@ -121,6 +124,9 @@ const routes = [
         element: <DashboardInterface menuItems={menuResponsable} />,
         children: [
           { path: "DashboardResponsable", element: <ResponsableDashboard /> },
+          { path: "colisPrets", element: <ColisPrets /> },
+          { path: "colisRecuperes", element: <ColisRecuperes /> },
+          { path: "scanColis", element: <ScanColis />}
         ]
       }
     ]

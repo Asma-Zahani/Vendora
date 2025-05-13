@@ -6,12 +6,9 @@ const BarcodeScanner = () => {
 
     useEffect(() => {
         const scanner = new Html5QrcodeScanner("reader", {
-            qrbox: {
-                width: 250,
-                height: 250
-            },
+            qrbox: { width: 250, height: 250 },
             fps: 5,
-        }, );
+        });
 
         scanner.render(success, error);
 
@@ -20,18 +17,33 @@ const BarcodeScanner = () => {
             setScanResult(result);
         }
 
-        function error() {
-            console.log(error);
+        function error(err) {
+            console.log(err);
         }
-    }, [])    
+    }, []);
 
     return (
-        <div>
-            <h2>Scanner un code-barres</h2>
-            {scanResult 
-            ? <div>Success: <a href={"http://"+scanResult}>{scanResult}</a></div>
-            : <div className="flex flex-col justify-center items-center" id="reader"></div>
-            }
+        <div className="flex flex-col items-center justify-center space-y-6 bg-customLight dark:bg-customDark shadow-lg rounded-2xl p-6 w-full mx-auto">
+            <h2 className="text-2xl font-semibold text-gray-800">Scanner un code-barres</h2>
+
+            {scanResult ? (
+                <div className="text-green-600 text-center">
+                    <p className="mb-2 font-medium">✅ Code scanné avec succès :</p>
+                    <a
+                        href={`http://${scanResult}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline break-all"
+                    >
+                        {scanResult}
+                    </a>
+                </div>
+            ) : (
+                <div
+                    id="reader"
+                    className="border border-gray-300 rounded-lg p-4 w-full flex flex-col items-center justify-center"
+                />
+            )}
         </div>
     );
 };
