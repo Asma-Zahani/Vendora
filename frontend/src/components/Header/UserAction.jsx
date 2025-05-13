@@ -43,40 +43,29 @@ const UserAction = ({ home }) => {
                 <hr className="border-gray-300 dark:border-gray-600 my-2" />
 
                 <ul className="pb-2">
-                    {user.role === "admin" && (
+                    {user.role !== "client" && (
                         <>
                             <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110 dark:text-gray-200 dark:hover:text-white">
-                                <Link to="/dashboard" className="flex leading-4 cursor-pointer">
+                                <Link to={`${user.role === "admin" ? "/dashboard" : user.role === "livreur" ? "DashboardLivreur" : "DashboardResponsable"}`} className="flex leading-4 cursor-pointer">
                                     <Home size={15} className="mr-2" /> Dashboard
                                 </Link>
                             </li>
-                            <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
-                                <Link to="/DashboardLivreur" className="flex leading-4 cursor-pointer">
-                                    <Truck size={15} className="mr-2" /> Dashboard Livreur
-                                </Link>
-                            </li>
-                            <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
-                                <Link to="/DashboardResponsable" className="flex leading-4 cursor-pointer">
-                                    <Truck size={15} className="mr-2" /> Dashboard Responsable
-                                </Link>
-                            </li>
+                            {user.role === "admin" && (
+                                <>
+                                    <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
+                                        <Link to="/DashboardLivreur" className="flex leading-4 cursor-pointer">
+                                            <Truck size={15} className="mr-2" /> Dashboard Livreur
+                                        </Link>
+                                    </li>
+                                    <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
+                                        <Link to="/DashboardResponsable" className="flex leading-4 cursor-pointer">
+                                            <Truck size={15} className="mr-2" /> Dashboard Responsable
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
+                            
                         </>
-                    )}
-
-                    {user.role === "livreur" && (
-                        <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
-                            <Link to="/DashboardLivreur" className="flex leading-4 cursor-pointer">
-                                <Home size={15} className="mr-2" /> Dashboard
-                            </Link>
-                        </li>
-                    )}
-
-                    {user.role === "responsable" && (
-                        <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110  dark:text-gray-200 dark:hover:text-white">
-                            <Link to="/DashboardResponsable" className="flex leading-4 cursor-pointer">
-                                <Home size={15} className="mr-2" /> Dashboard
-                            </Link>
-                        </li>
                     )}
 
                     <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110 dark:text-gray-200 dark:hover:text-white">
