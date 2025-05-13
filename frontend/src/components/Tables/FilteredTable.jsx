@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDownToLine, Plus, Search, ChevronDown, Trash2Icon, Database, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
@@ -9,8 +10,17 @@ import FactureModal from "@/components/Modals/FactureModal";
 import FormModal from "@/components/Modals/FormModal";
 import Checkbox from "@/components/ui/Checkbox";
 import Dropdown from "@/components/ui/Dropdown";
+import { useLocation } from "react-router-dom";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
+    const query = useQuery();
+    const idCommande = query.get("id");
+    const hasHandledURL = useRef(false);
+
     const [selectedItem, setSelectedItem] = useState(null);
     
     const [selectedItems, setSelectedItems] = useState([]);
@@ -33,8 +43,17 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
         else { setSelectedItems([...selectedItems, id]) }   
     };
 
-    
-      
+    useEffect(() => {
+        if (idCommande && data.data?.length && !hasHandledURL.current) {
+            const item = data.data?.find((i) => String(i[entityConfig.identifiant]) === String(idCommande));
+            if (item && !isFormOpen) {
+                setIsFormOpen(true);
+                item.actions.switch(item[entityConfig.identifiant]);
+
+                hasHandledURL.current = true;
+            }
+        }        
+    }, [idCommande, data]);      
 
     return (
         <section className="mx-6 py-6">
@@ -81,7 +100,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                     </div>
                                 }
                             </div>
-                            {filtres && 
+                            {filtres && filtres.value && 
                                 <div>
                                     <div className="hidden sm:inline-flex rounded-md border border-borderGrayLight dark:border-borderGrayDark divide-x dark:divide-borderGrayDark w-full lg:w-auto">
                                         {filtres.value.map((filter, index) => (
@@ -295,7 +314,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                         isValid = await entityConfig.handleCreate();
                     }
 
-                    if (isValid) {
+                    if (isValid) {                        
                         setIsFormOpen(false);
                     }
             }}/> }

@@ -68,7 +68,7 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
             );          
         }
         if (action === "delete") {
-          actions[action] = () => handleDelete(CRUDLabel, item[identifiant], setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities));
+          actions[action] = () => handleDelete(CRUDLabel, item[identifiant], setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities, { [filtres?.field]: filtres?.selectedFilter }));
         }
       });
   
@@ -78,8 +78,8 @@ const EntityManager = ({filtres, columns, fields, label, identifiant, formData, 
   
 
   const entityConfig = {label, formData, setFormData, fields, errors, setErrors, columns, identifiant,
-    handleCreate: notAdd ? undefined : () => handleCreate(label, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities)), 
-    handleEdit: () => handleEdit(CRUDLabel, identifiant, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities)) };
+    handleCreate: notAdd ? undefined : () => handleCreate(label, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities, { [filtres?.field]: filtres?.selectedFilter })), 
+    handleEdit: () => handleEdit(CRUDLabel, identifiant, formData, setErrors, setSuccessMessage, () => fetchData(label, currentPage, selectedItemPerPage, searchTerm, sortBy, sortOrder, setEntities, { [filtres?.field]: filtres?.selectedFilter })) };
   const tableConfig = {selectedItemPerPage, handlePageChange, handleConfigChange, searchTerm, sortOrder, sortBy, toggleSortOrder};
 
   return (

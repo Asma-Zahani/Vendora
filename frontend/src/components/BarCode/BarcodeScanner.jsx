@@ -24,25 +24,24 @@ const BarcodeScanner = () => {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-6 bg-customLight dark:bg-customDark shadow-lg rounded-2xl p-6 w-full mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-800">Scanner un code-barres</h2>
+            <h2 className="text-2xl font-semibold">Scanner un code-barres</h2>
 
             {scanResult ? (
                 <div className="text-green-600 text-center">
                     <p className="mb-2 font-medium">✅ Code scanné avec succès :</p>
-                    <a
-                        href={`http://${scanResult}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <button
+                        onClick={() => {
+                        const idCommande = scanResult.split('/').pop();
+                        window.location.href = `/colisPrets?id=${idCommande}`;
+                        }}
                         className="text-blue-600 underline break-all"
                     >
                         {scanResult}
-                    </a>
+                    </button>
                 </div>
+
             ) : (
-                <div
-                    id="reader"
-                    className="border border-gray-300 rounded-lg p-4 w-full flex flex-col items-center justify-center"
-                />
+                <div id="reader" className="border border-gray-300 dark:border-borderDark rounded-lg p-4 w-full flex flex-col items-center justify-center"/>
             )}
         </div>
     );
