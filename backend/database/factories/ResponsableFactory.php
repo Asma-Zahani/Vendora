@@ -17,7 +17,7 @@ class ResponsableFactory extends Factory
             'nom' => $this->faker->firstName(),
             'prenom' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make('client'),
+            'password' => Hash::make('responsable'),
             'telephone' => $this->faker->phoneNumber(),
             'genre' => $this->faker->randomElement(['Male', 'Femelle']),
             'date_naissance' => $this->faker->date(),
