@@ -1,6 +1,7 @@
 import PageNotFound from "@/pages/PageNotFound";
 import menuAdmin from "@/pages/Admin/menuItems";
 import menuLivreur from "@/pages/Livreur/menuItems";
+import menuResponsable from "@/pages/Responsable/menuItems";
 import UserInterface from "@/pages/UserInterface";
 import DashboardInterface from "@/pages/DashboardInterface";
 import Login from "@/pages/Authentification/Login";
@@ -10,11 +11,12 @@ import ResetPassword from "@/pages/Authentification/ResetPassword";
 import Shop from "@/pages/Client/Boutique/Boutique";
 import { Dashboard as AdminDashboard }  from "@/pages/Admin/Dashboard";
 import { Dashboard as LivreurDashboard }  from "@/pages/Livreur/Dashboard";
+import { Dashboard as ResponsableDashboard }  from "@/pages/Responsable/Dashboard";
 import Produits from "@/pages/Admin/Gestion des produits/Produits";
 import Categories from "@/pages/Admin/Gestion des produits/Categories";
 import SousCategories from "@/pages/Admin/Gestion des produits/SousCategories";
 import Marques from "@/pages/Admin/Gestion des produits/Marques";
-import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
+import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedResponsableRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "@/pages/Admin/Gestion des utilisateurs/Clients";
 import Livreurs from "@/pages/Admin/Gestion des utilisateurs/Livreurs";
 import Responsables from "@/pages/Admin/Gestion des utilisateurs/responsables";
@@ -106,6 +108,19 @@ const routes = [
           { path: "commandesHistorique", element: <HistoriqueCommandes /> },
           { path: "clientsLivreur", element: <ClientsLivreur /> },
           { path: "adresses", element: <AdressesLivraison /> },
+        ]
+      }
+    ]
+  },
+  {
+    path: "",
+    element: <ProtectedResponsableRoutes />,
+    children: [
+      {
+        path: "",
+        element: <DashboardInterface menuItems={menuResponsable} />,
+        children: [
+          { path: "DashboardResponsable", element: <ResponsableDashboard /> },
         ]
       }
     ]

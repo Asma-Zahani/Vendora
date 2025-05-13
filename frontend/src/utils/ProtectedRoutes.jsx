@@ -60,6 +60,25 @@ export const ProtectedLivreurRoutes = () => {
     return user && (user.role === "admin" || user.role === "livreur") ? <Outlet /> : <Navigate to="/login" />;
 };
 
+export const ProtectedResponsableRoutes = () => {
+    const { user } = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        if (user) {
+            setLoading(false);
+        } else {
+            setLoading(true);
+        }
+    }, [user]);
+
+    if (loading && localStorage.getItem('token')) {
+        return <LoadingSpinner />; 
+    }
+
+    return user && (user.role === "admin" || user.role === "responsable") ? <Outlet /> : <Navigate to="/login" />;
+};
+
 export const ProtectedAuthRoutes = () => {
     const { user } = useContext(UserContext);
 

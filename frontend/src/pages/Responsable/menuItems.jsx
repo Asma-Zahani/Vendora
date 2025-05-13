@@ -4,7 +4,7 @@ const menuResponsable = [
   {
     title: "Général",
     items: [
-      { label: "Tableau de bord", icon: <Home size={20} />, path: "DashboardLivreur" },
+      { label: "Tableau de bord", icon: <Home size={20} />, path: "DashboardResponsable" },
     ],
   },
 ];
