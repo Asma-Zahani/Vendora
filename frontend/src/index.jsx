@@ -19,7 +19,7 @@ import Marques from "@/pages/Admin/Gestion des produits/Marques";
 import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedResponsableRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "@/pages/Admin/Gestion des utilisateurs/Clients";
 import Livreurs from "@/pages/Admin/Gestion des utilisateurs/Livreurs";
-import Responsables from "@/pages/Admin/Gestion des utilisateurs/responsables";
+import Responsables from "@/pages/Admin/Gestion des utilisateurs/Responsables";
 import CommandeLivraison from "@/pages/Admin/Gestion des commandes/CommandeLivraison";
 import CommandeRetraitDrive from "@/pages/Admin/Gestion des commandes/CommandeRetraitDrive";
 import CodePromotions from "@/pages/Admin/Promotions et Offres/CodePromotions";
