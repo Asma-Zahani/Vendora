@@ -164,7 +164,7 @@ class AuthController extends Controller
 
         // Supprimer le token du cache
         Cache::forget("email_verification_{$token}");
-
+        
         return response()->json(['message' => 'Email vérifié avec succès. Vous pouvez maintenant vous connecter.'], 200);
     }
 
