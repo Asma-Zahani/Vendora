@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ClientSeeder::class,
 
             DriveSeeder::class,
-            // JourFerieSeeder::class,
+            JourFerieSeeder::class,
             HoraireSeeder::class,
 
             CommandeLivraisonSeeder::class,
