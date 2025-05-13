@@ -11,6 +11,8 @@ Route::post('/clients', [AuthController::class, 'createClient'])->middleware('au
 
 Route::post('/livreurs', [AuthController::class, 'createLivreur'])->middleware('auth:sanctum');
 
+Route::post('/responsables', [AuthController::class, 'createResponsable'])->middleware('auth:sanctum');
+
 Route::post('login', [AuthController::class,'login']);
 
 Route::post('/email/resend', [AuthController::class,'resend']);

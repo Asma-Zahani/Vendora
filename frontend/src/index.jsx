@@ -17,6 +17,7 @@ import Marques from "@/pages/Admin/Gestion des produits/Marques";
 import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "@/pages/Admin/Gestion des utilisateurs/Clients";
 import Livreurs from "@/pages/Admin/Gestion des utilisateurs/Livreurs";
+import Responsables from "@/pages/Admin/Gestion des utilisateurs/responsables";
 import CommandeLivraison from "@/pages/Admin/Gestion des commandes/CommandeLivraison";
 import CommandeRetraitDrive from "@/pages/Admin/Gestion des commandes/CommandeRetraitDrive";
 import CodePromotions from "@/pages/Admin/Promotions et Offres/CodePromotions";
@@ -124,6 +125,7 @@ const routes = [
           { path: "marques", element: <Marques /> },
           { path: "clients", element: <Clients /> },
           { path: "livreurs", element: <Livreurs /> },
+          { path: "responsables", element: <Responsables />},
           { path: "commandesLivraison", element: <CommandeLivraison /> },
           { path: "commandesRetraitDrive", element: <CommandeRetraitDrive /> },
           { path: "promotions", element: <Promotions /> },

@@ -17,7 +17,7 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except:['index','clients','livreurs','show'])
+            new Middleware('auth:sanctum', except:['index','clients','livreurs','responsables','show'])
         ];
     }
 
@@ -34,11 +34,20 @@ class UserController extends Controller implements HasMiddleware
     public function livreurs(Request $request)
     {
         return $this->getUser($request, "livreur");
+    }
+
+    public function responsables(Request $request)
+    {
+        return $this->getUser($request, "responsable");
     }  
 
     public function getUser(Request $request, string $role)
-    {
-        $query = User::where('role', $role);
+    {   
+        if($role === "responsable") {
+            $query = User::with('drive')->where('role', $role);
+        } else {
+            $query = User::where('role', $role);
+        }
 
         if ($request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
             if ($request->has('search') && !empty($request->search)) {

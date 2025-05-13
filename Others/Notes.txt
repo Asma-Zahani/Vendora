@@ -15,6 +15,9 @@ header admin (border notification)
 
 dropdown error
 
+remember token
+
+emploi, type logement, staus logement
 achref:
 t3aweny fel hebergement mte3 l api mte3 l rocommandation
 dashboard

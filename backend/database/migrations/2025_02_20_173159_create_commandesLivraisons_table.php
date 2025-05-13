@@ -15,9 +15,6 @@ return new class extends Migration
             $table->foreignId('commande_id')->constrained('commandes', 'commande_id')->onDelete('cascade');
             $table->foreignId('livreur_id')->nullable()->constrained('users', 'id')->onDelete('cascade');
             $table->date('dateLivraison')->nullable();
-            $table->string('adresse_livraison')->nullable();
-            $table->string('region_livraison')->nullable();
-            $table->string('ville_livraison')->nullable();
             $table->timestamps();
         }); 
         

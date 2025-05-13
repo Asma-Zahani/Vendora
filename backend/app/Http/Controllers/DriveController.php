@@ -56,9 +56,14 @@ class DriveController extends Controller implements HasMiddleware
             'adresse' => 'required|string|max:255',
             'region' => 'required|string|max:100',
             'ville' => 'required|string|max:100',
+            'responsable_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'responsable')],
             'status' => [Rule::in(StatusDriveEnum::values())],
         ]);
         
+        if(!$validatedData['responsable_id']) {
+            $validatedData['status'] = StatusDriveEnum::Inactif->value;
+        }
+
         $drive = Drive::create($validatedData);
 
         foreach (JourEnum::values() as $jour) {
@@ -90,9 +95,14 @@ class DriveController extends Controller implements HasMiddleware
             'adresse' => 'required|string|max:255',
             'region' => 'required|string|max:100',
             'ville' => 'required|string|max:100',
+            'responsable_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'responsable')],
             'status' => [Rule::in(StatusDriveEnum::values())],
         ]);
         
+        if(!$validatedData['responsable_id']) {
+            $validatedData['status'] = StatusDriveEnum::Inactif->value;
+        }
+
         $drive->update($validatedData);
 
         return response()->json([

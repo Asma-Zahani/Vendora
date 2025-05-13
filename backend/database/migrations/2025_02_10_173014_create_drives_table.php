@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('adresse');
             $table->string('region');
             $table->string('ville');
-            $table->enum('status', StatusDriveEnum::values())->default(StatusDriveEnum::Actif->value);
+            $table->enum('status', StatusDriveEnum::values())->default(StatusDriveEnum::Inactif->value);
+            $table->foreignId('responsable_id')->nullable()->constrained('users', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }

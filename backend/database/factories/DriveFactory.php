@@ -18,6 +18,7 @@ class DriveFactory extends Factory
             'region' => $this->faker->state(),
             'ville' => $this->faker->city(),
             'status' => $this->faker->randomElement(StatusDriveEnum::values()),
+            'responsable_id' => rand(0, 1) ? $this->faker->numberBetween(7, 12) : null,
         ];
     }
 

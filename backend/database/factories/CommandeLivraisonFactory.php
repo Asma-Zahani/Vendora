@@ -45,7 +45,7 @@ class CommandeLivraisonFactory extends Factory
         $commandeLivraison = [
             'commande_id' => $commande->commande_id,
             'dateLivraison' => $dateLivraison ? $dateLivraison->format('Y-m-d') : null,
-            'livreur_id' => rand(0, 1) ? $this->faker->numberBetween(2, 10) : null,
+            'livreur_id' => rand(0, 1) ? $this->faker->numberBetween(2, 6) : null,
         ];
 
         $facture = FactureCommande::create([

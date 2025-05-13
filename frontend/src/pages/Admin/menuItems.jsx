@@ -1,4 +1,4 @@
-import { Home, Users, Truck, Tag, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon, Store } from "lucide-react";
+import { Home, Users, Truck, Tag, Percent, Bookmark, ShoppingBag, Clock, Package, Layers2Icon, Layers3Icon, CalendarDaysIcon, Store, UserCog } from "lucide-react";
 
 const menuAdmin = [
   {
@@ -20,7 +20,8 @@ const menuAdmin = [
     title: "Gestion des utilisateurs",
     items: [
       { label: "Clients", icon: <Users size={20} />, path: "/clients" },
-      { label: "Livreurs", icon: <Truck size={20} />, path: "/livreurs" }
+      { label: "Livreurs", icon: <Truck size={20} />, path: "/livreurs" },
+      { label: "Responsables", icon: <UserCog size={20} />, path: "/responsables" }
     ],
   },
   {

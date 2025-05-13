@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Header from "@/components/Header/DashboardSubHeader";
-import { Truck } from "lucide-react";
+import { UserCog } from "lucide-react";
 import EntityManager from "@/service/EntityManager";
 import { regions, villes } from "@/service/UserInfos";
 
-const Livreurs = () => {
+const Responsables = () => {
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "", password_confirmation: "", date_naissance: "", genre: "" });
   
   const columns = [
-    { label: "Livreur", type: "nomComplete" },
+    { label: "Responsables", type: "nomComplete" },
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
@@ -27,10 +27,10 @@ const Livreurs = () => {
 
   return (
     <>
-      <Header title="Livreurs" icon={Truck} parent="Gestion des utilisateurs" current="Livreurs" />
-      <EntityManager columns={columns} fields={fields} label="livreurs" identifiant="id" formData={formData} setFormData={setFormData} actionList={["view", "edit", "delete"]} />
+      <Header title="Responsables" icon={UserCog} parent="Gestion des utilisateurs" current="Responsables" />
+      <EntityManager columns={columns} fields={fields} label="responsables" identifiant="id" formData={formData} setFormData={setFormData} actionList={["view", "edit", "delete"]} />
     </>
   );
 };
 
-export default Livreurs;
+export default Responsables;

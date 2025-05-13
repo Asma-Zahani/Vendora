@@ -39,6 +39,7 @@ Route::apiResource('users', UserController::class);
 
 Route::get('clients', [UserController::class, 'clients']);
 Route::get('livreurs', [UserController::class, 'livreurs']);
+Route::get('responsables', [UserController::class, 'responsables']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('panier', [UserController::class, 'ajouterAuPanier']);

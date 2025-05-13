@@ -13,6 +13,7 @@ class Drive extends Model
     protected $primaryKey = 'drive_id';
 
     protected $fillable = [
+        'responsable_id',
         'nom',
         'adresse',
         'region',
@@ -23,6 +24,11 @@ class Drive extends Model
     public function commandesRetraitDrive()
     {
         return $this->hasMany(CommandeRetraitDrive::class, 'drive_id', 'drive_id');
+    }
+
+    public function responsable()
+    {
+        return $this->belongsTo(User::class, 'responsable_id');
     }
 
     public function horaires()

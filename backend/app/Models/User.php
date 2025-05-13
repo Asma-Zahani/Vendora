@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Commande::class, 'client_id');
     }
 
+    public function drive()
+    {
+        return $this->hasOne(Drive::class, 'responsable_id');
+    }
+
     public function preferences()
     {
         return $this->hasOne(UserPreference::class, 'user_id');

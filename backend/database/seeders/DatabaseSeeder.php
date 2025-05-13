@@ -20,10 +20,11 @@ class DatabaseSeeder extends Seeder
             MarqueSeeder::class,
             PromotionSeeder::class,
             CodePromotionSeeder::class,
-            DriveSeeder::class,
             ProduitSeeder::class,
             LivreurSeeder::class,
+            ResponsableSeeder::class,
             ClientSeeder::class,
+            DriveSeeder::class,
             CommandeLivraisonSeeder::class,
             CommandeRetraitDriveSeeder::class,
             InteractionSeeder::class

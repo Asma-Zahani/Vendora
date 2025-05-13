@@ -19,20 +19,25 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        return $this->createUser($request, "", "Compte créé. Veuillez vérifier votre email.");
+        return $this->createUser($request, RoleEnum::CLIENT->value, "Compte créé. Veuillez vérifier votre email.");
     }
 
     public function createClient(Request $request)
     {
-        return $this->createUser($request, "", "Client ajouter avec succès");
+        return $this->createUser($request, RoleEnum::CLIENT->value, "Client ajouter avec succès");
     }
 
     public function createLivreur(Request $request)
     {
-        return $this->createUser($request, "livreur", "Livreur ajouter avec succès");
+        return $this->createUser($request, RoleEnum::LIVREUR->value, "Livreur ajouter avec succès");
     }
 
-    private function createUser(Request $request, string $role, string $message)
+    public function createResponsable(Request $request)
+    {
+        return $this->createUser($request, RoleEnum::RESPONSABLE->value, "Responsable ajouter avec succès");
+    }
+
+    private function createUser(Request $request, $role, string $message)
     {
         $validatedData = $request->validate([
             'nom' => 'required|max:255',
@@ -51,10 +56,7 @@ class AuthController extends Controller
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password'] ?? $role);
-        
-        if ($role === "livreur") {
-            $validatedData['role'] = RoleEnum::LIVREUR->value;
-        }
+        $validatedData['role'] = $role;
         
         $user = User::create($validatedData);
         

@@ -99,7 +99,7 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
             'etatCommande' => ['nullable', Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date',
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
-            'produits' => 'required|array',  // Valide que c'est un tableau de produits
+            'produits' => 'required|array',
             'produits.*.produit_id' => 'required|exists:produits,produit_id',
             'produits.*.quantite' => 'required|integer|min:1',
             'produits.*.couleur' => 'nullable|string|max:50',

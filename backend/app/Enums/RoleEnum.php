@@ -7,7 +7,7 @@ enum RoleEnum : string
     case ADMIN = 'admin';
     case CLIENT = 'client';
     case LIVREUR = 'livreur';
-    case RESPONSABLE = 'Responsable Drive';
+    case RESPONSABLE = 'responsable';
 
     public static function values(): array
     {

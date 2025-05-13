@@ -10,16 +10,13 @@ class CommandeLivraison extends Model
 {
     use HasFactory;
 
-    protected $table = 'commandes_livraisons'; // Correction du nom de la table
+    protected $table = 'commandes_livraisons';
     protected $primaryKey = 'commande_id';
 
     protected $fillable = [
         'commande_id',
         'dateLivraison',
-        'livreur_id',
-        'adresse_livraison',
-        'region_livraison',
-        'ville_livraison',
+        'livreur_id'
     ];
 
     // Relation avec le livreur
