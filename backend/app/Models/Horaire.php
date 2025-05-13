@@ -24,13 +24,14 @@ class Horaire extends Model
         'jour' => JourEnum::class
     ];
 
-    public function periodesHoraires()
-    {
-        return $this->hasMany(PeriodeHoraire::class, 'horaire_id', 'horaire_id');
-    }
-
     public function drive()
     {
         return $this->belongsTo(Drive::class, 'drive_id', 'drive_id');
     }
+
+    public function periodes()
+    {
+        return $this->belongsToMany(Periode::class,'periode_horaires','horaire_id','periode_id');
+    }
+
 }

@@ -43,8 +43,8 @@ export const handleEdit = async (CRUDLabel, identifiant, formData, setErrors, se
   }
 };
 
-export const handleDelete = async (CRUDLabel, id, setSuccessMessage, fetchData) => {
-  const data = await deleteEntity(CRUDLabel, id);
+export const handleDelete = async (CRUDLabel, id, setSuccessMessage, fetchData, formData) => {
+  const data = await deleteEntity(CRUDLabel, id, formData);
   if (data.message) {
     setSuccessMessage(data.message);
     if (fetchData) {

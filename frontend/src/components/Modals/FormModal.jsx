@@ -49,9 +49,18 @@ const FormModal = ({onClose, formLabel, action, formData, setFormData, fields, o
           <div className="p-4 md:p-5 space-y-4 max-h-[70vh] overflow-y-auto scrollbar">
             {fields.map(({ label, key, type, options, form, setForm, handleCreate }, index) => (
               <div key={index} className="mb-4 flex flex-col">
-                <Label label={label} />
+                {type !== "checkbox" && <Label label={label} />}
                 {(type === "text" || type === "number" || type === "email" || type === "date" || type === "time") && (
                   <Input type={type} name={key} placeholder={`Enter ${label}`} value={formData[key] || ""} onChange={handleChange} required/>
+                )}
+                {type === "checkbox" && (
+                  <label className="flex items-center cursor-pointer text-sm text-gray-700 dark:text-white">
+                    <input type="checkbox" checked={formData[key] || false} onChange={() => {setFormData({ ...formData, [key]: !formData[key] })}} className="hidden"/>
+                    <span className={`appearance-none w-4 h-4 mr-2 rounded-sm ${formData[key] ? 'bg-purpleLight' : 'bg-contentLight dark:bg-contentDark'} flex items-center justify-center`}>
+                        {formData[key] && <span className="text-white text-sm">✔</span>}
+                    </span>
+                    {label && <span>{label}</span>}
+                  </label>
                 )}
                 {type === "radio" && (
                   <div className="mt-1 flex justify-center space-x-6">

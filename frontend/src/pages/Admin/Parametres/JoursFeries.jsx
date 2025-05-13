@@ -15,7 +15,7 @@ import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 const JoursFeries = () => {
   const calendarEl = useRef(null);
   const [events, setEvents] = useState([]);
-  const [formData, setFormData] = useState({ jour_ferie_id: '', drive_id: '', title: '', start: '', end: '' });
+  const [formData, setFormData] = useState({ jour_ferie_id: '', drive_id: '', title: '', start: '', end: '', all: false });
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -29,11 +29,11 @@ const JoursFeries = () => {
   const fetchData = async () => {
     setDrives(await getEntities("drives"));
   };  
-
+  
   useEffect(() => {
     fetchData();
   }, []);
-
+  
   useEffect(() => {
     if (!calendarEl.current || !selectedDriveId) return;
 
@@ -168,9 +168,10 @@ const JoursFeries = () => {
           formData={formData} setFormData={setFormData} errors={errors}
           {...(selectedEvent && { onDelete: handleDeleteEvent })}
           fields={[
-            { label: "Titre", key: "title", type: "text", value: formData.title },
-            { label: "Date de début", key: "start", type: "date", value: formData.start },
-            { label: "Date de fin", key: "end", type: "date", value: formData.end },
+            { label: "Titre", key: "title", type: "text"},
+            { label: "Date de début", key: "start", type: "date"},
+            { label: "Date de fin", key: "end", type: "date"},
+            { label: "Appliquer à tous les drives", key: "all", type: "checkbox"},
           ]}
         />
       )}

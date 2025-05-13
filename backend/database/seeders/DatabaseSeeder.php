@@ -21,12 +21,18 @@ class DatabaseSeeder extends Seeder
             PromotionSeeder::class,
             CodePromotionSeeder::class,
             ProduitSeeder::class,
+
             LivreurSeeder::class,
             ResponsableSeeder::class,
             ClientSeeder::class,
+
             DriveSeeder::class,
+            // JourFerieSeeder::class,
+            HoraireSeeder::class,
+
             CommandeLivraisonSeeder::class,
             CommandeRetraitDriveSeeder::class,
+            
             InteractionSeeder::class
         ]);
     }

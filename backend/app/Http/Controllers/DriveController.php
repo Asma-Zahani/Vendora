@@ -25,7 +25,7 @@ class DriveController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(Drive::with('horaires.periodesHoraires','jourFeries')->get());
+            return response()->json(Drive::with('horaires.periodes','jourFeries')->get());
         }
 
         $query = Drive::query();

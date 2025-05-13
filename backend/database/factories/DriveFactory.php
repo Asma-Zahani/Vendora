@@ -22,16 +22,16 @@ class DriveFactory extends Factory
         ];
     }
 
-    public function configure()
-    {
-        return $this->afterCreating(function (Drive $drive) {
-            foreach (JourEnum::values() as $jour) {
-                Horaire::create([
-                    'drive_id' => $drive->drive_id,
-                    'jour' => $jour,
-                    'ouvert' => $jour !== 'Dimanche' // Fermé le dimanche
-                ]);
-            }
-        });
-    }
+    // public function configure()
+    // {
+    //     return $this->afterCreating(function (Drive $drive) {
+    //         foreach (JourEnum::values() as $jour) {
+    //             Horaire::create([
+    //                 'drive_id' => $drive->drive_id,
+    //                 'jour' => $jour,
+    //                 'ouvert' => $jour !== 'Dimanche' // Fermé le dimanche
+    //             ]);
+    //         }
+    //     });
+    // }
 }

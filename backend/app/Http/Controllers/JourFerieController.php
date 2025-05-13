@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drive;
 use App\Models\JourFerie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -35,9 +36,22 @@ class JourFerieController extends Controller implements HasMiddleware
             'title' => 'required|string|max:255',
             'start' => 'required|date',
             'end' => 'required|date',
+            'all' => 'boolean',
         ]);
         
-        $jourFerie = JourFerie::create($validatedData);
+        if ($validatedData["all"] === true) {
+            $drives = Drive::all();
+            foreach ($drives as $drive) {
+                JourFerie::create([
+                    'drive_id' => $drive->drive_id,
+                    'title' => $validatedData['title'],
+                    'start' => $validatedData['start'],
+                    'end' => $validatedData['end'],
+                ]);
+            }
+        } else {
+            $jourFerie = JourFerie::create($validatedData);
+        }
 
         return response()->json([
             'message' => 'Jour férié ajouter avec succès',

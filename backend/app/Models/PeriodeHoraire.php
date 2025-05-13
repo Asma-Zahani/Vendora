@@ -2,25 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PeriodeHoraire extends Model
 {
-
-    use HasFactory;
-
-    protected $primaryKey = 'periode_horaire_id';
+    protected $table = 'periode_horaires';
     public $timestamps = false;
     
-    protected $fillable = [
-        'heureDebut',
-        'heureFin',
-        'horaire_id'
-    ];
-    
-    public function horaire()
-    {
-        return $this->belongsTo(Horaire::class, 'horaire_id', 'horaire_id');
-    }
+    protected $fillable = ['horaire_id', 'periode_id'];
 }

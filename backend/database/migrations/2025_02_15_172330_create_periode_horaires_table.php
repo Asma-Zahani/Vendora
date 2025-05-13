@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('periode_horaires', function (Blueprint $table) {
-            $table->id('periode_horaire_id');
             $table->foreignId('horaire_id')->constrained('horaires', 'horaire_id')->onDelete('cascade');
-            $table->time('heureDebut');
-            $table->time('heureFin');
-            $table->unique(['horaire_id','heureDebut', 'heureFin']);
+            $table->foreignId('periode_id')->constrained('periodes', 'periode_id')->onDelete('cascade');
         });
     }
 

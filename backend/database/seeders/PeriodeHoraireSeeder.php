@@ -2,17 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\PeriodeHoraire;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\PeriodeHoraire;
 
 class PeriodeHoraireSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        PeriodeHoraire::factory(5)->withHoraires()->create();
+        // PeriodeHoraire::factory(5)->withHoraires()->create();
     }
 }

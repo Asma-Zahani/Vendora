@@ -12,7 +12,7 @@ use App\Http\Controllers\HoraireController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\FactureCommandeController;
 use App\Http\Controllers\MarqueController;
-use App\Http\Controllers\PeriodeHoraireController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SousCategorieController;
@@ -24,7 +24,6 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\UserPreferencesController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\DashboardLivreurController;
-use App\Models\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +51,7 @@ Route::apiResource('codePromotions', CodePromotionController::class);
 Route::get('codePromotions/code/{code}', [CodePromotionController::class, 'getPromoByName']);
 
 Route::apiResource('categories', CategorieController::class); //tester
-Route::apiResource('PeriodesHoraires', PeriodeHoraireController::class); //tester
+Route::apiResource('periodes', PeriodeController::class); //tester
 
 Route::apiResource('joursFeries', JourFerieController::class); //tester
 Route::get('joursFeries/drive/{id}', [JourFerieController::class, 'getJourFerieByDrive']);
@@ -60,7 +59,7 @@ Route::get('joursFeries/drive/{id}', [JourFerieController::class, 'getJourFerieB
 Route::apiResource('marques', MarqueController::class); //tester
 Route::apiResource('promotions', PromotionController::class); //tester
 
-Route::apiResource('horaires', HoraireController::class); //tester
+Route::put('horaires/{id}', [HoraireController::class, 'update'])->middleware('auth:sanctum');
 Route::apiResource('sousCategories', SousCategorieController::class); //tester
 Route::apiResource('detailFactures', DetailFactureController::class); //tester
 
