@@ -29,9 +29,9 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
       setQuantity(value);
     }
   };
-
+  
   const handleIncrease = () => {
-    if (quantity < produit.quantite || produit.couleurs[0]?.pivot?.quantite) {
+    if (quantity < (produit.quantite || produit.couleurs[0]?.pivot?.quantite)) {
       setQuantity(quantity + 1);
     }
   };

@@ -29,10 +29,10 @@ const usePanierWishlist = (produits) => {
 
             const couleurInfo = produitExistant?.couleurs?.find(c => c.nom === couleur);            
             const quantiteMaxProduit = produitExistant?.quantite ? produitExistant.quantite : couleurInfo.pivot?.quantite ;
-
+            
             if (quantiteTotale > quantiteMaxProduit) {
-                quantiteTotale = quantiteMaxProduit;
                 setSuccessMessage("La quantité demandée dépasse le stock disponible !");
+                return;
             }
         }
         
@@ -55,7 +55,19 @@ const usePanierWishlist = (produits) => {
             const sameColor = couleur ? item.pivot?.couleur === couleur : true;            
             return sameId && sameColor;
         });
+        let quantiteTotale = parseInt(nouvelleQuantite);
+        
         if (produitExistant) {
+            const couleurInfo = produitExistant?.couleurs?.find(c => c.nom === couleur);            
+            const quantiteMaxProduit = produitExistant?.quantite ? produitExistant.quantite : couleurInfo.pivot?.quantite ;
+            
+            if (quantiteTotale > quantiteMaxProduit) {
+                setSuccessMessage("La quantité demandée dépasse le stock disponible !");
+                return;
+            } else if (quantiteTotale === quantiteMaxProduit) {
+                setSuccessMessage("Vous avez atteint la quantité maximale disponible pour ce produit.");
+            }
+
             setFormData({
                 client_id: user?.id,
                 produit_id: produit_id,

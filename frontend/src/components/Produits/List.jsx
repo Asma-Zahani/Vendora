@@ -24,7 +24,7 @@ const List = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListeSouhait,
   };
 
   const handleIncrease = () => {
-    if (quantity < produit.quantite || produit.couleurs[0]?.pivot?.quantite) {
+    if (quantity < (produit.quantite || produit.couleurs[0]?.pivot?.quantite)) {
       setQuantity(quantity + 1);
     }
   };

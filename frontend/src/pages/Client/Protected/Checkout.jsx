@@ -108,9 +108,8 @@ const Checkout = () => {
         }
     };
 
-    const passerCommande = async () => {
+    const passerCommande = async (transactionId) => {
         try {
-            const transactionId = paymentMethod === "carte" && stripeFormRef.current ? await stripeFormRef.current.submitPayment() : null;
             const updatedUser = await updateEntity("users", user.id, formData);
             const orderData = {
                 client_id: user.id,
@@ -141,12 +140,6 @@ const Checkout = () => {
         } catch (error) {
             console.error("Erreur de commande:", error);
             alert("Erreur lors de la commande.");
-        }
-    };
-
-    const handleOrderClick = () => {
-        if (validateStep()) {
-            setIsOpen(true);
         }
     };
 
@@ -291,7 +284,7 @@ const Checkout = () => {
                             <div className="flex justify-between mt-6">
                                 {step > 1 && (<button onClick={() => setStep(step - 1)} className="bg-gray-300 text-black py-2 px-4 rounded">Retour</button>)}
                                 {step < 3 && (<button onClick={() => {if (validateStep()) { setStep(step + 1);}}} className="bg-purpleLight text-white py-2 px-4 rounded ml-auto">Suivant</button>)}
-                                {step == 3 && ( <button onClick={() => handleOrderClick()} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto bg-purpleLight text-white
+                                {step == 3 && ( <button onClick={() => { if (validateStep()) {setIsOpen(true)} }} disabled={paymentMethod === "carte" && !isCardValid}  className={`py-2 px-4 rounded ml-auto bg-purpleLight text-white
                                         ${paymentMethod === "carte" && !isCardValid ? 'cursor-not-allowed opacity-50' : ''}`}> Passer la commande </button>)}
                             </div>
                         </div>
@@ -353,7 +346,15 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="Souhaitez-vous passer la commande ?" onConfirm={() => {setIsOpen(false); passerCommande()}}/> }
+            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="Souhaitez-vous passer la commande ?" 
+                onConfirm={async () => {
+                    setIsOpen(false); 
+                    if (stripeFormRef.current) {
+                        await stripeFormRef.current.submitPayment();
+                    } else {
+                        passerCommande(null);
+                    }
+                }}/> }
         </section>
     );
 };

@@ -5,7 +5,7 @@ import { useStripe, useElements } from '@stripe/react-stripe-js';
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCreditCard } from 'react-icons/fa';
 import { createEntity } from "@/service/EntitesService";
 
-const StripeForm = ({ amount, user, setIsCardValid }, ref) => {
+const StripeForm = ({ amount, user, setIsCardValid, onSuccess }, ref) => {
   const stripe = useStripe();
   const elements = useElements();
   const [cardBrand, setCardBrand] = useState('unknown');
@@ -27,24 +27,16 @@ const StripeForm = ({ amount, user, setIsCardValid }, ref) => {
   const handleSubmit = async () => {
     try {
       const cardElement = elements.getElement(CardNumberElement);
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement
-      });
+      const { error, paymentMethod } = await stripe.createPaymentMethod({type: 'card', card: cardElement });
 
       if (error) {
         console.error('[Payment Method Error]', error.message);
         return null;
       }
 
-      const paymentIntentData = await createEntity("create-payment-intent", {
-        amount: amount * 100,
-        user_id: user.id
-      });
+      const paymentIntentData = await createEntity("create-payment-intent", {amount: amount * 100, user_id: user.id});
 
-      const result = await stripe.confirmCardPayment(paymentIntentData.clientSecret, {
-        payment_method: paymentMethod.id
-      });
+      const result = await stripe.confirmCardPayment(paymentIntentData.clientSecret, { payment_method: paymentMethod.id});
 
       if (result.error) {
         console.error('[Stripe Payment Error]', result.error.message);
@@ -52,11 +44,8 @@ const StripeForm = ({ amount, user, setIsCardValid }, ref) => {
       }
 
       if (result.paymentIntent.status === 'succeeded') {
-        await createEntity("save-transaction-id", {
-          transaction_id: result.paymentIntent.id,
-          user_id: user.id
-        });
-        return result.paymentIntent.id;
+        await createEntity("save-transaction-id", {transaction_id: result.paymentIntent.id,user_id: user.id});
+        onSuccess(result.paymentIntent.id);
       }
 
       return null;
