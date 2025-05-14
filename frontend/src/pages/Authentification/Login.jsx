@@ -65,7 +65,7 @@ const Login = () => {
                 <div className="mb-4">
                     <Label label="Email Address"/>
                     <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Test@gmail.com" error={errors.email} required />
-                    {errors.email && <p className="text-sm">Vous n&apos;avez pas reçu l&apos;email ? <span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span></p>}
+                    {Array.isArray(errors.email) && errors.email.includes("Votre adresse email n'a pas été vérifiée.") && <p className="text-sm">Vous n&apos;avez pas reçu l&apos;email ? <span onClick={renvoyerEmail} className="text-purpleLight hover:underline cursor-pointer">Renvoyer</span></p>}
                 </div>
                 <div className="mb-4">
                     <Label label="Mot de passe"/>

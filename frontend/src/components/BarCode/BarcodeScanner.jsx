@@ -29,14 +29,12 @@ const BarcodeScanner = () => {
             {scanResult ? (
                 <div className="text-green-600 text-center">
                     <p className="mb-2 font-medium">✅ Code scanné avec succès :</p>
-                    <button
+                    <button className="text-blue-600 underline break-all"
                         onClick={() => {
                         const idCommande = scanResult.split('/').pop();
                         window.location.href = `/colisPrets?id=${idCommande}`;
-                        }}
-                        className="text-blue-600 underline break-all"
-                    >
-                        {scanResult}
+                        }}>
+                        #{scanResult}
                     </button>
                 </div>
 

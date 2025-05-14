@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo/logo.svg";
-import { ChevronRight, ChevronDown, X } from "lucide-react";
+import { ChevronRight, ChevronDown, X, LogOut } from "lucide-react";
 import Icon from "@/assets/logo/logo-ico.svg";
+import { handleLogout } from "@/service/EntitesService";
+import { UserContext } from '@/utils/UserContext';
 
 const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover, menuItems }) => {
+  const { setUser, setToken } = useContext(UserContext);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
 
@@ -93,6 +96,19 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover, menuItems }) 
               ))}
             </li>
           ))}
+            <li>
+              <h6 className="text-gray-700 dark:text-white font-semibold uppercase text-xs -mb2">
+                Compte
+              </h6>
+              <div className="my-2 mx-1">
+                <div onClick={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }} className={`flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-bgLight dark:hover:bg-bgDark text-black dark:text-white`}>
+                  <div className="flex items-center">
+                    <LogOut size={20} />
+                    <span className="ml-3 font-medium">Déconnexion</span>
+                  </div>
+                </div>
+              </div>
+            </li>
         </ul>
       </div>
     </div>

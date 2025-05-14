@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useLocation } from "react-router-dom";
 import logo from "@/assets/logo/logo-ico.svg";
+import { LogOut } from "lucide-react";
 
 const SidebarFixed = ({ toggleSidebarHover, menuItems }) => {
   const location = useLocation();
@@ -30,6 +31,11 @@ const SidebarFixed = ({ toggleSidebarHover, menuItems }) => {
               })}
             </div>
           ))}
+          <li>
+            <div className={`flex items-center justify-center w-12 h-12 transition-all duration-75 ease-linear rounded-xl text-black -my-2 dark:text-white`}>
+              <LogOut size={20} />
+            </div>
+          </li>
         </ul>
       </div>
     </div>

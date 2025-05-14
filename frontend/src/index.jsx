@@ -50,6 +50,7 @@ import About from "@/pages/Client/About";
 import ColisPrets from "./pages/Responsable/Gestion des colis/ColisPrets";
 import ColisRecuperes from "./pages/Responsable/Gestion des colis/ColisRecuperes";
 import ScanColis from "./pages/Responsable/Scan/ScanColis";
+import ColisATraiter from "./pages/Responsable/Gestion des colis/ColisATraiter";
 
 const routes = [
   {
@@ -124,6 +125,7 @@ const routes = [
         element: <DashboardInterface menuItems={menuResponsable} />,
         children: [
           { path: "DashboardResponsable", element: <ResponsableDashboard /> },
+          { path: "colisATraiter", element: <ColisATraiter /> },
           { path: "colisPrets", element: <ColisPrets /> },
           { path: "colisRecuperes", element: <ColisRecuperes /> },
           { path: "scanColis", element: <ScanColis />}
