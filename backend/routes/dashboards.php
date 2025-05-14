@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/livraisonsEffectuees', [DashboardLivreurController::class, 'livraisonsEffectuees']);
     Route::get('/livraisonsEnCours', [DashboardLivreurController::class, 'livraisonsEnCours']);
     Route::get('/livraisonsAnnulees', [DashboardLivreurController::class, 'livraisonsAnnulees']);
+    Route::get('/livraisonsParEtat', [DashboardLivreurController::class, 'livraisonsParEtat']);
 });

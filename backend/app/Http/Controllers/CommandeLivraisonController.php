@@ -29,10 +29,30 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request)
+    public function commandeParLivreur(Request $request)
+    {
+        $query = $this->commandes($request);
+
+        $livreurId = intval($request->user()->id);
+        $query->where('livreur_id', '=', $livreurId);
+
+        $commandes = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
+
+        return response()->json($commandes);
+    }
+
+    
+    public function index(Request $request){
+        $query = $this->commandes($request);
+        $commandeLivraison = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
+
+        return response()->json($commandeLivraison);
+    }
+
+    public function commandes(Request $request)
     {
         if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(CommandeLivraison::with('commande.client','commande.facture.detailsFacture.produit')->get());
+            return CommandeLivraison::with('commande.client','commande.facture.detailsFacture.produit')->get();
         }
 
         $query = CommandeLivraison::query();
@@ -80,10 +100,8 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
         if (Schema::hasColumn('commandes_livraisons', $request->input('sort_by'))) {
             $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
         }
-        
-        $commandeLivraison = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
-
-        return response()->json($commandeLivraison);
+    
+        return $query;
     }
 
     /**

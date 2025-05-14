@@ -22,8 +22,9 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     }
-  });
+  }); 
   
   return await response.json();
 };

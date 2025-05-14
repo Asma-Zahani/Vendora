@@ -17,6 +17,8 @@ remember token (base de donné users)
 
 emploi, type logement, staus logement (a effacer)
 
+remove getAuthentificatedentities
+
 achref:
 t3aweny fel hebergement mte3 l api mte3 l rocommandation
 dashboard

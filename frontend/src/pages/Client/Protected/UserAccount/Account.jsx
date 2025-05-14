@@ -38,7 +38,7 @@ const Account = () => {
                                         </li>
                                         {user.role !== "client" &&
                                             <li>
-                                                <Link to={`${user.role === "admin" ? "/dashboard" : user.role === "livreur" ? "DashboardLivreur" : "DashboardResponsable"}`} className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/dashboard" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
+                                                <Link to={`${user.role === "admin" ? "/dashboard" : user.role === "livreur" ? "/dashboardLivreur" : "/dashboardResponsable"}`} className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/dashboard" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                     <LayoutDashboard className="w-5 h-5 me-2" />
                                                     Dashboard
                                                 </Link>

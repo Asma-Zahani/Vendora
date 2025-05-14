@@ -39,7 +39,7 @@ const menuAdmin = [
     ],
   },
   {
-    title: "Promotions et Offres",
+    title: "Promotions & Offres",
     items: [
       { label: "Codes Promotions", icon: <Tag size={20} />, path: "/codePromotions" },
       { label: "Promotions", icon: <Percent size={20} />, path: "/promotions" },

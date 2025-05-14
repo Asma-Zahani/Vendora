@@ -36,10 +36,7 @@ import UpdatePassword from "@/pages/Client/Protected/UserAccount/UpdatePassword"
 import OrderHistory from "@/pages/Client/Protected/UserAccount/OrderHistory";
 import Offres from "@/pages/Client/Protected/UserAccount/Offres";
 import DetailProduit from "@/pages/Client/Boutique/DetailProduit";
-import AdressesLivraison from "@/pages/Livreur/Clients/AdressesLivraison";
-import CommandesEnCours from "@/pages/Livreur/Commandes/CommandesEnCours";
-import HistoriqueCommandes from "@/pages/Livreur/Commandes/HistoriqueCommandes";
-import ClientsLivreur from "@/pages/Livreur/Clients/Clients";
+import AdressesLivraison from "@/pages/Livreur/Gestion des colis/AdressesLivraison";
 import Mentions from "@/pages/Legal/Mentions";
 import Confidentialite from "@/pages/Legal/Confidentialite";
 import CGV from "@/pages/Legal/CGV";
@@ -48,9 +45,14 @@ import Protection from "@/pages/Legal/Protection";
 import Contact from "@/pages/Client/Contact";
 import About from "@/pages/Client/About";
 import ColisPrets from "./pages/Responsable/Gestion des colis/ColisPrets";
-import ColisRecuperes from "./pages/Responsable/Gestion des colis/ColisRecuperes";
+import ColisRecuperes from "./pages/Responsable/Suivi & Statistiques/ColisRecuperes";
+import StatsDrive from "./pages/Responsable/Suivi & Statistiques/StatsDrive";
 import ScanColis from "./pages/Responsable/Scan/ScanColis";
 import ColisATraiter from "./pages/Responsable/Gestion des colis/ColisATraiter";
+import ColisLivrees from "./pages/Livreur/Suivi & Statistiques/ColisLivrees";
+import StatsLivreur from "./pages/Livreur/Suivi & Statistiques/StatsLivreur";
+import ColisALivrer from "./pages/Livreur/Gestion des colis/ColisALivrer";
+import ScanColisLivree from "./pages/Livreur/Scan/ScanColisLivree";
 
 const routes = [
   {
@@ -107,11 +109,12 @@ const routes = [
         path: "",
         element: <DashboardInterface menuItems={menuLivreur} />,
         children: [
-          { path: "DashboardLivreur", element: <LivreurDashboard /> },
-          { path: "commandesEncours", element: <CommandesEnCours /> },
-          { path: "commandesHistorique", element: <HistoriqueCommandes /> },
-          { path: "clientsLivreur", element: <ClientsLivreur /> },
-          { path: "adresses", element: <AdressesLivraison /> },
+          { path: "dashboardLivreur", element: <LivreurDashboard /> },
+          { path: "colisALivrer", element: <ColisALivrer />},
+          { path: "colisLivrees", element: <ColisLivrees />},
+          { path: "scanColisLivree", element: <ScanColisLivree />},
+          { path: "carteLivraison", element: <AdressesLivraison /> },
+          { path: "statsLivreur", element: <StatsLivreur />}
         ]
       }
     ]
@@ -124,11 +127,12 @@ const routes = [
         path: "",
         element: <DashboardInterface menuItems={menuResponsable} />,
         children: [
-          { path: "DashboardResponsable", element: <ResponsableDashboard /> },
+          { path: "dashboardResponsable", element: <ResponsableDashboard /> },
           { path: "colisATraiter", element: <ColisATraiter /> },
           { path: "colisPrets", element: <ColisPrets /> },
           { path: "colisRecuperes", element: <ColisRecuperes /> },
-          { path: "scanColis", element: <ScanColis />}
+          { path: "scanColis", element: <ScanColis />},
+          { path: "statsDrive", element: <StatsDrive />}
         ]
       }
     ]

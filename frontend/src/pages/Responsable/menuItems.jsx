@@ -1,4 +1,4 @@
-import { Home, PackageCheck, Users, CalendarCheck, BarChart2, Package, ScanBarcode, PackageOpen } from "lucide-react";
+import { Home, PackageCheck, Users, BarChart2, Package, ScanBarcode, PackageOpen } from "lucide-react";
 
 const menuResponsable = [
   {
@@ -12,7 +12,6 @@ const menuResponsable = [
     items: [
       { label: "Colis à traiter", icon: <PackageOpen size={20} />, path: "/colisATraiter" },
       { label: "Colis prêts", icon: <Package size={20} />, path: "/colisPrets" },
-      { label: "Colis récupérés", icon: <PackageCheck size={20} />, path: "/colisRecuperes" },
     ],
   },
   {
@@ -30,7 +29,7 @@ const menuResponsable = [
   {
     title: "Suivi & Statistiques",
     items: [
-      { label: "Historique retraits", icon: <CalendarCheck size={20} />, path: "/historique" },
+      { label: "Historique retraits", icon: <PackageCheck size={20} />, path: "/colisRecuperes" },
       { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsDrive" },
     ],
   }

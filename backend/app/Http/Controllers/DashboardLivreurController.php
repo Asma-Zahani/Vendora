@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commande;
+use App\Models\CommandeLivraison;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -22,57 +23,33 @@ class DashboardLivreurController extends Controller implements HasMiddleware
         $aujourdHui = now()->toDateString();
         $livreurId = Auth::id(); 
 
-        $commandes = Commande::with(['client', 'commandeLivraison'])
-            ->whereHas('commandeLivraison', function ($query) use ($aujourdHui, $livreurId) {
-                $query->whereDate('dateLivraison', $aujourdHui)
-                      ->where('livreur_id', $livreurId);
-            })
+        $commandes = CommandeLivraison::with(['commande.client','commande.facture.detailsFacture.produit'])
+            ->whereDate('dateLivraison', $aujourdHui)
+            ->where('livreur_id', $livreurId)
             ->get();
 
         return response()->json($commandes);
     }
 
-
-    public function livraisonsEffectuees()
+    public function livraisonsParEtat()
     {
         $livreurId = Auth::id();
 
-        $commandes = Commande::with(['client', 'commandeLivraison'])
-            ->where('etatCommande', 'Livrée')
-            ->whereHas('commandeLivraison', function ($query) use ($livreurId) {
-                $query->where('livreur_id', $livreurId);
+        $etats = ['Livrée', 'En attente', 'Annulée'];
+
+        $commandes = CommandeLivraison::with(['commande.client'])
+            ->where('livreur_id', $livreurId)
+            ->whereHas('commande', function ($query) use ($etats) {
+                $query->whereIn('etatCommande', $etats);
             })
             ->get();
+        
+        $commandesCount = $commandes->groupBy(function ($commandeLivraison) {
+            return $commandeLivraison->commande->etatCommande;
+        })->map(function ($group) {
+            return $group->count();
+        });
 
-        return response()->json($commandes);
-    }
-
-    
-    public function livraisonsEnCours()
-    {
-        $livreurId = Auth::id();
-
-        $commandes = Commande::with(['client', 'commandeLivraison'])
-            ->where('etatCommande', 'En attente')
-            ->whereHas('commandeLivraison', function ($query) use ($livreurId) {
-                $query->where('livreur_id', $livreurId);
-            })
-            ->get();
-
-        return response()->json($commandes);
-    }
-
-    public function livraisonsAnnulees()
-    {
-        $livreurId = Auth::id();
-
-        $commandes = Commande::with(['client', 'commandeLivraison'])
-            ->where('etatCommande', 'Annulée')
-            ->whereHas('commandeLivraison', function ($query) use ($livreurId) {
-                $query->where('livreur_id', $livreurId);
-            })
-            ->get();
-
-        return response()->json($commandes);
+        return response()->json($commandesCount);
     }
 }

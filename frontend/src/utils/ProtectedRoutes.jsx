@@ -87,10 +87,10 @@ export const ProtectedAuthRoutes = () => {
             return <Navigate to="/dashboard" />;
         }
         if (user.role === "livreur") {
-            return <Navigate to="DashboardLivreur" />;
+            return <Navigate to="/dashboardLivreur" />;
         }
         if (user.role === "responsable") {
-            return <Navigate to="DashboardResponsable" />;
+            return <Navigate to="/dashboardResponsable" />;
         }
         return <Navigate to="/" />;
     }

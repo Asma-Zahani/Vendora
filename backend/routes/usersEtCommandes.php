@@ -33,4 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('commande/user', [CommandeController::class, 'userCommande'])->middleware('auth:sanctum');
 Route::post('trackCommande', [CommandeController::class, 'trackCommande']);
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
+Route::get('commandeLivreur', [CommandeLivraisonController::class, 'commandeParLivreur']);
+Route::get('commandeLivreur/{id}', [CommandeLivraisonController::class, 'show']);
+Route::put('commandeLivreur', [CommandeLivraisonController::class, 'update']);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
