@@ -27,6 +27,8 @@ const FactureModal = ({ onClose, facture }) => {
   const handlePrint = () => {
     reactToPrintFn();
   };
+  console.log(facture);
+  
   
   return (
     <>
@@ -86,7 +88,7 @@ const FactureModal = ({ onClose, facture }) => {
                   <p>Monastir, Tunisie</p>
                 </div>
                 <div className="-space-y-1 text-end max-w-80">
-                  <p className="font-bold my-2">DESTINATAIRE :</p>
+                  <p className="font-bold my-2 uppercase">DESTINATAIRE : {facture.prenom + " " + facture.nom}</p>
                   <p>{facture.telephone}</p>
                   <p>{facture.email}</p>
                   <p>{facture.adresse}, {facture.ville}</p>
