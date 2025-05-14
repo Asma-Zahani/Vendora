@@ -12,6 +12,7 @@ use App\Models\FactureCommande;
 use App\Models\PanierProduit;
 use App\Models\Produit;
 use App\Models\ProduitCouleur;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,10 +28,31 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request)
+    public function commandeParDrive(Request $request)
+    {
+        $query = $this->commandes($request);
+
+        $responsable = User::with('drive')->where('id', intval($request->user()->id))->first();
+        $driveId = $responsable->drive->drive_id;
+        $query->where('drive_id', '=', $driveId);
+
+        $commandes = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
+
+        return response()->json($commandes);
+    }
+
+    public function index(Request $request){
+        $query = $this->commandes($request);
+         
+        $commandeRetraitDrive = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
+
+        return response()->json($commandeRetraitDrive);
+    }
+    
+    public function commandes(Request $request)
     {
         if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(CommandeRetraitDrive::with('commande.client','commande.facture.detailsFacture.produit')->get());
+            return CommandeRetraitDrive::with('commande.client','commande.facture.detailsFacture.produit')->get();
         }
 
         $query = CommandeRetraitDrive::query();
@@ -77,10 +99,8 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
         if (Schema::hasColumn('commandes_retrait_drives', $request->input('sort_by'))) {
             $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
         }
-        
-        $commandeRetraitDrive = $query->with('commande.client','commande.facture.detailsFacture.produit')->paginate($request->input('per_page'));
 
-        return response()->json($commandeRetraitDrive);
+        return $query;
     }
 
     /**

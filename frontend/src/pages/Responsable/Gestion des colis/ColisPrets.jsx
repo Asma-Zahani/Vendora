@@ -39,7 +39,7 @@ const ColisPrets = () => {
   return (
     <>
       <Header title="Colis prêts" icon={Package} parent="Gestion des colis" current="Colis prêts" />
-      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeRetraitDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
+      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
     </>
   );
 };

@@ -39,7 +39,7 @@ export const ColisRecuperes = () => {
   return (
     <>
       <Header title="Colis récupérés" icon={PackageCheck} parent="Gestion des colis" current="Colis récupérés" />
-      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeRetraitDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "facture"]} />
+      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "facture"]} />
     </>
   );
 };
