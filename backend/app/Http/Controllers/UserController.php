@@ -26,6 +26,91 @@ class UserController extends Controller implements HasMiddleware
         return User::all();
     }
 
+    public function clientDrive(Request $request)
+    {
+        $responsable = User::with('drive')->where('id', intval($request->user()->id))->first();
+        $driveId = $responsable->drive->drive_id;
+
+        $query = User::whereHas('commandes.commandeRetraitDrive', function ($q) use ($driveId) {
+                $q->where('drive_id', $driveId);
+            })
+            ->with(['commandes' => function ($q) use ($driveId) {
+                $q->whereHas('commandeRetraitDrive', function ($qq) use ($driveId) {
+                    $qq->where('drive_id', $driveId);
+                });
+            }]);
+
+        // Recherche
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $searchParts = explode(' ', $searchTerm); 
+                $q->where(function ($q) use ($searchParts) {
+                    if (isset($searchParts[0])) {
+                        $q->where('prenom', 'LIKE', "%{$searchParts[0]}%");
+                    }
+                    if (isset($searchParts[1])) {
+                        $q->orWhere('nom', 'LIKE', "%{$searchParts[1]}%");
+                    }
+                })
+                ->orWhere('telephone', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('email', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Tri
+        if ($request->filled('sort_by') && Schema::hasColumn('users', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order', 'asc'));
+        }
+
+        // Pagination
+        $clients = $query->paginate($request->input('per_page', 10));
+
+        return response()->json($clients);
+    }
+
+    public function clientLivreur(Request $request)
+    {
+        $livreurId = intval($request->user()->id);
+    
+        $query = User::whereHas('commandes.commandeLivraison', function ($q) use ($livreurId) {
+                $q->where('livreur_id', $livreurId);
+            })
+            ->with(['commandes' => function ($q) use ($livreurId) {
+                $q->whereHas('commandeLivraison', function ($qq) use ($livreurId) {
+                    $qq->where('livreur_id', $livreurId);
+                });
+            }]);
+
+        // Recherche
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $searchParts = explode(' ', $searchTerm); 
+                $q->where(function ($q) use ($searchParts) {
+                    if (isset($searchParts[0])) {
+                        $q->where('prenom', 'LIKE', "%{$searchParts[0]}%");
+                    }
+                    if (isset($searchParts[1])) {
+                        $q->orWhere('nom', 'LIKE', "%{$searchParts[1]}%");
+                    }
+                })
+                ->orWhere('telephone', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('email', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Tri
+        if ($request->filled('sort_by') && Schema::hasColumn('users', $request->input('sort_by'))) {
+            $query->orderBy($request->input('sort_by'), $request->input('sort_order', 'asc'));
+        }
+
+        // Pagination
+        $clients = $query->paginate($request->input('per_page', 10));
+
+        return response()->json($clients);
+    }
+
     public function clients(Request $request)
     {
         return $this->getUser($request, "client");

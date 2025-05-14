@@ -20,6 +20,8 @@ Route::apiResource('interactions', InteractionController::class);
 Route::middleware('auth:sanctum')->get('derniersProduitsVus', [InteractionController::class, 'derniersProduitsVus']);
 
 Route::get('clients', [UserController::class, 'clients']);
+Route::get('driveClients', [UserController::class, 'clientDrive']);
+Route::get('livreurClients', [UserController::class, 'clientLivreur']);
 Route::get('livreurs', [UserController::class, 'livreurs']);
 Route::get('responsables', [UserController::class, 'responsables']);
 
@@ -33,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('commande/user', [CommandeController::class, 'userCommande'])->middleware('auth:sanctum');
 Route::post('trackCommande', [CommandeController::class, 'trackCommande']);
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
-Route::get('commandeLivreur', [CommandeLivraisonController::class, 'commandeParLivreur']);
-Route::get('commandeLivreur/{id}', [CommandeLivraisonController::class, 'show']);
-Route::put('commandeLivreur', [CommandeLivraisonController::class, 'update']);
+Route::get('commandeLivreurs', [CommandeLivraisonController::class, 'commandeParLivreur']);
+Route::get('commandeLivreurs/{id}', [CommandeLivraisonController::class, 'show']);
+Route::put('commandeLivreurs', [CommandeLivraisonController::class, 'update']);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
