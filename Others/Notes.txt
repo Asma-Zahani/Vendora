@@ -11,13 +11,11 @@ les alert mte3 l panier
 
 livraison (frais dans le facture non appliqué)
 
-dropdown error (ajouter les error dans le dropdown)
-
 remember token (base de donné users)
 
 emploi, type logement, staus logement (a effacer)
 
 achref:
-t3aweny fel hebergement mte3 l api mte3 l rocommandation
-dashboard
+t3aweny fel hebergement mte3 l api mte3 l recommandation
+dashboard responsive
 connect as user

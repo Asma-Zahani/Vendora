@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLivreurController;
+use App\Http\Controllers\DashboardResponsableController;
 use App\Http\Controllers\EnumsController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/commandesLivreurJour', [DashboardLivreurController::class, 'commandesLivreurJour']);
-    Route::get('/livraisonsEffectuees', [DashboardLivreurController::class, 'livraisonsEffectuees']);
-    Route::get('/livraisonsEnCours', [DashboardLivreurController::class, 'livraisonsEnCours']);
-    Route::get('/livraisonsAnnulees', [DashboardLivreurController::class, 'livraisonsAnnulees']);
     Route::get('/livraisonsParEtat', [DashboardLivreurController::class, 'livraisonsParEtat']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/retraitDrivesParEtat', [DashboardResponsableController::class, 'retraitDrivesParEtat']);
 });
