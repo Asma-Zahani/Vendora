@@ -18,6 +18,8 @@ import SousCategories from "@/pages/Admin/Gestion des produits/SousCategories";
 import Marques from "@/pages/Admin/Gestion des produits/Marques";
 import { ProtectedAdminRoutes, ProtectedLivreurRoutes, ProtectedResponsableRoutes, ProtectedClientRoutes, ProtectedAuthRoutes } from "@/utils/ProtectedRoutes";
 import Clients from "@/pages/Admin/Gestion des utilisateurs/Clients";
+import { Clients as DriveClients } from "@/pages/Responsable/Clients/Clients";
+import { Clients as LivreurClients } from "@/pages/Livreur/Clients/Clients";
 import Livreurs from "@/pages/Admin/Gestion des utilisateurs/Livreurs";
 import Responsables from "@/pages/Admin/Gestion des utilisateurs/Responsables";
 import CommandeLivraison from "@/pages/Admin/Gestion des commandes/CommandeLivraison";
@@ -114,7 +116,8 @@ const routes = [
           { path: "colisLivrees", element: <ColisLivrees />},
           { path: "scanColisLivree", element: <ScanColisLivree />},
           { path: "carteLivraison", element: <AdressesLivraison /> },
-          { path: "statsLivreur", element: <StatsLivreur />}
+          { path: "statsLivreur", element: <StatsLivreur />},
+          { path: "clientsLivreur", element: <LivreurClients />}
         ]
       }
     ]
@@ -132,7 +135,8 @@ const routes = [
           { path: "colisPrets", element: <ColisPrets /> },
           { path: "colisRecuperes", element: <ColisRecuperes /> },
           { path: "scanColis", element: <ScanColis />},
-          { path: "statsDrive", element: <StatsDrive />}
+          { path: "statsDrive", element: <StatsDrive />},
+          { path: "clientsDrive", element: <DriveClients />}
         ]
       }
     ]

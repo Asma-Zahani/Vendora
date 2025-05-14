@@ -23,7 +23,7 @@ const menuResponsable = [
   {
     title: "Clients",
     items: [
-      { label: "Liste des clients", icon: <Users size={20} />, path: "/clients" },
+      { label: "Liste des clients", icon: <Users size={20} />, path: "/clientsDrive" },
     ],
   },
   {
