@@ -27,8 +27,6 @@ const FactureModal = ({ onClose, facture }) => {
   const handlePrint = () => {
     reactToPrintFn();
   };
-  console.log(facture);
-  
   
   return (
     <>
