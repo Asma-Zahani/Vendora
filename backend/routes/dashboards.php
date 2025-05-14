@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/statistiquesCommandes/{annee}', [DashboardController::class, 'statistiquesCommandes']);
     Route::get('/commandesEnAttente', [DashboardController::class, 'commandesEnAttente']);
 });
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/commandesLivreurJour', [DashboardLivreurController::class, 'commandesLivreurJour']);
     Route::get('/livraisonsEffectuees', [DashboardLivreurController::class, 'livraisonsEffectuees']);
