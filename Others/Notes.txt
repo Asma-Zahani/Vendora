@@ -11,13 +11,12 @@ les alert mte3 l panier
 
 livraison (frais dans le facture non appliqué)
 
-header admin (border notification)
+dropdown error (ajouter les error dans le dropdown)
 
-dropdown error
+remember token (base de donné users)
 
-remember token
+emploi, type logement, staus logement (a effacer)
 
-emploi, type logement, staus logement
 achref:
 t3aweny fel hebergement mte3 l api mte3 l rocommandation
 dashboard
