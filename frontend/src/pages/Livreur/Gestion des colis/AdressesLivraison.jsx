@@ -6,7 +6,7 @@ import { Truck } from "lucide-react";
 import Header from "@/components/Header/DashboardSubHeader";
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import { getAuthenticatedEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 
 // Configuration de l'icône de marqueur
 let DefaultIcon = L.icon({
@@ -41,7 +41,7 @@ const AdressesLivraison = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const enCours = await getAuthenticatedEntities("livraisonsEnCours");
+        const enCours = await getEntities("livraisonsEnCours");
 
         const promises = enCours.map(async (item) => {
           const client = item.client;

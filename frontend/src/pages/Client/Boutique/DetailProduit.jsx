@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
-import { getEntity, getEntities, getAuthenticatedEntities, createEntity } from "@/service/EntitesService";
+import { getEntity, getEntities, createEntity } from "@/service/EntitesService";
 import UserContext from '@/utils/UserContext';
 import { useNavigate } from "react-router-dom";
 import { Heart, Minus, Plus } from "lucide-react";
@@ -28,7 +28,7 @@ const DetailProduit = () => {
     const fetchData = async () => {
       setProduit(await getEntity("produits", id));
       setProduitsRecommandes(await getEntities("recentProduits"));
-      setDerniersProduitsVus(await getAuthenticatedEntities("derniersProduitsVus"));
+      setDerniersProduitsVus(await getEntities("derniersProduitsVus"));
     }; 
     fetchData();
   }, [id]);

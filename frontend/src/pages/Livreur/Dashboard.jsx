@@ -1,7 +1,7 @@
 import { Truck, MapPin, Clock } from "lucide-react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { useEffect, useState } from "react";
-import { getAuthenticatedEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 import StatCard from "@/components/Statistics/StatCard";
 
 export const Dashboard = () => {
@@ -11,8 +11,8 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLivraisonsParEtat(await getAuthenticatedEntities("livraisonsParEtat"));
-        setCommandesDuJour(await getAuthenticatedEntities("commandesLivreurJour"));
+        setLivraisonsParEtat(await getEntities("livraisonsParEtat"));
+        setCommandesDuJour(await getEntities("commandesLivreurJour"));
       } catch (error) {
         console.error("Erreur lors de la récupération :", error);
       }

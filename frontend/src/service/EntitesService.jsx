@@ -29,17 +29,6 @@ const getEntities = async (label, currentPage, selectedItemPerPage, search, sort
   return await response.json();
 };
 
-const getAuthenticatedEntities = async (label) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    }
-  });
-  return await response.json();
-};
-
 const getEntity = async (label, _id) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${label}/${_id}`, {
     headers: {
@@ -135,4 +124,4 @@ const getRecommandations = async (id) => {
   return await response.json();
 };
 
-export { getEntities, getAuthenticatedEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity, handleLogout, getRecommandations };
+export { getEntities, getEntity, getEntityBy, createEntity, updateEntity, deleteEntity, handleLogout, getRecommandations };

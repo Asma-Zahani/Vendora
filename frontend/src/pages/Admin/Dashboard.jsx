@@ -4,7 +4,7 @@ import SalesStatistics from "@/components/Statistics/SalesStatistics";
 import UsersStatistics from "@/components/Statistics/UsersStatistics";
 import OrdersStatistics from "@/components/Statistics/OrdersStatistics";
 import { useEffect, useState } from "react";
-import { getAuthenticatedEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 import Input from "@/components/ui/Input";
 
 export const Dashboard = () => {
@@ -21,11 +21,11 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setGenreCount(await getAuthenticatedEntities("genreCount"));
-        setAgeCount(await getAuthenticatedEntities("ageCount"));
-        setListAnnee(await getAuthenticatedEntities("listAnnee"));
-        setCommandesEnAttente(await getAuthenticatedEntities("commandesEnAttente"));
-        setUsers(await getAuthenticatedEntities("users"));
+        setGenreCount(await getEntities("genreCount"));
+        setAgeCount(await getEntities("ageCount"));
+        setListAnnee(await getEntities("listAnnee"));
+        setCommandesEnAttente(await getEntities("commandesEnAttente"));
+        setUsers(await getEntities("users"));
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
@@ -36,8 +36,8 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setStatistiquesVentes(await getAuthenticatedEntities(`statistiquesVentes/${selectedYear}`));
-        setStatistiquesCommandes(await getAuthenticatedEntities(`statistiquesCommandes/${selectedYear}`));
+        setStatistiquesVentes(await getEntities(`statistiquesVentes/${selectedYear}`));
+        setStatistiquesCommandes(await getEntities(`statistiquesCommandes/${selectedYear}`));
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PackageX } from "lucide-react";
-import { getAuthenticatedEntities } from "@/service/EntitesService";
+import { getEntities } from "@/service/EntitesService";
 import FactureModal from "@/components/Modals/FactureModal";
 
 const OrderHistory = () => {
@@ -11,7 +11,7 @@ const OrderHistory = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setCommandes(await getAuthenticatedEntities("commande/user"));   
+            setCommandes(await getEntities("commande/user"));   
         };
         fetchData();
     }, []);    
