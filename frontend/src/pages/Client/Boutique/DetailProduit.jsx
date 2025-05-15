@@ -166,7 +166,7 @@ const DetailProduit = () => {
         </div>
       }
       <ProduitsSlider titre="Produits recommandés pour vous" produits={produitsRecommandes} />
-      <ProduitsSlider titre="Produits récemment consultés"produits={derniersProduitsVus} />
+      {derniersProduitsVus?.length > 3 && <ProduitsSlider titre="Produits récemment consultés"produits={derniersProduitsVus} />}
     </section>
   );
 };

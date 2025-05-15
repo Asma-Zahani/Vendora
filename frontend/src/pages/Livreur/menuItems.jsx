@@ -1,4 +1,4 @@
-import { Home, Package, MapPin, ScanBarcode, ClipboardCheck, BarChart2, Users } from "lucide-react";
+import { Home, Package, MapPin, ScanBarcode, ClipboardCheck, Users } from "lucide-react";
 
 const menuLivreur = [
   {
@@ -31,7 +31,7 @@ const menuLivreur = [
     title: "Suivi & Statistiques",
     items: [
       { label: "Historique livraison", icon: <ClipboardCheck size={20} />, path: "/colisLivrees" },
-      { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsLivreur" },
+      // { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsLivreur" },
       // { label: "Commandes Annulées", icon: <History size={20} />, path: "/colisAnnulees" },
     ],
   },
