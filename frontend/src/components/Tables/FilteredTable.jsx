@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownToLine, Plus, Search, ChevronDown, Trash2Icon, Database, ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { ArrowDownToLine, Plus, Search, ChevronDown, Trash2Icon, Database, ArrowDownAZ, ArrowUpAZ, CircleAlert } from "lucide-react";
 import Pagination from "@/components/Pagination/TablePagination";
 import img from "@/assets/default/image.png";
-import DeleteModal from "@/components/Modals/DeleteModal";
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 import ViewModal from "@/components/Modals/ViewModal";
 import FactureModal from "@/components/Modals/FactureModal";
 import FormModal from "@/components/Modals/FormModal";
@@ -321,7 +321,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                     }
             }}/> }
             {isViewOpen && <ViewModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} label={entityConfig.label} viewData={selectedItem} /> }
-            {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
+            {isDeleteOpen && <ConfirmModal isOpen={isDeleteOpen} icon={<CircleAlert />} onClose={() => setIsDeleteOpen(false)} 
                 message={selectedItem ? `Êtes-vous sûr de vouloir supprimer ce ${entityConfig.label} ?` : `Êtes-vous sûr de vouloir supprimer tous ces ${entityConfig.label} ?`}
                 onConfirm={() => { 
                     if (selectedItem) {

@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Header from "@/components/Header/DashboardSubHeader";
-import { Clock, Plus } from "lucide-react";
+import { CircleAlert, Clock, Plus } from "lucide-react";
 import Dropdown from "@/components/ui/Dropdown";
 import { useContext, useEffect, useState } from "react";
 import { getEntities } from "@/service/EntitesService";
 import FormModal from "@/components/Modals/FormModal";
-import DeleteModal from "@/components/Modals/DeleteModal";
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import { handleCreate, handleEdit, handleDelete } from "@/service/EntityCRUD";
 
@@ -154,8 +154,9 @@ const Horaires = () => {
                       />
                     )}
                     {isDeleteOpen && 
-                      <DeleteModal 
+                      <ConfirmModal 
                         isOpen={isDeleteOpen} 
+                        icon={<CircleAlert />}
                         onClose={() => setIsDeleteOpen(false)} 
                         onConfirm={async () => {
                           handleDelete("periodes", formData.periode_id, setSuccessMessage, null, formData);

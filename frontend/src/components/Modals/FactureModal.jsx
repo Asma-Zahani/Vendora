@@ -158,6 +158,12 @@ const FactureModal = ({ onClose, facture }) => {
                   <span className="text-right font-semibold uppercase w-full">Remise :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{facture?.remise} %</span>
                 </div>
+                {(facture.commande_livraison || !facture.drive_id) &&
+                  <div className="flex gap-3 px-3">
+                    <span className="text-right font-semibold uppercase w-full">Livraison :</span>
+                    <span className="text-left w-1/3 sm:w-1/5">8 DT</span>
+                  </div>
+                }                
                 <div className="flex gap-3 px-3 text-lg font-bold uppercase print:py-2 print:bg-[#cccccc] print:border">
                   <span className="text-right w-full">Total :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{facture?.totalTTC} DT</span>

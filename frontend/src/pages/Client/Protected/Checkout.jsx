@@ -13,7 +13,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import StripeForm from "./StripeForm";
 import { loadStripe } from "@stripe/stripe-js";
 import img from "@/assets/default/image.png";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CircleCheckBig } from "lucide-react";
 
 const stripePromise = loadStripe("pk_test_51RDmsOI30GkvvwdVKatq2qxS8kRXvNyo7npbGfDG9nl4mvFYT4GyKOLPUMwNO9bHsQAiXHfaEQqXkLy5X3cZ20lP00GP1fVvNa");
 
@@ -113,7 +113,7 @@ const Checkout = () => {
             const updatedUser = await updateEntity("users", user.id, formData);
             const orderData = {
                 client_id: user.id,
-                total: checkoutData.discounted,
+                total: totalAvecFrais,
                 transaction_id: transactionId,
                 ...(checkoutData.PromoId && { code_promotion_id: checkoutData.PromoId }),
                 produits: checkoutData.produits.map(produit => ({
@@ -346,7 +346,7 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-            {isOpen && <ConfirmModal isOpen={isOpen} onClose={() => setIsOpen(false)} message="Souhaitez-vous passer la commande ?" 
+            {isOpen && <ConfirmModal isOpen={isOpen} icon={<CircleCheckBig />} onClose={() => setIsOpen(false)} message="Souhaitez-vous passer la commande ?" 
                 onConfirm={async () => {
                     setIsOpen(false); 
                     if (stripeFormRef.current) {

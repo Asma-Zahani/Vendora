@@ -6,10 +6,10 @@ import Textarea from "@/components/ui/Textarea";
 import Label from "@/components/ui/Label";
 import ImageUpload from "@/components/ui/ImageUpload";
 import Dropdown from "@/components/ui/Dropdown";
-import { Plus } from "lucide-react";
+import { CircleAlert, Plus } from "lucide-react";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
-import DeleteModal from "@/components/Modals/DeleteModal";
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 
 const FormModal = ({onClose, formLabel, action, formData, setFormData, fields, onSubmit, onDelete, errors}) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -182,9 +182,7 @@ const FormModal = ({onClose, formLabel, action, formData, setFormData, fields, o
                 <button type="button" onClick={() => {setIsDeleteOpen(true)}} className="border border-purpleLight text-purpleLight text-[14px] py-2 px-6 rounded-md">
                   Supprimer
                 </button>
-                {isDeleteOpen && <DeleteModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} 
-                  message={`Êtes-vous sûr de vouloir supprimer ce ${formLabel} ?`} onConfirm={() => {onDelete(); setIsDeleteOpen(false);}}
-                />}
+                {isDeleteOpen && <ConfirmModal isOpen={isDeleteOpen} icon={<CircleAlert />} onClose={() => setIsDeleteOpen(false)} message={`Êtes-vous sûr de vouloir supprimer ce ${formLabel} ?`} onConfirm={() => {onDelete(); setIsDeleteOpen(false);}}/>}
             </>}
             <div className="flex gap-3">
               <button type="button" onClick={onClose} className="border border-purpleLight text-purpleLight text-[14px] py-2 px-6 rounded-md">

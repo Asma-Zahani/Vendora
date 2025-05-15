@@ -9,8 +9,6 @@ ktiba fou9 b3athha (dashboard)
 
 les alert mte3 l panier
 
-livraison (frais dans le facture non appliqué)
-
 remember token (base de donné users)
 
 emploi, type logement, staus logement (a effacer)

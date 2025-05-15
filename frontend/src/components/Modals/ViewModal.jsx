@@ -12,28 +12,24 @@ const ViewModal = ({ onClose, label, viewData }) => {
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               Afficher {label?.slice(0, -1)}
             </h3>
-            <button
-              onClick={onClose}
-              type="button"
-              className="absolute top-3 right-3 text-gray-500 dark:text-gray-200 hover:bg-bgLight hover:dark:bg-bgDark hover:text-purpleLight dark:hover:text-purpleLight rounded-md w-8 h-8 inline-flex justify-center items-center"
-            >
+            <button onClick={onClose} type="button" className="absolute top-3 right-3 text-gray-500 dark:text-gray-200 hover:bg-bgLight hover:dark:bg-bgDark hover:text-purpleLight dark:hover:text-purpleLight rounded-md w-8 h-8 inline-flex justify-center items-center">
               <CgClose size={20} />
             </button>
           </div>
           <div className="p-4 md:p-5 space-y-4 max-h-[80vh] scrollbar overflow-y-auto">
             {viewData &&
-              Object.entries(viewData)
-                .filter(([_, value]) => typeof value === "string")
-                .map(([key, value]) => (
-                  <div key={key}>
-                    <h4 className="font-semibold text-gray-700 dark:text-gray-200">
-                      {key.replace(/_/g, ' ')}:
-                    </h4>
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 break-words whitespace-pre-wrap">
-                      {value}
-                    </p>
-                  </div>
-            ))}
+              Object.entries(viewData).filter(([_, value]) => typeof value === "string")
+              .map(([key, value]) => (
+                <div key={key}>
+                  <h4 className="font-semibold text-gray-700 dark:text-gray-200">
+                    {key.replace(/_/g, ' ')}:
+                  </h4>
+                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 break-words whitespace-pre-wrap">
+                    {value}
+                  </p>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
