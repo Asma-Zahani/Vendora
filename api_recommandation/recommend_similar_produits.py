@@ -1,5 +1,5 @@
 from flask import  request, jsonify
-from utils import (load_produits, load_interactions)
+from utils_data import (load_produits, load_interactions)
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
