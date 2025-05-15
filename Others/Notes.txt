@@ -15,7 +15,7 @@ remember token (base de donné users)
 
 emploi, type logement, staus logement (a effacer)
 
-redirect mba3eed scan code
+nom user incorrecte dashboard
 
 achref:
 t3aweny fel hebergement mte3 l api mte3 l recommandation

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { PackageCheck } from "lucide-react";
 import Header from "@/components/Header/DashboardSubHeader";
-import { Package } from "lucide-react";
+import { useEffect, useState } from "react";
 import EntityManager from "@/service/EntityManager";
 import { getEntities } from "@/service/EntitesService";
 
-const ColisPrets = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Préparée");
+export const ColisAnnulesDrive = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Annulée");
   const filtres = { field: "etatCommande", selectedFilter, setSelectedFilter};
   const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
   const [clients, setClients] = useState([]);
@@ -38,10 +38,10 @@ const ColisPrets = () => {
 
   return (
     <>
-      <Header title="Colis prêts" icon={Package} parent="Gestion des colis" current="Colis prêts" />
-      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "switch", "facture"]} />
+      <Header title="Colis récupérés" icon={PackageCheck} parent="Gestion des colis" current="Colis récupérés" />
+      <EntityManager filtres={filtres} notAdd={true} columns={columns} fields={fields} label="commandeDrives" identifiant="commande_id" formData={formData} setFormData={setFormData} actionList={["view", "facture"]} />
     </>
   );
 };
 
-export default ColisPrets;
+export default ColisAnnulesDrive;

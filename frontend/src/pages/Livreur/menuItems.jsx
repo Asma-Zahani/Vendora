@@ -1,4 +1,4 @@
-import { Home, Package, MapPin, ScanBarcode, ClipboardCheck, Users } from "lucide-react";
+import { Home, Package, ScanBarcode, Users, Truck, PackageX, PackageCheck } from "lucide-react";
 
 const menuLivreur = [
   {
@@ -11,7 +11,8 @@ const menuLivreur = [
     title: "Gestion des colis",
     items: [
       { label: "Colis à livrer", icon: <Package size={20} />, path: "/colisALivrer" },
-      { label: "Carte de livraison", icon: <MapPin size={20} />, path: "/carteLivraison" },
+      { label: "Colis en cours", icon: <Truck size={20} />, path: "/colisEnCours" },
+      // { label: "Carte de livraison", icon: <MapPin size={20} />, path: "/carteLivraison" },
     ],
   },
   {
@@ -30,9 +31,9 @@ const menuLivreur = [
   {
     title: "Suivi & Statistiques",
     items: [
-      { label: "Historique livraison", icon: <ClipboardCheck size={20} />, path: "/colisLivrees" },
+      { label: "Historique livraison", icon: <PackageCheck size={20} />, path: "/colisLivrees" },
+      { label: "Historique annulés", icon: <PackageX size={20} />, path: "/ColisAnnulesLivraison" },
       // { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsLivreur" },
-      // { label: "Commandes Annulées", icon: <History size={20} />, path: "/colisAnnulees" },
     ],
   },
 ];

@@ -55,6 +55,9 @@ import ColisLivrees from "./pages/Livreur/Suivi & Statistiques/ColisLivrees";
 import StatsLivreur from "./pages/Livreur/Suivi & Statistiques/StatsLivreur";
 import ColisALivrer from "./pages/Livreur/Gestion des colis/ColisALivrer";
 import ScanColisLivree from "./pages/Livreur/Scan/ScanColisLivree";
+import ColisEnCours from "./pages/Livreur/Gestion des colis/ColisEnCours";
+import ColisAnnulesLivraison from "./pages/Livreur/Suivi & Statistiques/ColisAnnulesLivraison";
+import ColisAnnulesDrive from "./pages/Responsable/Suivi & Statistiques/ColisAnnulesDrive";
 
 const routes = [
   {
@@ -113,7 +116,9 @@ const routes = [
         children: [
           { path: "dashboardLivreur", element: <LivreurDashboard /> },
           { path: "colisALivrer", element: <ColisALivrer />},
+          { path: "colisEnCours", element: <ColisEnCours />},
           { path: "colisLivrees", element: <ColisLivrees />},
+          { path: "colisAnnulesLivraison", element: <ColisAnnulesLivraison />},
           { path: "scanColisLivree", element: <ScanColisLivree />},
           { path: "carteLivraison", element: <AdressesLivraison /> },
           { path: "statsLivreur", element: <StatsLivreur />},
@@ -134,6 +139,7 @@ const routes = [
           { path: "colisATraiter", element: <ColisATraiter /> },
           { path: "colisPrets", element: <ColisPrets /> },
           { path: "colisRecuperes", element: <ColisRecuperes /> },
+          { path: "colisAnnulesDrive", element: <ColisAnnulesDrive /> },
           { path: "scanColis", element: <ScanColis />},
           { path: "statsDrive", element: <StatsDrive />},
           { path: "clientsDrive", element: <DriveClients />}

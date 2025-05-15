@@ -46,11 +46,13 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
     useEffect(() => {
         if (idCommande && data.data?.length && !hasHandledURL.current) {
             const item = data.data?.find((i) => String(i[entityConfig.identifiant]) === String(idCommande));
-            if (item && !isFormOpen) {
+            if (item && item.actions?.switch && !isFormOpen) {
                 setIsFormOpen(true);
                 item.actions.switch(item[entityConfig.identifiant]);
 
                 hasHandledURL.current = true;
+            } else {
+                tableConfig.handleConfigChange("searchTerm","#"+ idCommande)
             }
         }        
     }, [idCommande, data]);      

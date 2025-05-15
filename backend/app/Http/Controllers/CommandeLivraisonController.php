@@ -216,38 +216,22 @@ class CommandeLivraisonController extends Controller implements HasMiddleware
      */
     public function update(Request $request, $id)
     {
-        // Récupérer les deux entités
         $commandeLivraison = CommandeLivraison::where('commande_id', $id)->firstOrFail();
         $commande = Commande::where('commande_id', $id)->firstOrFail();
 
-        // Validation des données
         $validatedData = $request->validate([
-            'client_id' => 'exists:users,id',
-            'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
-            'total' => 'numeric|min:0',
-            'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
+            'etatCommande' => ['required',Rule::in(EtatCommandeEnum::values())],
             'dateLivraison' => 'nullable|date|after_or_equal:today',
             'livreur_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'livreur')],
-            'adresse_livraison' => 'nullable|string|max:255',
-            'region_livraison' => 'nullable|string|max:255',
-            'ville_livraison' => 'nullable|string|max:255',
         ]);
 
-        // Mise à jour des données de la commande
         $commande->update([
-            'client_id' => $validatedData['client_id'] ?? $commande->client_id,
-            'code_promotion_id' => $validatedData['code_promotion_id'] ?? $commande->code_promotion_id,
-            'total' => $validatedData['total'] ?? $commande->total,
             'etatCommande' => $validatedData['etatCommande'] ?? $commande->etatCommande,
         ]);
 
-        // Mise à jour des données de la commande de livraison
         $commandeLivraison->update([
             'dateLivraison' => $validatedData['dateLivraison'] ?? $commandeLivraison->dateLivraison,
             'livreur_id' => $validatedData['livreur_id'] ?? $commandeLivraison->livreur_id,
-            'adresse_livraison' => $validatedData['adresse_livraison'] ?? $commandeLivraison->adresse_livraison,
-            'region_livraison' => $validatedData['region_livraison'] ?? $commandeLivraison->region_livraison,
-            'ville_livraison' => $validatedData['ville_livraison'] ?? $commandeLivraison->ville_livraison,
         ]);
 
         return response()->json([

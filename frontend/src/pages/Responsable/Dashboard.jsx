@@ -23,9 +23,9 @@ export const Dashboard = () => {
       <Header title="Tableau de bord" icon={Home} parent="Tableau de bord" />
       <section className="mx-6 py-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard title="Colis Retirés" value={retraitDrivesParEtat ? retraitDrivesParEtat['Retirée'] : 0} icon={<Store />} />
-          <StatCard title="Colis Prêts" value={retraitDrivesParEtat ? retraitDrivesParEtat['Prête pour retrait'] : 0} icon={<Clock />} />
-          <StatCard title="Commandes Annulées" value={retraitDrivesParEtat ? retraitDrivesParEtat['Annulée'] : 0} icon={<PackageX />} />
+          <StatCard title="Colis à traiter" value={retraitDrivesParEtat ? retraitDrivesParEtat['En attente'] : 0} icon={<Store />} />
+          <StatCard title="Colis prêts" value={retraitDrivesParEtat ? retraitDrivesParEtat['Préparée'] : 0} icon={<Clock />} />
+          <StatCard title="Colis retirés" value={retraitDrivesParEtat ? retraitDrivesParEtat['Retirée'] : 0} icon={<PackageX />} />
         </div>
       </section>
     </>

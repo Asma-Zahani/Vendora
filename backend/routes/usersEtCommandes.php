@@ -37,8 +37,10 @@ Route::post('trackCommande', [CommandeController::class, 'trackCommande']);
 Route::apiResource('commandeLivraisons', CommandeLivraisonController::class);
 Route::get('commandeLivreurs', [CommandeLivraisonController::class, 'commandeParLivreur']);
 Route::get('commandeLivreurs/{id}', [CommandeLivraisonController::class, 'show']);
-Route::put('commandeLivreurs', [CommandeLivraisonController::class, 'update']);
+Route::put('commandeLivreurs/{id}', [CommandeLivraisonController::class, 'update']);
 Route::get('commandeDrives', [CommandeRetraitDriveController::class, 'commandeParDrive']);
 Route::get('commandeDrives/{id}', [CommandeRetraitDriveController::class, 'show']);
-Route::put('commandeDrives', [CommandeRetraitDriveController::class, 'update']);
+Route::put('commandeDrives/{id}', [CommandeRetraitDriveController::class, 'update']);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
+
+Route::get('commande/{id}', [CommandeController::class, 'show']);

@@ -1,9 +1,40 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useEffect, useState } from "react";
+import { getEntity } from "@/service/EntitesService";
+import { SquareCheckBig } from "lucide-react";
 
 const BarcodeScanner = () => {
     const [scanResult, setScanResult] = useState(null);
+    const [commande, setCommande] = useState();
+    const [path, setPath] = useState();
 
+    useEffect(() => {
+        const fetchData = async () => {
+            setCommande(await getEntity("commande", scanResult));   
+        };
+        if (scanResult != null) {fetchData()}
+    }, [scanResult]);  
+
+    useEffect(() => {
+        if (commande?.commande_retrait_drive) {
+            if (commande.etatCommande === "En attente") {
+                setPath(`/colisATraiter?id=${scanResult.split('/').pop()}`);
+            } else if (commande.etatCommande === "Préparée") {
+                setPath(`/colisPrets?id=${scanResult.split('/').pop()}`);
+            } else if (commande.etatCommande === "Retirée") {
+                setPath(`/colisRecuperes?id=${scanResult.split('/').pop()}`);
+            }
+        } else if (commande?.commande_livraison) {
+            if (commande.etatCommande === "En attente") {
+                setPath(`/colisALivrer?id=${scanResult.split('/').pop()}`);
+            } else if (commande.etatCommande === "En cours de livraison") {
+                setPath(`/colisEnCours?id=${scanResult.split('/').pop()}`);
+            } else if (commande.etatCommande === "Livrée") {
+                setPath(`/colisLivrees?id=${scanResult.split('/').pop()}`);
+            }
+        }
+    }, [commande, scanResult]);  
+    
     useEffect(() => {
         const scanner = new Html5QrcodeScanner("reader", {
             qrbox: { width: 250, height: 250 },
@@ -28,12 +59,8 @@ const BarcodeScanner = () => {
 
             {scanResult ? (
                 <div className="text-green-600 text-center">
-                    <p className="mb-2 font-medium">✅ Code scanné avec succès :</p>
-                    <button className="text-blue-600 underline break-all"
-                        onClick={() => {
-                        const idCommande = scanResult.split('/').pop();
-                        window.location.href = `/colisPrets?id=${idCommande}`;
-                        }}>
+                    <p className="mb-2 flex gap-1 items-center font-medium"><SquareCheckBig size={20}/> Code scanné avec succès :</p>
+                    <button className="text-blue-600 hover:underline break-all" onClick={() => window.location.href = path}>
                         #{scanResult}
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-import { Home, PackageCheck, Users, Package, ScanBarcode, PackageOpen } from "lucide-react";
+import { Home, PackageCheck, Users, Package, ScanBarcode, PackageOpen, PackageX } from "lucide-react";
 
 const menuResponsable = [
   {
@@ -30,6 +30,7 @@ const menuResponsable = [
     title: "Suivi & Statistiques",
     items: [
       { label: "Historique retraits", icon: <PackageCheck size={20} />, path: "/colisRecuperes" },
+      { label: "Historique annulés", icon: <PackageX size={20} />, path: "/colisAnnulesDrive" },
       // { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsDrive" },
     ],
   }

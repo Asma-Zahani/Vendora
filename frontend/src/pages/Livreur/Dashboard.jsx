@@ -1,4 +1,4 @@
-import { Truck, MapPin, Clock } from "lucide-react";
+import { Truck, MapPin, Clock, Home } from "lucide-react";
 import Header from "@/components/Header/DashboardSubHeader";
 import { useEffect, useState } from "react";
 import { getEntities } from "@/service/EntitesService";
@@ -23,7 +23,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      <Header title="Tableau de bord" icon={Truck} parent="Tableau de bord" />
+      <Header title="Tableau de bord" icon={Home} parent="Tableau de bord" />
       <section className="mx-6 py-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard title="Livraisons effectuées" value={livraisonsParEtat ? livraisonsParEtat['Livrée'] : 0} icon={<Truck />} />

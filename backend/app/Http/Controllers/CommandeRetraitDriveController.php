@@ -201,33 +201,18 @@ class CommandeRetraitDriveController extends Controller implements HasMiddleware
      */
     public function update(Request $request, $id)
     {
-        // Récupérer les deux entités
         $commandeRetraitDrive = CommandeRetraitDrive::where('commande_id', $id)->firstOrFail();
         $commande = Commande::where('commande_id', $id)->firstOrFail();
 
-        // Validation des données
         $validatedData = $request->validate([
-            'client_id' => 'exists:users,id',
-            'code_promotion_id' => 'nullable|exists:code_promotions,code_promotion_id',
-            'total' => 'numeric|min:0',
             'etatCommande' => [Rule::in(EtatCommandeEnum::values())],
-            'dateRetrait' => 'nullable|date',
-            'drive_id' => 'nullable|exists:drives,drive_id',
         ]);
 
-        // Mise à jour des données de la commande
-        $commande->update([
-            'client_id' => $validatedData['client_id'] ?? $commande->client_id,
-            'code_promotion_id' => $validatedData['code_promotion_id'] ?? $commande->code_promotion_id,
-            'total' => $validatedData['total'] ?? $commande->total,
-            'etatCommande' => $validatedData['etatCommande'] ?? $commande->etatCommande,
-        ]);
+        $commande->update(['etatCommande' => $validatedData['etatCommande'] ?? $commande->etatCommande,]);
 
-        // Mise à jour des données de la commande de livraison
-        $commandeRetraitDrive->update([
-            'dateRetrait' => $validatedData['dateRetrait'] ?? $commandeRetraitDrive->dateRetrait,
-            'drive_id' => $validatedData['drive_id'] ?? $commandeRetraitDrive->drive_id,
-        ]);
+        if (($validatedData['etatCommande'] ?? null) === EtatCommandeEnum::Retiree->value) {
+            $commandeRetraitDrive->update(['dateRetrait' => now()]);
+        }
 
         return response()->json([
             'message' => 'Commande Retrait Drive mise à jour avec succès',

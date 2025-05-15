@@ -10,6 +10,7 @@ class CommandeController extends Controller
     public function userCommande(Request $request) {
         return $request->user()->commandes()->with('client','commandeLivraison', 'commandeRetraitDrive.drive', 'facture.detailsFacture.produit')->get();
     }
+
     public function trackCommande(Request $request) {
         $request->validate([
             'email' => 'required|email',
@@ -34,4 +35,11 @@ class CommandeController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $commandeLivraison = Commande::where('commande_id', $id)->with('commandeLivraison', 'commandeRetraitDrive')
+            ->firstOrFail();
+
+        return response()->json($commandeLivraison);
+    }
 }

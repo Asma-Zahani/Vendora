@@ -24,7 +24,7 @@ class DashboardResponsableController extends Controller implements HasMiddleware
         $responsable = User::with('drive')->where('id', $responsableId)->first();
         $driveId = $responsable->drive->drive_id;
 
-        $etats = ['Retirée', 'Prête pour retrait', 'Annulée'];
+        $etats = ['En attente', 'Préparée', 'Retirée', 'Annulée'];
 
         $commandes = CommandeRetraitDrive::with(['commande.client'])
             ->where('drive_id', $driveId)
