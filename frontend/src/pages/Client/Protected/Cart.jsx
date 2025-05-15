@@ -4,7 +4,7 @@ import UserContext from '@/utils/UserContext';
 import { getEntityBy } from "@/service/EntitesService";
 import usePanierWishlist from "./usePanierWishlist";
 import ProduitsSection from "@/components/Produits/ProduitsSection";
-import { getEntities } from "@/service/EntitesService";
+import { getRecommandations } from "@/service/EntitesService";
 
 const Cart = () => {
     const { panier } = useContext(UserContext);
@@ -18,10 +18,12 @@ const Cart = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setProduitsRecommandes(await getEntities("recentProduits"));
+            setProduitsRecommandes((await getRecommandations("recommend_similar_produits", { produit_ids: produits.map(produit => (produit.produit_id)), interaction_type: "ajout_panier" }))?.data ?? []);
         }; 
-        fetchData();
-      }, []);
+        if (produits?.length > 0) {
+            fetchData();
+        }
+      }, [produits]);
 
     const handleCodePromotion = async (code) => {
         setCodePromotion(await getEntityBy("codePromotions", "code", code));

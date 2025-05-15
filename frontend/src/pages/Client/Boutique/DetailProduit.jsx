@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
-import { getEntity, getEntities, createEntity } from "@/service/EntitesService";
+import { getEntity, getEntities, createEntity, getRecommandations } from "@/service/EntitesService";
 import UserContext from '@/utils/UserContext';
 import { useNavigate } from "react-router-dom";
 import { Heart, Minus, Plus } from "lucide-react";
@@ -27,11 +27,11 @@ const DetailProduit = () => {
   useEffect(() => {
     const fetchData = async () => {
       setProduit(await getEntity("produits", id));
-      setProduitsRecommandes(await getEntities("recentProduits"));
-      setDerniersProduitsVus(await getEntities("derniersProduitsVus"));
+      setProduitsRecommandes((await getRecommandations("recommend_similar_produits", { produit_id: id, interaction_type: "vue_produit" }))?.data ?? []);
+      if (user) { setDerniersProduitsVus(await getEntities("derniersProduitsVus")) }
     }; 
     fetchData();
-  }, [id]);
+  }, [id, user]);
   
   useEffect(() => {
     if (produit) {

@@ -112,13 +112,14 @@ const handleLogout = async (setUser, setToken) => {
   }
 };
 
-const getRecommandations = async (id) => {
-  const response = await fetch(`${import.meta.env.VITE_RECOMMANDATION_API_URL}/recommander-produits`, {
+const getRecommandations = async (label, formData) => {
+  // console.log(formData);
+  const response = await fetch(`${import.meta.env.VITE_RECOMMANDATION_API_URL}/${label}`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(id ? { user_id: id }: {}),
+    body: JSON.stringify(formData),
   });
 
   return await response.json();

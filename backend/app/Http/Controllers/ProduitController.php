@@ -15,7 +15,7 @@ class ProduitController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except:['index','latestProducts','show'])
+            new Middleware('auth:sanctum', except:['index','recentProduits','show','recommander'])
         ];
     }
 
@@ -24,7 +24,7 @@ class ProduitController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        $query = Produit::with(['couleurs', 'sousCategorie.categorie']);
+        $query = Produit::with(['couleurs', 'sousCategorie.categorie', 'marque' => function ($q) {$q->select('marque_id', 'nom');}]);
 
         if (!$request->hasAny(['search', 'filtre', 'sort_by', 'sort_order', 'per_page'])) {
             return response()->json($query->get());

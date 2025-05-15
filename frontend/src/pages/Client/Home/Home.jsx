@@ -9,14 +9,14 @@ import { getEntities, getRecommandations } from "@/service/EntitesService";
 const Home = () => {
 const { user } = useContext(UserContext);
 const [recentsProduits, setRecentsProduits] = useState([]);
-const [produits, setProduits] = useState([]);
+const [produitsRecommandes, setProduitsRecommandes] = useState([]);
 const showPreferencesModal = user && !user.preferences;
 
 useEffect(() => {
   const fetchData = async () => {
     setRecentsProduits(await getEntities("recentProduits"));
-    const data = await getRecommandations(user?.id);
-    setProduits(data?.data ? data.data : []);
+    const data = await getRecommandations("recommander_produits",user?.id ? { user_id: user?.id }: {});
+    setProduitsRecommandes(data?.data ? data.data : []);
     console.log(data);
   };
   fetchData();
@@ -28,7 +28,7 @@ return (
     <Hero />
     <Features />
     <ProduitsSection titre={"Produits récents"} sousTitre={"Nouveautés cette semaine"} produits={recentsProduits} />
-    <ProduitsSection titre={"Produits recommandés"} sousTitre={"Notre sélection personnalisée"} produits={produits} />
+    <ProduitsSection titre={"Produits recommandés"} sousTitre={"Notre sélection personnalisée"} produits={produitsRecommandes} />
   </div>
 );
 };
