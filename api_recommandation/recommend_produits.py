@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from utils import (filtrer_produits_preferes, load_user_by_id, load_produits, load_interactions, get_preferences_model, get_interactions_model)
 
-def recommander_produits():
+def recommend_produits():
     data = request.get_json()
     user_id = data.get('user_id')
 

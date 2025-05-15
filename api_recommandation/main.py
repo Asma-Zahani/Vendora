@@ -1,14 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_cors import CORS
-from recommandation_routes import (recommander_produits)
-from similarity import (recommend_similar_produits)
+from recommend_produits import (recommend_produits)
+from recommend_similar_produits import (recommend_similar_produits)
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/recommander_produits", methods=["POST"])
-def route_recommander_produits():
-    return recommander_produits()
+@app.route("/recommend_produits", methods=["POST"])
+def route_recommend_produits():
+    return recommend_produits()
 
 @app.route("/recommend_similar_produits", methods=["POST"])
 def route_recommend_similar_produits():

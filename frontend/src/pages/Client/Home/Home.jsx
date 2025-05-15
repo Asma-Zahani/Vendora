@@ -15,7 +15,7 @@ const showPreferencesModal = user && !user.preferences;
 useEffect(() => {
   const fetchData = async () => {
     setRecentsProduits(await getEntities("recentProduits"));
-    const data = await getRecommandations("recommander_produits",user?.id ? { user_id: user?.id }: {});
+    const data = await getRecommandations("recommend_produits",user?.id ? { user_id: user?.id }: {});
     setProduitsRecommandes(data?.data ? data.data : []);
     console.log(data);
   };
