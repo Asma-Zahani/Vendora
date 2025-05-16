@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import Input from "@/components/ui/Input";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
@@ -9,6 +9,7 @@ import { SuccessMessageContext } from "@/utils/SuccessMessageContext";
 import { createEntity } from "@/service/EntitesService";
 
 const Login = () => {
+    const location = useLocation();
     const [inputType, setInputType] = useState("password");
     const [formData, setFormData] = useState({email: "", password: ""});
     const [isValid, setIsValid] = useState(false);
@@ -16,6 +17,29 @@ const Login = () => {
 
     const [errors, setErrors] = useState({});
     const { setSuccessMessage } = useContext(SuccessMessageContext);
+    
+    const [verifToken, setVerifToken] = useState(null);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        setVerifToken(params.get('token'));
+    }, [location, setVerifToken]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await createEntity("auth/verify-email", {token: verifToken});
+            if (data.message) {
+                setSuccessMessage(data.message);    
+                setVerifToken(null);
+                const url = new URL(window.location.href);
+                url.searchParams.delete('token');
+                window.history.replaceState({}, '', url); 
+            }
+        };
+        if (verifToken) {
+            fetchData();
+        }
+    }, [setSuccessMessage, verifToken]);
 
     const {setToken} = useContext(UserContext);
 

@@ -16,7 +16,7 @@ const FormContainer = ({children}) => {
             <img src={logo} alt="Logo" className="h-24 mx-auto" />
           </Link>
         </div>
-        <div className="bg-customLight dark:bg-contentDark rounded-lg shadow-2xl dark:shadow-gray-500/50 p-6 lg:p-10">
+        <div className="bg-customLight dark:bg-contentDark rounded-lg shadow-2xl dark:shadow-gray-500/50 p-6 lg:p-8">
           {children}
         </div>
       </div>

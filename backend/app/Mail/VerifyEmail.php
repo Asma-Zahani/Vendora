@@ -3,12 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
 class VerifyEmail extends Mailable
 {
@@ -22,8 +20,8 @@ class VerifyEmail extends Mailable
      */
     public function __construct($user, $token)
     {
-        $this->user = $user; 
-        $this->verificationUrl = url('/api/auth/verify-email?token=' . $token);
+        $this->user = $user;
+        $this->verificationUrl = env('FRONTEND_URL') . '/login?' . http_build_query(['token' => $token]);
     }
 
     /**
@@ -41,14 +39,11 @@ class VerifyEmail extends Mailable
      */
     public function content(): Content
     {
-        // $pathToImage = public_path('logo.svg');
-        $pathToImage = config('services.cloudinary_logo');
-
         return new Content(
             view: 'emails.verify-email',
             with: [
                 'verificationUrl' => $this->verificationUrl,
-                'pathToImage' => $pathToImage
+                'pathToImage' => config('services.cloudinary_logo')
             ]
         );
     }

@@ -140,7 +140,7 @@ class AuthController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        $token = $request->query('token');
+        $token = $request->input('token');
         
         if (!$token) {
             return response()->json(['message' => 'Token invalide.'], 400);
