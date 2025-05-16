@@ -77,7 +77,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
 
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col items-start">
-            <p className="text-3xl font-bold">${statistiquesVentes.totalDesVentes}</p>
+            <p className="text-xl sm:text-2xl font-bold">${statistiquesVentes.totalDesVentes}</p>
             <p className="text-sm text-grayDark">Total des ventes</p>
             <div className="w-full bg-gray-200 dark:bg-borderGrayDark rounded-full h-2 mt-2">
               <div className="h-2 rounded-full" style={{ width: `${pourcentageVentes}%`, backgroundColor: "rgba(54, 162, 235, 0.5)" }}></div>
@@ -85,7 +85,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
           </div>
 
           <div className="flex flex-col items-start">
-            <p className="text-3xl font-bold">{statistiquesVentes.nombreCommandes}</p>
+            <p className="text-xl sm:text-2xl font-bold">{statistiquesVentes.nombreCommandes}</p>
             <p className="text-sm text-grayDark">Nombre de commandes</p>
             <div className="w-full bg-gray-200 dark:bg-borderGrayDark rounded-full h-2 mt-2">
               <div className="h-2 rounded-full" style={{ width: `${pourcentageCommandes}%`, backgroundColor: "rgba(75, 192, 192, 0.5)" }}></div>
@@ -93,7 +93,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
           </div>
 
           <div className="flex flex-col items-start">
-            <p className="text-3xl font-bold">${statistiquesVentes.revenuParCommande}</p>
+            <p className="text-xl sm:text-2xl font-bold">${statistiquesVentes.revenuParCommande}</p>
             <p className="text-sm text-grayDark">Revenu par commande</p>
             <div className="w-full bg-gray-200 dark:bg-borderGrayDark rounded-full h-2 mt-2">
               <div className="h-2 rounded-full" style={{ width: `${pourcentageRevenu}%`, backgroundColor: "rgba(255, 99, 132, 0.5)" }}></div>
