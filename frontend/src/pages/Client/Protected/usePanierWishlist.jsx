@@ -21,31 +21,20 @@ const usePanierWishlist = (produits) => {
             item.produit_id === produit_id && item.pivot?.couleur === couleur
         );
         
-        let quantiteTotale = parseInt(quantiteAjoutee);
-        
-        if (produitExistant) {
-            const quantiteActuelle = parseInt(produitExistant.pivot.quantite);
-            quantiteTotale = quantiteActuelle + parseInt(quantiteAjoutee);
+        const quantiteTotale = produitExistant ? parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) : parseInt(quantiteAjoutee);
+  
+        if (parseInt(produitExistant.pivot.quantite) !== quantiteTotale) {
+            setFormData({
+                client_id: user?.id,
+                produit_id: produit_id,
+                quantite: quantiteTotale,
+                couleur: couleur,
+                ancienne_couleur: ancienne_couleur
+            });
 
-            const couleurInfo = produitExistant?.couleurs?.find(c => c.nom === couleur);            
-            const quantiteMaxProduit = produitExistant?.quantite ? produitExistant.quantite : couleurInfo.pivot?.quantite ;
-            
-            if (quantiteTotale > quantiteMaxProduit) {
-                setSuccessMessage("La quantité demandée dépasse le stock disponible !");
-                return;
-            }
+            await createEntity("interactions", { user_id: user?.id, produit_id, ajout_panier: 1 });
+            setPanierAjoute(true);
         }
-        
-        setFormData({
-            client_id: user?.id,
-            produit_id: produit_id,
-            quantite: quantiteTotale,
-            couleur: couleur,
-            ancienne_couleur: ancienne_couleur
-        });
-    
-        await createEntity("interactions", { user_id: user?.id, produit_id, ajout_panier: 1 });
-        setPanierAjoute(true);
     };
     
 
@@ -55,19 +44,8 @@ const usePanierWishlist = (produits) => {
             const sameColor = couleur ? item.pivot?.couleur === couleur : true;            
             return sameId && sameColor;
         });
-        let quantiteTotale = parseInt(nouvelleQuantite);
-        
-        if (produitExistant) {
-            const couleurInfo = produitExistant?.couleurs?.find(c => c.nom === couleur);            
-            const quantiteMaxProduit = produitExistant?.quantite ? produitExistant.quantite : couleurInfo.pivot?.quantite ;
-            
-            if (quantiteTotale > quantiteMaxProduit) {
-                setSuccessMessage("La quantité demandée dépasse le stock disponible !");
-                return;
-            } else if (quantiteTotale === quantiteMaxProduit) {
-                setSuccessMessage("Vous avez atteint la quantité maximale disponible pour ce produit.");
-            }
 
+        if (parseInt(produitExistant.pivot.quantite) !== nouvelleQuantite) {
             setFormData({
                 client_id: user?.id,
                 produit_id: produit_id,
@@ -75,6 +53,8 @@ const usePanierWishlist = (produits) => {
                 couleur: couleur
             });
             setPanierAjoute(true);
+        } else {
+            setSuccessMessage("Vous avez atteint la quantité maximale disponible pour ce produit.");
         }
     };
     
@@ -120,57 +100,52 @@ const usePanierWishlist = (produits) => {
         if (panierAjoute && formData) {
             const timeout = setTimeout(async () => {                
                 const data = await createEntity("panier", formData);
-                
                 if (data.message) {
                     setSuccessMessage(data.message);
-                    setPanier((prevProduits) => {
-                        let updatedPanier = [...prevProduits];
-    
-                        // Étape 1 : Supprimer l'ancien produit si ancienne_couleur existe
-                        if (formData.ancienne_couleur) {
-                            updatedPanier = updatedPanier.filter(item =>
-                                !(item.produit_id === formData.produit_id && item.pivot?.couleur === formData.ancienne_couleur)
-                            );
-                        }
-    
-                        // Étape 2 : Vérifier si un produit avec la nouvelle couleur existe
-                        const produitExistant = updatedPanier.find(item =>
-                            item.produit_id === formData.produit_id &&
-                            item.pivot?.couleur === formData.couleur
-                        );
-    
-                        if (produitExistant) {
-                            // Mise à jour de la quantité
-                            return updatedPanier.map(item =>
-                                item.produit_id === formData.produit_id && item.pivot?.couleur === formData.couleur
-                                    ? {
-                                        ...item,
-                                        pivot: {
-                                            ...item.pivot,
-                                            quantite: formData.quantite,
-                                            couleur: formData.couleur
-                                        }
-                                    }
-                                    : item
-                            );
-                        } else {
-                            // Ajout d'un nouveau produit
-                            const produit = produits.find(item => item.produit_id === formData.produit_id);
-                            if (produit) {
-                                return [
-                                    ...updatedPanier,
-                                    {
-                                        ...produit,
-                                        pivot: {
-                                            quantite: formData.quantite,
-                                            couleur: formData.couleur
-                                        }
-                                    }
-                                ];
+                    if (data.message != "La quantité demandée dépasse le stock disponible !") {
+                        setPanier((prevProduits) => {
+                            let updatedPanier = [...prevProduits];
+                            if (formData.ancienne_couleur) {
+                                updatedPanier = updatedPanier.filter(item =>
+                                    !(item.produit_id === formData.produit_id && item.pivot?.couleur === formData.ancienne_couleur)
+                                );
                             }
-                            return updatedPanier;
-                        }
-                    });
+                            const produitExistant = updatedPanier.find(item =>
+                                item.produit_id === formData.produit_id &&
+                                item.pivot?.couleur === formData.couleur
+                            );
+        
+                            if (produitExistant) {
+                                return updatedPanier.map(item =>
+                                    item.produit_id === formData.produit_id && item.pivot?.couleur === formData.couleur
+                                        ? {
+                                            ...item,
+                                            pivot: {
+                                                ...item.pivot,
+                                                quantite: formData.quantite,
+                                                couleur: formData.couleur
+                                            }
+                                        }
+                                        : item
+                                );
+                            } else {
+                                const produit = produits.find(item => item.produit_id === formData.produit_id);
+                                if (produit) {
+                                    return [
+                                        ...updatedPanier,
+                                        {
+                                            ...produit,
+                                            pivot: {
+                                                quantite: formData.quantite,
+                                                couleur: formData.couleur
+                                            }
+                                        }
+                                    ];
+                                }
+                                return updatedPanier;
+                            }
+                        });
+                    }
                 }
                 setPanierAjoute(false);
             }, 1000);

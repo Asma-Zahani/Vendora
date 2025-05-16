@@ -221,45 +221,24 @@ class UserController extends Controller implements HasMiddleware
         ]);
 
         $client = User::findOrFail($validatedData['client_id']);
-        $produit = Produit::findOrFail($validatedData['produit_id']);
+        $produit = Produit::with(['couleurs'])->findOrFail($validatedData['produit_id']);
 
         if ($validatedData['ancienne_couleur'] ?? null) {
-            $existingProduct = PanierProduit::where('client_id', $client->id)
-                                          ->where('produit_id', $produit->produit_id)
-                                          ->where('couleur', $validatedData['couleur'] ?? null)
-                                          ->first();
-        
-            if ($existingProduct) {
-                PanierProduit::where('client_id', $client->id)
-                            ->where('produit_id', $produit->produit_id)
-                            ->where('couleur', $validatedData['couleur'] ?? null)
-                            ->update(['quantite' => $validatedData['quantite']]);
-            } else {
-                PanierProduit::create([
-                    'client_id' => $client->id,
-                    'produit_id' => $produit->produit_id,
-                    'quantite' => $validatedData['quantite'],
-                    'couleur' => $validatedData['couleur'] ?? null
-                ]);
-            }
-            PanierProduit::where('client_id', $client->id)
-                        ->where('produit_id', $produit->produit_id)
-                        ->where('couleur', $validatedData['ancienne_couleur'])
-                        ->delete();
-        
-            return response()->json(['message' => 'Couleur modifiée avec succès'], 200);
+            return $this->modifierCouleurPanier($request, $client, $produit);
         }
 
         $panierProduit = PanierProduit::where('client_id', $client->id)
-                                    ->where('produit_id', $produit->produit_id)
-                                    ->where('couleur', $validatedData['couleur'] ?? null)
-                                    ->first();
+            ->where('produit_id', $produit->produit_id)
+            ->where('couleur', $validatedData['couleur'] ?? null)
+            ->first();
 
         if ($panierProduit) {
-            PanierProduit::where('client_id', $client->id)
-                        ->where('produit_id', $produit->produit_id)
-                        ->where('couleur', $validatedData['couleur'] ?? null)
-                        ->update(['quantite' => $validatedData['quantite']]);
+            $couleur = $produit->couleurs->firstWhere('nom', $request->couleur);
+            $stockDisponible = $produit->quantite ?? ($couleur->pivot->quantite ?? 0);
+            if ($validatedData['quantite'] > $stockDisponible) {
+                return response()->json(['message' => 'La quantité demandée dépasse le stock disponible !'], 200);
+            }
+            $panierProduit->update(['quantite' => $validatedData['quantite']]);
             return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
         }
 
@@ -269,8 +248,35 @@ class UserController extends Controller implements HasMiddleware
             'quantite' => $validatedData['quantite'],
             'couleur' => $validatedData['couleur'] ?? null
         ]);
-
         return response()->json(['message' => 'Produit ajouté au panier avec succès'], 200);
+    }
+
+    public function modifierCouleurPanier(Request $request, $client, $produit){
+        $couleur = $produit->couleurs->firstWhere('nom', $request->couleur);
+        $panierProduit = PanierProduit::where('client_id', $client->id)
+            ->where('produit_id', $produit->produit_id)
+            ->where('couleur', $request->couleur)
+            ->first();
+        
+        if ($request->quantite > ($couleur->pivot->quantite ?? 0)) {
+            return response()->json(['message' => 'La quantité demandée dépasse le stock disponible !', 'quatite' => $couleur->pivot->quantite ?? 0], 200);
+        }
+        if ($panierProduit) {
+            $panierProduit->update(['quantite' => $request->quantite]);
+        } else {
+            PanierProduit::create([
+                'client_id' => $client->id,
+                'produit_id' => $produit->produit_id,
+                'quantite' => $request->quantite,
+                'couleur' => $request->couleur
+            ]);
+        }
+        PanierProduit::where('client_id', $client->id)
+            ->where('produit_id', $produit->produit_id)
+            ->where('couleur', $request->ancienne_couleur)
+            ->delete();
+    
+        return response()->json(['message' => 'Couleur modifiée avec succès'], 200);
     }
 
     public function ajouterAListeDeSouhaits(Request $request)

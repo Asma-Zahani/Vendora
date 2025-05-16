@@ -5,8 +5,6 @@ admin ynjeem y3ady commande ??
 
 session expire
 
-les alert mte3 l panier
-
 emploi, type logement, staus logement (a effacer)
 
 achref:
