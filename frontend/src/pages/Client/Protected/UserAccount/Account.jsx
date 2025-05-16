@@ -3,7 +3,7 @@ import UserContext from '@/utils/UserContext';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { CircleUserRound, Gift, History, Key, LayoutDashboard, LogOut } from "lucide-react";
+import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
 import { handleLogout } from "@/service/EntitesService";
 
 const Account = () => {
@@ -14,7 +14,6 @@ const Account = () => {
         <div>
             <section className="sm:mx-6 sm:py-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-6">
-                    {/* Profil */}
                     <div className="col-span-1 w-full py-2">
                         <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm">
                             <div className="grid grid-cols-1 gap-4 rounded-lg">
@@ -36,14 +35,6 @@ const Account = () => {
                                                 Information compte
                                             </Link>
                                         </li>
-                                        {user.role !== "client" &&
-                                            <li>
-                                                <Link to={`${user.role === "admin" ? "/dashboard" : user.role === "livreur" ? "/dashboardLivreur" : "/dashboardResponsable"}`} className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/dashboard" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
-                                                    <LayoutDashboard className="w-5 h-5 me-2" />
-                                                    Dashboard
-                                                </Link>
-                                            </li>
-                                        }
                                         <li>
                                             <Link to="/orderHistory" className={`inline-flex items-center px-4 py-3 rounded-lg w-full ${location.pathname === "/orderHistory" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
                                                 <History className="w-5 h-5 me-2" />

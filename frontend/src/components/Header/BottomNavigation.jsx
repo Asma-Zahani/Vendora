@@ -1,6 +1,6 @@
 import { UserContext } from "@/utils/UserContext";
 import { useLocation } from "react-router-dom";
-import { Heart, Home, Moon, ShoppingCart, Sun, User } from "lucide-react";
+import { Heart, Home, LayoutDashboard, Moon, ShoppingCart, Sun, User } from "lucide-react";
 import ThemeContext from '@/utils/ThemeContext';
 import { useContext } from "react";
 import { Link } from "react-router";
@@ -10,12 +10,24 @@ const BottomNavigation = () => {
     const { user, wishlist, panier } = useContext(UserContext);
     const { theme, setTheme } = useContext(ThemeContext);
 
+    const getDashboardLink = (role) => {
+        switch (role) {
+            case "admin":
+                return { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" };
+            case "livreur":
+                return { to: "/dashboardLivreur", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" };
+            case "responsable":
+                return { to: "/dashboardResponsable", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" };
+            default:
+                return { to: "/updateProfile", label: "Compte", icon: <User className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" };
+        }
+    };
     const links = [
         { to: "/", label: "Home", icon: <Home className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" },
         { to: "/cart", label: "Panier", icon: <ShoppingCart className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link", badge: panier?.length },
         { to: "/wishlist", label: "Favoris", icon: <Heart className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link", badge: wishlist?.length },
         { to: "#", label: "Mode", icon: theme === "light" ? <Moon className="w-5 h-5 stroke-2" /> : <Sun className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "button" },
-        { to: "/updateProfile", label: "Compte", icon: <User className="w-5 h-5 stroke-2 group-hover:text-purpleLight" />, type: "link" },
+        getDashboardLink(user?.role)
     ];
 
     const isActive = (path) => location.pathname === path;
@@ -26,8 +38,7 @@ const BottomNavigation = () => {
 
     return (
         <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-customLight dark:bg-customDark dark:border-t dark:border-borderDark">
-            <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
-
+            <div className="grid h-full max-w-lg mx-auto mr-2 font-medium grid-cols-5">
                 {links.map((link, index) => (
                     link.type === "link" ? (
                         <Link key={index} to={link.to} className={`relative inline-flex flex-col items-center justify-center px-5 group ${isActive(link.to) ? "text-purpleLight" : "hover:bg-gray-50 dark:hover:bg-bgDark"}`}>
