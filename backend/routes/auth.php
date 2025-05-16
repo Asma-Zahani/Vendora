@@ -15,6 +15,8 @@ Route::post('/responsables', [AuthController::class, 'createResponsable'])->midd
 
 Route::post('login', [AuthController::class,'login']);
 
+Route::post('autoLogin', [AuthController::class,'autoLogin']);
+
 Route::post('/email/resend', [AuthController::class,'resend']);
 
 Route::post('logout', [AuthController::class,'logout'])->middleware('auth:sanctum');

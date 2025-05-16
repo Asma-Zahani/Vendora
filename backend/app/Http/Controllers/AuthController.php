@@ -91,11 +91,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'email' => 'required|email|exists:users',
-            'password' => 'required'
+            'password' => 'required',
+            'isChecked' => 'nullable|boolean',
         ]);
-
+        
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -105,8 +106,40 @@ class AuthController extends Controller
         if (!$user->email_verified_at) {
             return response()->json(['errors' => ['email' => ['Votre adresse email n\'a pas été vérifiée.']]], 403);
         }
+        $token = $user->createToken($user->prenom.' '.$user->nom);
         
-        $token = $user->createToken($user->first_name.' '.$user->last_name);
+        if ($validatedData['isChecked']) {
+            $rememberToken = bin2hex(random_bytes(32));
+            $user->remember_token = $rememberToken;
+            $user->save();
+
+            return [
+                'user' => $user,
+                'token' => $token->plainTextToken,
+                'rememberToken' => $rememberToken
+            ];
+        }
+        
+        return [ 'user' => $user, 'token' => $token->plainTextToken ];
+    }
+
+    public function autoLogin(Request $request)
+    {
+        $validatedData = $request->validate([
+            'remember_token' => 'required',
+        ]);
+        
+        $user = User::where('remember_token', $validatedData["remember_token"])->first();
+
+        if (!$user) {
+            return response()->json(['errors' => ['token' => ['Token invalide.']]], 401);
+        }
+
+        if (!$user->email_verified_at) {
+            return response()->json(['errors' => ['email' => ['Votre adresse email n\'a pas été vérifiée.']]], 403);
+        }
+
+        $token = $user->createToken($user->prenom.' '.$user->nom);
         
         return [
             'user' => $user,
