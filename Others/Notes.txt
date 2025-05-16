@@ -5,15 +5,10 @@ admin ynjeem y3ady commande ??
 
 session expire
 
-ktiba fou9 b3athha (dashboard)
-
 les alert mte3 l panier
 
 emploi, type logement, staus logement (a effacer)
 
-nom user incorrecte dashboard
-
 achref:
 t3aweny fel hebergement mte3 l api mte3 l recommandation
-dashboard responsive
 connect as user

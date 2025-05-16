@@ -130,7 +130,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                         </div>
 
                         {data.data?.length > 0 ? (
-                            <div className="mt-6 py-2 flex flex-col w-full max-w-sm sm:max-w-[100%] max-h-[400px] overflow-y-auto">
+                            <div className="mt-6 py-2 flex flex-col w-full max-w-xs sm:max-w-full max-h-[400px] overflow-y-auto">
                                 <div className="overflow-x-auto scrollbar">
                                     <table className="min-w-full">
                                         <thead className="sticky top-0 bg-customLight dark:bg-customDark z-10 border-b border-contentLight dark:border-borderDark shadow-xs dark:shadow-borderDark">
@@ -184,7 +184,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                                     <div className="flex flex-grow">
                                                                         <img src={item["image"] ? (`/${entityConfig.label}/${item["image"]}`) : img} alt="Image" onError={(e) => e.target.src = img}
                                                                             className="object-cover w-12 h-12 -mx-1 border-2 border-contentLight rounded-full dark:border-contentDark" />
-                                                                        <h4 className="flex items-center ml-4 text-gray-700 dark:text-gray-200">
+                                                                        <h4 className="flex items-center ml-4 text-gray-700 dark:text-gray-200 whitespace-normal overflow-visible text-clip">
                                                                             {item[column.key].length > 40 ? item[column.key].substring(0, 40) + '...' : item[column.key]}
                                                                         </h4>
                                                                     </div>
