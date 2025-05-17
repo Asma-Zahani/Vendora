@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { ChevronDown, Home, Truck, User, Package, LogIn, CircleAlert } from 'lucide-react';
+import { ChevronDown, Home, Truck, User, Package, LogIn, LogOut } from 'lucide-react';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { handleLogout } from "@/service/EntitesService";
@@ -100,7 +100,7 @@ const UserAction = ({ home }) => {
                     </ul>
                 </div>
             )}
-            {isOpen && <ConfirmModal isOpen={isOpen} icon={<CircleAlert />} onClose={() => setIsOpen(false)} message={`Êtes-vous sûr de vouloir deconxion ?`} onConfirm={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }}/>}
+            {isOpen && <ConfirmModal isOpen={isOpen} icon={<LogOut />} onClose={() => setIsOpen(false)} message="Êtes-vous sûr de vouloir vous déconnecter ?" onConfirm={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }}/>}
         </div>
     );
 };

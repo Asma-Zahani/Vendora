@@ -6,10 +6,12 @@ import { ChevronRight, ChevronDown, X, LogOut } from "lucide-react";
 import Icon from "@/assets/logo/logo-ico.svg";
 import { handleLogout } from "@/service/EntitesService";
 import { UserContext } from '@/utils/UserContext';
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 
 const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover, menuItems }) => {
   const { setUser, setToken } = useContext(UserContext);
   const [openDropdown, setOpenDropdown] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const toggleDropdown = (index) => {
@@ -101,7 +103,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover, menuItems }) 
                 Compte
               </h6>
               <div className="my-2 mx-1">
-                <div onClick={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }} className={`flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-bgLight dark:hover:bg-bgDark text-black dark:text-white`}>
+                <div onClick={() => setIsOpen(true)} className={`flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-bgLight dark:hover:bg-bgDark text-black dark:text-white`}>
                   <div className="flex items-center">
                     <LogOut size={20} />
                     <span className="ml-3 font-medium">Déconnexion</span>
@@ -111,6 +113,7 @@ const Sidebar = ({ onClose, isDrawer, isHover, toggleSidebarHover, menuItems }) 
             </li>
         </ul>
       </div>
+      {isOpen && <ConfirmModal isOpen={isOpen} icon={<LogOut />} onClose={() => setIsOpen(false)} message="Êtes-vous sûr de vouloir vous déconnecter ?" onConfirm={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }}/>}
     </div>
   );
 };

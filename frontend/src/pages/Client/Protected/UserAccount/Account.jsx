@@ -1,14 +1,16 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from '@/utils/UserContext';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { CircleUserRound, Gift, History, Key, LogOut } from "lucide-react";
 import { handleLogout } from "@/service/EntitesService";
+import ConfirmModal from "@/components/Modals/ConfirmModal";
 
 const Account = () => {
     const { user, setUser, setToken } = useContext(UserContext);
     const location = useLocation();
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div>
@@ -54,12 +56,10 @@ const Account = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <form onSubmit={(e) => {e.preventDefault();handleLogout(setUser, setToken);}}>
-                                                <button className={`inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer ${location.pathname === "/logout" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
-                                                    <LogOut className="w-5 h-5 me-2" />
-                                                    Déconnexion
-                                                </button>
-                                            </form>
+                                            <button onClick={() => setIsOpen(true)} className={`inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer ${location.pathname === "/logout" ? "bg-purpleLight text-white" : "bg-contentLight hover:text-gray-900 dark:bg-contentDark dark:hover:text-white"}`}>
+                                                <LogOut className="w-5 h-5 me-2" />
+                                                Déconnexion
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -73,6 +73,7 @@ const Account = () => {
                     </div>
                 </div>
             </section>
+            {isOpen && <ConfirmModal isOpen={isOpen} icon={<LogOut />} onClose={() => setIsOpen(false)} message="Êtes-vous sûr de vouloir vous déconnecter ?" onConfirm={(e) => { e.preventDefault(); handleLogout(setUser, setToken); }}/>}
         </div>
     );
 };
