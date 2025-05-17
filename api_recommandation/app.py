@@ -1,12 +1,17 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from utils import (filtrer_produits_preferes, load_user_by_id, load_produits, load_interactions, get_preferences_model, get_interactions_model)
+from tensorflow.keras.models import load_model
+from utils import get_user_id_mapping, get_produit_id_mapping
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route("/recommander-produits", methods=["POST"])
 def recommander_produits():
+    modele_interactions = load_model('modele_recommandation.h5')
+    user_id_mapping = get_user_id_mapping()
+    produit_id_mapping = get_produit_id_mapping()
     data = request.get_json()
     user_id = data.get('user_id')
 
@@ -57,45 +62,50 @@ def recommander_produits():
     else:
         print(f"Utilisateur {user_id} a {nb_interactions} interactions. Recommandation basée sur ses interactions.")
         
-        # Ajouter les informations utilisateur et produit
-        user_df = user.to_frame().T
-        user_interactions = user_interactions.merge(user_df, on='user_id', how='left')
-        user_interactions = user_interactions.merge(produits, on='produit_id', how='left')
+        user_encoded = user_id_mapping.get(user_id)
 
-        colonnes_requises = ["user_id", "produit_id", "age", "genre", "categorie_id", "marque_id", "prix"]
-        if not all(col in user_interactions.columns for col in colonnes_requises):
-            return jsonify({"message": "Colonnes manquantes dans les données pour la recommandation."}), 500
+        produits['produit_id_encoded'] = produits['produit_id'].map(produit_id_mapping)
+        produits = produits.dropna(subset=['produit_id_encoded'])  # Supprime les produits inconnus
 
-        # Prédiction des scores
-        X_user = user_interactions[colonnes_requises]
-        X_user['score'] = get_interactions_model().predict(X_user)
+        # On crée les interactions fictives pour tous les produits (si pas d'interaction passée)
+        produits['user_id'] = user_id
+        produits['user_id_encoded'] = user_encoded
+        produits['vue_produit'] = 0
+        produits['favori'] = 0
+        produits['ajout_panier'] = 0
+        produits['achat'] = 0
 
-        # Produits avec les meilleurs scores
-        top_scores = X_user.sort_values(by='score', ascending=False).head(1)
-        top_categories = top_scores["categorie_id"].unique().tolist()
+        # Puis on remplace avec les vraies interactions de l'utilisateur
+        interactions_user = interactions[interactions['user_id'] == user_id]
+        produits = produits.merge(
+            interactions_user[['produit_id', 'vue_produit', 'favori', 'ajout_panier', 'achat']],
+            on='produit_id', how='left', suffixes=('', '_inter'))
+        
+        for col in ['vue_produit', 'favori', 'ajout_panier', 'achat']:
+            produits[col] = produits[f"{col}_inter"].fillna(produits[col])
+            produits.drop(columns=[f"{col}_inter"], inplace=True)
 
-        # Recommander d'autres produits dans les mêmes catégories
-        candidats = produits[produits["categorie_id"].isin(top_categories)]
+        # Préparer les données pour le modèle
+        X_input = {
+            'user_id': produits['user_id_encoded'].astype('int32'),
+            'produit_id': produits['produit_id_encoded'].astype('int32'),
+            'vue_produit': produits['vue_produit'].astype('float32'),
+            'favori': produits['favori'].astype('float32'),
+            'ajout_panier': produits['ajout_panier'].astype('float32'),
+            'achat': produits['achat'].astype('float32')
+        }
 
-        # Éviter les doublons déjà vus par l'utilisateur
-        deja_interaction = user_interactions["produit_id"].tolist()
-        candidats = candidats[~candidats["produit_id"].isin(deja_interaction)]
+        # Prédire les scores
+        predictions = modele_interactions.predict(X_input, verbose=0).flatten()
+        produits['score'] = predictions
 
-        # Préparer les features pour prédire le score sur les nouveaux candidats
-        candidats = candidats.copy()
-        for col in ["user_id", "age", "genre"]:
-            candidats[col] = user_df.iloc[0][col]
-
-        X_candidats = candidats[["user_id", "produit_id", "age", "genre", "categorie_id", "marque_id", "prix"]]
-        candidats["score"] = get_interactions_model().predict(X_candidats)
-
-        # Trier et sélectionner les meilleurs produits
-        produits_recommandes = candidats.sort_values(by='score', ascending=False).head(8)
+        top_produits = produits.sort_values(by='score', ascending=False).head(8)
 
         return jsonify({
-            "message": "Recommandation basée sur les interactions et catégories similaires.",
-            "data": produits_recommandes.to_dict(orient="records")
+            "message": "Produits recommandés basés sur le modèle d'interactions.",
+            "data": top_produits.drop(columns=['user_id_encoded', 'produit_id_encoded', 'user_id', 'score']).to_dict(orient="records")
         }), 200
+
 
 
 @app.route("/")
