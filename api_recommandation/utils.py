@@ -80,3 +80,13 @@ def get_preferences_model():
 
 def get_interactions_model():
     return joblib.load("interaction_model.pkl")
+
+def get_user_id_mapping():
+    interactions = load_interactions()
+    user_ids = interactions['user_id'].unique()
+    return {user_id: idx for idx, user_id in enumerate(user_ids)}
+
+def get_produit_id_mapping():
+    interactions = load_interactions()
+    produit_ids = interactions['produit_id'].unique()
+    return {produit_id: idx for idx, produit_id in enumerate(produit_ids)}
