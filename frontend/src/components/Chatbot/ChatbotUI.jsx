@@ -103,7 +103,7 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
                             Vous avez atteint la limite de caractères autorisée
                           </div>
                         )}
-                      <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute bottom-1 -translate-y-1/2 right-3 text-gray-700 dark:text-grayDark ${!formData.message ? "opacity-50 cursor-not-allowed" : "hover:scale-110 transition"}`} />
+                      <SendHorizonal onClick={() => {handleSend(`<p>${formData.message}</p>`); setFormData({ ...formData, message: '' });}} size={22} className={`absolute bottom-1 -translate-y-1/2 right-3 text-gray-700 dark:text-grayDark ${!formData.message ? "opacity-50 cursor-not-allowed" : "hover:scale-110 transition"}`} />
                     </div>
                   }           
               </div>

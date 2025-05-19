@@ -79,7 +79,7 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
 
     print(f"{n_interactions} interactions générées dans {output_file}")
 
-def generate_preferences(output_file="data/preferences.csv", n_users=1000):
+def generate_preferences(output_file="data/preferences.csv", n_users=400):
     """ Génère un fichier CSV de préférences utilisateur avec des IDs de catégories et de marques """
     n_categories = 10
     n_marques = 10

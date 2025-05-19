@@ -46,10 +46,12 @@ const ChatbotModal = ({ onClose }) => {
             responseText = "<p>N'hésitez pas à nous écrire directement si vous avez des questions. Nous serons ravis de vous aider.</p>";
           } else if (userMessage === "<p>Suivre ma commande</p>") {
             responseText = "<p>Pour voir le statut de votre commande, veuillez fournir les informations de celle-ci.</p>";
-          } else {
+          } else if (userMessage.startsWith("<p>Mon numéro de commande est")) {
             const data = await createEntity("trackCommande", formData);
             responseText = data.message;
             setFormData({commande_id: '', email: '', message: ''});
+          } else {
+            responseText = "<p>Merci pour votre message. Nous vous répondrons par email dans les plus brefs délais.</p>";
           }
           const replaced = newMessages.slice(0, -1).concat({
             sender: "bot",

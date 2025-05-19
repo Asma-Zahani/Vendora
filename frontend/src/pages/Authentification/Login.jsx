@@ -59,7 +59,7 @@ const Login = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (!isValid) return;
 
@@ -95,7 +95,7 @@ const Login = () => {
 
     return (
         <FormContainer>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <h4 className="text-xl sm:text-2xl font-semibold mb-2 dark:text-white">Connectez-vous à votre compte</h4>
                 <p className="text-sm text-gray-600 dark:text-grayDark mb-6">Entrez votre email et votre mot de passe pour vous connecter</p>
                 <div className="mb-4">

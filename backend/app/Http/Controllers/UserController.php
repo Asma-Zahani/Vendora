@@ -231,12 +231,15 @@ class UserController extends Controller implements HasMiddleware
             ->where('produit_id', $produit->produit_id)
             ->where('couleur', $validatedData['couleur'] ?? null)
             ->first();
-
+        
         if ($panierProduit) {
             $couleur = $produit->couleurs->firstWhere('nom', $request->couleur);
             $stockDisponible = $produit->quantite ?? ($couleur->pivot->quantite ?? 0);
             if ($validatedData['quantite'] > $stockDisponible) {
                 return response()->json(['message' => 'La quantité demandée dépasse le stock disponible !'], 200);
+            }
+            if ($validatedData['quantite'] == $stockDisponible && $panierProduit->quantite == $stockDisponible) {
+                return response()->json(['message' => 'Vous avez atteint la quantité maximale disponible pour ce produit.'], 200);
             }
             $panierProduit->update(['quantite' => $validatedData['quantite']]);
             return response()->json(['message' => 'Quantité mise à jour avec succès'], 200);
@@ -248,6 +251,18 @@ class UserController extends Controller implements HasMiddleware
             'quantite' => $validatedData['quantite'],
             'couleur' => $validatedData['couleur'] ?? null
         ]);
+
+        $data = [
+            'user_id' => $validatedData['client_id'],
+            'produit_id' => $validatedData['produit_id'],
+            'ajout_panier' => 1
+        ];
+
+        $requestInteraction = new Request($data);
+
+        $interactionController = new InteractionController();
+        $interactionController->store($requestInteraction);
+
         return response()->json(['message' => 'Produit ajouté au panier avec succès'], 200);
     }
 
@@ -259,9 +274,12 @@ class UserController extends Controller implements HasMiddleware
             ->first();
         
         if ($request->quantite > ($couleur->pivot->quantite ?? 0)) {
-            return response()->json(['message' => 'La quantité demandée dépasse le stock disponible !', 'quatite' => $couleur->pivot->quantite ?? 0], 200);
-        }
+            return response()->json(['message' => 'La quantité demandée dépasse le stock disponible !'], 200);
+        }   
         if ($panierProduit) {
+            if ($panierProduit->quantite == ($couleur->pivot->quantite ?? 0)) {
+                return response()->json(['message' => 'Vous avez atteint la quantité maximale disponible pour ce produit.'], 200);
+            }
             $panierProduit->update(['quantite' => $request->quantite]);
         } else {
             PanierProduit::create([

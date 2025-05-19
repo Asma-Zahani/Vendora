@@ -102,7 +102,7 @@ const QuickShop = ({ produit, onClose, ajouterAuPanier, wishlist, ajouterAuListe
           <div className="mt-auto flex justify-end gap-3 pt-4">
             <button onClick={() => {handleAddToCart(); onClose()}} className="bg-purpleLight text-white py-2 px-6 rounded-md flex items-center gap-2">
               <ShoppingCart size={17} />
-              Add to Cart
+              Ajouter Au panier
             </button>
           </div>
         </div>

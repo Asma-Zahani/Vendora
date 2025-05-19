@@ -135,7 +135,7 @@ const DetailProduit = () => {
                 <Plus size={16} />
               </div>
               {produit.status == "Disponible" ?
-                <button onClick={() => handleAddToCart()} className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2">Add to Cart</button>
+                <button onClick={() => handleAddToCart()} className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2">Ajouter Au panier</button>
                 : <button className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
               }
               <div className="p-3 rounded-md border border-gray-200 dark:border-borderDark"
@@ -154,7 +154,7 @@ const DetailProduit = () => {
             </div>
             
             {produit.status == "Disponible" ?
-              <button onClick={() => handleAddToCart()} className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2">Add to Cart</button>
+              <button onClick={() => handleAddToCart()} className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2">Ajouter Au panier</button>
               : <button className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
             }
 

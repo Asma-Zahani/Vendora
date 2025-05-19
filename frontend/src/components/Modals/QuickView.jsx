@@ -101,18 +101,18 @@ const QuickView = ({ produit, onClose , ajouterAuPanier, wishlist, ajouterAuList
                 </div>
 
                 <div className="flex items-center gap-3 mt-4">
-                  <div onClick={handleDecrease} className="p-2 rounded-l-md border border-gray-200 dark:border-borderDark">
+                  <div onClick={handleDecrease} className="p-3 rounded-l-md border border-gray-200 dark:border-borderDark">
                       <Minus size={16} />
                   </div>
-                  <input className="-mx-3 py-1 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
-                  <div onClick={handleIncrease} className="p-2 rounded-r-md border border-gray-200 dark:border-borderDark">
+                  <input className="-mx-3 py-2 w-10 text-center bg-transparent border-t border-b border-gray-200 dark:border-borderDark outline-none" type="text" value={quantity} />
+                  <div onClick={handleIncrease} className="p-3 rounded-r-md border border-gray-200 dark:border-borderDark">
                       <Plus size={16} />
                   </div>
                   {produit.status == "Disponible" ?
-                    <button onClick={() => handleAddToCart()} className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2">Add to Cart</button>
+                    <button onClick={() => handleAddToCart()} className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2">Ajouter Au panier</button>
                     : <button className="hidden sm:flex bg-purpleLight text-white py-2 px-8 rounded-md items-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
                   }
-                  <div className="p-2 rounded-md border border-gray-200 dark:border-borderDark"
+                  <div className="p-3 rounded-md border border-gray-200 dark:border-borderDark"
                     onClick={() => {
                       const isProductInWishlist = wishlist && wishlist.some(item => item.produit_id === produit.produit_id);
         
@@ -128,7 +128,7 @@ const QuickView = ({ produit, onClose , ajouterAuPanier, wishlist, ajouterAuList
                 </div>
 
                 {produit.status == "Disponible" ?
-                  <button onClick={() => handleAddToCart()} className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2">Add to Cart</button>
+                  <button onClick={() => handleAddToCart()} className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2">Ajouter Au panier</button>
                   : <button className="w-full mt-4 flex sm:hidden bg-purpleLight text-white py-2 px-8 rounded-md items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled={true}>{produit.status}</button>
                 }
 

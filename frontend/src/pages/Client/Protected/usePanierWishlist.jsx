@@ -17,58 +17,34 @@ const usePanierWishlist = (produits) => {
     const ajouterAuPanier = async (produit_id, quantiteAjoutee, couleur, ancienne_couleur) => {
         if (!user) { navigate("/login"); return; }
 
-        const produitExistant = panier?.find(item => 
-            item.produit_id === produit_id && item.pivot?.couleur === couleur
-        );
-        
+        const produitExistant = panier?.find(item => item.produit_id === produit_id && item.pivot?.couleur === couleur);
         const quantiteTotale = produitExistant ? parseInt(produitExistant.pivot.quantite) + parseInt(quantiteAjoutee) : parseInt(quantiteAjoutee);
   
-        if (parseInt(produitExistant.pivot.quantite) !== quantiteTotale) {
-            setFormData({
-                client_id: user?.id,
-                produit_id: produit_id,
-                quantite: quantiteTotale,
-                couleur: couleur,
-                ancienne_couleur: ancienne_couleur
-            });
-
-            await createEntity("interactions", { user_id: user?.id, produit_id, ajout_panier: 1 });
-            setPanierAjoute(true);
-        }
+        setFormData({
+            client_id: user?.id,
+            produit_id: produit_id,
+            quantite: quantiteTotale,
+            couleur: couleur,
+            ancienne_couleur: ancienne_couleur
+        });
+        setPanierAjoute(true);
     };
     
 
-    const modifierQuantitePanier = async (produit_id, nouvelleQuantite, couleur) => {        
-        const produitExistant = produits.find(item => {
-            const sameId = item.produit_id == produit_id;            
-            const sameColor = couleur ? item.pivot?.couleur === couleur : true;            
-            return sameId && sameColor;
+    const modifierQuantitePanier = async (produit_id, nouvelleQuantite, couleur) => {    
+        setFormData({
+            client_id: user?.id,
+            produit_id: produit_id,
+            quantite: nouvelleQuantite,
+            couleur: couleur
         });
-
-        if (parseInt(produitExistant.pivot.quantite) !== nouvelleQuantite) {
-            setFormData({
-                client_id: user?.id,
-                produit_id: produit_id,
-                quantite: nouvelleQuantite,
-                couleur: couleur
-            });
-            setPanierAjoute(true);
-        } else {
-            setSuccessMessage("Vous avez atteint la quantité maximale disponible pour ce produit.");
-        }
+        setPanierAjoute(true);
     };
     
 
     const supprimerDePanier = async (produit_id, couleur) => {
-        const data = await deleteEntity("supprimerDuPanier", null, {
-            client_id: user?.id,
-            produit_id,
-            couleur,
-        });
-
-        const produitExistant = panier?.find(item => 
-            item.produit_id === produit_id && item.pivot?.couleur === couleur
-        );
+        const data = await deleteEntity("supprimerDuPanier", null, { client_id: user?.id, produit_id, couleur });
+        const produitExistant = panier?.find(item => item.produit_id === produit_id && item.pivot?.couleur === couleur);
         
         if (data.message) {
           setSuccessMessage(data.message);

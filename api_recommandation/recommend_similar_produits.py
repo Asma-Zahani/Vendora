@@ -8,9 +8,9 @@ def get_content_similarity_matrix(produits):
     produits["categorie_titre"] = produits["sous_categorie"].apply(lambda sc: sc["categorie"]["titre"] if sc and "categorie" in sc else "")
     produits["marque_nom"] = produits["marque"].apply(lambda m: m["nom"] if isinstance(m, dict) and "nom" in m else "")
 
-    produits["text_features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"]
+    produits["features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"]
     tfidf = TfidfVectorizer()
-    tfidf_matrix = tfidf.fit_transform(produits["text_features"])
+    tfidf_matrix = tfidf.fit_transform(produits["features"])
     product_similarity = cosine_similarity(tfidf_matrix)
     return pd.DataFrame(product_similarity, index=produits["produit_id"], columns=produits["produit_id"])
 
