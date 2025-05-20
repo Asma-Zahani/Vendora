@@ -1,10 +1,10 @@
-import pandas as pd
 import requests
-import ast
 import joblib
 from datetime import datetime
 from sklearn import preprocessing
-
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # url = "https://vendora-app.up.railway.app/api"
 url = "http://127.0.0.1:8000/api"
@@ -53,6 +53,62 @@ def filtrer_produits_preferes(user, produits):
             axis=1
         )
     ]
+
+def produits_populaires(interactions, produits):
+    produits_populaires = interactions.groupby("produit_id")["achat"].sum().sort_values(ascending=False)
+    top_ids = produits_populaires.head(8).index.tolist()
+    produits_populaires = produits[produits["produit_id"].isin(top_ids)]
+    return produits_populaires.to_dict(orient="records")
+
+def generer_recommandations_par_preferences(user, produits):
+    produits_filtres = filtrer_produits_preferes(user, produits)
+    produits_filtres['user_id'] = user["user_id"]
+
+    produits_filtres = produits_filtres.merge(user.to_frame().T, on='user_id', how='left')
+    X = produits_filtres[['user_id', 'produit_id', 'genre', 'age', 'categorie_id', 'marque_id', 'prix']]
+
+    X['label'] = get_preferences_model().predict_proba(X)[:, 1]
+    top_reco = X.sort_values(by='label', ascending=False).head(8)
+
+    recommended_ids = top_reco["produit_id"].tolist()
+    produits_recommandes = produits[produits["produit_id"].isin(recommended_ids)]
+    return produits_recommandes.to_dict(orient="records")
+
+def generer_recommandations_par_interactions(user, produits):
+    produits_filtres = filtrer_produits_preferes(user, produits)
+    produits_filtres['user_id'] = user["user_id"]
+
+    produits_filtres = produits_filtres.merge(user.to_frame().T, on='user_id', how='left')
+    X = produits_filtres[['user_id', 'produit_id', 'genre', 'age', 'categorie_id', 'marque_id', 'prix']]
+
+    X['label'] = get_preferences_model().predict_proba(X)[:, 1]
+    top_reco = X.sort_values(by='label', ascending=False).head(8)
+
+    recommended_ids = top_reco["produit_id"].tolist()
+    produits_recommandes = produits[produits["produit_id"].isin(recommended_ids)]
+    return produits_recommandes.to_dict(orient="records")
+
+def get_content_similarity_matrix(produits):
+    produits["categorie_titre"] = produits["sous_categorie"].apply(lambda sc: sc["categorie"]["titre"] if sc and "categorie" in sc else "")
+    produits["marque_nom"] = produits["marque"].apply(lambda m: m["nom"] if isinstance(m, dict) and "nom" in m else "")
+
+    produits["features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"]
+    tfidf = TfidfVectorizer()
+    tfidf_matrix = tfidf.fit_transform(produits["features"])
+    product_similarity = cosine_similarity(tfidf_matrix)
+    return pd.DataFrame(product_similarity, index=produits["produit_id"], columns=produits["produit_id"])
+
+def generer_similarite_produits(interactions, produits, interaction_type, produit_id):
+    if not interactions.empty:
+        df_interaction = interactions[interactions[interaction_type] > 0]
+        if not df_interaction.empty:
+            interaction_matrix = df_interaction.pivot_table(index="user_id", columns="produit_id",values=interaction_type, aggfunc="sum", fill_value=0)
+            product_similarity = cosine_similarity(interaction_matrix.T)  # Calculer la similarité entre les produits (Transposer pour comparer les produits)
+            product_similarity_df =  pd.DataFrame(product_similarity, index=interaction_matrix.columns, columns=interaction_matrix.columns)
+            if produit_id in product_similarity_df.index:
+                return product_similarity_df
+    
+    return get_content_similarity_matrix(produits)
 
 def get_preferences_model():
     return joblib.load("preferences_model.pkl")

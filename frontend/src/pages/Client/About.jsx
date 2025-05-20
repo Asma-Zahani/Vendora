@@ -37,7 +37,7 @@ const About = () => {
           </p>
         </div>
 
-        <div className="flex col-span-1 md:col-span-2 bg-gray-100 px-6 py-4 mt-4 italic text-[#878787] dark:bg-gray-800 dark:text-white">
+        <div className="flex col-span-1 md:col-span-2 bg-customLight px-6 py-4 mt-4 italic text-[#878787] dark:bg-customDark dark:text-white">
           <p className="text-4xl mr-2">“</p>
           <p className="mt-1">
             Nous ne sommes pas qu’un simple site e-commerce. Nous sommes un partenaire de confiance 
