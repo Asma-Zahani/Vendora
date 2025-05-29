@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Interaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -24,6 +25,10 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         return User::all();
+    }
+    public function getUserData(Request $request) 
+    {
+        return $request->user()->load('produits.couleurs', 'wishlist.couleurs', 'preferences');
     }
 
     public function clientDrive(Request $request)
@@ -252,16 +257,11 @@ class UserController extends Controller implements HasMiddleware
             'couleur' => $validatedData['couleur'] ?? null
         ]);
 
-        $data = [
+        Interaction::create([
             'user_id' => $validatedData['client_id'],
             'produit_id' => $validatedData['produit_id'],
             'ajout_panier' => 1
-        ];
-
-        $requestInteraction = new Request($data);
-
-        $interactionController = new InteractionController();
-        $interactionController->store($requestInteraction);
+        ]);
 
         return response()->json(['message' => 'Produit ajouté au panier avec succès'], 200);
     }

@@ -27,11 +27,10 @@ const menuResponsable = [
     ],
   },
   {
-    title: "Suivi & Statistiques",
+    title: "Historique",
     items: [
-      { label: "Historique retraits", icon: <PackageCheck size={20} />, path: "/colisRecuperes" },
-      { label: "Historique annulés", icon: <PackageX size={20} />, path: "/colisAnnulesDrive" },
-      // { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsDrive" },
+      { label: "Colis retirés", icon: <PackageCheck size={20} />, path: "/colisRecuperes" },
+      { label: "Colis annulés", icon: <PackageX size={20} />, path: "/colisAnnulesDrive" },
     ],
   }
 ];

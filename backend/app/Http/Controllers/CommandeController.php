@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commande;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CommandeController extends Controller
@@ -35,11 +36,37 @@ class CommandeController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function commandeLivraison(Request $request, $id)
     {
-        $commandeLivraison = Commande::where('commande_id', $id)->with('commandeLivraison', 'commandeRetraitDrive')
+        $livreurId = $request->user()->id;
+
+        $commande = Commande::where('commande_id', $id)
+            ->whereHas('commandeLivraison', function ($query) use ($livreurId) {
+                $query->where('livreur_id', $livreurId);
+            })
+            ->with('commandeLivraison')
             ->firstOrFail();
 
-        return response()->json($commandeLivraison);
+        return response()->json($commande);
+    }
+
+    public function commandeDrive(Request $request, $id)
+    {
+        $responsable = User::with('drive')->where('id', intval($request->user()->id))->first();
+
+        if (!$responsable->drive) {
+            return response()->json(['message' => 'Drive non trouvé pour cet utilisateur.'], 404);
+        }
+
+        $driveId = $responsable->drive->drive_id;
+
+        $commande = Commande::where('commande_id', $id)
+            ->whereHas('commandeRetraitDrive', function ($query) use ($driveId) {
+                $query->where('drive_id', $driveId);
+            })
+            ->with('commandeRetraitDrive')
+            ->firstOrFail();
+
+        return response()->json($commande);
     }
 }

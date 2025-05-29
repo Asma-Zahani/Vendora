@@ -2,7 +2,7 @@ import csv
 from datetime import datetime, timedelta
 import random
 
-def generate_users(output_file="data/users.csv", n_users=400):
+def generate_users(output_file="data/users.csv", n_users=1000):
     def random_date(start_year=1960, end_year=2005):
         start = datetime(start_year, 1, 1)
         end = datetime(end_year, 12, 31)
@@ -24,7 +24,7 @@ def generate_users(output_file="data/users.csv", n_users=400):
     
     print(f"{n_users} utilisateurs générés dans {output_file}")
 
-def generate_produits(output_file="data/produits.csv", n_produits=300):
+def generate_produits(output_file="data/produits.csv", n_produits=500):
     n_categories = 10
     n_marques = 10
 
@@ -79,7 +79,7 @@ def generate_interactions(output_file="data/interactions.csv", n_interactions=10
 
     print(f"{n_interactions} interactions générées dans {output_file}")
 
-def generate_preferences(output_file="data/preferences.csv", n_users=400):
+def generate_preferences(output_file="data/preferences.csv", n_users=1000):
     """ Génère un fichier CSV de préférences utilisateur avec des IDs de catégories et de marques """
     n_categories = 10
     n_marques = 10

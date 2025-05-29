@@ -4,8 +4,6 @@ import Header from "@/components/Header/DashboardSubHeader";
 import { CalendarDaysIcon } from "lucide-react";
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import listPlugin from '@fullcalendar/list';
-import interactionPlugin from '@fullcalendar/interaction';
 import FormModal from "@/components/Modals/FormModal";
 import Dropdown from "@/components/ui/Dropdown";
 import { getEntities, getEntityBy } from "@/service/EntitesService";
@@ -38,22 +36,21 @@ const JoursFeries = () => {
     if (!calendarEl.current || !selectedDriveId) return;
 
     const calendarInstance = new Calendar(calendarEl.current, {
-      plugins: [dayGridPlugin, listPlugin, interactionPlugin],
+      plugins: [dayGridPlugin],
       initialView: 'dayGridMonth',
       locale: 'fr',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,listWeek myCustomButton',
+        right: 'myCustomButton',
       },
       buttonText: {
         today: 'Aujourd\'hui',
         month: 'Mois',
-        week: 'Semaine',
       },
       customButtons: {
         myCustomButton: {
-          text: 'Ajouter événement',
+          text: 'Ajouter jourFerie',
           click: () => setIsModalOpen(true),
         }
       },
@@ -163,7 +160,7 @@ const JoursFeries = () => {
 
       {isModalOpen && (
         <FormModal formLabel="Jour férié" action={selectedEvent ? "Mettre à jour" : "Ajouter"}
-          onClose={() => setIsModalOpen(false)} 
+          onClose={() => {setIsModalOpen(false); setErrors(null); setFormData({ jour_ferie_id: '', drive_id: selectedDriveId, title: '', start: '', end: '' });}} 
           onSubmit={selectedEvent ? handleEventUpdate : handleAddEvent}
           formData={formData} setFormData={setFormData} errors={errors}
           {...(selectedEvent && { onDelete: handleDeleteEvent })}

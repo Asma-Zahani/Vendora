@@ -9,6 +9,7 @@ pip install guincorn
 pip install pandas
 pip install requests
 pip install joblib
+pip install xgboost
 pip install scikit-learn
 
 pip install -r requirements.txt

@@ -217,3 +217,11 @@ input:-webkit-autofill:active {
 .bg-gray-image {
     background-image: url('@/assets/logo/bg-logo-gray.png') !important;
 }
+
+#reader__scan_region {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* utile si tu veux que l'image soit centrée verticalement */
+}
+

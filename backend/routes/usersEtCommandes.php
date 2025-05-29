@@ -9,9 +9,7 @@ use App\Http\Controllers\UserPreferencesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-Route::get('/user', function (Request $request) {
-    return $request->user()->load('produits.couleurs', 'wishlist.couleurs', 'preferences');
-})->middleware('auth:sanctum');
+Route::get('user', [UserController::class, 'getUserData'])->middleware('auth:sanctum');
 
 Route::apiResource('userPreferences', UserPreferencesController::class); 
 Route::apiResource('users', UserController::class);
@@ -43,4 +41,5 @@ Route::get('commandeDrives/{id}', [CommandeRetraitDriveController::class, 'show'
 Route::put('commandeDrives/{id}', [CommandeRetraitDriveController::class, 'update']);
 Route::apiResource('commandeRetraitDrives', CommandeRetraitDriveController::class);
 
-Route::get('commande/{id}', [CommandeController::class, 'show']);
+Route::get('commandeDrive/{id}', [CommandeController::class, 'commandeDrive'])->middleware('auth:sanctum');
+Route::get('commandeLivraison/{id}', [CommandeController::class, 'commandeLivraison'])->middleware('auth:sanctum');

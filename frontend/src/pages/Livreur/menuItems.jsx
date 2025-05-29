@@ -29,13 +29,12 @@ const menuLivreur = [
     ],
   },
   {
-    title: "Suivi & Statistiques",
+    title: "Historique",
     items: [
-      { label: "Historique livraison", icon: <PackageCheck size={20} />, path: "/colisLivrees" },
-      { label: "Historique annulés", icon: <PackageX size={20} />, path: "/ColisAnnulesLivraison" },
-      // { label: "Statistiques", icon: <BarChart2 size={20} />, path: "/statsLivreur" },
+      { label: "Colis livrés", icon: <PackageCheck size={20} />, path: "/colisLivrees" },
+      { label: "Colis annulés", icon: <PackageX size={20} />, path: "/ColisAnnulesLivraison" },
     ],
-  },
+  }
 ];
 
 export default menuLivreur;

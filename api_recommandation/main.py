@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from utils_data import (load_user_by_id, load_produits, load_interactions, produits_populaires, generer_recommandations_par_preferences, generer_recommandations_par_interactions, generer_similarite_produits)
+from utils import (load_user_by_id, load_produits, load_interactions, produits_populaires, generer_recommandations_par_preferences, generer_recommandations_par_interactions, generer_similarite_produits)
 
 app = Flask(__name__)
 CORS(app)
@@ -10,20 +10,19 @@ def recommend_produits():
     data = request.get_json()
     user_id = data.get('user_id')
 
-    produits = load_produits()
     interactions = load_interactions()
     
     if not isinstance(data, dict) or "user_id" not in data:
-        return jsonify({"message": "user_id is required", "data": produits_populaires(interactions, produits)}), 200
+        return jsonify({"message": "user_id is required", "data": produits_populaires(interactions)}), 200
 
     user = load_user_by_id(user_id)
     user_interactions = interactions[interactions["user_id"] == user_id]
     
     if not user_interactions.empty:
         nb_interactions = user_interactions.shape[0]
-        if nb_interactions > 10:
-            return jsonify({"message": "Recommandation basée sur les interactions et catégories similaires.", "data": generer_recommandations_par_interactions(user, produits)}), 200
-    return jsonify({"message": "Cet utilisateur n'existe pas dans les interactions ou nombre d'interactions insuffisant", "data": generer_recommandations_par_preferences(user, produits)}), 200
+        if nb_interactions > 5:
+            return jsonify({"message": "Recommandation basée sur les interactions et catégories similaires.", "data": generer_recommandations_par_interactions(user_interactions)}), 200
+    return jsonify({"message": "Cet utilisateur n'existe pas dans les interactions ou nombre d'interactions insuffisant", "data": generer_recommandations_par_preferences(user)}), 200
 
 @app.route("/recommend_similar_produits", methods=["POST"])
 def recommend_similar_produits():

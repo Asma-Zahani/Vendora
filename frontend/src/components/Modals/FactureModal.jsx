@@ -53,7 +53,7 @@ const FactureModal = ({ onClose, facture }) => {
                 </div>
               </div>
               <div className="hidden print:flex text-[80px] font-semibold font-fredoka mx-2">Facture</div>
-              <div className="flex print:hidden mx-4 print:mt-2 print:mx-0 text-sm print:text-[8px] text-gray-600 dark:text-gray-300">
+              <div className="hidden sm:flex print:hidden mx-4 print:mt-2 print:mx-0 text-sm print:text-[8px] text-gray-600 dark:text-gray-300">
                 <table className="table-fixed border-separate border-spacing-y-1">
                   <tbody>
                     <tr>
@@ -94,7 +94,7 @@ const FactureModal = ({ onClose, facture }) => {
                 </div>
               </div>
             </div>
-            <div className="flex print:hidden justify-between text-sm border-y border-gray-200 dark:border-borderDark p-4 mb-6 text-gray-700 dark:text-gray-200">
+            <div className="flex flex-col sm:flex-row print:hidden justify-between text-sm border-y border-gray-200 dark:border-borderDark p-4 mb-6 text-gray-700 dark:text-gray-200">
               <div><strong>Facture No.:</strong> #{facture.facture_id}</div>
               <div><strong>Date:</strong> {new Date(facture.created_at).toLocaleDateString()}</div> 
               <div>
@@ -145,7 +145,7 @@ const FactureModal = ({ onClose, facture }) => {
               </div>
             </div>
             <div className="flex w-full justify-end">
-              <div className="space-y-3 w-full max-w-full">
+              <div className="space-y-3 text-sm sm:text-md w-full max-w-full">
                 <div className="flex gap-3 px-3">
                   <span className="text-right font-semibold uppercase w-full">total HT :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{facture?.totalHT} DT</span>
@@ -164,7 +164,7 @@ const FactureModal = ({ onClose, facture }) => {
                     <span className="text-left w-1/3 sm:w-1/5">8 DT</span>
                   </div>
                 }                
-                <div className="flex gap-3 px-3 text-lg font-bold uppercase print:py-2 print:bg-[#cccccc] print:border">
+                <div className="flex gap-3 px-3 text-md sm:text-lg font-bold uppercase print:py-2 print:bg-[#cccccc] print:border">
                   <span className="text-right w-full">Total :</span>
                   <span className="text-left w-1/3 sm:w-1/5">{facture?.totalTTC} DT</span>
                 </div>

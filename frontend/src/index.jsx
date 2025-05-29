@@ -47,17 +47,15 @@ import Protection from "@/pages/Legal/Protection";
 import Contact from "@/pages/Client/Contact";
 import About from "@/pages/Client/About";
 import ColisPrets from "./pages/Responsable/Gestion des colis/ColisPrets";
-import ColisRecuperes from "./pages/Responsable/Suivi & Statistiques/ColisRecuperes";
-import StatsDrive from "./pages/Responsable/Suivi & Statistiques/StatsDrive";
+import ColisRecuperes from "./pages/Responsable/Historique/ColisRecuperes";
 import ScanColis from "./pages/Responsable/Scan/ScanColis";
 import ColisATraiter from "./pages/Responsable/Gestion des colis/ColisATraiter";
-import ColisLivrees from "./pages/Livreur/Suivi & Statistiques/ColisLivrees";
-import StatsLivreur from "./pages/Livreur/Suivi & Statistiques/StatsLivreur";
+import ColisLivrees from "./pages/Livreur/Historique/ColisLivrees";
 import ColisALivrer from "./pages/Livreur/Gestion des colis/ColisALivrer";
 import ScanColisLivree from "./pages/Livreur/Scan/ScanColisLivree";
 import ColisEnCours from "./pages/Livreur/Gestion des colis/ColisEnCours";
-import ColisAnnulesLivraison from "./pages/Livreur/Suivi & Statistiques/ColisAnnulesLivraison";
-import ColisAnnulesDrive from "./pages/Responsable/Suivi & Statistiques/ColisAnnulesDrive";
+import ColisAnnulesLivraison from "./pages/Livreur/Historique/ColisAnnulesLivraison";
+import ColisAnnulesDrive from "./pages/Responsable/Historique/ColisAnnulesDrive";
 
 const routes = [
   {
@@ -121,7 +119,6 @@ const routes = [
           { path: "colisAnnulesLivraison", element: <ColisAnnulesLivraison />},
           { path: "scanColisLivree", element: <ScanColisLivree />},
           { path: "carteLivraison", element: <AdressesLivraison /> },
-          { path: "statsLivreur", element: <StatsLivreur />},
           { path: "clientsLivreur", element: <LivreurClients />}
         ]
       }
@@ -141,7 +138,6 @@ const routes = [
           { path: "colisRecuperes", element: <ColisRecuperes /> },
           { path: "colisAnnulesDrive", element: <ColisAnnulesDrive /> },
           { path: "scanColis", element: <ScanColis />},
-          { path: "statsDrive", element: <StatsDrive />},
           { path: "clientsDrive", element: <DriveClients />}
         ]
       }

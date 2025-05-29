@@ -33,7 +33,7 @@ const OrdersStatistics = ({ labels, statistiquesCommandes }) => {
             <table className="min-w-full">
               <thead className="sticky top-0 bg-customLight dark:bg-customDark z-10 border-b border-contentLight dark:border-borderDark shadow-xs dark:shadow-borderDark">
                 <tr>
-                  <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Num °</th>
+                  <th className="py-3.5 pr-2 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Num°</th>
                   <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Client</th>
                   <th className="py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400">Type</th>
                 </tr>

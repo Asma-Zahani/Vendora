@@ -13,7 +13,7 @@ export const Clients = () => {
   return (
     <>
       <Header title="Liste des clients" icon={Users} parent="Clients" current="Liste des clients" />
-      <EntityManager columns={columns} label="livreurClients" identifiant="id" actionList={["view"]}/>
+      <EntityManager notAdd={true} columns={columns} label="livreurClients" identifiant="id" actionList={["view"]}/>
     </>
   );
 };

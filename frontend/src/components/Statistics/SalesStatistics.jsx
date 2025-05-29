@@ -86,7 +86,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
 
           <div className="flex flex-col items-start">
             <p className="text-xl sm:text-2xl font-bold">{statistiquesVentes.nombreCommandes}</p>
-            <p className="text-sm text-grayDark">Nombre de commandes</p>
+            <p className="text-sm text-grayDark">Nb Commandes</p>
             <div className="w-full bg-gray-200 dark:bg-borderGrayDark rounded-full h-2 mt-2">
               <div className="h-2 rounded-full" style={{ width: `${pourcentageCommandes}%`, backgroundColor: "rgba(75, 192, 192, 0.5)" }}></div>
             </div>
@@ -94,7 +94,7 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
 
           <div className="flex flex-col items-start">
             <p className="text-xl sm:text-2xl font-bold">${statistiquesVentes.revenuParCommande}</p>
-            <p className="text-sm text-grayDark">Revenu par commande</p>
+            <p className="text-sm text-grayDark">R. par Commande</p>
             <div className="w-full bg-gray-200 dark:bg-borderGrayDark rounded-full h-2 mt-2">
               <div className="h-2 rounded-full" style={{ width: `${pourcentageRevenu}%`, backgroundColor: "rgba(255, 99, 132, 0.5)" }}></div>
             </div>
