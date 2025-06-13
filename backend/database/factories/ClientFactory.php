@@ -25,9 +25,6 @@ class ClientFactory extends Factory
             'adresse' => $this->faker->address(),
             'region' => $this->faker->state(),
             'ville' => $this->faker->city(),
-            'emploi' => $this->faker->randomElement(["Employé", "Sans emploi", "Retraité", "Indépendant"]),
-            'typeLogement' => $this->faker->randomElement(["Appartement", "Maison individuelle", "Hébergement"]),
-            'statusLogement' => $this->faker->randomElement(["Propriétaire", "Locataire", "Hébergé à titre gratuit"]),
             'role' => RoleEnum::CLIENT->value,
         ];
     }

@@ -31,10 +31,4 @@ const villes = {
     "Zaghouan": ["Zaghouan Ville", "El Fahs", "Bir Mcherga", "Nadhour"]
 };
 
-const emplois = ["Employé", "Sans emploi", "Retraité", "Indépendant"];
-
-const housingTypes = ["Appartement", "Maison individuelle", "Hébergement"];
-
-const occupancyStatuses = ["Propriétaire", "Locataire", "Hébergé à titre gratuit"];
-
-export { regions, villes, emplois, housingTypes, occupancyStatuses };
+export { regions, villes };

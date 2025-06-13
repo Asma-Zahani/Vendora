@@ -6,27 +6,39 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Models\Commande;
+use Illuminate\Support\Facades\Http;
 
 class StripePaymentController extends Controller
 {
 
     public function createPaymentIntent(Request $request)
-{
-    Stripe::setApiKey(env('STRIPE_SECRET'));
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-    $amount = intval($request->amount * 100);
-    $paymentIntent = \Stripe\PaymentIntent::create([
-        'amount' => $amount, 
-        'currency' => 'eur',
-        'metadata' => [
-            'user_id' => $request->user_id,
-        ],
-    ]);    
+        $response = Http::get('https://api.exchangeratesapi.io/v1/latest', [
+            'access_key' => env('EXCHANGE_RATES_API_KEY'),
+            'base' => 'EUR',
+            'symbols' => 'TND',
+        ]);
 
-    return response()->json([
-        'clientSecret' => $paymentIntent->client_secret,
-    ]);
-}
+        $exchangeRate = $response->json()['rates']['TND'];
+
+        $amountInTnd = $request->amount;
+        $amountInEur = $amountInTnd / $exchangeRate;
+        $amount = intval($amountInEur * 100);
+
+        $paymentIntent = \Stripe\PaymentIntent::create([
+            'amount' => $amount, 
+            'currency' => 'eur',
+            'metadata' => [
+                'user_id' => $request->user_id,
+            ],
+        ]);    
+
+        return response()->json([
+            'clientSecret' => $paymentIntent->client_secret,
+        ]);
+    }
 
 // Méthode pour enregistrer le transaction_id dans la commande
 public function saveTransactionId(Request $request)

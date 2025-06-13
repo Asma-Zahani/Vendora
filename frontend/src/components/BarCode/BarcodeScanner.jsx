@@ -98,7 +98,7 @@ const BarcodeScanner = () => {
                     </Link>
                 </div>
 
-            ) : (
+            ) : ( 
                 <div id="reader" className="border border-gray-300 dark:border-borderDark rounded-lg p-4 w-full flex flex-col items-center justify-center"/>
             )}
         </div>

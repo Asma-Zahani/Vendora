@@ -33,7 +33,7 @@ const ColisPrets = () => {
   ];
   
   const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions.filter(option => option.value === 'Préparée' || option.value === 'Retirée' || option.value === 'Annulée') }
   ];
 
   return (

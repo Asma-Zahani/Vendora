@@ -5,7 +5,7 @@ import EntityManager from "@/service/EntityManager";
 import { getEntities } from "@/service/EntitesService";
 
 const ColisALivrer = () => {
-  const [selectedFilter, setSelectedFilter] = useState("En attente");
+  const [selectedFilter, setSelectedFilter] = useState("Préparée");
   const filtres = { field: "etatCommande", selectedFilter, setSelectedFilter};
   const [etatCommandeOptions, setEtatCommandeOptions] = useState([]);
   const [clients, setClients] = useState([]);
@@ -33,7 +33,7 @@ const ColisALivrer = () => {
   ];
   
   const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions }
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions.filter(option => option.value === 'Préparée'|| option.value === 'En cours de livraison' || option.value === 'Annulée') }
   ];
 
   return (

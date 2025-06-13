@@ -3,20 +3,17 @@ import UserContext from '@/utils/UserContext';
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import Dropdown from "@/components/ui/Dropdown";
-import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
+import { regions, villes } from '@/service/UserInfos';
 import { updateEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
 const UpdateProfile = () => {
     const { user } = useContext(UserContext);
 
-    const [isEmploiOpen, setIsEmploiOpen] = useState(false);
-    const [isHousingTypeOpen, setIsHousingTypeOpen] = useState(false);
-    const [isOccupancyStatusOpen, setIsOccupancyStatusOpen] = useState(false);
     const [isRegionOpen, setIsRegionOpen] = useState(false);
     const [isVilleOpen, setIsVilleOpen] = useState(false);
 
-    const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse, emploi: user.emploi, typeLogement: user.typeLogement, statusLogement: user.statusLogement });
+    const [formData, setFormData] = useState({ nom: user.nom, prenom: user.prenom, telephone: user.telephone, email: user.email, region: user.region, ville: user.ville, adresse: user.adresse});
         
     const [errors, setErrors] = useState({}); 
     const { setSuccessMessage } = useContext(SuccessMessageContext);
@@ -25,13 +22,7 @@ const UpdateProfile = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        if (name === 'emploi') {
-          setIsEmploiOpen(false);
-        } else if (name === 'typeLogement') {
-          setIsHousingTypeOpen(false);
-        } else if (name === 'statusLogement') {
-          setIsOccupancyStatusOpen(false);
-        } else if (name === 'region') {
+        if (name === 'region') {
           setFormData((prev) => ({ ...prev, ville: "" }));
           setIsRegionOpen(false);
         } else if (name === 'ville') {
@@ -93,32 +84,6 @@ const UpdateProfile = () => {
                                 toggleOpen={() => {
                                     setIsVilleOpen(!isVilleOpen);
                                     setIsRegionOpen(false);
-                                }} />
-                            </div>
-                        </div>
-                        <div className="col-span-2 grid grid-cols-3 gap-6">
-                            <div className="col-span-3 sm:col-span-1 -mb-4 sm:mb-0">
-                                <Dropdown label="Emploi" name="emploi" options={emplois.map(emploi => ({ value: emploi, label: emploi }))} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen} target={true}
-                                    toggleOpen={() => {
-                                    setIsEmploiOpen(!isEmploiOpen);
-                                    setIsHousingTypeOpen(false);
-                                    setIsOccupancyStatusOpen(false);
-                                }} />
-                            </div>
-                            <div className="col-span-3 sm:col-span-1 -mb-4 sm:mb-0">
-                                <Dropdown label="Type de logement" name="typeLogement" options={housingTypes.map(housingType => ({ value: housingType, label: housingType }))} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen} target={true}
-                                    toggleOpen={() => {
-                                    setIsHousingTypeOpen(!isHousingTypeOpen);
-                                    setIsEmploiOpen(false);
-                                    setIsOccupancyStatusOpen(false);
-                                }} />
-                            </div>
-                            <div className="col-span-3 sm:col-span-1">
-                                <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses.map(occupancyStatus => ({ value: occupancyStatus, label: occupancyStatus }))} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen} target={true}
-                                    toggleOpen={() => {
-                                    setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
-                                    setIsEmploiOpen(false);
-                                    setIsHousingTypeOpen(false);
                                 }} />
                             </div>
                         </div>

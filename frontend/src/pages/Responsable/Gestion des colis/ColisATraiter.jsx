@@ -33,7 +33,7 @@ export const ColisATraiter = () => {
   ];
   
   const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions },
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions.filter(option => option.value === 'En attente' || option.value === 'Préparée') }
   ];
 
   return (

@@ -48,7 +48,7 @@ const OrderHistory = () => {
                                                     </button>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.total} DT</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.etatCommande}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.commande_retrait_drive.drive.nom}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.commande_retrait_drive.dateRetrait ? (commande.commande_retrait_drive.dateRetrait).slice(0, 10) : "Non Valide"}</td>
@@ -105,7 +105,7 @@ const OrderHistory = () => {
                                                     </button>
                                                     </td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.created_at.slice(0, 10)}</td>
-                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">${commande.total}</td>
+                                                    <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.total} DT</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2">{commande.etatCommande}</td>
                                                     <td className="border border-borderGrayLight dark:border-borderDark px-4 py-2"> {commande.commande_livraison.dateLivraison ? (commande.commande_livraison.dateLivraison).slice(0,10) :  "Non Valide"}</td>
                                                 </>

@@ -6,8 +6,8 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-url = "https://vendora-production.up.railway.app/api"
-# url = "http://127.0.0.1:8000/api"
+# url = "https://vendora-production.up.railway.app/api"
+url = "http://127.0.0.1:8000/api"
 
 le = preprocessing.LabelEncoder()
 
@@ -111,21 +111,21 @@ def get_content_similarity_matrix(produits):
     produits["categorie_titre"] = produits["sous_categorie"].apply(lambda sc: sc["categorie"]["titre"] if sc and "categorie" in sc else "")
     produits["marque_nom"] = produits["marque"].apply(lambda m: m["nom"] if isinstance(m, dict) and "nom" in m else "")
 
-    produits["features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"]
+    produits["features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"].astype(str)
     tfidf = TfidfVectorizer()
     tfidf_matrix = tfidf.fit_transform(produits["features"])
-    product_similarity = cosine_similarity(tfidf_matrix)
-    return pd.DataFrame(product_similarity, index=produits["produit_id"], columns=produits["produit_id"])
+    similarite_produits = cosine_similarity(tfidf_matrix)
+    return pd.DataFrame(similarite_produits, index=produits["produit_id"], columns=produits["produit_id"])
 
 def generer_similarite_produits(interactions, produits, interaction_type, produit_id):
     if not interactions.empty:
         df_interaction = interactions[interactions[interaction_type] > 0]
         if not df_interaction.empty:
-            interaction_matrix = df_interaction.pivot_table(index="user_id", columns="produit_id",values=interaction_type, aggfunc="sum", fill_value=0)
-            product_similarity = cosine_similarity(interaction_matrix.T)  # Calculer la similarité entre les produits (Transposer pour comparer les produits)
-            product_similarity_df =  pd.DataFrame(product_similarity, index=interaction_matrix.columns, columns=interaction_matrix.columns)
-            if produit_id in product_similarity_df.index:
-                return product_similarity_df
+            interaction_matrix = df_interaction.pivot_table(index="user_id", columns="produit_id", values=interaction_type, aggfunc="sum", fill_value=0)
+            similarite_produits = cosine_similarity(interaction_matrix.T)
+            similarite_produits_df =  pd.DataFrame(similarite_produits, index=interaction_matrix.columns, columns=interaction_matrix.columns)
+            if produit_id in similarite_produits_df.index:
+                return similarite_produits_df
     
     return get_content_similarity_matrix(produits)
 

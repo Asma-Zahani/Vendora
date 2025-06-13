@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import FormContainer from "./Form";
 import Label from "@/components/ui/Label";
 import Dropdown from "@/components/ui/Dropdown";
-import { regions, villes, emplois, housingTypes, occupancyStatuses } from '@/service/UserInfos';
+import { regions, villes } from '@/service/UserInfos';
 import { createEntity } from "@/service/EntitesService";
 import { SuccessMessageContext } from "@/utils/SuccessMessageContext"
 
@@ -14,16 +14,13 @@ const Register = () => {
   const [inputType1, setInputType1] = useState("password");
   const [step, setStep] = useState(1);
   const [text, setText] = useState("Suivant");
-  const [isEmploiOpen, setIsEmploiOpen] = useState(false);
-  const [isHousingTypeOpen, setIsHousingTypeOpen] = useState(false);
-  const [isOccupancyStatusOpen, setIsOccupancyStatusOpen] = useState(false);
   const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [isVilleOpen, setIsVilleOpen] = useState(false);
   
   const navigate = useNavigate();
   const [isValid, setIsValid] = useState(false);
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "",
-    password_confirmation: "", date_naissance: "", genre: "", emploi: "", typeLogement: "", statusLogement: "", region: "", ville: "", adresse: "" });
+    password_confirmation: "", date_naissance: "", genre: "", region: "", ville: "", adresse: "" });
 
   const nextStep = () => { if (step < 4 && isValid) { setStep(step + 1); } };
   const prevStep = () => { if (step > 1) { setStep(step - 1); } };
@@ -34,13 +31,7 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    if (name === 'emploi') {
-      setIsEmploiOpen(false);
-    } else if (name === 'typeLogement') {
-      setIsHousingTypeOpen(false);
-    } else if (name === 'statusLogement') {
-      setIsOccupancyStatusOpen(false);
-    } else if (name === 'region') {
+    if (name === 'region') {
       setFormData((prev) => ({ ...prev, ville: "" }));
       setIsRegionOpen(false);
     } else if (name === 'ville') {
@@ -55,7 +46,7 @@ const Register = () => {
         case 1: valid = formData.nom.trim() !== "" && formData.prenom.trim() !== "" && formData.telephone.trim() !== ""; break;
         case 2: { const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           valid = emailRegex.test(formData.email.trim()) && formData.password.trim() !== "" && formData.password_confirmation.trim() !== "" && formData.password === formData.password_confirmation; break; }
-        case 3: valid = formData.date_naissance.trim() !== "" && formData.genre.trim() !== "" && formData.emploi.trim() !== "" && formData.typeLogement.trim() !== "" && formData.statusLogement.trim() !== ""; break;
+        case 3: valid = formData.date_naissance.trim() !== "" && formData.genre.trim() !== ""; break;
         case 4: valid = formData.region.trim() !== "" && formData.ville.trim() !== "" && formData.adresse.trim() !== ""; break;
         default: valid = false;
     }
@@ -162,24 +153,6 @@ const Register = () => {
               </label>
             </div>
           </div>
-          <Dropdown label="Emploi" name="emploi" options={emplois.map(emploi => ({ value: emploi, label: emploi }))} selectedValue={formData.emploi} onSelect={handleChange} isOpen={isEmploiOpen} target={true}
-            toggleOpen={() => {
-              setIsEmploiOpen(!isEmploiOpen);
-              setIsHousingTypeOpen(false);
-              setIsOccupancyStatusOpen(false);
-            }} />
-          <Dropdown label="Type de logement" name="typeLogement" options={housingTypes.map(housingType => ({ value: housingType, label: housingType }))} selectedValue={formData.typeLogement} onSelect={handleChange} isOpen={isHousingTypeOpen} target={true}
-            toggleOpen={() => {
-              setIsHousingTypeOpen(!isHousingTypeOpen);
-              setIsEmploiOpen(false);
-              setIsOccupancyStatusOpen(false);
-            }} />
-          <Dropdown label="Statut d'occupation" name="statusLogement" options={occupancyStatuses.map(occupancyStatus => ({ value: occupancyStatus, label: occupancyStatus }))} selectedValue={formData.statusLogement} onSelect={handleChange} isOpen={isOccupancyStatusOpen} target={true}
-            toggleOpen={() => {
-              setIsOccupancyStatusOpen(!isOccupancyStatusOpen);
-              setIsEmploiOpen(false);
-              setIsHousingTypeOpen(false);
-            }} />
         </> )}
         {step === 4 && ( <>
           <Dropdown label="Région" name="region" options={regions.map(region => ({ value: region, label: region }))} selectedValue={formData.region} onSelect={handleChange} isOpen={isRegionOpen} target={true}

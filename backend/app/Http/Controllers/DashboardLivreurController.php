@@ -26,6 +26,24 @@ class DashboardLivreurController extends Controller implements HasMiddleware
         $commandes = CommandeLivraison::with(['commande.client','commande.facture.detailsFacture.produit'])
             ->whereDate('dateLivraison', $aujourdHui)
             ->where('livreur_id', $livreurId)
+            ->whereHas('commande', function ($query) {
+                $query->where('etatCommande', 'Préparée');
+            })
+            ->get();
+
+        return response()->json($commandes);
+    }
+
+    public function commandesLivreurEnCours()
+    {
+        $aujourdHui = now()->toDateString();
+        $livreurId = Auth::id(); 
+
+        $commandes = CommandeLivraison::with(['commande.client','commande.facture.detailsFacture.produit'])
+            ->where('livreur_id', $livreurId)
+            ->whereHas('commande', function ($query) {
+                $query->where('etatCommande', 'En cours de livraison');
+            })
             ->get();
 
         return response()->json($commandes);
@@ -35,7 +53,7 @@ class DashboardLivreurController extends Controller implements HasMiddleware
     {
         $livreurId = Auth::id();
 
-        $etats = ['Livrée', 'En attente', 'Annulée'];
+        $etats = ['Livrée', 'Préparée', 'Annulée'];
 
         $commandes = CommandeLivraison::with(['commande.client'])
             ->where('livreur_id', $livreurId)

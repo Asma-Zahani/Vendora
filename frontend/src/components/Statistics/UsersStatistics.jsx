@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import DoughnutChart from "@/components/Charts/DoughnutChart";
-import PieChart from "@/components/Charts/PieChart";
+// import PieChart from "@/components/Charts/PieChart";
 import { Link } from 'react-router';
 
 const UsersStatistics = ({genreCount, ageCount, users}) => {
@@ -33,50 +33,6 @@ const UsersStatistics = ({genreCount, ageCount, users}) => {
           'rgba(255, 206, 86, 1)',
           'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const dataEmploi = {
-    labels: ["Employé", "Sans emploi", "Retraité", "Indépendant"],
-    datasets: [
-      {
-        label: 'Répartition par emploi',
-        data: [25, 50, 15, 8], // Exemple : 50% salariés, etc.
-        backgroundColor: [
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 206, 86, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(75, 192, 192, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const dataConnexion = {
-    labels: ['Smartphone', 'Tablette', 'Pc'],
-    datasets: [
-      {
-        label: 'Modes de connexion',
-        data: [50, 35, 20], // Exemple : 60% via email, etc.
-        backgroundColor: [
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(75, 192, 192, 1)',
         ],
         borderWidth: 1,
       },
@@ -126,22 +82,6 @@ const UsersStatistics = ({genreCount, ageCount, users}) => {
         <h1 className="text-xl font-semibold mb-4">Répartition par âge</h1>
         <div className="flex items-center justify-center">
           <DoughnutChart data={dataAge} />
-        </div>
-      </div>
-
-      {/* Statistiques emploi */}
-      <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm w-full">
-        <h1 className="text-xl font-semibold mb-4">Répartition par emploi</h1>
-        <div className="flex items-center justify-center">
-          <DoughnutChart data={dataEmploi} />
-        </div>
-      </div>
-
-      {/* Statistiques connexion */}
-      <div className="overflow-hidden bg-customLight dark:bg-customDark border border-contentLight dark:border-borderDark rounded-lg p-6 shadow-sm w-full">
-        <h1 className="text-xl font-semibold mb-4">Modes de connexion</h1>
-        <div className="flex items-center justify-center">
-          <PieChart data={dataConnexion} />
         </div>
       </div>
     </div>

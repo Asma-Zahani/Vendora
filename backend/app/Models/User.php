@@ -28,9 +28,6 @@ class User extends Authenticatable
         'adresse',
         'region',
         'ville',
-        'emploi',
-        'typeLogement',
-        'statusLogement',
         'role'
     ];
 

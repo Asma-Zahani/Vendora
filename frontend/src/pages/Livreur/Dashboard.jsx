@@ -6,6 +6,7 @@ import StatCard from "@/components/Statistics/StatCard";
 
 export const Dashboard = () => {
   const [commandesDuJour, setCommandesDuJour] = useState([]);
+  const [commandesLivreurEnCours, setCommandesLivreurEnCours] = useState([]);
   const [livraisonsParEtat, setLivraisonsParEtat] = useState();
 
   useEffect(() => {
@@ -13,6 +14,7 @@ export const Dashboard = () => {
       try {
         setLivraisonsParEtat(await getEntities("livraisonsParEtat"));
         setCommandesDuJour(await getEntities("commandesLivreurJour"));
+        setCommandesLivreurEnCours(await getEntities("commandesLivreurEnCours"));
       } catch (error) {
         console.error("Erreur lors de la récupération :", error);
       }
@@ -27,7 +29,7 @@ export const Dashboard = () => {
       <section className="mx-6 py-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard title="Livraisons effectuées" value={livraisonsParEtat ? livraisonsParEtat['Livrée'] : 0} icon={<Truck />} />
-          <StatCard title="En attente" value={livraisonsParEtat ? livraisonsParEtat['En attente'] : 0} icon={<Clock />} />
+          <StatCard title="Préparée à livrer" value={livraisonsParEtat ? livraisonsParEtat['Préparée'] : 0} icon={<Clock />} />
           <StatCard title="Annulées" value={livraisonsParEtat ? livraisonsParEtat['Annulée'] : 0} icon={<MapPin />} />
         </div>
         <div className="bg-customLight dark:bg-customDark p-6 rounded-2xl shadow-lg">
@@ -57,7 +59,40 @@ export const Dashboard = () => {
           ) : (
               <p className="text-gray-500 dark:text-gray-300 text-center text-lg">Aucune commande à livrer aujourd&apos;hui.</p>
           )}
-          </div>
+        </div>
+        <div className="bg-customLight dark:bg-customDark p-6 rounded-2xl shadow-lg">
+          <h2 className="text-xl font-bold mb-4">📋 Commandes en cours de livraison</h2>            
+          {commandesLivreurEnCours.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {commandesLivreurEnCours.map((commandeLivraison) => {
+                const client = commandeLivraison.commande.client || {};
+                const villeRegion = client.ville && client.region ? `${client.ville} - ${client.region}` : "Adresse non fournie";
+                return (
+                  <div key={commandeLivraison.commande_id} className="border border-gray-300 dark:border-borderDark rounded-xl p-5 dark:bg-contentDark shadow-md hover:shadow-xl transition-shadow">
+                    <div className="mb-2">
+                      <h3 className="flex gap-2 text-lg font-semibold text-gray-800 dark:text-white cursor-pointer hover:text-purpleLight hover:underline"
+                        onClick={() => { window.location.href = `/colisEnCours?id=${commandeLivraison.commande_id}` }}>
+                        Commande Num° : {'#' + (commandeLivraison.commande_id || "Nom inconnu")}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                        Client : {client.prenom ? `${client.prenom} ${client.nom || ''}` : "Nom inconnu"}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                        Adresse : {client.adresse || "Adresse non fournie"}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                        Ville : {villeRegion}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-300 text-center text-lg">Aucune commande en cours.</p>
+          )}
+        </div>
+
       </section>
     </>
   );

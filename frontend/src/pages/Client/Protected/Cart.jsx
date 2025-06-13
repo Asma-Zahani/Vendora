@@ -36,7 +36,7 @@ const Cart = () => {
             <CartTable produits={produits} modifierQuantitePanier={modifierQuantitePanier} codePromotion={codePromotion} 
                 handleCodePromotion={handleCodePromotion} supprimerProduit={supprimerDePanier} ajouterAuPanier={ajouterAuPanier}/>
             <div className="bg-customLight dark:bg-customDark">
-                <ProduitsSection titre="Suggestions pour vous" sousTitre="Découvrez notre sélection du moment" produits={produitsRecommandes} />
+                <ProduitsSection titre="Articles similaires à votre sélection" sousTitre="Suggestions basées sur les produits de votre panier" produits={produitsRecommandes} />
             </div>
         </>
     );

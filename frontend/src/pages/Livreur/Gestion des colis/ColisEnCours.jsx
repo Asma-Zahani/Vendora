@@ -33,7 +33,7 @@ const ColisEnCours = () => {
   ];
   
   const fields = [
-    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions }
+    { label: "État Commande", key: "etatCommande", type: "dropdown", options: etatCommandeOptions.filter(option => option.value === 'En cours de livraison' || option.value === 'Livrée' || option.value === 'Annulée') }
   ];
 
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { ChevronDown, Home, Truck, User, Package, LogIn, LogOut } from 'lucide-react';
+import { ChevronDown, Home, User, Package, LogIn, LogOut } from 'lucide-react';
 import ProfileMale from "@/assets/default/user_male.png";
 import ProfileFemelle from "@/assets/default/user_femelle.png";
 import { handleLogout } from "@/service/EntitesService";
@@ -61,20 +61,6 @@ const UserAction = ({ home }) => {
                                         <Home size={15} className="mr-2" /> Dashboard
                                     </Link>
                                 </li>
-                                {user.role === "admin" && (
-                                    <>
-                                        <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110 dark:text-gray-200 dark:hover:text-white">
-                                            <Link to="/dashboardLivreur" className="flex leading-4 cursor-pointer">
-                                                <Truck size={15} className="mr-2" /> Dashboard Livreur
-                                            </Link>
-                                        </li>
-                                        <li className="block px-4 py-2 text-sm text-gray-700 hover:scale-110 dark:text-gray-200 dark:hover:text-white">
-                                            <Link to="/dashboardResponsable" className="flex leading-4 cursor-pointer">
-                                                <Truck size={15} className="mr-2" /> Dashboard Responsable
-                                            </Link>
-                                        </li>
-                                    </>
-                                )}
                             </>
                         )}
 
