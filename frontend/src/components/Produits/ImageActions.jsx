@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Eye, Heart, Link2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "@/assets/default/image.png";
 import QuickView from "@/components/Modals/QuickView";
@@ -16,6 +16,10 @@ const ImageActions = ({ wishlist, list, produit, ajouterAuPanier, ajouterAuListe
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const [isViewHovered, setIsViewHovered] = useState(false);
   const [isShopHovered, setIsShopHovered] = useState(false);
+
+  useEffect(() => {
+    setImageSrc(`/produits/${produit.image}`);
+  }, [produit.image]);
 
   const handleImageError = () => {
     setImageSrc(defaultImg); 
