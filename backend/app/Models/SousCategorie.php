@@ -13,6 +13,7 @@ class SousCategorie extends Model
     protected $table = 'sous_categories';
     protected $primaryKey = 'sous_categorie_id';
 
+    protected $appends = ['titre_categorie'];
     protected $fillable = [
         'categorie_id',
         'titre',
@@ -32,4 +33,10 @@ class SousCategorie extends Model
     {
         return $this->hasMany(Produit::class, 'sous_categorie_id');
     }
+
+    public function getTitreCategorieAttribute()
+    {
+        return $this->categorie()->first()?->titre;
+    }
+
 }

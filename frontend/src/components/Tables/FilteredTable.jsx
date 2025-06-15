@@ -156,8 +156,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                         <td key={colIndex} className={`py-4 text-sm whitespace-nowrap ${column.type === "checkbox" ? "pr-2 pl-4 w-10" : "px-4"}`}>
                                                             {column.type === "checkbox" && (
                                                                 <Checkbox checked={selectedItems.includes(item.id)} onChange={() => handleSelectOne(item.id)} />
-                                                            )}       
-                                                            {console.log(item)}                                 
+                                                            )}                            
                                                             {column.type === "text" && (
                                                                 <h4 className="text-gray-700 dark:text-gray-200">
                                                                     {column?.prefix}{item[column.key]?.length > 40  ? item[column.key].substring(0, 40) + '...'  : item[column.key] ?? ""}
