@@ -6,8 +6,8 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# url = "https://vendora-production.up.railway.app/api"
-url = "http://127.0.0.1:8000/api"
+url = "https://vendora-production.up.railway.app/api"
+# url = "http://127.0.0.1:8000/api"
 
 le = preprocessing.LabelEncoder()
 
