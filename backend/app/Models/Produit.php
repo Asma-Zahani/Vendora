@@ -27,7 +27,8 @@ class Produit extends Model
         'image',
     ];
     
-    protected $appends = ['prix_apres_promo'];
+    protected $appends = ['prix_apres_promo', 'nom_marque'];
+    protected $hidden = ['promotion'];
 
     protected $casts = [
         'status' => StatusProduitEnum::class,
@@ -79,4 +80,10 @@ class Produit extends Model
     
         return number_format($prixApresPromo, 2, '.', '');
     }
+
+    public function getNomMarqueAttribute()
+    {
+        return $this->marque()->first()?->nom;
+    }
+
 }
