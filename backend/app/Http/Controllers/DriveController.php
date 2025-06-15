@@ -70,7 +70,7 @@ class DriveController extends Controller implements HasMiddleware
             DB::table('horaires')->insert([
                 'drive_id' => $drive->id,
                 'jour' => $jour,
-                'ouvert' => $jour !== 'Dimanche' ? true : false ,
+                'ouvert' => $jour !== 'Dimanche' ? 1 : 0 ,
             ]);
         }
 
