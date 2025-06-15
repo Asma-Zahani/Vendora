@@ -48,6 +48,9 @@ def load_produits():
     produits["categorie_id"] = produits["categorie_id"].astype("int32")
     produits["prix"] = pd.to_numeric(produits["prix"], errors="coerce").fillna(0.0).astype(float)
     
+    if 'quantite' in produits.columns:
+        produits["quantite"] = pd.to_numeric(produits["quantite"], errors="coerce").fillna(0).astype(int)
+        
     if 'promotion_id' in produits.columns:
         produits.drop(columns=["promotion_id"], inplace=True)
 
