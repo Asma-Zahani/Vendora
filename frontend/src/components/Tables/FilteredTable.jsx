@@ -189,7 +189,7 @@ const FilteredTable = ({ data, filtres, entityConfig, tableConfig }) => {
                                                                         </h4>
                                                                     </div>
                                                                 </div>
-                                                            )}
+                                                            )} 
                                                             {column.type === "img" && (
                                                                 <div className="flex items-center">
                                                                     <img src={item[column.key] ? (`/${entityConfig.label}/${item[column.key]}`) : img} alt="Image" onError={(e) => e.target.src = img}
