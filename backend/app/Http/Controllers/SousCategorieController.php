@@ -22,11 +22,11 @@ class SousCategorieController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        if (!$request->hasAny(['search', 'sort_by', 'sort_order', 'per_page'])) {
-            return response()->json(SousCategorie::all());
-        }
+        $query = SousCategorie::with(['categorie']);
 
-        $query = SousCategorie::query();
+        if (!$request->hasAny(['search', 'filtre', 'sort_by', 'sort_order', 'per_page'])) {
+            return response()->json($query->get());
+        }
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
