@@ -1,8 +1,10 @@
+from flask import jsonify
 import requests
 import joblib
 from datetime import datetime
 from sklearn import preprocessing
 import pandas as pd
+import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -40,11 +42,14 @@ def load_user_by_id(user_id):
 
 def load_produits():
     produits = pd.DataFrame((requests.get(url + "/produits")).json())
-
-    produits["categorie_id"] = produits["sous_categorie"].apply(lambda x: x["categorie_id"] if isinstance(x, dict) and "categorie_id" in x else None)
+    produits["categorie_id"] = produits["sous_categorie"].apply(
+        lambda x: x["categorie_id"] if isinstance(x, dict) and "categorie_id" in x else None
+    )
     produits["categorie_id"] = produits["categorie_id"].astype("int32")
-
     produits["prix"] = pd.to_numeric(produits["prix"], errors="coerce").fillna(0.0).astype(float)
+    
+    if 'promotion_id' in produits.columns:
+        produits.drop(columns=["promotion_id"], inplace=True)
 
     return produits
 
@@ -109,9 +114,8 @@ def generer_recommandations_par_interactions(interactions):
 
 def get_content_similarity_matrix(produits):
     produits["categorie_titre"] = produits["sous_categorie"].apply(lambda sc: sc["categorie"]["titre"] if sc and "categorie" in sc else "")
-    produits["marque_nom"] = produits["marque"].apply(lambda m: m["nom"] if isinstance(m, dict) and "nom" in m else "")
 
-    produits["features"] = produits["categorie_titre"] + " " + produits["marque_nom"] + " " + produits["prix"].astype(str)
+    produits["features"] = produits["categorie_titre"] + " " + produits["nom_marque"] + " " + produits["prix"].astype(str)
     tfidf = TfidfVectorizer()
     tfidf_matrix = tfidf.fit_transform(produits["features"])
     similarite_produits = cosine_similarity(tfidf_matrix)
