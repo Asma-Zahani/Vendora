@@ -135,7 +135,7 @@ const FactureModal = ({ onClose, facture }) => {
                             </td>
                             <td className="px-4 py-3 print:border">{detail.quantite}</td>
                             <td className="px-4 py-3 print:border">{detail.produit.prix}</td>
-                            <td className="px-4 py-3 print:border">{detail.produit.promotion.reduction}</td>
+                            <td className="px-4 py-3 print:border">{detail.produit.promotion?.reduction}</td>
                             <td className="px-4 py-3 print:border">{detail.totalLigneTTC}</td>
                           </tr>
                         );
