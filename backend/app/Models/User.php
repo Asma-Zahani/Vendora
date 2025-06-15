@@ -17,6 +17,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $appends = ['nom_complet'];
     protected $fillable = [
         'nom',
         'prenom',
@@ -70,6 +71,11 @@ class User extends Authenticatable
     public function interactions()
     {
         return $this->hasMany(Interaction::class);
+    }
+
+    public function getNomCompletAttribute()
+    {
+        return $this->prenom . ' ' . $this->nom;
     }
 
     protected static function boot()

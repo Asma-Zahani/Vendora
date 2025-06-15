@@ -8,7 +8,7 @@ const Clients = () => {
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "", password_confirmation: "", date_naissance: "", genre: "" });
 
   const columns = [
-    { label: "Client", type: "nomComplete" },
+    { label: "Client", key: "nom_complet", type: "text" },
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }

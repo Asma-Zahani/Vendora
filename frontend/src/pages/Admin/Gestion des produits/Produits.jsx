@@ -65,7 +65,7 @@ const Produits = () => {
     { label: "Titre", key: "nom", type: "text" },
     { label: "Prix", key: "prix", type: "number" },
     { label: "Image", key: "image", type: "image" },
-    { label: "Sous Catégorie", key: "sous_categorie_id", type: "dropdown", options: sousCategories.map(sousCategorie => ({ value: sousCategorie.sous_categorie_id, label: sousCategorie.titre + ' - ' + sousCategorie.categorie.titre })) },
+    { label: "Sous Catégorie", key: "sous_categorie_id", type: "dropdown", options: sousCategories.map(sousCategorie => ({ value: sousCategorie.sous_categorie_id, label: sousCategorie?.titre + ' - ' + sousCategorie.categorie?.titre })) },
     { label: "Marque", key: "marque_id", type: "dropdown", options: marques.map(marque => ({ value: marque.marque_id, label: marque.nom })) },
     { label: "Promotions", key: "promotion_id", type: "dropdown", options: promotions.map(promotion => ({ value: promotion.promotion_id, label: promotion.nom + ' - ' + promotion.reduction + '%' })) },
     { label: "Caractéristiques du produit", key: "caracteristique", type: "radio", options: ["Standard", "Avec caractéristiques"]},

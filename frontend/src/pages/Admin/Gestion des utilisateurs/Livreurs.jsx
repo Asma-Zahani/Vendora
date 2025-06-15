@@ -8,7 +8,7 @@ const Livreurs = () => {
   const [formData, setFormData] = useState({ nom: "", prenom: "", telephone: "", email: "", password: "", password_confirmation: "", date_naissance: "", genre: "" });
   
   const columns = [
-    { label: "Livreur", type: "nomComplete" },
+    { label: "Livreur", key: "nom_complet", type: "text" },
     { label: "Téléphone", key: "telephone", type: "text" },
     { label: "Email", key: "email", type: "text" },
     { label: "Actions", key: "actions", type: "actions" }
