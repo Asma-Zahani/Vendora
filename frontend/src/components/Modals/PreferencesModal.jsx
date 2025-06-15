@@ -120,8 +120,8 @@ const PreferencesModal = () => {
                 </div>
                 <div className="flex items-center pt-4">
                   <button onClick={nextStep} disabled={selectedCategories.length < 5} className={`w-full font-medium py-2 rounded-full transition 
-                      ${selectedCategories.length >= 5 ? "bg-purpleLight hover:bg-purpleLightHover text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}>
-                    {selectedCategories.length >= 5 ? "Continuer" : `Choisissez-en ${5 - selectedCategories.length} de plus`}
+                      ${selectedCategories.length >= 2 ? "bg-purpleLight hover:bg-purpleLightHover text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}>
+                    {selectedCategories.length >= 2 ? "Continuer" : `Choisissez-en ${2 - selectedCategories.length} de plus`}
                   </button>
                 </div>
               </div>
@@ -153,8 +153,8 @@ const PreferencesModal = () => {
                 </div>
                 <div className="flex items-center pt-4">
                   <button onClick={onSubmit} disabled={selectedMarques.length < 5} className={`w-full font-medium py-2 rounded-full transition 
-                      ${selectedMarques.length >= 5 ? "bg-purpleLight hover:bg-purpleLightHover text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}>
-                    {selectedMarques.length >= 5 ? "Découvrez votre page d'accueil" : `Choisissez-en ${5 - selectedMarques.length} de plus`}
+                      ${selectedMarques.length >= 2 ? "bg-purpleLight hover:bg-purpleLightHover text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}>
+                    {selectedMarques.length >= 2 ? "Découvrez votre page d'accueil" : `Choisissez-en ${2 - selectedMarques.length} de plus`}
                   </button>
                 </div>
               </div>
