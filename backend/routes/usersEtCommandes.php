@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 Route::get('user', [UserController::class, 'getUserData'])->middleware('auth:sanctum');
 
 Route::apiResource('userPreferences', UserPreferencesController::class); 
+Route::get('userPreferences/user/{id}',[UserPreferencesController::class, 'userPreference']);
 Route::apiResource('users', UserController::class);
 
 Route::apiResource('interactions', InteractionController::class);

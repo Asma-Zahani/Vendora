@@ -27,8 +27,8 @@ def load_users():
 
 def load_user_by_id(user_id):
     user = pd.DataFrame([requests.get(f"{url}/users/{user_id}").json()])
-    preferences = pd.DataFrame([requests.get(f"{url}/userPreferences/{user_id}").json()])
-
+    preferences = pd.DataFrame([requests.get(f"{url}/userPreferences/user/{user_id}").json()])
+    
     user = user.rename(columns={"id": "user_id"}).merge(preferences, on='user_id', how='left')
 
     # Encodage et transformation

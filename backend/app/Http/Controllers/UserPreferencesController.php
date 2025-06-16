@@ -13,7 +13,7 @@ class UserPreferencesController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except: ['index', 'show']),
+            new Middleware('auth:sanctum', except: ['index', 'show', 'userPreference']),
         ];
     }
 
@@ -50,6 +50,12 @@ class UserPreferencesController extends Controller implements HasMiddleware
             'data' => $preference
         ], 200);
 
+    }
+
+    public function userPreference($id)
+    {
+        $userPreference = UserPreference::where('user_id', $id)->first();
+        return response()->json($userPreference);
     }
 
     /**

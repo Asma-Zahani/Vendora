@@ -19,9 +19,7 @@ def recommend_produits():
     user_interactions = interactions[interactions["user_id"] == user_id]
     
     if not user_interactions.empty:
-        nb_interactions = user_interactions.shape[0]
-        if nb_interactions > 5:
-            return jsonify({"message": "Recommandation basée sur les interactions.", "data": generer_recommandations_par_interactions(user_interactions)}), 200
+        return jsonify({"message": "Recommandation basée sur les interactions.", "data": generer_recommandations_par_interactions(interactions)}), 200
     return jsonify({"message": "Cet utilisateur n'existe pas dans les interactions ou nombre d'interactions insuffisant", "data": generer_recommandations_par_preferences(user)}), 200
 
 @app.route("/recommend_similar_produits", methods=["POST"])
