@@ -38,7 +38,6 @@ import UpdatePassword from "@/pages/Client/Protected/UserAccount/UpdatePassword"
 import OrderHistory from "@/pages/Client/Protected/UserAccount/OrderHistory";
 import Offres from "@/pages/Client/Protected/UserAccount/Offres";
 import DetailProduit from "@/pages/Client/Boutique/DetailProduit";
-import AdressesLivraison from "@/pages/Livreur/Gestion des colis/AdressesLivraison";
 import Mentions from "@/pages/Legal/Mentions";
 import Confidentialite from "@/pages/Legal/Confidentialite";
 import CGV from "@/pages/Legal/CGV";
@@ -118,7 +117,6 @@ const routes = [
           { path: "colisLivrees", element: <ColisLivrees />},
           { path: "colisAnnulesLivraison", element: <ColisAnnulesLivraison />},
           { path: "scanColisLivree", element: <ScanColisLivree />},
-          { path: "carteLivraison", element: <AdressesLivraison /> },
           { path: "clientsLivreur", element: <LivreurClients />}
         ]
       }

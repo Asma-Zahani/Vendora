@@ -113,7 +113,6 @@ const handleLogout = async (setUser, setToken) => {
 };
 
 const getRecommandations = async (label, formData) => {
-  // console.log(formData);
   const response = await fetch(`${import.meta.env.VITE_RECOMMANDATION_API_URL}/${label}`, {
     method: 'POST',
     headers: {

@@ -36,7 +36,6 @@ const SalesStatistics = ({labels, selectedYear, statistiquesVentes }) => {
             </div>
             <div className="">
               <p className="text-3xl font-bold">{statistiquesVentes.totalDesVentes} DT</p>
-              {console.log(statistiquesVentes)}
               {statistiquesVentes.evolutionPourcentage !== 0 && (
                 statistiquesVentes.evolutionPourcentage < 0 ? (
                   <div className="flex items-center gap-1 mt-2">

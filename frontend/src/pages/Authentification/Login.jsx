@@ -64,7 +64,6 @@ const Login = () => {
         if (!isValid) return;
 
         const data = await createEntity("login",formData);
-        console.log(data);
         
         if (data.errors) { 
             setErrors(data.errors); 

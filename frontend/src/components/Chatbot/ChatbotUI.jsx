@@ -76,13 +76,13 @@ const ChatbotUI = ({step, setStep, choix, setChoix, messages, formData, setFormD
                         <button type="button" className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-2 py-3 rounded-md text-sm`}> 
                           Saisir les informations de la commande
                         </button>
-                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
+                        <SendHorizonal size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
                       </div>
                       <div onClick={() => {setChoix(3); handleSend("<p>Annuler</p>");}} className="relative group transform transition duration-200 hover:scale-105">
                         <button type="button"  className={`w-full border border-gray-600 dark:border-gray-400 text-gray-600 dark:text-gray-400 text-left px-2 py-3 rounded-md text-sm`}>
                           Annuler
                         </button>
-                        <SendHorizonal onClick={() => console.log(formData.message)} size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
+                        <SendHorizonal size={22} className={`absolute inset-y-0 right-3 top-[25%] flex items-center text-gray-600 dark:text-gray-400 group-hover:scale-105 transform transition duration-200`} />
                       </div>
                       
                   </>}

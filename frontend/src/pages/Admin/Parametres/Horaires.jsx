@@ -98,7 +98,6 @@ const Horaires = () => {
                                   if (item.ouvert) { 
                                     return (
                                       <div key={index} className="flex items-center space-x-2">
-                                        {/* {console.log(periode)} */}
                                         <input type="time" readOnly value={periode.heureDebut} className="p-2 border border-gray-300 dark:border-gray-600 rounded-md" />
                                         <input type="time" readOnly value={periode.heureFin} className="p-2 border border-gray-300 dark:border-gray-600 rounded-md" />
                                         <button onClick={() => {setFormData({ periode_id: periode.periode_id,horaire_id: periode.pivot.horaire_id, heureDebut: periode.heureDebut, heureFin: periode.heureFin }); setIsModalOpen(true)}} className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none">
